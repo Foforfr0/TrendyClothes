@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{2A8C1251-5BB8-4B0A-BCD5-FB8261D5775F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{C20AC2C8-1A00-452C-A320-8EBABA1E9A3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A8C1251-5BB8-4B0A-BCD5-FB8261D5775F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A8C1251-5BB8-4B0A-BCD5-FB8261D5775F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A8C1251-5BB8-4B0A-BCD5-FB8261D5775F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A8C1251-5BB8-4B0A-BCD5-FB8261D5775F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C20AC2C8-1A00-452C-A320-8EBABA1E9A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C20AC2C8-1A00-452C-A320-8EBABA1E9A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C20AC2C8-1A00-452C-A320-8EBABA1E9A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C20AC2C8-1A00-452C-A320-8EBABA1E9A3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

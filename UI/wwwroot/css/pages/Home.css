@@ -1,0 +1,311 @@
+﻿/* Carousel */
+.carousel-inner {
+    display: inline-block;
+}
+
+.carousel-item {
+    transition: transform 0.5s ease-in-out;
+}
+
+.card {
+    margin: 10px auto;
+    max-width: 10rem;
+    height: 20rem;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 60%;
+    object-fit: fill;
+}
+
+/* Section promotions */
+
+.discovery__body {
+    display: flex;
+    padding-left: 8px;
+    margin: 10px;
+}
+
+.discovery .advertising {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    display: flex;
+    height: 250px;
+    max-width: 100%;
+    overflow: hidden;
+    text-decoration: none
+}
+
+.discovery .advertising__image img {
+    width: auto;
+    justify-content: 
+}
+
+.discovery .advertising__info {
+    display: flex;
+    flex-direction: column
+}
+
+.discovery .advertising__info--title {
+    color: #4b4b4b;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 8px;
+    text-transform: uppercase
+}
+
+.discovery .advertising__info--text {
+    color: #4b4b4b;
+    font-stretch: normal;
+    font-style: normal;
+    font-weight: 100;
+    letter-spacing: normal;
+    line-height: 1.1;
+    text-transform: uppercase
+}
+
+.discovery .advertising__info--text--bold {
+    font-weight: 600
+}
+
+.discovery .advertising__info--button {
+    border-radius: 5px;
+    font-weight: 600;
+    margin-top: 13px;
+    padding: 16px 10px
+}
+
+.discovery .advertising-square {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    display: flex;
+    height: 250px;
+    max-width: 100%;
+    overflow: hidden;
+    text-decoration: none
+}
+
+.discovery .advertising-square__image img {
+    width: auto
+}
+
+.discovery .advertising-square__info {
+    display: flex;
+    flex-direction: column
+}
+
+.discovery .advertising-square__info--title {
+    color: #4b4b4b;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 8px;
+    text-transform: uppercase
+}
+
+.discovery .advertising-square__info--text {
+    color: #4b4b4b;
+    font-stretch: normal;
+    font-style: normal;
+    font-weight: 100;
+    letter-spacing: normal;
+    line-height: 1.1;
+    text-transform: uppercase
+}
+
+.discovery .advertising-square__info--text--bold {
+    font-weight: 600
+}
+
+.discovery .advertising-square__info--button {
+    border-radius: 5px;
+    font-weight: 600;
+    margin-top: 13px;
+    padding: 16px 10px
+}
+
+.discovery .advertising-square.not-active, .discovery .advertising.not-active {
+    cursor: default;
+    pointer-events: none
+}
+
+.discovery, .discovery__body {
+    width: 100%
+}
+
+    .discovery .advertising {
+        justify-content: space-between;
+        width: 50%
+    }
+
+        .discovery .advertising:active, .discovery .advertising:focus, .discovery .advertising:hover {
+            text-decoration: none
+        }
+
+    .discovery .advertising__image {
+        flex-grow: 1;
+        height: 250px;
+        overflow: hidden;
+        position: relative;
+        width: 200px
+    }
+
+        .discovery .advertising__image img {
+            height: 100%;
+            left: 50%;
+            position: absolute;
+            transform: translateX(-50%)
+        }
+
+    .discovery .advertising__info {
+        align-self: center;
+        padding: 32px 10px 32px 32px;
+        width: 270px
+    }
+
+    .discovery .advertising__info--title {
+        font-size: 10px;
+        letter-spacing: 4px;
+        margin-bottom: 12px
+    }
+
+    .discovery .advertising__info--text {
+        font-size: 22px
+    }
+
+    .discovery .advertising__info--button {
+        font-size: 14px;
+        height: 36px;
+        line-height: 1px;
+        min-width: 125px;
+        width: -moz-fit-content;
+        width: fit-content
+    }
+
+        .discovery .advertising__info--button:hover {
+            background-color: #1259c3;
+            color: #fff
+        }
+
+    .discovery .advertising:first-child {
+        margin-right: 15px
+    }
+
+    .discovery .advertising-square {
+        justify-content: space-between;
+        width: 50%
+    }
+
+        .discovery .advertising-square:active, .discovery .advertising-square:focus, .discovery .advertising-square:hover {
+            text-decoration: none
+        }
+
+    .discovery .advertising-square__image {
+        aspect-ratio: 1/1;
+        overflow: hidden;
+        position: relative
+    }
+
+        .discovery .advertising-square__image img {
+            height: 100%;
+            left: 50%;
+            position: absolute;
+            transform: translateX(-50%)
+        }
+
+    .discovery .advertising-square__info {
+        align-self: center;
+        padding: 32px 10px 32px 32px;
+        width: 270px
+    }
+
+    .discovery .advertising-square__info--title {
+        font-size: 10px;
+        letter-spacing: 4px;
+        margin-bottom: 12px
+    }
+
+    .discovery .advertising-square__info--no-title {
+        padding-top: 18px
+    }
+
+    .discovery .advertising-square__info--text {
+        font-size: 22px
+    }
+
+    .discovery .advertising-square__info--button {
+        font-size: 14px;
+        height: 36px;
+        line-height: 1px;
+        min-width: 125px;
+        width: -moz-fit-content;
+        width: fit-content
+    }
+
+        .discovery .advertising-square__info--button:hover {
+            background-color: #1259c3;
+            color: #fff
+        }
+
+    .discovery .advertising-square:first-child {
+        margin-right: 15px
+    }
+
+@media screen and (max-width:769px) {
+    .discovery .advertising {
+        max-width: 357px
+    }
+
+    .discovery .advertising__image {
+        margin-left: -160px
+    }
+
+    .discovery .advertising__info--title {
+        width: 100px
+    }
+
+    .discovery .advertising-square {
+        max-width: 357px
+    }
+
+    .discovery .advertising-square__image {
+        margin-left: -160px
+    }
+
+    .discovery .advertising-square__info--title {
+        width: 100px
+    }
+}
+
+@media(max-width:1024px) {
+    .discovery .advertising, .discovery .advertising-square {
+        max-width: 495px
+    }
+}
+
+@media(min-width:1200px) {
+    .discovery .advertising, .discovery .advertising-square {
+        max-width: 584px
+    }
+}
+
+.discovery__body {
+    padding-left: 0
+}
+
+    .discovery__body > a.advertising {
+        margin-bottom: 0
+    }
+
+    .discovery__body a:focus-visible {
+        box-shadow: 0 0 0 2px #fff,0 0 0 3px #2968c8,0 0 0 5px rgba(65,137,230,.3);
+        outline: none
+    }

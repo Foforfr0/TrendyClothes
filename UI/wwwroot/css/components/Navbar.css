@@ -1,0 +1,42 @@
+﻿@media (max-width: 768px) {
+    .search-box {
+        width: 10px;
+        margin-right: 1rem;
+    }
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+.search-box {
+    width: 450px;
+    margin-right: 1rem;
+}
+
+.dropdown-toggle {
+    border-color: transparent;
+    background-color: transparent;
+    color: transparent;
+}
+
+    .dropdown-toggle::after {
+        display: none;
+    }
+
+.profile-img,
+.chopping-cart-img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    .profile-img,
+    .chopping-cart-img {
+        width: 30px; /* Cambia el tamaño para pantallas pequeñas */
+        height: 30px; /* Cambia el tamaño para pantallas pequeñas */
+    }
+}
