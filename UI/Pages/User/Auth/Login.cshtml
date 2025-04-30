@@ -1,0 +1,103 @@
+﻿@page
+@model UI.Pages.User.Auth.LoginModel
+@{
+    ViewData["Title"] = "Inicio de sesión";
+}
+
+<div class="container bg-white px-3 py-4">
+    <h1 class="text-center mb-4">Ingresar a TrendyClothes</h1>
+    <div class="row">
+
+        <!-- Sección de login -->
+        <div class="col-md-6 border-end">
+            <form method="post" id="loginForm" novalidate>
+                <div class="mb-3">
+                    <label asp-for="_loginDTO.Username" class="form-label">Nombre de usuario</label>
+                    <input asp-for="_loginDTO.Username" id="InputUsername" class="form-control" autocomplete="off" />
+                    <span class="text-danger" asp-validation-for="_loginDTO.Username"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="_loginDTO.Password" class="form-label">Contraseña</label>
+                    <input asp-for="_loginDTO.Password" id="InputPassword" class="form-control" type="password" autocomplete="off" />
+                    <span class="text-danger" asp-validation-for="_loginDTO.Password"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+            </form>
+            <div class="mt-3">
+                <a href="#" class="d-block">¿Olvidó su usuario?</a>
+                <a href="#" class="d-block">¿Olvidó su contraseña?</a>
+            </div>
+        </div>
+
+        <!-- Sección de recuperación (deshabilitada) -->
+        <div class="col-md-6 border-start">
+            <fieldset disabled>
+                <form method="post" id="emailForm" novalidate>
+                    <div class="mb-3">
+                        <label for="InputEmail" class="form-label">Correo electrónico</label>
+                        <input type="email" class="form-control" id="InputEmail" name="Email" />
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3">Enviar código</button>
+                </form>
+
+                <form method="post" id="2FactorForm" novalidate>
+                    <div class="mb-3">
+                        <label for="Input2FactorCode" class="form-label">Código enviado</label>
+                        <input type="text" class="form-control" id="Input2FactorCode" name="TwoFactorCode" />
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3">Validar</button>
+                </form>
+                <a href="#" class="d-block">¿Olvidó cuál es su correo?</a>
+            </fieldset>
+        </div>
+
+    </div>
+</div>
+
+<script type="module" src="~/js/User/Auth/Login.js"></script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+                        <!--
+<div class="container text-center bg-white row px-3 py-3">
+    <h1 class="col-12">Ingresar a TrendyClothes</h1>
+    <div class="container text-center col-6 border-end padding mx-auto">
+        <form action="" method="POST" novalidate="" id="loginForm">
+            <div class="mb-1 col-9 mx-auto">
+                <label for="InputUsername" class="form-label">Nombre de usuario</label>
+                <input type="text" class="form-control" id="InputUsername" name="Username" autocomplete="off">
+            </div>
+            <div class="mb-2 col-9 mx-auto">
+                <label for="InputPassword" class="form-label">Contraseña:</label>
+                <input type="password" class="form-control" id="InputPassword" name="Password" autocomplete="off">
+            </div>
+            <button type="submit" class="btn btn-primary mb-3">Ingresar</button>
+        </form>
+        <br />
+        <a class="mb-0 link-offset-2 link-underline link-underline-opacity-0" href="#">¿Olvidó su usuario?</a>
+        <br />
+        <a class="mb-0 link-offset-2 link-underline link-underline-opacity-0" href="#">¿Olvidó su contraseña?</a>
+    </div>
+    <div class="container text-center col-6 border-start padding mx-auto">
+        <fieldset disabled>
+            <form action="" method="POST" novalidate="" id="emailForm">
+                <div class="mb-2 col-9 mx-auto">
+                    <label for="InputEmail" class="form-label">Correo electrónico</label>
+                    <input type="text" class="form-control" id="InputEmail" name="Email">
+                </div>
+                <button type="submit" class="btn btn-primary mb-3">Enviar código</button>
+            </form>
+            <form action="" method="POST" novalidate="" id="2FactorForm">
+                <div class="mb-2 col-9 mx-auto">
+                    <label for="Input2FactorCode" class="form-label">Código enviado:</label>
+                    <input type="text" class="form-control" id="Input2FactorCode" name="2FactorCode">
+                </div>
+                <button type="submit" class="btn btn-primary mb-3">Validar</button>
+            </form>
+            <a class="mb-0 link-offset-2 link-underline link-underline-opacity-0" href="#">¿Olvidó cuál es su correos?</a>
+        </fieldset>
+    </div>
+</div>
+                        -->

@@ -64,7 +64,7 @@ public partial class TrendyClothesDBContext : DbContext {
 
     protected override void OnModelCreating (ModelBuilder modelBuilder) {
         modelBuilder.Entity<AuctionsProduct> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__Auctions__3214EC077549CD88");
+            entity.HasKey (e => e.Id).HasName ("PK__Auctions__3214EC07E152A588");
 
             entity.ToTable ("AuctionsProduct");
 
@@ -88,11 +88,11 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<CategoriesProduct> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__Categori__3214EC078AEE71AD");
+            entity.HasKey (e => e.Id).HasName ("PK__Categori__3214EC0731DB467E");
 
             entity.ToTable ("CategoriesProduct");
 
-            entity.HasIndex (e => e.Category, "UQ__Categori__4BB73C322E49CDD6").IsUnique ();
+            entity.HasIndex (e => e.Category, "UQ__Categori__4BB73C32C9EFE990").IsUnique ();
 
             entity.Property (e => e.Category)
                 .HasMaxLength (50)
@@ -100,7 +100,7 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<PhotosProduct> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__PhotosPr__3214EC07B0248907");
+            entity.HasKey (e => e.Id).HasName ("PK__PhotosPr__3214EC07C62DB271");
 
             entity.ToTable ("PhotosProduct");
 
@@ -111,7 +111,7 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<Product> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__Products__3214EC07FFF6675D");
+            entity.HasKey (e => e.Id).HasName ("PK__Products__3214EC07A91918A6");
 
             entity.Property (e => e.AverageStars).HasColumnType ("decimal(2, 1)");
             entity.Property (e => e.Description).HasColumnType ("text");
@@ -143,7 +143,7 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<QAProduct> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__QAProduc__3214EC07656203DB");
+            entity.HasKey (e => e.Id).HasName ("PK__QAProduc__3214EC0717D8631F");
 
             entity.ToTable ("QAProduct");
 
@@ -162,11 +162,11 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<RolesUser> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__RolesUse__3214EC07B78C3BEB");
+            entity.HasKey (e => e.Id).HasName ("PK__RolesUse__3214EC070C7074E7");
 
             entity.ToTable ("RolesUser");
 
-            entity.HasIndex (e => e.Role, "UQ__RolesUse__DA15413E83B8D7BA").IsUnique ();
+            entity.HasIndex (e => e.Role, "UQ__RolesUse__DA15413E0A481A5F").IsUnique ();
 
             entity.Property (e => e.Role)
                 .HasMaxLength (25)
@@ -174,11 +174,11 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<StatusesAuction> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__Statuses__3214EC07232073F0");
+            entity.HasKey (e => e.Id).HasName ("PK__Statuses__3214EC07FFB2D86D");
 
             entity.ToTable ("StatusesAuction");
 
-            entity.HasIndex (e => e.Status, "UQ__Statuses__3A15923FAEF8CD3F").IsUnique ();
+            entity.HasIndex (e => e.Status, "UQ__Statuses__3A15923F7D3904FA").IsUnique ();
 
             entity.Property (e => e.Status)
                 .HasMaxLength (20)
@@ -186,11 +186,11 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<StatusesProduct> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__Statuses__3214EC073E730143");
+            entity.HasKey (e => e.Id).HasName ("PK__Statuses__3214EC073DE1F2AC");
 
             entity.ToTable ("StatusesProduct");
 
-            entity.HasIndex (e => e.Status, "UQ__Statuses__3A15923FDE286DAA").IsUnique ();
+            entity.HasIndex (e => e.Status, "UQ__Statuses__3A15923F10F6D321").IsUnique ();
 
             entity.Property (e => e.Status)
                 .HasMaxLength (20)
@@ -198,11 +198,11 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<TypesProduct> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__TypesPro__3214EC07A36FE620");
+            entity.HasKey (e => e.Id).HasName ("PK__TypesPro__3214EC070F625CA8");
 
             entity.ToTable ("TypesProduct");
 
-            entity.HasIndex (e => e.Type, "UQ__TypesPro__F9B8A48BD9D4D0B6").IsUnique ();
+            entity.HasIndex (e => e.Type, "UQ__TypesPro__F9B8A48B3C0A4EF2").IsUnique ();
 
             entity.Property (e => e.Type)
                 .HasMaxLength (20)
@@ -210,11 +210,11 @@ public partial class TrendyClothesDBContext : DbContext {
         });
 
         modelBuilder.Entity<User> (entity => {
-            entity.HasKey (e => e.Id).HasName ("PK__Users__3214EC07C43A3745");
+            entity.HasKey (e => e.Id).HasName ("PK__Users__3214EC07C7663151");
 
-            entity.HasIndex (e => e.Username, "UQ__Users__536C85E4FDAB8E06").IsUnique ();
+            entity.HasIndex (e => e.Username, "UQ__Users__536C85E41FE93E1B").IsUnique ();
 
-            entity.HasIndex (e => e.Email, "UQ__Users__A9D10534613C8B4A").IsUnique ();
+            entity.HasIndex (e => e.Email, "UQ__Users__A9D105341BA6402C").IsUnique ();
 
             entity.Property (e => e.Email)
                 .HasMaxLength (100)
@@ -229,6 +229,7 @@ public partial class TrendyClothesDBContext : DbContext {
                 .HasMaxLength (50)
                 .IsUnicode (false);
             entity.Property (e => e.Password).HasMaxLength (200);
+            entity.Property (e => e.TwoFactorCode).HasMaxLength (6);
             entity.Property (e => e.Username)
                 .HasMaxLength (40)
                 .IsUnicode (false);

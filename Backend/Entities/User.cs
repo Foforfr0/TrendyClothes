@@ -19,6 +19,8 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
+    public string? TwoFactorCode { get; set; }
+
     public int RoleId { get; set; }
 
     public virtual ICollection<AuctionsProduct> AuctionsProducts { get; set; } = new List<AuctionsProduct>();

@@ -24,6 +24,7 @@ CREATE TABLE Users (
     Username VARCHAR(40) NOT NULL UNIQUE,
     Email VARCHAR(100) NOT NULL UNIQUE,
     "Password" NVARCHAR(200) NOT NULL,
+    TwoFactorCode NVARCHAR(6),
     RoleId INT NOT NULL,
 
     CONSTRAINT FK_RoleUser_User FOREIGN KEY (RoleId) REFERENCES RolesUser(Id)
