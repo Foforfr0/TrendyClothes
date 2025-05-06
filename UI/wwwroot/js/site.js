@@ -6,3 +6,15 @@ export function getValueDOMElementNullOrEmpty(id) {
     const element = document.getElementById(id);
     return element ? element.value || "" : "";
 }
+
+export function showToast(message, type) {
+    // type: success, danger, warning, info, primary
+    const toastEl = document.getElementById("liveToast");
+    const toastBody = document.getElementById("toastMessage");
+
+    toastBody.textContent = message;
+    toastEl.className = `toast align-items-center text-bg-${type} border-0`;
+
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+}

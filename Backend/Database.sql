@@ -163,3 +163,6 @@ INSERT INTO AuctionsProduct (Number, FirstPrice, MinBid, LastPrice, ProductId, S
 (1, 100.00, 10.00, 130.00, 1, 1, 3),
 (2, 200.00, 15.00, 250.00, 2, 2, 2),
 (3, 300.00, 20.00, 0.00, 3, 1, NULL);
+
+
+SELECT * FROM Users;

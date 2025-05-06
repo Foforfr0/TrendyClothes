@@ -1,27 +1,31 @@
 ﻿namespace Backend.DTO {
     public class MessageResponse<T> {
-        public bool IsError {
+        public bool isError {
             get; set;
         }
 
-        public string Message {
+        public string message {
             get; set;
         }
 
-        public T? DataRetrieved {
+        public T? dataRetrieved {
             get; set;
         }
 
-        private MessageResponse (bool IsError, string Message, T? DataRetrieved) {
-            this.IsError = IsError;
-            this.Message = Message;
-            this.DataRetrieved = DataRetrieved;
+        public MessageResponse () {
+            
         }
 
-        public static MessageResponse<T> Success (string Message, T DataRetrieved) =>
-            new MessageResponse<T> (false, Message, DataRetrieved);
+        public MessageResponse (bool IsError, string Message, T? DataRetrieved) {
+            this.isError = IsError;
+            this.message = Message;
+            this.dataRetrieved = DataRetrieved;
+        }
 
-        public static MessageResponse<T> Failure (string Message) =>
-            new MessageResponse<T> (true, Message, default);
+        public static MessageResponse<T> Success (string message, T? dataRetrieved) =>
+            new MessageResponse<T> (false, message, dataRetrieved);
+
+        public static MessageResponse<T> Failure (string message) =>
+            new MessageResponse<T> (true, message, default);
     }
 }

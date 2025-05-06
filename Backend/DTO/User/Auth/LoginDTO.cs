@@ -1,15 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
 
 namespace Backend.DTO.User.Auth {
     public class LoginDTO {
-        public LoginDTO (string Username, string Password) {
-            this.Username = Username;
-            this.Password = Password;
+        public LoginDTO () {
+            
         }
-        public required string Username {
+        public required string username {
             get; set;
         }
-        public required string Password {
+        public required string password {
             get; set;
         }
     }

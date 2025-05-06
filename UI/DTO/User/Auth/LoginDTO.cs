@@ -1,17 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Backend.DTO.User.Auth {
+namespace UI.DTO.User.Auth {
     public class LoginDTO {
-        public LoginDTO (string Username, string Password) {
-            this.Username = Username;
-            this.Password = Password;
-        }
         [Required (ErrorMessage = "El usuario es requerido.")]
-        public required string Username {
+        public required string username {
             get; set;
         }
         [Required (ErrorMessage = "La contraseña es requerida.")]
-        public required string Password {
+        public required string password {
             get; set;
         }
     }

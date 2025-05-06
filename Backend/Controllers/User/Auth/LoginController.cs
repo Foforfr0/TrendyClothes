@@ -1,4 +1,6 @@
-﻿using Backend.DTO.User.Auth;
+﻿using Backend.Auth;
+using Backend.DTO;
+using Backend.DTO.User.Auth;
 using Backend.Services.Intefaces.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,39 +9,112 @@ namespace Backend.Controllers.User.Auth {
     [Route ("api/User/Auth/[controller]")]
     public class LoginController : ControllerBase {
         private readonly IAuthService _authService;
-        private readonly ILogger<LoginController> _logger;
+        private readonly ManageJWTToken _manageJWTToken;
 
-        public LoginController (IAuthService authService,
-                                ILogger<LoginController> logger) {
+        public LoginController (IAuthService authService, ManageJWTToken manageJWTToken) {
             _authService = authService;
-            _logger = logger;
+            _manageJWTToken = manageJWTToken;
         }
 
-        [HttpPost ("Login")]
+        [HttpPost ("Login")] // POST
         public async Task<IActionResult> PostLoginAsync ([FromBody] LoginDTO loginDTO) {
-            try {
-                if (loginDTO == null || loginDTO.Username.Length <= 0 || loginDTO.Password.Length <= 0) {
-                    return BadRequest ("Campos vacíos.");
-                } else {
-                    LoginDTO? response = await _authService.PostLoginAsync (loginDTO);
-                    if (response == null) {
-                        return Unauthorized (new {
-                            message = "Usuario o contraseña incorrectos."
-                        });
-                    } else {
-                        return Ok (new {
-                            message = "Usuario encontrado.",
-                            body = new {
-                                Username = response.Username,
-                                Password = response.Password
-                            }
-                        });
-                    }
-                }
-            } catch (Exception ex) {
-                return StatusCode (StatusCodes.Status500InternalServerError, new {
-                    message = "Error interno del servidor.",
-                    error = ex.Message // Considera no devolver el mensaje de error en producción
+            if (loginDTO == null || loginDTO.username.Length <= 0 || loginDTO.password.Length <= 0)
+                return BadRequest ("Campos vacíos.");
+            else {
+                MessageResponse<LoginDTO> response = await _authService.PostLoginAsync (loginDTO);
+                if (response.isError)
+                    return HttpResponses.InternalServerError (response.message);
+                if (response.dataRetrieved == null)
+                    return Unauthorized (new {
+                        response.message
+                    });
+                return Ok (new {
+                    response.message,
+                    body = new JsonResult (response.dataRetrieved)
+                });
+            }
+        }
+
+        [HttpGet ("ValidateEmailUser")] // GET
+        public async Task<IActionResult> GetValidateEmailUserAsync ([FromQuery] EmailDTO emailDTO) {
+            if (emailDTO == null || emailDTO.username.Length <= 0 || emailDTO.email.Length <= 0)
+                return BadRequest ("Campos vacíos.");
+            else {
+                MessageResponse<EmailDTO> response = await _authService.GetValidateEmailUserAsync (emailDTO);
+                if (response.isError)
+                    return HttpResponses.InternalServerError (response.message);
+                if (response.dataRetrieved == null)
+                    return NotFound (new {
+                        response.message
+                    });
+                return Ok (new {
+                    response.message,
+                    body = new JsonResult (response.dataRetrieved)
+                });
+            }
+        }
+
+        [HttpPost ("CreateTwoFactorCode")] // POST
+        public async Task<IActionResult> PostTwoFactorCodeAsync ([FromBody] string username) {
+            if (string.IsNullOrEmpty (username)) {
+                return BadRequest ("Campo vacío.");
+            } else {
+                MessageResponse<bool> response = await _authService.PostTwoFactorCodeAsync (username);
+                if (response.isError)
+                    return HttpResponses.InternalServerError (response.message);
+                if (response.dataRetrieved == false)
+                    return NotFound (new {
+                        response.message
+                    });
+                return Ok (new {
+                    response.message,
+                });
+            }
+        }
+
+        [HttpGet ("ValidateTwoFactorCode")] // GET
+        public async Task<IActionResult> GetValidateTwoFactoeCode ([FromQuery] CodeTwoFactorDTO codeTwoFactorDTO) {
+            if (codeTwoFactorDTO == null || codeTwoFactorDTO.username.Length <= 0 || codeTwoFactorDTO.twoFactorCode.Length <= 0)
+                return BadRequest ("Campos vacíos.");
+            else {
+                MessageResponse<bool> response = await _authService.GetValidateTwoFactorCode (codeTwoFactorDTO);
+                if (response.isError)
+                    return HttpResponses.InternalServerError (response.message);
+                if (response.dataRetrieved == false && response.message.Equals ("Usuario no encontrado."))
+                    return NotFound (new {
+                        response.message
+                    });
+                if (response.dataRetrieved == false && response.message.Equals ("Usuario no posee un código doble factor."))
+                    return NotFound (new {
+                        response.message
+                    });
+                if (response.dataRetrieved == false && response.message.Equals ("Código doble factor incorrecto."))
+                    return Unauthorized (new {
+                        response.message
+                    });
+
+                string jwtToken = _manageJWTToken.GenerateToken (codeTwoFactorDTO.username);
+                return Ok (new {
+                    response.message,
+                    jwtToken
+                });
+            }
+        }
+
+        [HttpDelete ("DeleteTwoFactorCode")] // DELETE
+        public async Task<IActionResult> DeleteTwoFactorCodeAsync ([FromQuery] string username) {
+            if (string.IsNullOrEmpty (username)) {
+                return BadRequest ("Campo vacío.");
+            } else {
+                MessageResponse<bool> response = await _authService.DeleteTwoFactorCodeAsync (username);
+                if (response.isError)
+                    return HttpResponses.InternalServerError (response.message);
+                if (response.dataRetrieved == false)
+                    return NotFound (new {
+                        response.message
+                    });
+                return Ok (new {
+                    response.message,
                 });
             }
         }

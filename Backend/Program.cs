@@ -1,58 +1,15 @@
-using Backend.DAO;
-using Backend.Entities;
-using Backend.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Text.Json;
+using Backend.Config;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
 //TODO Implement BCrypt
 
-
-
-
 // Add services to the container.
-builder.Services.AddOpenApi ();             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddControllers ();
-builder.Services.AddControllers ()
-    .AddJsonOptions (options => {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
-    });
-
-builder.Services.AddCors (options => {
-    options.AddPolicy ("FromFrontend", policy => {
-        // policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); // Permite cualquier conexión.
-        policy.WithOrigins ("https://localhost:8081") // indica qué dominios pueden hacer peticiones.
-              .AllowAnyHeader ()                            // permite cualquier encabezado (como JSON, tokens, etc).
-              .AllowAnyMethod ();                           // permite cualquier método HTTP.
-    });
-});
-builder.Services.AddDbContext<TrendyClothesDBContext> (options =>
-    options.UseSqlServer (
-        builder.Configuration.GetConnectionString ("SQLServer")),
-    ServiceLifetime.Scoped);
-builder.Services.AddAuthentication ("Bearer")
-    .AddJwtBearer ("Bearer", options => {
-        options.TokenValidationParameters = new TokenValidationParameters {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            //TODO
-            ValidIssuer = "tu-emisor",
-            ValidAudience = "tu-audiencia",
-            IssuerSigningKey = new SymmetricSecurityKey (
-                Encoding.UTF8.GetBytes ("clave-secreta-suficientemente-larga"))
-        };
-    });
-
-
-
-
-// Add business services 
+builder.Services.ConfigureBuilder (builder);
+builder.Services.AddAplicationDTOs ();
 builder.Services.AddAplicationDAOs ();
 builder.Services.AddAplicationServices ();
+builder.Services.ConfigureAuth ();
+
 
 
 
