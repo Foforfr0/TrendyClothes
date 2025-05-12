@@ -50,26 +50,23 @@ namespace Backend.Services.Implements.User {
             return MessageResponse<bool>.Success ("Código doble factor enviado.", true);
         }
 
-        public async Task<MessageResponse<CodeTwoFactorDTO>> GetValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
-            MessageResponse<CodeTwoFactorDTO> response = await _authDAO.ValidateTwoFactorCode (codeTwoFactorDTO);
+        public async Task<MessageResponse<jwtDTO>> GetValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
+            MessageResponse<jwtDTO> response = await _authDAO.ValidateTwoFactorCode (codeTwoFactorDTO);
 
             if (response.isError)
-                return MessageResponse<CodeTwoFactorDTO>.Failure (response.message);
+                return MessageResponse<jwtDTO>.Failure (response.message);
             if (response.dataRetrieved == null && response.message.Equals ("User not found"))
-                return MessageResponse<CodeTwoFactorDTO>.Success ("Usuario no encontrado.", null);
+                return MessageResponse<jwtDTO>.Success ("Usuario no encontrado.", null);
             if (response.dataRetrieved == null && response.message.Equals ("User doesn't have twoFactorCode."))
-                return MessageResponse<CodeTwoFactorDTO>.Success ("Usuario no posee un código doble factor.", null);
+                return MessageResponse<jwtDTO>.Success ("Usuario no posee un código doble factor.", null);
             if (response.dataRetrieved == null && response.message.Equals ("TwoFactorCode incorrect."))
-                return MessageResponse<CodeTwoFactorDTO>.Success ("Código doble factor incorrecto.", null);
+                return MessageResponse<jwtDTO>.Success ("Código doble factor incorrecto.", null);
 
-            _logger.LogInformation (response.dataRetrieved == null ? "response null" : "response no null");
-            _logger.LogInformation (response.dataRetrieved.username == null ? "username null" : "username no null");
-            _logger.LogInformation (response.dataRetrieved.username == "" ? "username empty" : "username no empty");
-            _logger.LogInformation (response.dataRetrieved.role == null ? "role null" : "role no null");
-            _logger.LogInformation (response.dataRetrieved.role == "" ? "role empty" : "role no empty");
-            codeTwoFactorDTO.role = response.message;
-
-            return MessageResponse<CodeTwoFactorDTO>.Success ("Código doble factor correcto.", codeTwoFactorDTO);
+            return MessageResponse<jwtDTO>.Success ("Código doble factor correcto.",
+                new jwtDTO {
+                    username = response.dataRetrieved.username,
+                    role = response.dataRetrieved.role
+                });
         }
 
         public async Task<MessageResponse<bool>> DeleteTwoFactorCodeAsync (string username) {

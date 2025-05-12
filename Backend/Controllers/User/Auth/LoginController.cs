@@ -79,7 +79,7 @@ namespace Backend.Controllers.User.Auth {
             if (codeTwoFactorDTO == null || codeTwoFactorDTO.username.Length <= 0 || codeTwoFactorDTO.twoFactorCode.Length <= 0)
                 return BadRequest ("Campos vacíos.");
             else {
-                MessageResponse<CodeTwoFactorDTO> response = await _authService.GetValidateTwoFactorCode (codeTwoFactorDTO);
+                MessageResponse<jwtDTO> response = await _authService.GetValidateTwoFactorCode (codeTwoFactorDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
                 if (response.dataRetrieved == null && response.message.Equals ("Usuario no encontrado."))

@@ -82,14 +82,14 @@ namespace Backend.DAO.User {
             }
         }
 
-        public async Task<MessageResponse<CodeTwoFactorDTO>> ValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
+        public async Task<MessageResponse<jwtDTO>> ValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
             try {
                 // Validate Username
                 Entities.User? user = await _context.Users.Where (user =>
                     user.Username.Equals (codeTwoFactorDTO.username))
                     .FirstOrDefaultAsync ();
                 if (user == null)
-                    return MessageResponse<CodeTwoFactorDTO>.Success ("User not found.", null);
+                    return MessageResponse<jwtDTO>.Success ("User not found.", null);
 
                 // Validate if username has twoFactorCode
                 string? twoFactorCode = await _context.Users.Where (user =>
@@ -97,7 +97,7 @@ namespace Backend.DAO.User {
                     .Select (code => code.TwoFactorCode)
                     .FirstOrDefaultAsync ();
                 if (string.IsNullOrEmpty (twoFactorCode))
-                    return MessageResponse<CodeTwoFactorDTO>.Success ("User doesn't have twoFactorCode.", null);
+                    return MessageResponse<jwtDTO>.Success ("User doesn't have twoFactorCode.", null);
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                 Entities.User? currentUser = await _context.Users.Where (user =>
@@ -107,19 +107,15 @@ namespace Backend.DAO.User {
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 if (currentUser == null)
-                    return MessageResponse<CodeTwoFactorDTO>.Success ("TwoFactorCode incorrect.", null);
+                    return MessageResponse<jwtDTO>.Success ("TwoFactorCode incorrect.", null);
 
-                codeTwoFactorDTO.username = currentUser.Username;
-                codeTwoFactorDTO.twoFactorCode = currentUser.TwoFactorCode ?? "0";
-                codeTwoFactorDTO.role = currentUser.Role.Role;
-                return MessageResponse<CodeTwoFactorDTO>.Success ("TwoFactorCode correct.",
-                    new CodeTwoFactorDTO {
+                return MessageResponse<jwtDTO>.Success ("TwoFactorCode correct.",
+                    new jwtDTO {
                         username = currentUser.Username ?? "---",
-                        twoFactorCode = currentUser.TwoFactorCode ?? "---",
                         role = currentUser.TwoFactorCode ?? "---"
                     });
             } catch (Exception ex) {
-                return MessageResponse<CodeTwoFactorDTO>.Failure ($"Error interno del servidor: {ex.Message}");
+                return MessageResponse<jwtDTO>.Failure ($"Error interno del servidor: {ex.Message}");
             }
         }
 

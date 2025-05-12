@@ -1,12 +1,9 @@
 ﻿namespace Backend.DTO.User.Auth {
-    public class CodeTwoFactorDTO {
-        public CodeTwoFactorDTO () {
-
-        }
+    public class jwtDTO {
         public required string username {
             get; set;
         }
-        public required string twoFactorCode {
+        public required string role {
             get; set;
         }
     }
