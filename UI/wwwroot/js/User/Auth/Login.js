@@ -16,20 +16,26 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/Login`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'content-Type': 'application/json'
             },
             body: JSON.stringify({ username: username, password: password })
         });
 
         const data = await response.json();
 
-        if (response.status === 200) {
-            EnabledSecondPartLogin();
-            showToast("Credenciales correctas.", "success");
-        } else if (response.status === 400 || response.status === 401)
-            showToast(data.message, "warning");
-        else if (response.status === 500)
-            showToast("Error interno del servidor.", "danger");
+        switch (response.status) {
+            case 200:
+                EnabledSecondPartLogin();
+                showToast("Credenciales correctas.", "success");
+                break;
+            case 400:
+            case 401:
+                showToast(data.message, "warning");
+                break;
+            case 500:
+                showToast("Error interno del servidor.", "danger");
+                break;
+        }
     } catch (error) {
         showToast("Error al conectarse con el servidor.", "danger");
         console.error("Error validando usuario y contraseña: ", error);
@@ -57,7 +63,12 @@ document.getElementById('emailForm').addEventListener('submit', async function (
     if (!username || !email) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/ValidateEmailUser?username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`);
+        const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/ValidateEmailUser?username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`, {
+            method: 'GET',
+            headers: {
+                'content-Type': 'application/json'
+            }
+        });
         const contentType = response.headers.get("content-type");
 
         let data = {};
@@ -65,13 +76,20 @@ document.getElementById('emailForm').addEventListener('submit', async function (
             data = await response.json();
         }
 
-        if (response.status === 200) {
-            showToast(data.message, "success");
-            await CreateTwoFactorCode(username);
-        } else if (response.status === 400 || response.status === 401 || response.status === 404)
-            showToast(data.message, "warning");
-        else if (response.status === 500)
-            showToast("Error interno del servidor.", "danger");
+        switch (response.status) {
+            case 200:
+                showToast(data.message, "success");
+                await CreateTwoFactorCode(username, email);
+                break;
+            case 400:
+            case 401:
+            case 404:
+                showToast(data.message, "warning");
+                break;
+            case 500:
+                showToast("Error interno del servidor.", "danger");
+                break;
+        }
     } catch (error) {
         showToast("Error al conectarse con el servidor.", "danger");
         console.error("Error validando correo: ", error);
@@ -79,33 +97,41 @@ document.getElementById('emailForm').addEventListener('submit', async function (
 });
 
 // Create TwoFactorCode on server
-async function CreateTwoFactorCode(username) {
-    if (!username) return;
+async function CreateTwoFactorCode(username, email) {
+    if (!username || !email) return;
 
     try {
         const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/CreateTwoFactorCode`, {
             method: 'POST',
             headers: {
-                'Content-type': 'application/json'
+                'content-type': 'application/json'
             },
-            body: JSON.stringify(username)
+            body: JSON.stringify({ username, email })
         });
 
         const data = await response.json();
 
-        if (response.status === 200)
-            showToast(data.message, "success");
-        else if (response.status === 400 || response.status === 404)
-            showToast(data.message, "warning");
-        else if (response.status === 500)
-            showToast("Error interno del servidor.", "danger");
+
+        switch (response.status) {
+            case 200:
+                showToast("Código doble factor enviado.", "success");
+                break;
+            case 400:
+            case 401:
+            case 404:
+                showToast(data.message, "warning");
+                break;
+            case 500:
+                showToast("Error interno del servidor.", "danger");
+                break;
+        }
     } catch (error) {
         showToast("Error al conectarse con el servidor.", "danger");
-        console.error("Error al crear el código doble factor: ", error);
+        console.error("Error al crear/enviar el código doble factor: ", error);
     }
 }
 
-// Create TwoFactorCode on server
+// Delete TwoFactorCode on server
 async function DeleteTwoFactorCode(username) {
     if (!username) return;
 
@@ -113,7 +139,7 @@ async function DeleteTwoFactorCode(username) {
         await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/DeleteTwoFactorCode?username=${encodeURI(username)}`, {
             method: 'DELETE',
             headers: {
-                'Content-type': 'application/json'
+                'content-type': 'application/json'
             }
         });
     } catch (error) {
@@ -133,22 +159,31 @@ document.getElementById('twoFactorForm').addEventListener('submit', async functi
         const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/ValidateTwoFactorCode?username=${encodeURIComponent(username)}&twoFactorCode=${encodeURIComponent(twoFactorCode)}`, {
             method: 'GET',
             headers: {
-                'Content-type': 'application/json'
+                'content-type': 'application/json'
             }
         });
 
         const data = await response.json();
 
-        if (response.status === 200) {
-            showToast(data.message, "success");
-            localStorage.setItem("token", data.jwtToken); // Save JWT token
-            DeleteTwoFactorCode(username);
-        } else if (response.status === 400 || response.status === 401 || response.status === 404)
-            showToast(data.message, "warning");
-        else if (response.status === 500)
-            showToast("Error interno del servidor.", "danger");
+        switch (response.status) {
+            case 200:
+                showToast(data.message, "success");
+                localStorage.setItem("jwtToken", data.jwtToken); // Save JWT token
+                await DeleteTwoFactorCode(username)
+                window.location.replace("/User/Profile/ViewMyProfile");
+                break;
+            case 400:
+            case 401:
+            case 404:
+                showToast(data.message, "warning");
+                break;
+            case 500:
+                showToast("Error interno del servidor.", "danger");
+                break;
+        }
     } catch (error) {
         showToast("Error al conectarse con el servidor.", "danger");
         console.error("Error al validar el código doble factor: ", error);
     }
 });
+

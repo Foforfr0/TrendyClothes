@@ -12,14 +12,10 @@
             get; set;
         }
 
-        public MessageResponse () {
-            
-        }
-
         public MessageResponse (bool IsError, string Message, T? DataRetrieved) {
             this.isError = IsError;
             this.message = Message;
-            this.dataRetrieved = DataRetrieved;
+             this.dataRetrieved = DataRetrieved;
         }
 
         public static MessageResponse<T> Success (string message, T? dataRetrieved) =>

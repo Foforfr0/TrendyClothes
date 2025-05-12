@@ -9,5 +9,8 @@
         public required string twoFactorCode {
             get; set;
         }
+        public string role {
+            get; set;
+        }
     }
 }

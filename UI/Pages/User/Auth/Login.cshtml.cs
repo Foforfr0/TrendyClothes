@@ -5,11 +5,11 @@ using UI.DTO.User.Auth;
 namespace UI.Pages.User.Auth {
     public class LoginModel : PageModel {
         [BindProperty]
-        public LoginDTO _loginDTO {
+        public required LoginDTO _loginDTO {
             get; set;
         }
         [BindProperty]
-        public EmailDTO _emailDTO {
+        public required EmailDTO _emailDTO {
             get; set;
         }
         [BindProperty]

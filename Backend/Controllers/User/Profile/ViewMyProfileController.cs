@@ -3,17 +3,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.User.Profile {
+    [Authorize]
     [ApiController]
     [Route ("api/User/Profile/[controller]")]
-    public class ViewProfileController : Controller {
+    public class ViewMyProfileController : Controller {
         private readonly IProfileService _profileService;
 
-        public ViewProfileController (IProfileService profileService) {
+        public ViewMyProfileController (IProfileService profileService) {
             _profileService = profileService;
         }
 
         [Authorize]
-        [HttpGet ("ViewProfile")]
+        [HttpGet ("ViewMyProfile")]
         public async Task<IActionResult> GetViewMyProfileAsync () {
             return Ok ();
         }

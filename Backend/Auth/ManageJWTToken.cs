@@ -12,13 +12,15 @@ namespace Backend.Auth {
             _config = config;
         }
 
-        public string GenerateToken (string username) {
+        public string GenerateToken (string username, string role) {
             SymmetricSecurityKey? securityKey = new SymmetricSecurityKey (
                 Encoding.UTF8.GetBytes (_config["Jwt:Key"] ?? "bvfder5t6uio98765resdcvbnbgfde456yuiokjhgty65redfghuytrfdvfghp"));
-            SigningCredentials? credentials = new SigningCredentials (securityKey, SecurityAlgorithms.HmacSha256);
+            SigningCredentials? credentials = new SigningCredentials (
+                securityKey, SecurityAlgorithms.HmacSha256);
 
             Claim[]? claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(ClaimTypes.Role, role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

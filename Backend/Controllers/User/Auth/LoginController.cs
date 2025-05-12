@@ -8,10 +8,12 @@ namespace Backend.Controllers.User.Auth {
     [ApiController]
     [Route ("api/User/Auth/[controller]")]
     public class LoginController : ControllerBase {
+        private readonly IConfiguration _iConfig;
         private readonly IAuthService _authService;
         private readonly ManageJWTToken _manageJWTToken;
 
-        public LoginController (IAuthService authService, ManageJWTToken manageJWTToken) {
+        public LoginController (IConfiguration iConfig, IAuthService authService, ManageJWTToken manageJWTToken) {
+            _iConfig = iConfig;
             _authService = authService;
             _manageJWTToken = manageJWTToken;
         }
@@ -55,11 +57,11 @@ namespace Backend.Controllers.User.Auth {
         }
 
         [HttpPost ("CreateTwoFactorCode")] // POST
-        public async Task<IActionResult> PostTwoFactorCodeAsync ([FromBody] string username) {
-            if (string.IsNullOrEmpty (username)) {
-                return BadRequest ("Campo vacío.");
+        public async Task<IActionResult> PostTwoFactorCodeAsync ([FromBody] EmailDTO emailDTO) {
+            if (emailDTO == null || string.IsNullOrEmpty (emailDTO.username) || string.IsNullOrEmpty (emailDTO.email)) {
+                return BadRequest ("Campos vacíos.");
             } else {
-                MessageResponse<bool> response = await _authService.PostTwoFactorCodeAsync (username);
+                MessageResponse<bool> response = await _authService.PostTwoFactorCodeAsync (emailDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
                 if (response.dataRetrieved == false)
@@ -73,27 +75,40 @@ namespace Backend.Controllers.User.Auth {
         }
 
         [HttpGet ("ValidateTwoFactorCode")] // GET
-        public async Task<IActionResult> GetValidateTwoFactoeCode ([FromQuery] CodeTwoFactorDTO codeTwoFactorDTO) {
+        public async Task<IActionResult> GetValidateTwoFactorCode ([FromQuery] CodeTwoFactorDTO codeTwoFactorDTO) {
             if (codeTwoFactorDTO == null || codeTwoFactorDTO.username.Length <= 0 || codeTwoFactorDTO.twoFactorCode.Length <= 0)
                 return BadRequest ("Campos vacíos.");
             else {
-                MessageResponse<bool> response = await _authService.GetValidateTwoFactorCode (codeTwoFactorDTO);
+                MessageResponse<CodeTwoFactorDTO> response = await _authService.GetValidateTwoFactorCode (codeTwoFactorDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
-                if (response.dataRetrieved == false && response.message.Equals ("Usuario no encontrado."))
+                if (response.dataRetrieved == null && response.message.Equals ("Usuario no encontrado."))
                     return NotFound (new {
                         response.message
                     });
-                if (response.dataRetrieved == false && response.message.Equals ("Usuario no posee un código doble factor."))
+                if (response.dataRetrieved == null && response.message.Equals ("Usuario no posee un código doble factor."))
                     return NotFound (new {
                         response.message
                     });
-                if (response.dataRetrieved == false && response.message.Equals ("Código doble factor incorrecto."))
+                if (response.dataRetrieved == null && response.message.Equals ("Código doble factor incorrecto."))
                     return Unauthorized (new {
                         response.message
                     });
 
-                string jwtToken = _manageJWTToken.GenerateToken (codeTwoFactorDTO.username);
+                string jwtToken = "";
+                try {
+                    jwtToken = _manageJWTToken.GenerateToken (response.dataRetrieved.username, response.dataRetrieved.role);
+
+                    Response.Cookies.Append ("jwtToken", jwtToken, new CookieOptions {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTime.UtcNow.AddMinutes (int.Parse (_iConfig["Jwt:ExpiresInMinutes"] ?? "30"))
+                    });
+                } catch (Exception ex) {
+                    return HttpResponses.InternalServerError (ex.ToString ());
+                }
+
                 return Ok (new {
                     response.message,
                     jwtToken
@@ -117,6 +132,12 @@ namespace Backend.Controllers.User.Auth {
                     response.message,
                 });
             }
+        }
+
+        [HttpPost ("Logout")]
+        public IActionResult PostLogout () {
+            Response.Cookies.Delete ("jwtToken");
+            return Ok ();
         }
     }
 }

@@ -112,6 +112,7 @@ INSERT INTO RolesUser(Role) VALUES ('Seller/Buyer');
 -- Users
 INSERT INTO Users (FirstName, MiddleName, LastName, Username, Email, Password, RoleId) VALUES 
 ('Juan', 'Carlos', 'Hernández', 'juancho', 'juan@example.com', '123456', 1),
+('Rodolfo', 'Fernández', 'Rodríguez', 'foforfr', 'foforfr007@gmail.com', '123456', 1),
 ('Maria', 'Luisa', 'Gonzalez', 'marilu', 'maria@example.com', 'abcdef', 2),
 ('Pedro', 'José', 'Ramirez', 'pedrito', 'pedro@example.com', 'pass123', 2);
 
@@ -165,4 +166,4 @@ INSERT INTO AuctionsProduct (Number, FirstPrice, MinBid, LastPrice, ProductId, S
 (3, 300.00, 20.00, 0.00, 3, 1, NULL);
 
 
-SELECT * FROM Users;
+SELECT * FROM Users LEFT JOIN RolesUser ON RolesUser.Id = Users.RoleId;

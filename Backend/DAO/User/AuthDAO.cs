@@ -1,16 +1,19 @@
 ﻿using Backend.DTO;
 using Backend.DTO.User.Auth;
 using Backend.Entities;
+using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.DAO.User {
     public class AuthDAO {
         private readonly TrendyClothesDBContext _context;
         private readonly UserDAO _userDAO;
+        private readonly ManageEmail _manageEmail;
 
-        public AuthDAO (TrendyClothesDBContext context, UserDAO userDAO) {
+        public AuthDAO (TrendyClothesDBContext context, UserDAO userDAO, ManageEmail manageEmail) {
             _context = context;
             _userDAO = userDAO;
+            this._manageEmail = manageEmail;
         }
 
         public async Task<MessageResponse<Entities.User>> ValidateLogin (LoginDTO loginDTO) {
@@ -37,24 +40,23 @@ namespace Backend.DAO.User {
             }
         }
 
-        public async Task<MessageResponse<bool>> CreateTwoFactorCode (string username) {
+        public async Task<MessageResponse<bool>> CreateTwoFactorCode (EmailDTO emailDTO) {
             try {
                 Entities.User? currentUser = await _context.Users
-                   .Where (user => user.Username.Equals (username))
+                   .Where (user => user.Username.Equals (emailDTO.username))
                    .FirstOrDefaultAsync ();
 
                 if (currentUser == null)
                     return MessageResponse<bool>.Success ("Usuario no encontrado.", false);
 
-                // TODO Send by email twoFactorCode
-                currentUser.TwoFactorCode = new Random ().Next (100000, 999999).ToString (); // Código real
+                string twoFactorCode = new Random ().Next (100000, 999999).ToString ();
+                currentUser.TwoFactorCode = twoFactorCode;
 
                 bool saveFailed = false;
                 do {
                     try {
                         _context.Entry (currentUser).State = EntityState.Modified;
                         await _context.SaveChangesAsync ();
-                        saveFailed = false;
                     } catch (DbUpdateConcurrencyException ex) {
                         saveFailed = true;
                         foreach (var entry in ex.Entries) {
@@ -71,20 +73,23 @@ namespace Backend.DAO.User {
                     }
                 } while (saveFailed);
 
-                return MessageResponse<bool>.Success ("Código doble factor creado.", true);
+                await _manageEmail.SendAsync (emailDTO.username, emailDTO.email, twoFactorCode).ConfigureAwait (false);
+                return MessageResponse<bool>.Success ("", true);
+            } catch (InvalidOperationException ex) {
+                return MessageResponse<bool>.Failure ($"Error al enviar el código doble factor al correo: {ex.Message}");
             } catch (Exception ex) {
                 return MessageResponse<bool>.Failure ($"Error interno del servidor: {ex.Message}");
             }
         }
 
-        public async Task<MessageResponse<Entities.User>> ValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
+        public async Task<MessageResponse<CodeTwoFactorDTO>> ValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
             try {
                 // Validate Username
                 Entities.User? user = await _context.Users.Where (user =>
                     user.Username.Equals (codeTwoFactorDTO.username))
                     .FirstOrDefaultAsync ();
                 if (user == null)
-                    return MessageResponse<Entities.User>.Success ("User not found.", null);
+                    return MessageResponse<CodeTwoFactorDTO>.Success ("User not found.", null);
 
                 // Validate if username has twoFactorCode
                 string? twoFactorCode = await _context.Users.Where (user =>
@@ -92,19 +97,29 @@ namespace Backend.DAO.User {
                     .Select (code => code.TwoFactorCode)
                     .FirstOrDefaultAsync ();
                 if (string.IsNullOrEmpty (twoFactorCode))
-                    return MessageResponse<Entities.User>.Success ("User doesn't have twoFactorCode.", null);
+                    return MessageResponse<CodeTwoFactorDTO>.Success ("User doesn't have twoFactorCode.", null);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 Entities.User? currentUser = await _context.Users.Where (user =>
                     user.Username.Equals (codeTwoFactorDTO.username) &&
                     user.TwoFactorCode.Equals (codeTwoFactorDTO.twoFactorCode))
                     .FirstOrDefaultAsync ();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 if (currentUser == null)
-                    return MessageResponse<Entities.User>.Success ("TwoFactorCode incorrect.", null);
-                else
-                    return MessageResponse<Entities.User>.Success ("TwoFactorCode correct.", currentUser);
+                    return MessageResponse<CodeTwoFactorDTO>.Success ("TwoFactorCode incorrect.", null);
+
+                codeTwoFactorDTO.username = currentUser.Username;
+                codeTwoFactorDTO.twoFactorCode = currentUser.TwoFactorCode ?? "0";
+                codeTwoFactorDTO.role = currentUser.Role.Role;
+                return MessageResponse<CodeTwoFactorDTO>.Success ("TwoFactorCode correct.",
+                    new CodeTwoFactorDTO {
+                        username = currentUser.Username ?? "---",
+                        twoFactorCode = currentUser.TwoFactorCode ?? "---",
+                        role = currentUser.TwoFactorCode ?? "---"
+                    });
             } catch (Exception ex) {
-                return MessageResponse<Entities.User>.Failure ($"Error interno del servidor: {ex.Message}");
+                return MessageResponse<CodeTwoFactorDTO>.Failure ($"Error interno del servidor: {ex.Message}");
             }
         }
 
@@ -117,7 +132,6 @@ namespace Backend.DAO.User {
                 if (currentUser == null)
                     return MessageResponse<bool>.Success ("Usuario no encontrado.", false);
 
-                // TODO Send by email twoFactorCode
                 currentUser.TwoFactorCode = "";
 
                 bool saveFailed = false;

@@ -2,12 +2,10 @@
 
 namespace Backend.Controllers {
     public static class HttpResponses {
-        public static ObjectResult InternalServerError (string ex) {
-            return new ObjectResult (new {
-                error = ex
-            }) {
-                StatusCode = StatusCodes.Status500InternalServerError
-            };
+        public static IActionResult InternalServerError (string messageError) {
+            return new ObjectResult (
+                new { error = true, message = messageError }) 
+                { StatusCode = StatusCodes.Status500InternalServerError };
         }
     }
 }
