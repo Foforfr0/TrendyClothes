@@ -4,5 +4,62 @@
     ViewData["Title"] = "Perfil de usuario";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Perfil de usuario</h1>
 
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <!-- Datos personales -->
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Datos personales</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-5">Correo electrónico:</dt>
+                        <dd class="col-sm-7">@Model._currentUser.email</dd>
+
+                        <dt class="col-sm-5">Nombre de usuario:</dt>
+                        <dd class="col-sm-7">@Model._currentUser.username</dd>
+
+                        <dt class="col-sm-5">Nombre completo:</dt>
+                        <dd class="col-sm-7">@Model._currentUser.fullName</dd>
+
+                        <dt class="col-sm-5">Tipo de usuario:</dt>
+                        <dd class="col-sm-7"><span class="badge bg-info">@Model._currentUser.role</span></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dirección -->
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Dirección de entrega</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-5">Calle:</dt>
+                        <dd class="col-sm-7">@Model._addressDTO.street</dd>
+
+                        <dt class="col-sm-5">Número exterior:</dt>
+                        <dd class="col-sm-7">@Model._addressDTO.numberExterior</dd>
+
+                        <dt class="col-sm-5">Número interior:</dt>
+                        <dd class="col-sm-7">@Model._addressDTO.numberInterior</dd>
+
+                        <dt class="col-sm-5">Colonia:</dt>
+                        <dd class="col-sm-7">@Model._addressDTO.neighborhood</dd>
+
+                        <dt class="col-sm-5">Ciudad:</dt>
+                        <dd class="col-sm-7">@Model._addressDTO.city</dd>
+
+                        <dt class="col-sm-5">Código Postal:</dt>
+                        <dd class="col-sm-7">@Model._addressDTO.postalCode</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
