@@ -11,6 +11,18 @@ GO
 USE TrendyClothesDB;
 GO
 
+CREATE TABLE Addresses (
+    Id INT IDENTITY(1, 1) PRIMARY KEY,
+    Street VARCHAR(100) NOT NULL,
+    ExtNumber VARCHAR(30) NOT NULL,
+    IntNumber VARCHAR(30),
+    Neighborhood VARCHAR(50) NOT NULL,
+    City VARCHAR(50) NOT NULL,
+    PostalCode VARCHAR(8) NOT NULL,
+    "State" VARCHAR(80) NOT NULL,
+    Country VARCHAR(80) NOT NULL,
+);
+
 CREATE TABLE RolesUser ( -- Admin, Seller/Buyer
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Role VARCHAR(25) NOT NULL UNIQUE
@@ -23,11 +35,23 @@ CREATE TABLE Users (
     LastName VARCHAR(50) NOT NULL,
     Username VARCHAR(40) NOT NULL UNIQUE,
     Email VARCHAR(100) NOT NULL UNIQUE,
+    AreaCode VARCHAR(5) NOT NULL,
+    PhoneNumber VARCHAR(10) NOT NULL,
     "Password" NVARCHAR(200) NOT NULL,
     TwoFactorCode NVARCHAR(6),
     RoleId INT NOT NULL,
 
     CONSTRAINT FK_RoleUser_User FOREIGN KEY (RoleId) REFERENCES RolesUser(Id)
+);
+
+CREATE TABLE User_Address (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT,
+    AddressId INT,
+    IsActive BIT,
+
+    CONSTRAINT FK_UserAddress_User FOREIGN KEY (UserId) REFERENCES Users(Id),
+    CONSTRAINT FK_UserAddress_Address FOREIGN KEY (AddressId) REFERENCES Addresses(Id)
 );
 
 CREATE TABLE CategoriesProduct (    -- t-shirt, jeans, pants, trousers, blouse, etc.
@@ -110,11 +134,11 @@ INSERT INTO RolesUser(Role) VALUES ('Administrator');
 INSERT INTO RolesUser(Role) VALUES ('Seller/Buyer');
 
 -- Users
-INSERT INTO Users (FirstName, MiddleName, LastName, Username, Email, Password, RoleId) VALUES 
-('Juan', 'Carlos', 'Hernández', 'juancho', 'juan@example.com', '123456', 1),
-('Rodolfo', 'Fernández', 'Rodríguez', 'foforfr', 'foforfr007@gmail.com', '123456', 1),
-('Maria', 'Luisa', 'Gonzalez', 'marilu', 'maria@example.com', 'abcdef', 2),
-('Pedro', 'José', 'Ramirez', 'pedrito', 'pedro@example.com', 'pass123', 2);
+INSERT INTO Users (FirstName, MiddleName, LastName, Username, Email, AreaCode, PhoneNumber, Password, RoleId) VALUES 
+('Juan', 'Carlos', 'Hernández', 'juancho', 'juan@example.com', '+52', '1234567890', '123456', 1),
+('Rodolfo', 'Fernández', 'Rodríguez', 'foforfr', 'foforfr007@gmail.com', '+52', '2281856845', '123456', 1),
+('Maria', 'Luisa', 'Gonzalez', 'marilu', 'maria@example.com', '+52', '0987654321','abcdef', 2),
+('Pedro', 'José', 'Ramirez', 'pedrito', 'pedro@example.com', '+52', '1324354657', 'pass123', 2);
 
 
 -- CategoriesProduct

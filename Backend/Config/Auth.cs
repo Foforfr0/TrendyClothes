@@ -1,20 +1,14 @@
 ﻿using Backend.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace Backend.Config {
     public static class Auth {
         public static void ConfigureAuth (this IServiceCollection services, WebApplicationBuilder builder) {
-            services.AddAuthentication (options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+            services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer (options => {
-                    string? jwtKey = builder.Configuration["Jwt:Key"];
-                    if (string.IsNullOrWhiteSpace (jwtKey))
-                        throw new InvalidOperationException ("JWT key is missing in configuration.");
-
                     options.TokenValidationParameters = new TokenValidationParameters {
                         ValidateIssuer = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
@@ -23,32 +17,32 @@ namespace Backend.Config {
                         ValidAudience = builder.Configuration["Jwt:Audience"],
 
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (jwtKey)),
+                        IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (builder.Configuration["Jwt:Key"])),
 
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero
                     };
 
+                    // Permitir JWT desde cookies
                     options.Events = new JwtBearerEvents {
-                        OnAuthenticationFailed = context => {
-                            Console.WriteLine ("Invalida JWT token: " + context.Exception.Message);
-                            return Task.CompletedTask;
-                        },
                         OnMessageReceived = context => {
-                            string? token = context.Request.Cookies["jwt"];
+                            var token = context.Request.Cookies["jwt"];
                             if (!string.IsNullOrEmpty (token))
                                 context.Token = token;
+
+                            return Task.CompletedTask;
+                        },
+                        OnAuthenticationFailed = context => {
+                            Console.WriteLine ("Invalid JWT: " + context.Exception.Message);
                             return Task.CompletedTask;
                         }
                     };
                 });
             services.AddAuthorization (options => {
                 options.AddPolicy ("Administrator", policy =>
-                    policy.RequireClaim ("role", "admin"));
-            });
-            services.AddAuthorization (options => {
+                    policy.RequireClaim (ClaimTypes.Role, "admin"));
                 options.AddPolicy ("Seller/Buyer", policy =>
-                    policy.RequireClaim ("role", "seller/buyer"));
+                    policy.RequireClaim (ClaimTypes.Role, "seller/buyer"));
             });
             services.AddScoped<ManageJWTToken> ();
         }

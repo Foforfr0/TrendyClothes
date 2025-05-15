@@ -2,6 +2,7 @@ using Backend.Config;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
 //TODO Implement BCrypt
+//TODO Limit length about inputs fields
 
 // Add builder.Services to the container.
 builder.Services.ConfigureBuilder (builder: builder);

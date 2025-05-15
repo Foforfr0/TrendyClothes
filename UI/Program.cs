@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 
 DotNetEnv.Env.Load ();
-string backendUrl = Environment.GetEnvironmentVariable ("BACKEND_URL") ?? "https://localhost:5001";
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
+string backendUrl = builder.Configuration["BackendSettings:BackendUrl"] ?? "https://localhost:5001";
 
 CultureInfo currentCulture = new CultureInfo ("es-MX");
 CultureInfo.DefaultThreadCurrentCulture = currentCulture;
@@ -23,6 +23,7 @@ builder.Services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationS
         options.ExpireTimeSpan = TimeSpan.FromMinutes (10080);
     });
 builder.Services.AddAuthorization ();
+builder.Services.AddHttpClient ();
 builder.Services.AddRazorPages ();
 builder.Services.AddControllers (); // Para API
 
@@ -36,7 +37,7 @@ if (!app.Environment.IsDevelopment ()) {
     app.UseHsts ();
 }
 app.Use (middleware: async (HttpContext context, Func<Task> next) => {
-    context.Items["BackendUrl"] = backendUrl;
+    context.Items["BACKEND_URL"] = backendUrl;
     await next ();
 });
 

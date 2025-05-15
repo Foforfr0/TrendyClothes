@@ -1,14 +1,13 @@
 ﻿/**TODO 
  * Store username to prevent modification after disabled first fieldset
  */
-import { getValueDOMElementNullOrEmpty } from '/js/site.js';
-import { showToast } from '/js/site.js';
+import * as utils from '/js/site.js';
 
 // Validate Username and Password on server
 document.getElementById('loginForm').addEventListener('submit', async function (event) {
     event.preventDefault();
-    const username = getValueDOMElementNullOrEmpty('InputUsername');
-    const password = getValueDOMElementNullOrEmpty('InputPassword');
+    const username = utils.getValueDOMElementNullOrEmpty('InputUsername');
+    const password = utils.getValueDOMElementNullOrEmpty('InputPassword');
 
     if (!username || !password) return;
 
@@ -26,18 +25,18 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         switch (response.status) {
             case 200:
                 EnabledSecondPartLogin();
-                showToast("Credenciales correctas.", "success");
+                utils.showToast("Credenciales correctas.", "success");
                 break;
             case 400:
             case 401:
-                showToast(data.message, "warning");
+                utils.showToast(data.message, "warning");
                 break;
             case 500:
-                showToast("Error interno del servidor.", "danger");
+                utils.showToast("Error interno del servidor.", "danger");
                 break;
         }
     } catch (error) {
-        showToast("Error al conectarse con el servidor.", "danger");
+        utils.showToast("Error al conectarse con el servidor.", "danger");
         console.error("Error validando usuario y contraseña: ", error);
     }
 });
@@ -57,8 +56,8 @@ document.getElementById('secondFieldsetLogin').addEventListener('submit', async 
 // Validate Email from User on server
 document.getElementById('emailForm').addEventListener('submit', async function (event) {
     event.preventDefault();
-    const username = getValueDOMElementNullOrEmpty('InputUsername');
-    const email = getValueDOMElementNullOrEmpty('InputEmail');
+    const username = utils.getValueDOMElementNullOrEmpty('InputUsername');
+    const email = utils.getValueDOMElementNullOrEmpty('InputEmail');
 
     if (!username || !email) return;
 
@@ -78,20 +77,20 @@ document.getElementById('emailForm').addEventListener('submit', async function (
 
         switch (response.status) {
             case 200:
-                showToast(data.message, "success");
+                utils.showToast(data.message, "success");
                 await CreateTwoFactorCode(username, email);
                 break;
             case 400:
             case 401:
             case 404:
-                showToast(data.message, "warning");
+                utils.showToast(data.message, "warning");
                 break;
             case 500:
-                showToast("Error interno del servidor.", "danger");
+                utils.showToast("Error interno del servidor.", "danger");
                 break;
         }
     } catch (error) {
-        showToast("Error al conectarse con el servidor.", "danger");
+        utils.showToast("Error al conectarse con el servidor.", "danger");
         console.error("Error validando correo: ", error);
     }
 });
@@ -114,19 +113,19 @@ async function CreateTwoFactorCode(username, email) {
 
         switch (response.status) {
             case 200:
-                showToast("Código doble factor enviado.", "success");
+                utils.showToast("Código doble factor enviado.", "success");
                 break;
             case 400:
             case 401:
             case 404:
-                showToast(data.message, "warning");
+                utils.showToast(data.message, "warning");
                 break;
             case 500:
-                showToast("Error interno del servidor.", "danger");
+                utils.showToast("Error interno del servidor.", "danger");
                 break;
         }
     } catch (error) {
-        showToast("Error al conectarse con el servidor.", "danger");
+        utils.showToast("Error al conectarse con el servidor.", "danger");
         console.error("Error al crear/enviar el código doble factor: ", error);
     }
 }
@@ -150,8 +149,8 @@ async function DeleteTwoFactorCode(username) {
 // Validate TwoFactorCode on server
 document.getElementById('twoFactorForm').addEventListener('submit', async function (event) {
     event.preventDefault();
-    const username = getValueDOMElementNullOrEmpty('InputUsername');
-    const twoFactorCode = getValueDOMElementNullOrEmpty('InputTwoFactorCode');
+    const username = utils.getValueDOMElementNullOrEmpty('InputUsername');
+    const twoFactorCode = utils.getValueDOMElementNullOrEmpty('InputTwoFactorCode');
 
     if (!username || !twoFactorCode) return;
 
@@ -167,7 +166,7 @@ document.getElementById('twoFactorForm').addEventListener('submit', async functi
 
         switch (response.status) {
             case 200:
-                showToast(data.message, "success");
+                utils.showToast(data.message, "success");
                 localStorage.setItem("jwtToken", data.jwtToken); // Save JWT token
                 await DeleteTwoFactorCode(username)
                 window.location.replace("/User/Profile/ViewMyProfile");
@@ -175,14 +174,14 @@ document.getElementById('twoFactorForm').addEventListener('submit', async functi
             case 400:
             case 401:
             case 404:
-                showToast(data.message, "warning");
+                utils.showToast(data.message, "warning");
                 break;
             case 500:
-                showToast("Error interno del servidor.", "danger");
+                utils.showToast("Error interno del servidor.", "danger");
                 break;
         }
     } catch (error) {
-        showToast("Error al conectarse con el servidor.", "danger");
+        utils.showToast("Error al conectarse con el servidor.", "danger");
         console.error("Error al validar el código doble factor: ", error);
     }
 });

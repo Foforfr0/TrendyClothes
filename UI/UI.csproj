@@ -10,7 +10,10 @@
     <Folder Include="wwwroot\css\base\" />
     <Folder Include="wwwroot\css\layout\" />
     <Folder Include="wwwroot\css\themes\" />
-    <Folder Include="wwwroot\js\User\Profile\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Auction\Participant.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

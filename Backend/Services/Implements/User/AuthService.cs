@@ -5,11 +5,9 @@ using Backend.Services.Intefaces.User;
 
 namespace Backend.Services.Implements.User {
     public class AuthService : IAuthService {
-        private readonly ILogger<AuthService> _logger;
         private readonly AuthDAO _authDAO;
 
-        public AuthService (ILogger<AuthService> logger, AuthDAO authDAO) {
-            _logger = logger;
+        public AuthService (AuthDAO authDAO) {
             _authDAO = authDAO;
         }
 
@@ -18,7 +16,7 @@ namespace Backend.Services.Implements.User {
 
             if (response.isError)
                 return MessageResponse<LoginDTO>.Failure (response.message);
-            if (response.dataRetrieved == null)
+            if (response.dataRetrieved == default)
                 return MessageResponse<LoginDTO>.Success ("Credenciales incorrectas.", default);
 
             loginDTO.username = (response.dataRetrieved).Username;
@@ -31,8 +29,8 @@ namespace Backend.Services.Implements.User {
 
             if (response.isError)
                 return MessageResponse<EmailDTO>.Failure (response.message);
-            if (response.dataRetrieved == null)
-                return MessageResponse<EmailDTO>.Success ("Email no ligado al usuario.", null);
+            if (response.dataRetrieved == default)
+                return MessageResponse<EmailDTO>.Success ("Email no ligado al usuario.", default);
 
             emailDTO.username = (response.dataRetrieved).Username;
             emailDTO.email = (response.dataRetrieved).Email;
@@ -55,18 +53,20 @@ namespace Backend.Services.Implements.User {
 
             if (response.isError)
                 return MessageResponse<jwtDTO>.Failure (response.message);
-            if (response.dataRetrieved == null && response.message.Equals ("User not found"))
-                return MessageResponse<jwtDTO>.Success ("Usuario no encontrado.", null);
-            if (response.dataRetrieved == null && response.message.Equals ("User doesn't have twoFactorCode."))
-                return MessageResponse<jwtDTO>.Success ("Usuario no posee un código doble factor.", null);
-            if (response.dataRetrieved == null && response.message.Equals ("TwoFactorCode incorrect."))
-                return MessageResponse<jwtDTO>.Success ("Código doble factor incorrecto.", null);
+            if (response.dataRetrieved == default && response.message.Equals ("User not found"))
+                return MessageResponse<jwtDTO>.Success ("Usuario no encontrado.", default);
+            if (response.dataRetrieved == default && response.message.Equals ("User doesn't have twoFactorCode."))
+                return MessageResponse<jwtDTO>.Success ("Usuario no posee un código doble factor.", default);
+            if (response.dataRetrieved == default && response.message.Equals ("TwoFactorCode incorrect."))
+                return MessageResponse<jwtDTO>.Success ("Código doble factor incorrecto.", default);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return MessageResponse<jwtDTO>.Success ("Código doble factor correcto.",
                 new jwtDTO {
                     username = response.dataRetrieved.username,
                     role = response.dataRetrieved.role
                 });
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         public async Task<MessageResponse<bool>> DeleteTwoFactorCodeAsync (string username) {

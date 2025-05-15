@@ -11,14 +11,14 @@
         <fieldset id="firstFieldsetLogin" enabled>
             <form method="post" id="loginForm" novalidate>
                 <div class="mb-3 col-9 mx-auto">
-                    <label asp-for="_loginDTO.username" class="form-label">Nombre de usuario:</label>
-                    <input asp-for="_loginDTO.username" id="InputUsername" class="form-control" autocomplete="off" />
-                    <span class="text-danger" asp-validation-for="_loginDTO.username"></span>
+                    <label asp-for="loginDTO.username" class="form-label">Nombre de usuario:</label>
+                    <input asp-for="loginDTO.username" id="InputUsername" class="form-control" autocomplete="off" />
+                    <span class="text-danger" asp-validation-for="loginDTO.username"></span>
                 </div>
                 <div class="mb-3 col-9 mx-auto">
-                    <label asp-for="_loginDTO.password" class="form-label">Contraseña:</label>
-                    <input asp-for="_loginDTO.password" id="InputPassword" class="form-control" type="password" autocomplete="off" />
-                    <span class="text-danger" asp-validation-for="_loginDTO.password"></span>
+                    <label asp-for="loginDTO.password" class="form-label">Contraseña:</label>
+                    <input asp-for="loginDTO.password" id="InputPassword" class="form-control" type="password" autocomplete="off" />
+                    <span class="text-danger" asp-validation-for="loginDTO.password"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Ingresar</button>
             </form>
@@ -34,9 +34,9 @@
         <fieldset id="secondFieldsetLogin" disabled>
             <form method="get" id="emailForm" novalidate>
                 <div class="mb-3 col-9 mx-auto">
-                    <label asp-for="_emailDTO.email" class="form-label">Correo electrónico:</label>
-                    <input asp-for="_emailDTO.email" id="InputEmail" class="form-control" type="email" autocomplete="off" />
-                    <span class="text-danger" asp-validation-for="_emailDTO.email"></span>
+                    <label asp-for="emailDTO.email" class="form-label">Correo electrónico:</label>
+                    <input asp-for="emailDTO.email" id="InputEmail" class="form-control" type="email" autocomplete="off" />
+                    <span class="text-danger" asp-validation-for="emailDTO.email"></span>
                 </div>
                 <button type="submit" class="btn btn-primary mb-3">Enviar código</button>
             </form>
@@ -44,10 +44,10 @@
 
             <form method="post" id="twoFactorForm" novalidate>
                 <div class="mb-3 col-9 mx-auto">
-                    <label asp-for="_CodeTwoFactorDTO.twoFactorCode" class="form-label">Código enviado:</label>
-                    <input asp-for="_CodeTwoFactorDTO.twoFactorCode" id="InputTwoFactorCode" class="form-control"
+                    <label asp-for="codeTwoFactorDTO.twoFactorCode" class="form-label">Código enviado:</label>
+                    <input asp-for="codeTwoFactorDTO.twoFactorCode" id="InputTwoFactorCode" class="form-control"
                            inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-                    <span class="text-danger" asp-validation-for="_CodeTwoFactorDTO.twoFactorCode"></span>
+                    <span class="text-danger" asp-validation-for="codeTwoFactorDTO.twoFactorCode"></span>
                 </div>
                 <button type="submit" class="btn btn-primary mb-3">Validar código</button>
             </form>

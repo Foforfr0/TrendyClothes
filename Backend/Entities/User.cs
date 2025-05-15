@@ -17,6 +17,10 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
+    public string AreaCode { get; set; } = null!;
+
+    public string PhoneNumber { get; set; } = null!;
+
     public string Password { get; set; } = null!;
 
     public string? TwoFactorCode { get; set; }
@@ -30,4 +34,6 @@ public partial class User
     public virtual ICollection<QAProduct> QAProducts { get; set; } = new List<QAProduct>();
 
     public virtual RolesUser Role { get; set; } = null!;
+
+    public virtual ICollection<User_Address> User_Addresses { get; set; } = new List<User_Address>();
 }

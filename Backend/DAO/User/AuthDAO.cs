@@ -40,6 +40,36 @@ namespace Backend.DAO.User {
             }
         }
 
+        public async Task<MessageResponse<jwtDTO>> ValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
+            try {
+                // Validate Username
+                if (await _userDAO.GetUserAsync (codeTwoFactorDTO.username) == null)
+                    return MessageResponse<jwtDTO>.Success ("User not found.", null);
+
+                // Validate if username has twoFactorCode
+                if (string.IsNullOrEmpty (await _userDAO.GetTwoFactorCodeAsync (codeTwoFactorDTO.username)))
+                    return MessageResponse<jwtDTO>.Success ("User doesn't have twoFactorCode.", null);
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                Entities.User? currentUser = await _context.Users.Where (user =>
+                    user.Username.Equals (codeTwoFactorDTO.username) &&
+                    user.TwoFactorCode.Equals (codeTwoFactorDTO.twoFactorCode))
+                    .FirstOrDefaultAsync ();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+                if (currentUser == null)
+                    return MessageResponse<jwtDTO>.Success ("TwoFactorCode incorrect.", null);
+
+                return MessageResponse<jwtDTO>.Success ("TwoFactorCode correct.",
+                    new jwtDTO {
+                        username = currentUser.Username ?? "---",
+                        role = currentUser.TwoFactorCode ?? "---"
+                    });
+            } catch (Exception ex) {
+                return MessageResponse<jwtDTO>.Failure ($"Error interno del servidor: {ex.Message}");
+            }
+        }
+
         public async Task<MessageResponse<bool>> CreateTwoFactorCode (EmailDTO emailDTO) {
             try {
                 Entities.User? currentUser = await _context.Users
@@ -79,43 +109,6 @@ namespace Backend.DAO.User {
                 return MessageResponse<bool>.Failure ($"Error al enviar el código doble factor al correo: {ex.Message}");
             } catch (Exception ex) {
                 return MessageResponse<bool>.Failure ($"Error interno del servidor: {ex.Message}");
-            }
-        }
-
-        public async Task<MessageResponse<jwtDTO>> ValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
-            try {
-                // Validate Username
-                Entities.User? user = await _context.Users.Where (user =>
-                    user.Username.Equals (codeTwoFactorDTO.username))
-                    .FirstOrDefaultAsync ();
-                if (user == null)
-                    return MessageResponse<jwtDTO>.Success ("User not found.", null);
-
-                // Validate if username has twoFactorCode
-                string? twoFactorCode = await _context.Users.Where (user =>
-                    user.Username.Equals (codeTwoFactorDTO.username))
-                    .Select (code => code.TwoFactorCode)
-                    .FirstOrDefaultAsync ();
-                if (string.IsNullOrEmpty (twoFactorCode))
-                    return MessageResponse<jwtDTO>.Success ("User doesn't have twoFactorCode.", null);
-
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                Entities.User? currentUser = await _context.Users.Where (user =>
-                    user.Username.Equals (codeTwoFactorDTO.username) &&
-                    user.TwoFactorCode.Equals (codeTwoFactorDTO.twoFactorCode))
-                    .FirstOrDefaultAsync ();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                if (currentUser == null)
-                    return MessageResponse<jwtDTO>.Success ("TwoFactorCode incorrect.", null);
-
-                return MessageResponse<jwtDTO>.Success ("TwoFactorCode correct.",
-                    new jwtDTO {
-                        username = currentUser.Username ?? "---",
-                        role = currentUser.TwoFactorCode ?? "---"
-                    });
-            } catch (Exception ex) {
-                return MessageResponse<jwtDTO>.Failure ($"Error interno del servidor: {ex.Message}");
             }
         }
 

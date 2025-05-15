@@ -5,15 +5,15 @@ using UI.DTO.User.Auth;
 namespace UI.Pages.User.Auth {
     public class LoginModel : PageModel {
         [BindProperty]
-        public required LoginDTO _loginDTO {
+        public required LoginDTO loginDTO {
             get; set;
         }
         [BindProperty]
-        public required EmailDTO _emailDTO {
+        public required EmailDTO emailDTO {
             get; set;
         }
         [BindProperty]
-        public CodeTwoFactorDTO _CodeTwoFactorDTO {
+        public CodeTwoFactorDTO? codeTwoFactorDTO {
             get; set;
         }
 
