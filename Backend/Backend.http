@@ -10,8 +10,8 @@ POST {{backend_host}}/api/User/Auth/Login/Login
 Content-Type: application/json
 Accept: application/json
 {
-  username: "Username",
-  password: "Password"
+  username: "foforfr",
+  password: "123456"
 }
 
 ### ValidateEmailUser

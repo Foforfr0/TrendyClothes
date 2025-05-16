@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using UI.DTO;
 using UI.DTO.User.Profile;
 
 namespace UI.Pages.User.Profile {
     public class ViewMyProfileModel : PageModel {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
 
         public ViewMyProfileModel (IHttpClientFactory httpClientFactory, IConfiguration config) {
-            _httpClientFactory = httpClientFactory;
+            _httpClient = httpClientFactory.CreateClient ();
             _config = config;
 
         }
@@ -20,24 +21,19 @@ namespace UI.Pages.User.Profile {
 
         public async Task OnGetAsync () {
             try {
-                HttpClient? client = _httpClientFactory.CreateClient ();
-                if (Request.Cookies.TryGetValue ("jwt", out string jwt))
-                    client.DefaultRequestHeaders.Add ("Cookie", $"jwt={jwt}");
-                string? baseUrl = _config["BackendSettings:BACKEND_URL"] ?? "https://localhost:5001";
+                ApiResponse<MyPersonalInformationDTO>? userResult = 
+                    await _httpClient.GetFromJsonAsync<ApiResponse<MyPersonalInformationDTO>> (
+                    "https://localhost:5001/api/User/Profile/ViewProfile/GetPersonalData");
+                if (userResult != null && userResult.body != null)
+                    currentUser = userResult.body.value;
 
-                MyPersonalInformationDTO? userResult = await client.GetFromJsonAsync<MyPersonalInformationDTO> (
-                    $"{baseUrl}/api/User/Profile/GetMyData");
-
-                if (userResult != null)
-                    currentUser = userResult;
-
-                List<AddressDTO>? addressResult = await client.GetFromJsonAsync<List<AddressDTO>> (
-                    $"{baseUrl}/api/User/Profile/GetAddresses");
-
-                if (addressResult != null)
-                    addresses = addressResult;
+                ApiResponse<List<AddressDTO>>? addressResult = 
+                    await _httpClient.GetFromJsonAsync<ApiResponse<List<AddressDTO>>> (
+                    "https://localhost:5001/api/User/Profile/ViewProfile/GetAddresses");
+                if (addressResult != null && addressResult.body != null)
+                    addresses = addressResult.body.value;
             } catch (Exception ex) {
-                Console.WriteLine ("Error al obtener perfil: " + ex.ToString());
+                Console.WriteLine ("Error al obtener perfil: " + ex.ToString ());
             }
         }
     }

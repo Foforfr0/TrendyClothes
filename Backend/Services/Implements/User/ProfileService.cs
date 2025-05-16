@@ -6,9 +6,11 @@ using Backend.Services.Intefaces.User;
 namespace Backend.Services.Implements.User {
     public class ProfileService : IProfileService {
         private readonly ProfileDAO _profileDAO;
+        private readonly UserDAO _userDAO;
 
-        public ProfileService (ProfileDAO profileDAO) {
+        public ProfileService (ProfileDAO profileDAO, UserDAO userDAO) {
             _profileDAO = profileDAO;
+            _userDAO = userDAO;
         }
 
         public async Task<MessageResponse<MyPersonalInformationDTO>> GetMyPersonalInformation (string username) {
@@ -19,15 +21,16 @@ namespace Backend.Services.Implements.User {
             if (response.dataRetrieved == null)
                 return MessageResponse<MyPersonalInformationDTO>.Success (response.message, default);
 
-            return MessageResponse<MyPersonalInformationDTO>.Success ("Información obtenida.",
-                new MyPersonalInformationDTO {
-                    username = username,
-                    fullName = $"{response.dataRetrieved.FirstName} {response.dataRetrieved.MiddleName} {response.dataRetrieved.LastName}",
-                    email = response.dataRetrieved.Email,
-                    areaCode = response.dataRetrieved.AreaCode,
-                    phoneNumber = response.dataRetrieved.PhoneNumber,
-                    role = response.dataRetrieved.Role.Role
-                });
+            string role = await _userDAO.GetRoleUserAsync (username);
+            MyPersonalInformationDTO personalInformation = new MyPersonalInformationDTO {
+                username = username,
+                fullName = $"{response.dataRetrieved.FirstName} {response.dataRetrieved.MiddleName} {response.dataRetrieved.LastName}",
+                email = response.dataRetrieved.Email,
+                areaCode = response.dataRetrieved.AreaCode,
+                phoneNumber = response.dataRetrieved.PhoneNumber,
+                role = role
+            };
+            return MessageResponse<MyPersonalInformationDTO>.Success ("Información obtenida.", personalInformation);
         }
 
         public async Task<MessageResponse<List<AddressDTO>>> GetAddressAsync (string username) {
@@ -42,14 +45,6 @@ namespace Backend.Services.Implements.User {
 
             List<AddressDTO> addresses = response.dataRetrieved
                 .Select (addr => new AddressDTO {
-                    /*
-                    numberInterior = string.IsNullOrEmpty (addr.IntNumber) ? "Sin número interior." : addr.IntNumber,
-                    numberExterior = string.IsNullOrEmpty (addr.ExtNumber) ? "Sin número exterior." : addr.ExtNumber,
-                    street = string.IsNullOrEmpty (addr.Street) ? "Sin calle." : addr.Street,
-                    postalCode = string.IsNullOrEmpty (addr.PostalCode) ? "Sin código postal." : addr.PostalCode,
-                    neighborhood = string.IsNullOrEmpty (addr.Neighborhood) ? "Sin colonia." : addr.Neighborhood,
-                    city = string.IsNullOrEmpty (addr.City) ? "Sin ciudad." : addr.City
-                    */
                     street = addr.Street,
                     numberExterior = addr.ExtNumber,
                     numberInterior = addr.IntNumber,
@@ -58,7 +53,7 @@ namespace Backend.Services.Implements.User {
                     postalCode = addr.PostalCode,
                     state = addr.State,
                     country = addr.Country,
-                    isActive = false // TODO
+                    isActive = addr.User_Addresses.FirstOrDefault ()?.IsActive ?? false // TODO
                 }).ToList ();
             return MessageResponse<List<AddressDTO>>.Success ("Información obtenida.", addresses);
         }

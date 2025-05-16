@@ -79,8 +79,8 @@ namespace Backend.DAO.User {
                 if (currentUser == null)
                     return MessageResponse<bool>.Success ("Usuario no encontrado.", false);
 
-                string twoFactorCode = new Random ().Next (100000, 999999).ToString ();
-                currentUser.TwoFactorCode = twoFactorCode;
+                // TODO Just to try faster string twoFactorCode = new Random ().Next (100000, 999999).ToString ();
+                currentUser.TwoFactorCode = "123456";
 
                 bool saveFailed = false;
                 do {
@@ -103,7 +103,7 @@ namespace Backend.DAO.User {
                     }
                 } while (saveFailed);
 
-                await _manageEmail.SendAsync (emailDTO.username, emailDTO.email, twoFactorCode).ConfigureAwait (false);
+                // TODO Just to try faster await _manageEmail.SendAsync (emailDTO.username, emailDTO.email, twoFactorCode).ConfigureAwait (false);
                 return MessageResponse<bool>.Success ("", true);
             } catch (InvalidOperationException ex) {
                 return MessageResponse<bool>.Failure ($"Error al enviar el código doble factor al correo: {ex.Message}");

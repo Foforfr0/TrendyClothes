@@ -1,15 +1,19 @@
 using Backend.Config;
+using Backend.Utils;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
 //TODO Implement BCrypt
 //TODO Limit length about inputs fields
 
 // Add builder.Services to the container.
+builder.Services.AddHttpContextAccessor ();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor> ();
 builder.Services.ConfigureBuilder (builder: builder);
 builder.Services.ConfigureAuth (builder: builder);
 builder.Services.AddAplicationDAOs ();
 builder.Services.AddAplicationServices ();
-builder.Services.AddUtils ();
+builder.Services.AddScoped<ManageEmail> ();
+builder.Services.AddSwaggerGen ();
 
 
 
@@ -18,6 +22,8 @@ WebApplication? app = builder.Build ();
 if (app.Environment.IsDevelopment ()) {
     app.MapOpenApi ();
     app.UseDeveloperExceptionPage ();
+    app.UseSwagger ();
+    app.UseSwaggerUI();
 } else {
     app.UseExceptionHandler ("/Home/Error");
     app.UseHsts ();

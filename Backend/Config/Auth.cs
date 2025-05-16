@@ -7,9 +7,13 @@ using System.Text;
 namespace Backend.Config {
     public static class Auth {
         public static void ConfigureAuth (this IServiceCollection services, WebApplicationBuilder builder) {
-            services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer (options => {
-                    options.TokenValidationParameters = new TokenValidationParameters {
+
+            services.AddAuthentication (opt => {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer (opt => {
+                    opt.TokenValidationParameters = new TokenValidationParameters {
                         ValidateIssuer = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
 
@@ -23,17 +27,15 @@ namespace Backend.Config {
                         ClockSkew = TimeSpan.Zero
                     };
 
-                    // Permitir JWT desde cookies
-                    options.Events = new JwtBearerEvents {
+                    opt.Events = new JwtBearerEvents {
                         OnMessageReceived = context => {
-                            var token = context.Request.Cookies["jwt"];
-                            if (!string.IsNullOrEmpty (token))
-                                context.Token = token;
-
+                            context.Request.Cookies.TryGetValue ("jwtToken", out string? jwtToken);
+                            if (!string.IsNullOrEmpty (jwtToken))
+                                context.Token = jwtToken;
                             return Task.CompletedTask;
                         },
                         OnAuthenticationFailed = context => {
-                            Console.WriteLine ("Invalid JWT: " + context.Exception.Message);
+                            Console.WriteLine ("Invalid jwtToken: " + context.Exception.Message);
                             return Task.CompletedTask;
                         }
                     };

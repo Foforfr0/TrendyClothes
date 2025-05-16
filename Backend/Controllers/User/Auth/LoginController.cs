@@ -8,12 +8,12 @@ namespace Backend.Controllers.User.Auth {
     [ApiController]
     [Route ("api/User/Auth/[controller]")]
     public class LoginController : ControllerBase {
-        private readonly IConfiguration _config;
+        private readonly IHttpContextAccessor _contextAccesor;
         private readonly IAuthService _authService;
         private readonly ManageJWTToken _manageJWTToken;
 
-        public LoginController (IConfiguration iConfig, IAuthService authService, ManageJWTToken manageJWTToken) {
-            _config = iConfig;
+        public LoginController (IHttpContextAccessor contextAccesor, IAuthService authService, ManageJWTToken manageJWTToken) {
+            _contextAccesor = contextAccesor;
             _authService = authService;
             _manageJWTToken = manageJWTToken;
         }
@@ -106,13 +106,6 @@ namespace Backend.Controllers.User.Auth {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                     jwtToken = _manageJWTToken.GenerateToken (response.dataRetrieved.username, response.dataRetrieved.role);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                    Response.Cookies.Append ("jwtToken", jwtToken, new CookieOptions {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddMinutes (int.Parse (_config["Jwt:ExpiresInMinutes"] ?? "30"))
-                    });
                 } catch (Exception ex) {
                     return HttpResponses.InternalServerError (ex.ToString ());
                 }
@@ -149,7 +142,7 @@ namespace Backend.Controllers.User.Auth {
         [HttpPost ("Logout")]
         public IActionResult PostLogout () {
             try {
-                Response.Cookies.Delete ("jwtToken");
+                _contextAccesor.HttpContext.Response.Cookies.Delete ("jwtToken");
                 return Ok ();
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);

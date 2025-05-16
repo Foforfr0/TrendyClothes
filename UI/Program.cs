@@ -11,19 +11,20 @@ CultureInfo.DefaultThreadCurrentCulture = currentCulture;
 CultureInfo.DefaultThreadCurrentUICulture = currentCulture;
 
 // Add services to the container.
+builder.Services.AddHttpClient ();
+builder.Services.AddSingleton (new HttpClient());
 builder.Services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie (options => {
         options.LoginPath = "/User/Auth/Login";
         options.LogoutPath = "/User/Auth/Logout";
         options.AccessDeniedPath = "/User/Auth/AccessDenied";
-        options.Cookie.Name = "jwt"; // Same name according with de backend cookie
+        options.Cookie.Name = "jwtToken"; // Same name according with de backend cookie
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.SlidingExpiration = true;
         options.ExpireTimeSpan = TimeSpan.FromMinutes (10080);
     });
 builder.Services.AddAuthorization ();
-builder.Services.AddHttpClient ();
 builder.Services.AddRazorPages ();
 builder.Services.AddControllers (); // Para API
 

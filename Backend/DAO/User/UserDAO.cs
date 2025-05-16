@@ -23,14 +23,29 @@ namespace Backend.DAO.User {
 
         public async Task<string> GetTwoFactorCodeAsync (string username) {
             try {
-                string? twoFactorCode = await _context.Users.Where (user =>
-                    user.Username.Equals (username))
+                string? twoFactorCode = await _context.Users
+                    .Where (user =>
+                        user.Username.Equals (username))
                     .Select (code => code.TwoFactorCode)
                     .FirstOrDefaultAsync ();
 
                 return string.IsNullOrEmpty (twoFactorCode) ? "" : twoFactorCode;
             } catch (Exception ex) {
                 throw new Exception ("Error al recuperar el código doble factor del usuario.", ex);
+            }
+        }
+
+        public async Task<string> GetRoleUserAsync (string username) {
+            try {
+                string? role = await _context.Users
+                    .Where (user =>
+                        user.Username.Equals (username))
+                    .Select (user => user.Role.Role)
+                    .FirstOrDefaultAsync ();
+
+                return string.IsNullOrEmpty (role) ? "" : role;
+            } catch (Exception ex) {
+                throw new Exception ("Error al recuperar el rol del usuario.", ex);
             }
         }
     }

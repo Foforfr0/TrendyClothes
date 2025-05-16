@@ -29,12 +29,12 @@ namespace Backend.DAO.User {
                 if (currentUser == null)
                     return MessageResponse<List<Entities.Address>>.Success ("Usuario no encontrado.", default);
 
-                List<Entities.Address> addresses = await _context.Users
+                List<Entities.Address?> addresses = await _context.Users
                     .Where (u => u.Username == username)
-                    .SelectMany (u => u.User_Addresses!) // accede a la colección intermedia
-                    .Select (ua => ua.Address!)
+                    .SelectMany (u => u.User_Addresses) // accede a la colección intermedia
+                    .Select (ua => ua.Address)
                     .ToListAsync ();
-                return MessageResponse<List<Entities.Address>>.Success ("Direcciones recuperadas.", null);
+                return MessageResponse<List<Entities.Address>>.Success ("Direcciones recuperadas.", addresses);
             } catch (Exception ex) {
                 return MessageResponse<List<Entities.Address>>.Failure ($"Error interno del servidor: {ex.Message}");
             }

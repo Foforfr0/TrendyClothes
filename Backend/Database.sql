@@ -141,6 +141,14 @@ INSERT INTO Users (FirstName, MiddleName, LastName, Username, Email, AreaCode, P
 ('Pedro', 'José', 'Ramirez', 'pedrito', 'pedro@example.com', '+52', '1324354657', 'pass123', 2);
 
 
+-- Addresses
+INSERT INTO Addresses (Street, ExtNumber, IntNumber, Neighborhood, City, PostalCode, "State", Country) VALUES 
+('Enriquez', '232', '2', 'Centro', 'Xalapa', '91097', 'Veracruz', 'México');
+
+-- User_Address
+INSERT INTO User_Address (UserId, AddressId, IsActive) VALUES 
+(2, 1, 1);
+
 -- CategoriesProduct
 INSERT INTO CategoriesProduct (Category) VALUES 
 ('Playeras'),
@@ -190,4 +198,7 @@ INSERT INTO AuctionsProduct (Number, FirstPrice, MinBid, LastPrice, ProductId, S
 (3, 300.00, 20.00, 0.00, 3, 1, NULL);
 
 
-SELECT * FROM Users LEFT JOIN RolesUser ON RolesUser.Id = Users.RoleId;
+SELECT * FROM Users 
+LEFT JOIN RolesUser ON RolesUser.Id = Users.RoleId
+LEFT JOIN User_Address ON User_Address.UserId = Users.Id
+LEFT JOIN Addresses ON User_Address.AddressId = Addresses.Id;
