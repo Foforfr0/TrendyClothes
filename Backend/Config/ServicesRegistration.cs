@@ -6,6 +6,8 @@ namespace Backend.Config {
         public static void AddAplicationServices (this IServiceCollection services) {
             services.AddScoped<IAuthService, AuthService> ();
             services.AddScoped<IProfileService, ProfileService> ();
+            services.AddScoped<IRegistrationService, RegistrationService> ();
+            services.AddScoped<IValidateDataService, ValidateDataService> ();
         }
     }
 }

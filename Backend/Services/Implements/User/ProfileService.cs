@@ -13,15 +13,16 @@ namespace Backend.Services.Implements.User {
             _userDAO = userDAO;
         }
 
-        public async Task<MessageResponse<MyPersonalInformationDTO>> GetMyPersonalInformation (string username) {
-            MessageResponse<Entities.User> response = await _profileDAO.GetMyPersonalInformationUser (username);
+        public async Task<MessageResponse<MyPersonalInformationDTO>> GetMyDataInformation (string username) {
+            MessageResponse<Entities.User> response = await _profileDAO.GetMyPersonalInformationUserAsync (username);
 
             if (response.isError)
                 return MessageResponse<MyPersonalInformationDTO>.Failure (response.message);
             if (response.dataRetrieved == null)
                 return MessageResponse<MyPersonalInformationDTO>.Success (response.message, default);
 
-            string role = await _userDAO.GetRoleUserAsync (username);
+            string? role = await _userDAO.GetRoleUserAsync (username);
+            role = string.IsNullOrEmpty (role) ? "Sin role asignado." : role;
             MyPersonalInformationDTO personalInformation = new MyPersonalInformationDTO {
                 username = username,
                 fullName = $"{response.dataRetrieved.FirstName} {response.dataRetrieved.MiddleName} {response.dataRetrieved.LastName}",
@@ -30,17 +31,17 @@ namespace Backend.Services.Implements.User {
                 phoneNumber = response.dataRetrieved.PhoneNumber,
                 role = role
             };
-            return MessageResponse<MyPersonalInformationDTO>.Success ("Información obtenida.", personalInformation);
+            return MessageResponse<MyPersonalInformationDTO>.Success (response.message, personalInformation);
         }
 
-        public async Task<MessageResponse<List<AddressDTO>>> GetAddressAsync (string username) {
-            MessageResponse<List<Entities.Address>> response = await _profileDAO.GetAddressesUser (username);
+        public async Task<MessageResponse<List<AddressDTO>>> GetAddressesAsync (string username) {
+            MessageResponse<List<Entities.Address>> response = await _profileDAO.GetAddressesUserAsync (username);
 
             if (response.isError)
                 return MessageResponse<List<AddressDTO>>.Failure (response.message);
-            if (response.dataRetrieved == null && response.message.Equals ("Usuario no encontrado."))
+            if (response.dataRetrieved == null)
                 return MessageResponse<List<AddressDTO>>.Success (response.message, default);
-            if (response.dataRetrieved == null || response.dataRetrieved.Count <= 0)
+            if (response.dataRetrieved.Count <= 0)
                 return MessageResponse<List<AddressDTO>>.Success ("Usuario sin direcciones registradas.", null);
 
             List<AddressDTO> addresses = response.dataRetrieved
@@ -55,7 +56,7 @@ namespace Backend.Services.Implements.User {
                     country = addr.Country,
                     isActive = addr.User_Addresses.FirstOrDefault ()?.IsActive ?? false // TODO
                 }).ToList ();
-            return MessageResponse<List<AddressDTO>>.Success ("Información obtenida.", addresses);
+            return MessageResponse<List<AddressDTO>>.Success (response.message, addresses);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Backend.DAO.User {
             this._manageEmail = manageEmail;
         }
 
-        public async Task<MessageResponse<Entities.User>> ValidateLogin (LoginDTO loginDTO) {
+        public async Task<MessageResponse<Entities.User>> ValidateLoginAsync (LoginDTO loginDTO) {
             try {
                 return MessageResponse<Entities.User>.Success ("",
                     await _context.Users.Where (user =>
@@ -28,7 +28,7 @@ namespace Backend.DAO.User {
             }
         }
 
-        public async Task<MessageResponse<Entities.User>> ValidateEmailUser (EmailDTO emailDTO) {
+        public async Task<MessageResponse<Entities.User>> ValidateEmailUserAsync (EmailDTO emailDTO) {
             try {
                 return MessageResponse<Entities.User>.Success ("",
                     await _context.Users.Where (user =>
@@ -40,15 +40,15 @@ namespace Backend.DAO.User {
             }
         }
 
-        public async Task<MessageResponse<jwtDTO>> ValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
+        public async Task<MessageResponse<jwtDTO>> ValidateTwoFactorCodeAsync (CodeTwoFactorDTO codeTwoFactorDTO) {
             try {
                 // Validate Username
                 if (await _userDAO.GetUserAsync (codeTwoFactorDTO.username) == null)
-                    return MessageResponse<jwtDTO>.Success ("User not found.", null);
+                    return MessageResponse<jwtDTO>.Success ("Usuario no encontrado.", null);
 
                 // Validate if username has twoFactorCode
                 if (string.IsNullOrEmpty (await _userDAO.GetTwoFactorCodeAsync (codeTwoFactorDTO.username)))
-                    return MessageResponse<jwtDTO>.Success ("User doesn't have twoFactorCode.", null);
+                    return MessageResponse<jwtDTO>.Success ("Usuario no posee un código doble factor.", null);
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                 Entities.User? currentUser = await _context.Users.Where (user =>
@@ -58,9 +58,9 @@ namespace Backend.DAO.User {
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 if (currentUser == null)
-                    return MessageResponse<jwtDTO>.Success ("TwoFactorCode incorrect.", null);
+                    return MessageResponse<jwtDTO>.Success ("Código doble factor incorrecto.", null);
 
-                return MessageResponse<jwtDTO>.Success ("TwoFactorCode correct.",
+                return MessageResponse<jwtDTO>.Success ("Código doble factor correcto.",
                     new jwtDTO {
                         username = currentUser.Username ?? "---",
                         role = currentUser.TwoFactorCode ?? "---"
@@ -70,7 +70,7 @@ namespace Backend.DAO.User {
             }
         }
 
-        public async Task<MessageResponse<bool>> CreateTwoFactorCode (EmailDTO emailDTO) {
+        public async Task<MessageResponse<bool>> PostTwoFactorCodeAsync (EmailDTO emailDTO) {
             try {
                 Entities.User? currentUser = await _context.Users
                    .Where (user => user.Username.Equals (emailDTO.username))
@@ -104,7 +104,7 @@ namespace Backend.DAO.User {
                 } while (saveFailed);
 
                 // TODO Just to try faster await _manageEmail.SendAsync (emailDTO.username, emailDTO.email, twoFactorCode).ConfigureAwait (false);
-                return MessageResponse<bool>.Success ("", true);
+                return MessageResponse<bool>.Success ("Código doble factor enviado.", true);
             } catch (InvalidOperationException ex) {
                 return MessageResponse<bool>.Failure ($"Error al enviar el código doble factor al correo: {ex.Message}");
             } catch (Exception ex) {
@@ -112,7 +112,7 @@ namespace Backend.DAO.User {
             }
         }
 
-        public async Task<MessageResponse<bool>> DeleteTwoFactorCode (string username) {
+        public async Task<MessageResponse<bool>> DeleteTwoFactorCodeAsync (string username) {
             try {
                 Entities.User? currentUser = await _context.Users
                    .Where (user => user.Username.Equals (username))

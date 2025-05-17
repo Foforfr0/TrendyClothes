@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using UI.DTO;
 using UI.DTO.User.Profile;
 
 namespace UI.Pages.User.Profile {
+    [Authorize]
     public class ViewMyProfileModel : PageModel {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
@@ -14,13 +16,14 @@ namespace UI.Pages.User.Profile {
 
         }
         [BindProperty]
-        public MyPersonalInformationDTO currentUser { get; set; } = new MyPersonalInformationDTO ();
+        public MyPersonalInformationDTO? currentUser { get; set; } = new MyPersonalInformationDTO ();
 
         [BindProperty]
-        public List<AddressDTO> addresses { get; set; } = new List<AddressDTO> ();
+        public List<AddressDTO>? addresses { get; set; } = new List<AddressDTO> ();
 
         public async Task OnGetAsync () {
             try {
+                _httpClient.DefaultRequestHeaders.Add ("jwtToken", Request.Headers["jwtToken"].ToString ());
                 ApiResponse<MyPersonalInformationDTO>? userResult = 
                     await _httpClient.GetFromJsonAsync<ApiResponse<MyPersonalInformationDTO>> (
                     "https://localhost:5001/api/User/Profile/ViewProfile/GetPersonalData");

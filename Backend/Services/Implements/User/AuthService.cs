@@ -12,7 +12,7 @@ namespace Backend.Services.Implements.User {
         }
 
         public async Task<MessageResponse<LoginDTO>> PostLoginAsync (LoginDTO loginDTO) {
-            MessageResponse<Entities.User> response = await _authDAO.ValidateLogin (loginDTO);
+            MessageResponse<Entities.User> response = await _authDAO.ValidateLoginAsync (loginDTO);
 
             if (response.isError)
                 return MessageResponse<LoginDTO>.Failure (response.message);
@@ -21,11 +21,11 @@ namespace Backend.Services.Implements.User {
 
             loginDTO.username = (response.dataRetrieved).Username;
             loginDTO.password = "*********";
-            return MessageResponse<LoginDTO>.Success ("Usuario encontrado.", loginDTO);
+            return MessageResponse<LoginDTO>.Success ("Credenciales correctas.", loginDTO);
         }
 
         public async Task<MessageResponse<EmailDTO>> GetValidateEmailUserAsync (EmailDTO emailDTO) {
-            MessageResponse<Entities.User> response = await _authDAO.ValidateEmailUser (emailDTO);
+            MessageResponse<Entities.User> response = await _authDAO.ValidateEmailUserAsync (emailDTO);
 
             if (response.isError)
                 return MessageResponse<EmailDTO>.Failure (response.message);
@@ -39,26 +39,22 @@ namespace Backend.Services.Implements.User {
         }
 
         public async Task<MessageResponse<bool>> PostTwoFactorCodeAsync (EmailDTO emailDTO) {
-            MessageResponse<bool> response = await _authDAO.CreateTwoFactorCode (emailDTO);
+            MessageResponse<bool> response = await _authDAO.PostTwoFactorCodeAsync (emailDTO);
 
             if (response.isError)
                 return MessageResponse<bool>.Failure (response.message);
             if (response.dataRetrieved == false)
-                return MessageResponse<bool>.Success ("Usuario no encontrado.", false);
-            return MessageResponse<bool>.Success ("Código doble factor enviado.", true);
+                return MessageResponse<bool>.Success (response.message, false);
+            return MessageResponse<bool>.Success (response.message, true);
         }
 
         public async Task<MessageResponse<jwtDTO>> GetValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
-            MessageResponse<jwtDTO> response = await _authDAO.ValidateTwoFactorCode (codeTwoFactorDTO);
+            MessageResponse<jwtDTO> response = await _authDAO.ValidateTwoFactorCodeAsync (codeTwoFactorDTO);
 
             if (response.isError)
                 return MessageResponse<jwtDTO>.Failure (response.message);
-            if (response.dataRetrieved == default && response.message.Equals ("User not found"))
-                return MessageResponse<jwtDTO>.Success ("Usuario no encontrado.", default);
-            if (response.dataRetrieved == default && response.message.Equals ("User doesn't have twoFactorCode."))
-                return MessageResponse<jwtDTO>.Success ("Usuario no posee un código doble factor.", default);
-            if (response.dataRetrieved == default && response.message.Equals ("TwoFactorCode incorrect."))
-                return MessageResponse<jwtDTO>.Success ("Código doble factor incorrecto.", default);
+            if (response.dataRetrieved == default)
+                return MessageResponse<jwtDTO>.Success (response.message, default);
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             return MessageResponse<jwtDTO>.Success ("Código doble factor correcto.",
@@ -70,13 +66,13 @@ namespace Backend.Services.Implements.User {
         }
 
         public async Task<MessageResponse<bool>> DeleteTwoFactorCodeAsync (string username) {
-            MessageResponse<bool> response = await _authDAO.DeleteTwoFactorCode (username);
+            MessageResponse<bool> response = await _authDAO.DeleteTwoFactorCodeAsync (username);
 
             if (response.isError)
                 return MessageResponse<bool>.Failure (response.message);
             if (response.dataRetrieved == false)
-                return MessageResponse<bool>.Success ("Usuario no encontrado.", false);
-            return MessageResponse<bool>.Success ("Código doble factor eliminado.", true);
+                return MessageResponse<bool>.Success (response.message, false);
+            return MessageResponse<bool>.Success (response.message, true);
         }
     }
 }

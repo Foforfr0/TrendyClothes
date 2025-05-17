@@ -9,20 +9,20 @@ namespace Backend.Controllers.User.Auth {
     [Route ("api/User/Auth/[controller]")]
     public class LoginController : ControllerBase {
         private readonly IHttpContextAccessor _contextAccesor;
-        private readonly IAuthService _authService;
         private readonly ManageJWTToken _manageJWTToken;
+        private readonly IAuthService _authService;
 
-        public LoginController (IHttpContextAccessor contextAccesor, IAuthService authService, ManageJWTToken manageJWTToken) {
+        public LoginController (IHttpContextAccessor contextAccesor, ManageJWTToken manageJWTToken, IAuthService authService) {
             _contextAccesor = contextAccesor;
-            _authService = authService;
             _manageJWTToken = manageJWTToken;
+            _authService = authService;
         }
 
-        [HttpPost ("Login")] // POST
-        public async Task<IActionResult> PostLoginAsync ([FromBody] LoginDTO loginDTO) {
+        [HttpPost ("Login")]
+        public async Task<IActionResult> PostLogin ([FromBody] LoginDTO loginDTO) {
             try {
-                if (loginDTO == null || loginDTO.username.Length <= 0 || loginDTO.password.Length <= 0)
-                    return BadRequest ("Campos vacíos.");
+                if (!ModelState.IsValid || loginDTO == null || loginDTO.username.Length <= 0 || loginDTO.password.Length <= 0)
+                    return BadRequest ($"Datos recibidos inválidos. {ModelState}");
                 MessageResponse<LoginDTO> response = await _authService.PostLoginAsync (loginDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
@@ -39,11 +39,11 @@ namespace Backend.Controllers.User.Auth {
             }
         }
 
-        [HttpGet ("ValidateEmailUser")] // GET
-        public async Task<IActionResult> GetValidateEmailUserAsync ([FromQuery] EmailDTO emailDTO) {
+        [HttpGet ("ValidateEmailUser")]
+        public async Task<IActionResult> GetValidateEmailUser ([FromQuery] EmailDTO emailDTO) {
             try {
-                if (emailDTO == null || emailDTO.username.Length <= 0 || emailDTO.email.Length <= 0)
-                    return BadRequest ("Campos vacíos.");
+                if (!ModelState.IsValid || emailDTO == null || emailDTO.username.Length <= 0 || emailDTO.email.Length <= 0)
+                    return BadRequest ($"Datos recibidos inválidos. {ModelState}");
                 MessageResponse<EmailDTO> response = await _authService.GetValidateEmailUserAsync (emailDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
@@ -60,11 +60,11 @@ namespace Backend.Controllers.User.Auth {
             }
         }
 
-        [HttpPost ("CreateTwoFactorCode")] // POST
-        public async Task<IActionResult> PostTwoFactorCodeAsync ([FromBody] EmailDTO emailDTO) {
+        [HttpPost ("CreateTwoFactorCode")]
+        public async Task<IActionResult> PostTwoFactorCode ([FromBody] EmailDTO emailDTO) {
             try {
-                if (emailDTO == null || string.IsNullOrEmpty (emailDTO.username) || string.IsNullOrEmpty (emailDTO.email))
-                    return BadRequest ("Campos vacíos.");
+                if (!ModelState.IsValid || emailDTO == null || string.IsNullOrEmpty (emailDTO.username) || string.IsNullOrEmpty (emailDTO.email))
+                    return BadRequest ($"Datos recibidos inválidos. {ModelState}");
                 MessageResponse<bool> response = await _authService.PostTwoFactorCodeAsync (emailDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
@@ -73,18 +73,18 @@ namespace Backend.Controllers.User.Auth {
                         response.message
                     });
                 return Ok (new {
-                    response.message,
+                    response.message
                 });
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);
             }
         }
 
-        [HttpGet ("ValidateTwoFactorCode")] // GET
+        [HttpGet ("ValidateTwoFactorCode")]
         public async Task<IActionResult> GetValidateTwoFactorCode ([FromQuery] CodeTwoFactorDTO codeTwoFactorDTO) {
             try {
-                if (codeTwoFactorDTO == null || codeTwoFactorDTO.username.Length <= 0 || codeTwoFactorDTO.twoFactorCode.Length <= 0)
-                    return BadRequest ("Campos vacíos.");
+                if (!ModelState.IsValid || codeTwoFactorDTO == null || codeTwoFactorDTO.username.Length <= 0 || codeTwoFactorDTO.twoFactorCode.Length <= 0)
+                    return BadRequest ($"Datos recibidos inválidos. {ModelState}");
                 MessageResponse<jwtDTO> response = await _authService.GetValidateTwoFactorCode (codeTwoFactorDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
@@ -119,11 +119,11 @@ namespace Backend.Controllers.User.Auth {
             }
         }
 
-        [HttpDelete ("DeleteTwoFactorCode")] // DELETE
-        public async Task<IActionResult> DeleteTwoFactorCodeAsync ([FromQuery] string username) {
+        [HttpDelete ("DeleteTwoFactorCode")]
+        public async Task<IActionResult> DeleteTwoFactorCode ([FromQuery] string username) {
             try {
                 if (string.IsNullOrEmpty (username))
-                    return BadRequest ("Campo vacío.");
+                    return BadRequest ("Nombre de usuario inválido.");
                 MessageResponse<bool> response = await _authService.DeleteTwoFactorCodeAsync (username);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
@@ -131,19 +131,7 @@ namespace Backend.Controllers.User.Auth {
                     return NotFound (new {
                         response.message
                     });
-                return Ok (new {
-                    response.message,
-                });
-            } catch (Exception ex) {
-                return HttpResponses.InternalServerError (ex.Message);
-            }
-        }
-
-        [HttpPost ("Logout")]
-        public IActionResult PostLogout () {
-            try {
-                _contextAccesor.HttpContext.Response.Cookies.Delete ("jwtToken");
-                return Ok ();
+                return NoContent ();
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);
             }

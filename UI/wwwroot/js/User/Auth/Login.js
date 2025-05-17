@@ -112,7 +112,7 @@ async function CreateTwoFactorCode(username, email) {
 
 
         switch (response.status) {
-            case 200:
+            case 201:
                 utils.showToast("Código doble factor enviado.", "success");
                 break;
             case 400:

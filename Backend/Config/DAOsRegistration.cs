@@ -6,6 +6,7 @@ namespace Backend.Config {
             services.AddScoped<UserDAO> ();
             services.AddScoped<AuthDAO> ();
             services.AddScoped<ProfileDAO> ();
+            services.AddScoped<RegistrationDAO> ();
         }
     }
 }

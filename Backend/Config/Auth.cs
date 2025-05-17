@@ -21,7 +21,7 @@ namespace Backend.Config {
                         ValidAudience = builder.Configuration["Jwt:Audience"],
 
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (builder.Configuration["Jwt:Key"])),
+                        IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (builder.Configuration["Jwt:Key"]?? "jusdytq7yiopdndlbcav65768902eioha09876tfvghjkw")),
 
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero
