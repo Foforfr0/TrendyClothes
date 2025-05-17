@@ -16,20 +16,24 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th>Correo electrónico:</th>
-                            <td>@(Model.currentUser.email ?? "No disponible.")</td>
+                            <th>Nombre completo:</th>
+                            <td id="fullName"></td>
                         </tr>
                         <tr>
                             <th>Nombre de usuario:</th>
-                            <td>@(Model.currentUser.username ?? "No disponible.")</td>
+                            <td id="username"></td>
                         </tr>
                         <tr>
-                            <th>Nombre completo:</th>
-                            <td>@(Model.currentUser.fullName ?? "No disponible.")</td>
+                            <th>Correo electrónico:</th>
+                            <td id="email"></td>
+                        </tr>
+                        <tr>
+                            <th>Número de teléfono:</th>
+                            <td id="phoneNumber"></td>
                         </tr>
                         <tr>
                             <th>Tipo de usuario:</th>
-                            <td><span class="badge bg-info">@(Model.currentUser.role ?? "No disponible.")</span></td>
+                            <td><span id="role" class="badge bg-info"></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -43,21 +47,7 @@
                     <th class="bg-primary text-white"><h3>Activa</h3></th>
                     <th class="bg-primary text-white"><h3>Dirección</h3></th>
                     </thead>
-                    <tbody>
-                        @if (Model.addresses == null || Model.addresses.Count <= 0){
-                            <tr>
-                                <td></td>
-                                <td>El usuario no tiene direcciones registradas.</td>
-                            </tr>
-                        }
-                        @foreach(var item in Model.addresses){
-                            <tr>
-                                <td>@item.isActive</td>
-                                <td>
-                                    @($"{item.numberExterior} {item.numberExterior} {item.street} {item.neighborhood} {item.postalCode} {item.state} {item.country}")
-                                </td>
-                            </tr>
-                        }
+                    <tbody id="addressesTableBody">
                     </tbody>
                 </table>
             </div>

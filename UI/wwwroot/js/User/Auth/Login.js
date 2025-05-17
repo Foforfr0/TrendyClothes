@@ -25,19 +25,19 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         switch (response.status) {
             case 200:
                 EnabledSecondPartLogin();
-                utils.showToast("Credenciales correctas.", "success");
+                utils.showToast('Credenciales correctas.', 'success');
                 break;
             case 400:
             case 401:
-                utils.showToast(data.message, "warning");
+                utils.showToast(data.message, 'warning');
                 break;
             case 500:
-                utils.showToast("Error interno del servidor.", "danger");
+                utils.showToast('Error interno del servidor.', 'danger');
                 break;
         }
     } catch (error) {
-        utils.showToast("Error al conectarse con el servidor.", "danger");
-        console.error("Error validando usuario y contraseña: ", error);
+        utils.showToast('Error al conectarse con el servidor.', 'danger');
+        console.error('Error validando usuario y contraseña: ', error);
     }
 });
 
@@ -68,30 +68,29 @@ document.getElementById('emailForm').addEventListener('submit', async function (
                 'content-Type': 'application/json'
             }
         });
-        const contentType = response.headers.get("content-type");
+        const contentType = response.headers.get('content-type');
 
         let data = {};
-        if (contentType && contentType.includes("application/json")) {
+        if (contentType && contentType.includes('application/json')) {
             data = await response.json();
         }
 
         switch (response.status) {
             case 200:
-                utils.showToast(data.message, "success");
+                utils.showToast(data.message, 'success');
                 await CreateTwoFactorCode(username, email);
                 break;
             case 400:
-            case 401:
             case 404:
-                utils.showToast(data.message, "warning");
+                utils.showToast(data.message, 'warning');
                 break;
             case 500:
-                utils.showToast("Error interno del servidor.", "danger");
+                utils.showToast('Error interno del servidor.', 'danger');
                 break;
         }
     } catch (error) {
-        utils.showToast("Error al conectarse con el servidor.", "danger");
-        console.error("Error validando correo: ", error);
+        utils.showToast('Error al conectarse con el servidor.', 'danger');
+        console.error('Error validando correo: ', error);
     }
 });
 
@@ -113,20 +112,19 @@ async function CreateTwoFactorCode(username, email) {
 
         switch (response.status) {
             case 201:
-                utils.showToast("Código doble factor enviado.", "success");
+                utils.showToast('Código doble factor enviado.', 'success');
                 break;
             case 400:
-            case 401:
             case 404:
-                utils.showToast(data.message, "warning");
+                utils.showToast(data.message, 'warning');
                 break;
             case 500:
-                utils.showToast("Error interno del servidor.", "danger");
+                utils.showToast('Error interno del servidor.', 'danger');
                 break;
         }
     } catch (error) {
-        utils.showToast("Error al conectarse con el servidor.", "danger");
-        console.error("Error al crear/enviar el código doble factor: ", error);
+        utils.showToast('Error al conectarse con el servidor.', 'danger');
+        console.error('Error al crear/enviar el código doble factor: ', error);
     }
 }
 
@@ -142,7 +140,7 @@ async function DeleteTwoFactorCode(username) {
             }
         });
     } catch (error) {
-        console.error("Error al eliminar el código doble factor: ", error);
+        console.error('Error al eliminar el código doble factor: ', error);
     }
 }
 
@@ -166,23 +164,24 @@ document.getElementById('twoFactorForm').addEventListener('submit', async functi
 
         switch (response.status) {
             case 200:
-                utils.showToast(data.message, "success");
-                localStorage.setItem("jwtToken", data.jwtToken); // Save JWT token
+                utils.showToast(data.message, 'success');
+                document.cookie = `jwtToken=${data.jwtToken}`;
+                localStorage.setItem('jwtToken', data.jwtToken); // Save JWT token
                 await DeleteTwoFactorCode(username)
-                window.location.replace("/User/Profile/ViewMyProfile");
+                window.location.replace('/User/Profile/ViewMyProfile');
                 break;
             case 400:
             case 401:
             case 404:
-                utils.showToast(data.message, "warning");
+                utils.showToast(data.message, 'warning');
                 break;
             case 500:
-                utils.showToast("Error interno del servidor.", "danger");
+                utils.showToast('Error interno del servidor.', 'danger');
                 break;
         }
     } catch (error) {
-        utils.showToast("Error al conectarse con el servidor.", "danger");
-        console.error("Error al validar el código doble factor: ", error);
+        utils.showToast('Error al conectarse con el servidor.', 'danger');
+        console.error('Error al validar el código doble factor: ', error);
     }
 });
 

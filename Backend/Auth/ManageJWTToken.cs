@@ -45,11 +45,12 @@ namespace Backend.Auth {
 
         private void SetTokenInsideCookie (string jwtToken, double expirationMinutes) {
             CookieOptions? cookieOptions = new CookieOptions {
-                Expires = DateTimeOffset.UtcNow.AddMinutes (expirationMinutes),
                 HttpOnly = true,
                 Secure = true,
+                SameSite = SameSiteMode.None,
                 IsEssential = true,
-                SameSite = SameSiteMode.None
+                Path = "/",
+                Expires = DateTimeOffset.UtcNow.AddMinutes (expirationMinutes),
             };
             _contextAccessor.HttpContext?.Response.Cookies.Append ("jwtToken", jwtToken, cookieOptions);
         }

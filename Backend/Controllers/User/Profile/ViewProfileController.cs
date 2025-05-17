@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.User.Profile {
     [ApiController]
-    [Authorize]
     [Route ("api/User/Profile/[controller]")]
     public class ViewProfileController : Controller {
         private readonly IHttpContextAccessor _contextAccessor;

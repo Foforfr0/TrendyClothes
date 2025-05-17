@@ -10,8 +10,7 @@ POST {{backend_host}}/api/User/Auth/Login/Login
 Content-Type: application/json
 Accept: application/json
 {
-  username: "foforfr",
-  password: "123456"
+  username, password
 }
 
 ### ValidateEmailUser
@@ -20,7 +19,7 @@ Accept: application/json
 #   404 NotFound - "Email no ligado al usuario."
 #   400 BadRequest - "Campos vacíos."
 #   200 Ok - "Email ligado al usuario."
-GET {{backend_host}}/api/User/Auth/Login/ValidateEmailUser?username="Username"&email="Email"
+GET {{backend_host}}/api/User/Auth/Login/ValidateEmailUser?username="_____"&email="_____"
 Content-Type: application/json
 Accept: application/json
 
@@ -34,8 +33,7 @@ POST {{backend_host}}/api/User/Auth/Login/CreateTwoFactorCode
 Content-Type: application/json
 Accept: application/json
 {
-  username: "Username",
-  email: "email"
+  username, email
 }
 
 ### ValidateTwoFactorCode
@@ -46,7 +44,7 @@ Accept: application/json
 #   401 Unauthorized - "Código doble factor incorrecto."
 #   400 BadRequest - "Campos vacíos."
 #   200 Ok - "Código doble factor correcto."
-GET {{backend_host}}/api/User/Auth/Login/ValidateTwoFactorCode?username="Username"&twoFactorCode="TwoFactorCode"
+GET {{backend_host}}/api/User/Auth/Login/ValidateTwoFactorCode?username="_____"&twoFactorCode="_____"
 Content-Type: application/json
 Accept: application/json
 
@@ -55,15 +53,76 @@ Accept: application/json
 #   500 InternalServerError - $"Error interno del servidor: {ex.Message}"
 #   404 NotFound - "Usuario no encontrado."
 #   401 BadRequest - "Campo vacío."
-#   200 Ok - "Código doble factor eliminado."
-DELETE {{backend_host}}/api/User/Auth/Login/DeleteTwoFactorCode?username="Username"
+#   204 NoContent - "Código doble factor eliminado."
+DELETE {{backend_host}}/api/User/Auth/Login/DeleteTwoFactorCode?username="_____"
 Content-Type: application/json
 Accept: application/json
-
+#####################################################################
 ### Logout
 # Expected response:
-#   200 Ok - ""
-POST {{backend_host}}/api/User/Auth/Login/Logout
+#   204 NoContent
+POST {{backend_host}}/api/User/Auth/Logout
 
 #####################################################################
-GET {{backend_host}}/api/User/Profile/GetMyData
+### GetPersonalData
+# Expected responses:
+#   500 InternalServerError
+#   404 NotFound
+#   400 BadRequest
+#   200 Ok
+GET {{backend_host}}/api/User/Profile/GetPersonalData?username="_____"
+### GetAddresses
+# Expected responses:
+#   500 InternalServerError
+#   404 NotFound
+#   400 BadRequest
+#   200 Ok
+GET {{backend_host}}/api/User/Profile/GetAddresses?username="_____"
+#####################################################################
+### AddUser
+# Expected responses:
+#   500 InternalServerError
+#   409 Conflict
+#   400 BadRequest
+#   200 Ok
+POST {{backend_host}}/api/User/Registration/AddUser
+{
+  firstName, 
+  middleName,
+  lastName,
+  username,
+  email,
+  areaCode,
+  phoneNumber,
+  password,
+  roleId
+}
+### DeleteUser
+# Expected responses:
+#   500 InternalServerError
+#   409 Conflict
+#   400 BadRequest
+#   204 NoContent
+DELETE {{backend_host}}/api/User/Registration/DeleteUser
+#####################################################################
+### VerifyExistenceUsername
+# Expected responses:
+#   500 InternalServerError
+#   404 NotFound
+#   400 BadRequest
+#   200 Ok
+GET {{backend_host}}/api/User/ValidateUserData/VerifyExistenceUsername?username="_____"
+### VerifyExistenceEmail
+# Expected responses:
+#   500 InternalServerError
+#   404 NotFound
+#   400 BadRequest
+#   200 Ok
+GET {{backend_host}}/api/User/ValidateUserData/VerifyExistenceEmail?email="_____"
+### VerifyExistencePhoneNumber
+# Expected responses:
+#   500 InternalServerError
+#   404 NotFound
+#   400 BadRequest
+#   200 Ok
+GET {{backend_host}}/api/User/ValidateUserData/VerifyExistencePhoneNumber?username="_____"

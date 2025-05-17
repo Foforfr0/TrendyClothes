@@ -27,7 +27,7 @@ namespace Backend.Controllers.User.ValidateUserData {
                     return Ok (new {
                         exists = true
                     });
-                return Ok (new {
+                return NotFound (new {
                     exists = false
                 });
             } catch (Exception ex) {

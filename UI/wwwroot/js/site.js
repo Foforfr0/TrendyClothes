@@ -18,3 +18,14 @@ export function showToast(message, type) {
     const toast = new bootstrap.Toast(toastEl);
     toast.show();
 }
+
+/*
+export function logoutSession() {
+    const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Logout`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        }
+    });
+    localStorage.removeItem('jwtToken');
+}*/
