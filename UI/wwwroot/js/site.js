@@ -2,6 +2,26 @@
 // for details on configuring this project to bundle and minify static web assets.
 // Write your JavaScript code.
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Aquí puedes asignar métodos o realizar acciones
+    const button = document.getElementById('LogoutBtn');
+
+    if (button) {
+        button.addEventListener('click', async function () {
+            await fetch(`${window.BACKEND_URL}/api/User/Logout`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                },
+            });
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.replace('/User/Auth/Login');
+        });
+    }
+});
+
 export function getValueDOMElementNullOrEmpty(id) {
     const element = document.getElementById(id);
     return element ? element.value || '' : '';

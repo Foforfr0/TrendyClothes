@@ -12,9 +12,9 @@ namespace Backend.Config {
             builder.Services.AddCors (options => {
                 options.AddPolicy ("FromFrontend", policy => {
                     policy.WithOrigins ("https://localhost:8081")
-                          .AllowAnyHeader ()                                // Allow any header (JSON, tokens, etc).
-                          .AllowAnyMethod ()                                // Allow any HTTP method.
-                          .AllowCredentials ();                             // Necesary for Cookies.
+                        .AllowCredentials ()                              // Necesary for Cookies.
+                        .AllowAnyHeader ()                                // Allow any header (JSON, tokens, etc).
+                        .AllowAnyMethod ();                               // Allow any HTTP method.
                 });
             });
             builder.Services.AddDbContext<TrendyClothesDBContext> (options =>

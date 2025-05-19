@@ -42,7 +42,7 @@
             </form>
             <button type="button" class="btn btn-link">¿Olvidó cual es su correo?</button>
 
-            <form id="twoFactorForm" novalidate>
+            <form method="post" id="twoFactorForm" novalidate>
                 <div class="mb-3 col-9 mx-auto">
                     <label asp-for="codeTwoFactorDTO.twoFactorCode" class="form-label">Código enviado:</label>
                     <input asp-for="codeTwoFactorDTO.twoFactorCode" id="InputTwoFactorCode" class="form-control" autocomplete="none"
@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<script type="module" src="~/js/User/Login.js"></script>
+<script type="module" src="~/js/User/Login.js" asp-append-version="false"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

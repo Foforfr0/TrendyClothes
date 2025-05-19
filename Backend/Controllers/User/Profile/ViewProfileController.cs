@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.User.Profile {
-    [Authorize]
     [ApiController]
     [Route ("api/User/[controller]")]
     public class ViewProfileController : Controller {
@@ -20,11 +19,12 @@ namespace Backend.Controllers.User.Profile {
             _profileService = profileService;
         }
 
+        [Authorize]
         [HttpGet ("GetPersonalData")]
         public async Task<IActionResult> GetMyData ([FromQuery] string? username) {
             try {
                 if (string.IsNullOrEmpty (username)) {
-                    username = _manageJWTToken.GetUsernameFromCookie ();
+                    username = User.Identity?.Name;
                 }
                 if (string.IsNullOrEmpty (username))
                     return BadRequest ("Nombre de usuario no encontrado.");
@@ -44,14 +44,15 @@ namespace Backend.Controllers.User.Profile {
             }
         }
 
+        [Authorize]
         [HttpGet ("GetAddresses")]
         public async Task<IActionResult> GetMyAddresses ([FromQuery] string? username) {
             try {
                 if (string.IsNullOrEmpty (username)) {
-                    username = _manageJWTToken.GetUsernameFromCookie ();
+                    username = User.Identity?.Name;
                 }
                 if (string.IsNullOrEmpty (username))
-                    return BadRequest ("Nombre de usuario no encontrado.");
+                    return BadRequest ("Nombre de usuario no encontrado."+ User.Identity?.Name?? "Usuario nulo.");
                 MessageResponse<List<AddressDTO>> response = await _profileService.GetAddressesAsync (username);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);

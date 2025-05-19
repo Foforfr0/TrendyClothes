@@ -5,6 +5,8 @@ import * as utils from '/js/site.js';
 
 // Validate Username and Password on server
 document.getElementById('loginForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
     const username = utils.getValueDOMElementNullOrEmpty('InputUsername');
     const password = utils.getValueDOMElementNullOrEmpty('InputPassword');
 
@@ -152,11 +154,13 @@ document.getElementById('twoFactorForm').addEventListener('submit', async functi
     if (!username || !twoFactorCode) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Login/ValidateTwoFactorCode?username=${encodeURIComponent(username)}&twoFactorCode=${encodeURIComponent(twoFactorCode)}`, {
-            method: 'GET',
+        const response = await fetch(`${window.BACKEND_URL}/api/User/Login/ValidateTwoFactorCode`, {
+            method: 'POST',
+            credentials: 'include',
             headers: {
                 'content-type': 'application/json'
-            }
+            },
+            body: JSON.stringify({ username, twoFactorCode })
         });
 
         const data = await response.json();

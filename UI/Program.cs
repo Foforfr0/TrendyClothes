@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
+using System.Security.Claims;
+using System.Text;
 
 DotNetEnv.Env.Load ();
 
@@ -12,20 +16,24 @@ CultureInfo.DefaultThreadCurrentUICulture = currentCulture;
 
 // Add services to the container.
 builder.Services.AddHttpClient ();
-builder.Services.AddSingleton (new HttpClient());
+builder.Services.AddRazorPages ();
+builder.Services.AddSingleton (new HttpClient ());
 builder.Services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie (options => {
-        options.LoginPath = "/User/Auth/Login";
-        options.LogoutPath = "/User/Auth/Logout";
-        options.AccessDeniedPath = "/User/Auth/AccessDenied";
-        options.Cookie.Name = "jwtToken"; // Same name according with de backend cookie
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.SlidingExpiration = true;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes (10080);
+        options.Cookie.Name = "jwtToken"; // El nombre de la cookie
+        options.Cookie.HttpOnly = true;   // Importante para seguridad (evita acceso JS)
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Usa HTTPS
+
+        // Redirecciones automáticas si el usuario no está autenticado
+        options.LoginPath = "/Login"; // Página de login
+        options.AccessDeniedPath = "/AccessDenied"; // Página de acceso denegado
+
+        // Tiempo de expiración de la cookie (persistencia de sesión)
+        options.ExpireTimeSpan = TimeSpan.FromDays (7);
+        options.SlidingExpiration = true; // Renovar cookie si el usuario sigue activo
     });
 builder.Services.AddAuthorization ();
-builder.Services.AddRazorPages ();
 builder.Services.AddControllers (); // Para API
 
 

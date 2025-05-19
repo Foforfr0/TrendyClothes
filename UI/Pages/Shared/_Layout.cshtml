@@ -59,11 +59,11 @@
                         <img src="~/images/noprofilephoto.png" class="profile-img bg-transparent" /> <!--TODO-->
                     </button>
                     <ul class="dropdown-menu">
-                        @if(User.Identity != null && User.Identity.IsAuthenticated){
+                        @if(string.IsNullOrEmpty(User.Identity?.Name)){
                             <li><a class="dropdown-item" asp-page="/User/Profile/ViewMyProfile">Ver perfil</a></li>
                             <li><a class="dropdown-item" asp-page="">Lista de deseos</a></li>
                             <li><a class="dropdown-item" asp-page="">Favoritos</a></li>
-                            <li><a class="dropdown-item" id="LogoutBtn" asp-page="">Cerrar sesión</a></li>
+                            <li><a class="dropdown-item" id="LogoutBtn">Cerrar sesión</a></li>
                         }else{
                             <li><a class="dropdown-item" asp-page="/User/Auth/CreateAccount">Crear cuenta</a></li>
                             <li><a class="dropdown-item" asp-page="/User/Auth/Login">Iniciar sesión</a></li>
@@ -95,7 +95,7 @@
             &copy; 2025 - TrendyClothes
         </div>
     </footer>
-    <script></script>
+    <script>console.log('Inicio de agregación de scripts.');</script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -104,6 +104,7 @@
     <script>
         window.BACKEND_URL = '@Context.Items["BACKEND_URL"]';
     </script>
+    <script>console.log('Fin de agregación de scripts.');</script>
 
 
     @await RenderSectionAsync("Scripts", required: false)

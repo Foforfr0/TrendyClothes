@@ -2,20 +2,18 @@
 using Backend.DTO;
 using Backend.DTO.User.Auth;
 using Backend.Services.Intefaces.User;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Backend.Controllers.User.Auth {
     [ApiController]
     [Route ("api/User/[controller]")]
     public class LoginController : ControllerBase {
-        private readonly IHttpContextAccessor _contextAccesor;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly ManageJWTToken _manageJWTToken;
         private readonly IAuthService _authService;
 
         public LoginController (IHttpContextAccessor contextAccesor, ManageJWTToken manageJWTToken, IAuthService authService) {
-            _contextAccesor = contextAccesor;
+            _contextAccessor = contextAccesor;
             _manageJWTToken = manageJWTToken;
             _authService = authService;
         }
@@ -82,8 +80,8 @@ namespace Backend.Controllers.User.Auth {
             }
         }
 
-        [HttpGet ("ValidateTwoFactorCode")]
-        public async Task<IActionResult> GetValidateTwoFactorCode ([FromQuery] CodeTwoFactorDTO codeTwoFactorDTO) {
+        [HttpPost ("ValidateTwoFactorCode")]
+        public async Task<IActionResult> GetValidateTwoFactorCode ([FromBody] CodeTwoFactorDTO codeTwoFactorDTO) {
             try {
                 if (!ModelState.IsValid || codeTwoFactorDTO == null || codeTwoFactorDTO.username.Length <= 0 || codeTwoFactorDTO.twoFactorCode.Length <= 0)
                     return BadRequest ($"Datos recibidos inválidos. {ModelState}");
@@ -105,17 +103,15 @@ namespace Backend.Controllers.User.Auth {
 
                 string jwtToken = "";
                 try {
-                    Claim[]? claims = new[] {
-                        new Claim(ClaimTypes.Name, response.dataRetrieved.username),
-                        new Claim(ClaimTypes.Role, response.dataRetrieved.role),
-                        new Claim(ClaimTypes.Sid, Guid.NewGuid().ToString())
-                    };
-
-                    ClaimsIdentity? identity = new ClaimsIdentity (claims, "Cookies");
-
-                    await HttpContext.SignInAsync ("Cookies", new ClaimsPrincipal (identity));
-
                     jwtToken = _manageJWTToken.GenerateToken (response.dataRetrieved.username, response.dataRetrieved.role);
+                    Response.Cookies.Append ("jwtToken", jwtToken, new CookieOptions {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTimeOffset.UtcNow.AddDays (7),
+                        IsEssential = true,
+                        Path = "/",
+                    });
                 } catch (Exception ex) {
                     return HttpResponses.InternalServerError (ex.ToString ());
                 }

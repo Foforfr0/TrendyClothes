@@ -1,7 +1,5 @@
 ﻿using Backend.Auth;
 using Backend.Services.Intefaces.User;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,12 +18,10 @@ namespace Backend.Controllers.User.Auth {
             _authService = authService;
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteLogout () {
+        [HttpPost]
+        public async Task<IActionResult> PostLogout () {
             try {
-                Response.Cookies.Delete ("jwtToken");
-                _contextAccesor.HttpContext.Response.Cookies.Delete ("jwtToken");
-                await _contextAccesor.HttpContext.SignOutAsync("Cookies");
+                _contextAccesor.HttpContext?.Response.Cookies.Delete ("jwtToken");
                 return Ok ();
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);

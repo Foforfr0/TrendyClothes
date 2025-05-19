@@ -25,6 +25,9 @@ async function retrievePersonalData() {
             case 200:
                 showPersonalData(data.body);
                 break;
+            case 401:
+                showPersonalData('Error con las cookies.');
+                break;
             case 400:
             case 404:
                 utils.showToast(data.message, 'warning');
