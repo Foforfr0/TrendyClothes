@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.User.Registration {
     [ApiController]
-    [Route ("api/User/Registration/[controller]")]
+    [Route ("api/User/[controller]")]
     public class RegistrationController : Controller {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IRegistrationService _registrationService;

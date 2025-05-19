@@ -25,7 +25,7 @@ namespace Backend.DAO.User {
                 newUser.AreaCode = newUserDTO.areaCode;
                 newUser.PhoneNumber = newUserDTO.phoneNumber;
                 newUser.Password = newUserDTO.password;
-                newUser.RoleId = newUserDTO.roleId;
+                newUser.RoleId = 2;
 
                 _context.Users.Add (newUser);
                 await _context.SaveChangesAsync ();

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.User.ValidateUserData {
     [ApiController]
-    [Route ("api/User/ValidateUserData/[controller]")]
+    [Route ("api/User/[controller]")]
     public class ValidateUserDataController : ControllerBase {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IValidateDataService _validateDataService;
@@ -47,7 +47,7 @@ namespace Backend.Controllers.User.ValidateUserData {
                     return Ok (new {
                         exists = true
                     });
-                return Ok (new {
+                return NotFound (new {
                     exists = false
                 });
             } catch (Exception ex) {
@@ -67,7 +67,7 @@ namespace Backend.Controllers.User.ValidateUserData {
                     return Ok (new {
                         exists = true
                     });
-                return Ok (new {
+                return NotFound (new {
                     exists = false
                 });
             } catch (Exception ex) {

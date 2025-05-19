@@ -3,7 +3,7 @@
 namespace Backend.DTO.User.ValidateUserData {
     public class PhoneNumberDTO {
         [Required (AllowEmptyStrings = false, ErrorMessage = "La lada número de teléfono es requerida.")]
-        [RegularExpression (@"^\+[0-9]{1,4}$", ErrorMessage = "La lada dell teléfono es inválida.")]
+        [RegularExpression (@"^\+[0-9]{1,4}$", ErrorMessage = "La lada del teléfono es inválida.")]
         public required string areaCode {
             get; set;
         }

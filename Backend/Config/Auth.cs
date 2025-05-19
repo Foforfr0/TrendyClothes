@@ -8,10 +8,7 @@ namespace Backend.Config {
     public static class Auth {
         public static void ConfigureAuth (this IServiceCollection services, WebApplicationBuilder builder) {
 
-            services.AddAuthentication (opt => {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+            services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer (opt => {
                     opt.TokenValidationParameters = new TokenValidationParameters {
                         ValidateIssuer = true,
@@ -21,7 +18,7 @@ namespace Backend.Config {
                         ValidAudience = builder.Configuration["Jwt:Audience"],
 
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (builder.Configuration["Jwt:Key"]?? "jusdytq7yiopdndlbcav65768902eioha09876tfvghjkw")),
+                        IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (builder.Configuration["Jwt:Key"] ?? "jusdytq7yiopdndlbcav65768902eioha09876tfvghjkw")),
 
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero
@@ -44,7 +41,7 @@ namespace Backend.Config {
                 options.AddPolicy ("Administrator", policy =>
                     policy.RequireClaim (ClaimTypes.Role, "admin"));
                 options.AddPolicy ("Seller/Buyer", policy =>
-                    policy.RequireClaim (ClaimTypes.Role, "seller/buyer"));
+                    policy.RequireClaim (ClaimTypes.Role, "s/b"));
             });
             services.AddScoped<ManageJWTToken> ();
         }

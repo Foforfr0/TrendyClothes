@@ -10,7 +10,7 @@ namespace UI.Pages.User.Profile {
         [BindProperty]
         public List<AddressDTO>? addresses { get; set; } = new List<AddressDTO> ();
 
-        public async Task OnGetAsync () {
+        public void OnGet () {
 
         }
     }

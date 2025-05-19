@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@{
     ViewData["Title"] = "TrendyClothes";
 }
 
@@ -57,11 +59,15 @@
                         <img src="~/images/noprofilephoto.png" class="profile-img bg-transparent" /> <!--TODO-->
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-page="/User/Profile/ViewMyProfile">Ver perfil</a></li>
-                        <li><a class="dropdown-item" asp-page="">Lista de deseos</a></li>
-                        <li><a class="dropdown-item" asp-page="">Favoritos</a></li>
-                        <li><a class="dropdown-item" asp-page="/User/Auth/Login">Iniciar sesión</a></li>
-                        <li><a class="dropdown-item" asp-page="">Cerrar sesión</a></li>
+                        @if(User.Identity != null && User.Identity.IsAuthenticated){
+                            <li><a class="dropdown-item" asp-page="/User/Profile/ViewMyProfile">Ver perfil</a></li>
+                            <li><a class="dropdown-item" asp-page="">Lista de deseos</a></li>
+                            <li><a class="dropdown-item" asp-page="">Favoritos</a></li>
+                            <li><a class="dropdown-item" id="LogoutBtn" asp-page="">Cerrar sesión</a></li>
+                        }else{
+                            <li><a class="dropdown-item" asp-page="/User/Auth/CreateAccount">Crear cuenta</a></li>
+                            <li><a class="dropdown-item" asp-page="/User/Auth/Login">Iniciar sesión</a></li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -73,17 +79,28 @@
         </main>
     </div>
 
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div class="toast-container position-static">
+            <div id="liveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastMessage"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="border-top footer text-muted box-shadow bg-white">
         <div class="container">
             &copy; 2025 - TrendyClothes
         </div>
     </footer>
-
+    <script></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script type="module" src="~/js/site.js" asp-append-version="true"></script>
     <script>
         window.BACKEND_URL = '@Context.Items["BACKEND_URL"]';
     </script>

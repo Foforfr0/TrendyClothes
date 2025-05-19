@@ -5,19 +5,18 @@ import * as utils from '/js/site.js';
 
 // Validate Username and Password on server
 document.getElementById('loginForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
     const username = utils.getValueDOMElementNullOrEmpty('InputUsername');
     const password = utils.getValueDOMElementNullOrEmpty('InputPassword');
 
     if (!username || !password) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/Login`, {
+        const response = await fetch(`${window.BACKEND_URL}/api/User/Login`, {
             method: 'POST',
             headers: {
                 'content-Type': 'application/json'
             },
-            body: JSON.stringify({ username: username, password: password })
+            body: JSON.stringify({ username, password })
         });
 
         const data = await response.json();
@@ -37,7 +36,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         }
     } catch (error) {
         utils.showToast('Error al conectarse con el servidor.', 'danger');
-        console.error('Error validando usuario y contraseña: ', error);
+        console.error('Error registrando usuario nuevo: ', error);
     }
 });
 
@@ -62,7 +61,7 @@ document.getElementById('emailForm').addEventListener('submit', async function (
     if (!username || !email) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/ValidateEmailUser?username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`, {
+        const response = await fetch(`${window.BACKEND_URL}/api/User/Login/ValidateEmailUser?username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`, {
             method: 'GET',
             headers: {
                 'content-Type': 'application/json'
@@ -99,7 +98,7 @@ async function CreateTwoFactorCode(username, email) {
     if (!username || !email) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/CreateTwoFactorCode`, {
+        const response = await fetch(`${window.BACKEND_URL}/api/User/Login/CreateTwoFactorCode`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -133,7 +132,7 @@ async function DeleteTwoFactorCode(username) {
     if (!username) return;
 
     try {
-        await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/DeleteTwoFactorCode?username=${encodeURI(username)}`, {
+        await fetch(`${window.BACKEND_URL}/api/User/Login/DeleteTwoFactorCode?username=${encodeURI(username)}`, {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json'
@@ -153,7 +152,7 @@ document.getElementById('twoFactorForm').addEventListener('submit', async functi
     if (!username || !twoFactorCode) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Login/ValidateTwoFactorCode?username=${encodeURIComponent(username)}&twoFactorCode=${encodeURIComponent(twoFactorCode)}`, {
+        const response = await fetch(`${window.BACKEND_URL}/api/User/Login/ValidateTwoFactorCode?username=${encodeURIComponent(username)}&twoFactorCode=${encodeURIComponent(twoFactorCode)}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json'
@@ -165,8 +164,6 @@ document.getElementById('twoFactorForm').addEventListener('submit', async functi
         switch (response.status) {
             case 200:
                 utils.showToast(data.message, 'success');
-                document.cookie = `jwtToken=${data.jwtToken}`;
-                localStorage.setItem('jwtToken', data.jwtToken); // Save JWT token
                 await DeleteTwoFactorCode(username)
                 window.location.replace('/User/Profile/ViewMyProfile');
                 break;

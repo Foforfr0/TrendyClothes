@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 async function retrievePersonalData() {
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Profile/ViewProfile/GetPersonalData`, {
+        const response = await fetch(`${window.BACKEND_URL}/api/User/ViewProfile/GetPersonalData`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -49,7 +49,7 @@ function showPersonalData(userData) {
 
 async function retrieveAddresses() {
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Profile/ViewProfile/GetAddresses`, {
+        const response = await fetch(`${window.BACKEND_URL}/api/User/ViewProfile/GetAddresses`, {
             method: 'GET',
             credentials: 'include',
             headers: {

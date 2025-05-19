@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -22,13 +23,13 @@ namespace Backend.Auth {
             SymmetricSecurityKey? securityKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (key));
             SigningCredentials? credentials = new SigningCredentials (securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[] {
+            Claim[]? claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(ClaimTypes.Role, role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            double expirationMinutes = double.TryParse (_config["Jwt:ExpiresInMinutes"], out var exp) ? exp : 1440;
+            double expirationMinutes = double.TryParse (_config["Jwt:ExpiresInMinutes"], out var exp) ? exp : 10080;
 
             JwtSecurityToken? token = new JwtSecurityToken (
                 issuer: _config["Jwt:Issuer"],
@@ -38,7 +39,7 @@ namespace Backend.Auth {
                 signingCredentials: credentials
             );
 
-            var jwtToken = _tokenHandler.WriteToken (token);
+            string? jwtToken = _tokenHandler.WriteToken (token);
             SetTokenInsideCookie (jwtToken, expirationMinutes);
             return jwtToken;
         }

@@ -1,10 +1,14 @@
 ﻿using Backend.Auth;
 using Backend.Services.Intefaces.User;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.User.Auth {
+    [Authorize]
     [ApiController]
-    [Route ("api/User/Auth/[controller]")]
+    [Route ("api/User/[controller]")]
     public class LogoutController : ControllerBase {
         private readonly IHttpContextAccessor _contextAccesor;
         private readonly ManageJWTToken _manageJWTToken;
@@ -16,12 +20,13 @@ namespace Backend.Controllers.User.Auth {
             _authService = authService;
         }
 
-        [HttpPost]
-        public IActionResult PostLogout () {
+        [HttpDelete]
+        public async Task<IActionResult> DeleteLogout () {
             try {
-                if (_contextAccesor.HttpContext?.Request.Cookies.TryGetValue ("jwtToken", out string? jwtToken) ?? false)
-                    _contextAccesor.HttpContext.Response.Cookies.Delete ("jwtToken");
-                return NoContent ();
+                Response.Cookies.Delete ("jwtToken");
+                _contextAccesor.HttpContext.Response.Cookies.Delete ("jwtToken");
+                await _contextAccesor.HttpContext.SignOutAsync("Cookies");
+                return Ok ();
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);
             }

@@ -4,13 +4,13 @@
 
 export function getValueDOMElementNullOrEmpty(id) {
     const element = document.getElementById(id);
-    return element ? element.value || "" : "";
+    return element ? element.value || '' : '';
 }
 
 export function showToast(message, type) {
     // type: success, danger, warning, info, primary
-    const toastEl = document.getElementById("liveToast");
-    const toastBody = document.getElementById("toastMessage");
+    const toastEl = document.getElementById('liveToast');
+    const toastBody = document.getElementById('toastMessage');
 
     toastBody.textContent = message;
     toastEl.className = `toast align-items-center text-bg-${type} border-0`;
@@ -19,13 +19,14 @@ export function showToast(message, type) {
     toast.show();
 }
 
-/*
-export function logoutSession() {
-    const response = await fetch(`${window.BACKEND_URL}/api/User/Auth/Logout`, {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json'
+export function getTextDangerInput(inputField) {
+    const input = document.getElementById(inputField);
+    if (input) {
+        // Buscar el siguiente hermano que tenga la clase 'text-danger'
+        const spanError = input.parentElement.querySelector('.text-danger');
+
+        if (spanError) {
+            return spanError;
         }
-    });
-    localStorage.removeItem('jwtToken');
-}*/
+    }
+}

@@ -94,8 +94,7 @@ POST {{backend_host}}/api/User/Registration/AddUser
   email,
   areaCode,
   phoneNumber,
-  password,
-  roleId
+  password
 }
 ### DeleteUser
 # Expected responses:

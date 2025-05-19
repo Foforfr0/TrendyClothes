@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\User\Registration\" />
     <Folder Include="wwwroot\css\base\" />
     <Folder Include="wwwroot\css\layout\" />
     <Folder Include="wwwroot\css\themes\" />

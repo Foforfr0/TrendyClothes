@@ -2,11 +2,13 @@
 using Backend.DTO;
 using Backend.DTO.User.Auth;
 using Backend.Services.Intefaces.User;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Backend.Controllers.User.Auth {
     [ApiController]
-    [Route ("api/User/Auth/[controller]")]
+    [Route ("api/User/[controller]")]
     public class LoginController : ControllerBase {
         private readonly IHttpContextAccessor _contextAccesor;
         private readonly ManageJWTToken _manageJWTToken;
@@ -18,7 +20,7 @@ namespace Backend.Controllers.User.Auth {
             _authService = authService;
         }
 
-        [HttpPost ("Login")]
+        [HttpPost]
         public async Task<IActionResult> PostLogin ([FromBody] LoginDTO loginDTO) {
             try {
                 if (!ModelState.IsValid || loginDTO == null || loginDTO.username.Length <= 0 || loginDTO.password.Length <= 0)
@@ -103,9 +105,17 @@ namespace Backend.Controllers.User.Auth {
 
                 string jwtToken = "";
                 try {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    Claim[]? claims = new[] {
+                        new Claim(ClaimTypes.Name, response.dataRetrieved.username),
+                        new Claim(ClaimTypes.Role, response.dataRetrieved.role),
+                        new Claim(ClaimTypes.Sid, Guid.NewGuid().ToString())
+                    };
+
+                    ClaimsIdentity? identity = new ClaimsIdentity (claims, "Cookies");
+
+                    await HttpContext.SignInAsync ("Cookies", new ClaimsPrincipal (identity));
+
                     jwtToken = _manageJWTToken.GenerateToken (response.dataRetrieved.username, response.dataRetrieved.role);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 } catch (Exception ex) {
                     return HttpResponses.InternalServerError (ex.ToString ());
                 }
