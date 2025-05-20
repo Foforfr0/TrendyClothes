@@ -2,13 +2,15 @@
 
 namespace Backend.DTO.User.ValidateUserData {
     public class PhoneNumberDTO {
-        [Required (AllowEmptyStrings = false, ErrorMessage = "La lada número de teléfono es requerida.")]
-        [RegularExpression (@"^\+[0-9]{1,4}$", ErrorMessage = "La lada del teléfono es inválida.")]
+        [Required (AllowEmptyStrings = false, ErrorMessage = "La lada de teléfono es requerida.")]
+        [StringLength (5, MinimumLength = 2, ErrorMessage = "La lada debe tener de 1 a 4 números.")]
+        [RegularExpression (@"^\+\d{1,4}$", ErrorMessage = "La lada del teléfono es inválida.")]
         public required string areaCode {
             get; set;
         }
         [Required (AllowEmptyStrings = false, ErrorMessage = "El número de teléfono es requerido.")]
-        [Phone (ErrorMessage = "El formato del número de teléfono es inválido.")]
+        [RegularExpression (@"^\d{10}$", ErrorMessage = "El número de teléfono debe tener 10 dígitos.")]
+        [Phone (ErrorMessage = "El número de teléfono es inválido.")]
         public required string phoneNumber {
             get; set;
         }

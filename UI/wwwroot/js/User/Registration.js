@@ -2,7 +2,11 @@
 
 document.getElementById('signInForm'), addEventListener('submit', async function (event) {
     event.preventDefault();
-    if (ValidateExistenceUsername() == false && ValidateExistenceEmail() == false && ValidateExistencePhoneNumber() == false) {
+    const vUsername = await ValidateExistenceUsername();
+    const vEmail = await ValidateExistenceEmail();
+    const vPhoneNumber = await ValidateExistencePhoneNumber();
+
+    if (vUsername == false && vEmail == false && vPhoneNumber == false) {
         const firstName = getValueDOMElementNullOrEmpty('InputFirstName');
         const middleName = getValueDOMElementNullOrEmpty('InputMiddleName');
         const lastName = getValueDOMElementNullOrEmpty('InputLastName');
@@ -20,7 +24,7 @@ document.getElementById('signInForm'), addEventListener('submit', async function
                 headers: {
                     'content-Type': 'application/json'
                 },
-                body: JSON.stringify({firstName, middleName, lastName, username, email, areaCode, phoneNumber, password})
+                body: JSON.stringify({ firstName, middleName, lastName, username, email, areaCode, phoneNumber, password })
             });
 
             const data = await response.json();
@@ -60,20 +64,18 @@ async function ValidateExistenceUsername() {
             }
         });
 
-        const data = await response.json();
-
         const textDanger = utils.getTextDangerInput('InputUsername');
         switch (response.status) {
             case 200:
                 textDanger.textContent = 'El nombre de usuario ya existe.';
-                //utils.showToast('Nombre de usuario utilizado.', 'warning');
+                utils.showToast('Nombre de usuario utilizado.', 'warning');
                 return true;
+            case 204:
+                return false;
             case 400:
                 textDanger.textContent = 'El nombre de usuario es requerido.';
-                //utils.showToast('El nombre de usuario es requerido.', 'warning');
+                utils.showToast('El nombre de usuario es requerido.', 'warning');
                 return true;
-            case 404:
-                return false;
             case 500:
                 utils.showToast('Error validando existencia nombre de usuario.', 'danger');
                 return true;
@@ -99,20 +101,18 @@ async function ValidateExistenceEmail() {
             }
         });
 
-        const data = await response.json();
-
         const textDanger = utils.getTextDangerInput('InputEmail');
         switch (response.status) {
             case 200:
                 textDanger.textContent = 'El email ya existe.';
-                //utils.showToast('Nombre de usuario utilizado.', 'warning');
+                utils.showToast('El email ya existe.', 'warning');
                 return true;
+            case 204:
+                return false;
             case 400:
                 textDanger.textContent = 'El email es requerido.';
-                //utils.showToast('El nombre de usuario es requerido.', 'warning');
+                utils.showToast('El email es requerido.', 'warning');
                 return true;
-            case 404:
-                return false;
             case 500:
                 utils.showToast('Error validando existencia email.', 'danger');
                 return true;
@@ -123,13 +123,13 @@ async function ValidateExistenceEmail() {
         return true;
     }
 }
+
 // Validate existence of phone number
 async function ValidateExistencePhoneNumber() {
     const areaCode = utils.getValueDOMElementNullOrEmpty('InputAreaCode');
     const phoneNumber = utils.getValueDOMElementNullOrEmpty('InputPhoneNumber');
 
-    if (!areaCode || !phoneNumber) return true
-        ;
+    if (!areaCode || !phoneNumber) return true;
 
     try {
         const response = await fetch(`${window.BACKEND_URL}/api/User/ValidateUserData/VerifyExistencePhoneNumber?areaCode=${encodeURI(areaCode)}&phoneNumber=${encodeURI(phoneNumber)}`, {
@@ -139,20 +139,18 @@ async function ValidateExistencePhoneNumber() {
             }
         });
 
-        const data = await response.json();
-
         const textDanger = utils.getTextDangerInput('InputPhoneNumber');
         switch (response.status) {
             case 200:
                 textDanger.textContent = 'El número de teléfono ya existe.';
-                //utils.showToast('Nombre de usuario utilizado.', 'warning');
+                utils.showToast('El número de teléfono ya existe.', 'warning');
                 return true;
+            case 204:
+                return false;
             case 400:
                 textDanger.textContent = 'El número de teléfono es requerido.';
-                //utils.showToast('El nombre de usuario es requerido.', 'warning');
+                utils.showToast('El número de teléfono es requerido.', 'warning');
                 return true;
-            case 404:
-                return false;
             case 500:
                 utils.showToast('Error validando existencia número de teléfono.', 'danger');
                 return true;

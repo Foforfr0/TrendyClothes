@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers.User.Profile {
     [ApiController]
     [Route ("api/User/[controller]")]
+    [Authorize]
     public class ViewProfileController : Controller {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly ManageJWTToken _manageJWTToken;

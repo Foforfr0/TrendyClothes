@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="~/css/components/Navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pages/Home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pages/Login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/Products.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/UI.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -59,7 +60,7 @@
                         <img src="~/images/noprofilephoto.png" class="profile-img bg-transparent" /> <!--TODO-->
                     </button>
                     <ul class="dropdown-menu">
-                        @if(string.IsNullOrEmpty(User.Identity?.Name)){
+                        @if(User.Identity != null && User.Identity.IsAuthenticated){
                             <li><a class="dropdown-item" asp-page="/User/Profile/ViewMyProfile">Ver perfil</a></li>
                             <li><a class="dropdown-item" asp-page="">Lista de deseos</a></li>
                             <li><a class="dropdown-item" asp-page="">Favoritos</a></li>
@@ -75,7 +76,9 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody()
+            <div class="container text-center bg-white row px-3 py-3 mb-1 d-block">
+                @RenderBody()
+            </div>
         </main>
     </div>
 
@@ -90,7 +93,7 @@
         </div>
     </div>
 
-    <footer class="border-top footer text-muted box-shadow bg-white">
+    <footer class="border-top footer text-muted box-shadow bg-white mt-1 d-block">
         <div class="container">
             &copy; 2025 - TrendyClothes
         </div>

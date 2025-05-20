@@ -4,21 +4,21 @@ namespace Backend.DTO.User.Registration {
     public class RegistrationUserDTO {
         [Required (AllowEmptyStrings = false, ErrorMessage = "El nombre es requerido.")]
         [MaxLength (50, ErrorMessage = "El nombre es muy largo.")]
-        [RegularExpression (@"^[A-Z][a-z]+$",
-            ErrorMessage = "Debe iniciar con mayúscula y solo contener letras.")]
+        [RegularExpression (@"^[A-ZÁÉÍÓÚ][a-záéíóúñ]+$",
+    ErrorMessage = "Debe iniciar con mayúscula y solo contener letras.")]
         public required string firstName {
             get; set;
         }
         [Required (AllowEmptyStrings = false, ErrorMessage = "El apellido paterno es requerido.")]
         [MaxLength (50, ErrorMessage = "El apellido paterno es muy largo.")]
-        [RegularExpression (@"^[A-Z][a-z]+$",
+        [RegularExpression (@"^[A-ZÁÉÍÓÚ][a-záéíóúñ]+$",
             ErrorMessage = "Debe iniciar con mayúscula y solo contener letras.")]
         public required string middleName {
             get; set;
         }
         [Required (AllowEmptyStrings = false, ErrorMessage = "El apellido materno es requerido.")]
         [MaxLength (50, ErrorMessage = "El apellido materno es muy largo.")]
-        [RegularExpression (@"^[A-Z][a-z]+$",
+        [RegularExpression (@"^[A-ZÁÉÍÓÚ][a-záéíóúñ]+$",
             ErrorMessage = "Debe iniciar con mayúscula y solo contener letras.")]
         public required string lastName {
             get; set;
@@ -31,22 +31,25 @@ namespace Backend.DTO.User.Registration {
             get; set;
         }
         [Required (AllowEmptyStrings = false, ErrorMessage = "El correo es requerido.")]
-        [EmailAddress (ErrorMessage = "Formato de correo inválido.")]
         [MaxLength (100, ErrorMessage = "El correo electrónico muy largo.")]
+        [EmailAddress (ErrorMessage = "Formato de correo inválido.")]
         public required string email {
             get; set;
         }
-        [Required (AllowEmptyStrings = false, ErrorMessage = "La lada número de teléfono es requerida.")]
-        [RegularExpression (@"^\+[0-9]{1,4}$", ErrorMessage = "La lada del teléfono es inválida.")]
+        [Required (AllowEmptyStrings = false, ErrorMessage = "La lada de teléfono es requerida.")]
+        [StringLength (5, MinimumLength = 2, ErrorMessage = "La lada debe tener de 1 a 4 números.")]
+        [RegularExpression (@"^\+\d{1,4}$", ErrorMessage = "La lada del teléfono es inválida.")]
         public required string areaCode {
             get; set;
         }
         [Required (AllowEmptyStrings = false, ErrorMessage = "El número de teléfono es requerido.")]
-        [Phone (ErrorMessage = "El formato del número de teléfono es inválido.")]
+        [RegularExpression (@"^\d{10}$", ErrorMessage = "El número de teléfono debe tener 10 dígitos.")]
+        [Phone (ErrorMessage = "El número de teléfono es inválido.")]
         public required string phoneNumber {
             get; set;
         }
         [Required (AllowEmptyStrings = false, ErrorMessage = "La contraseña es requerido.")]
+        [StringLength (200, MinimumLength = 8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres.")]
         [RegularExpression (@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,200}$",
             ErrorMessage = "La contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial.")]
         public required string password {

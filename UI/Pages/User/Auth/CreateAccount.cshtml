@@ -4,59 +4,57 @@
     ViewData["Title"] = "Crear cuenta";
 }
 
-<div class="container bg-white px-4 py-4">
-    <h1 class="text-center mb-3">Crear cuenta</h1>
-    <div class="container text-center">
-        <form method="post" id="signInForm" novalidate>
-            <div class="row">
-                <div class="col-6 g-3">
-                    <div class="mb-3 mx-auto">
-                        <label asp-for="newUserDTO.firstName" class="form-label">Nombre:</label>
-                        <input asp-for="newUserDTO.firstName" id="InputFirstName" class="form-control" autocomplete="none" />
-                        <span class="text-danger" asp-validation-for="newUserDTO.firstName"></span>
-                    </div>
-                    <div class="mb-3 mx-auto">
-                        <label asp-for="newUserDTO.middleName" class="form-label">Apellido paterno:</label>
-                        <input asp-for="newUserDTO.middleName" id="InputMiddleName" class="form-control" autocomplete="none" />
-                        <span class="text-danger" asp-validation-for="newUserDTO.middleName"></span>
-                    </div>
-                    <div class="mb-3 mx-auto">
-                        <label asp-for="newUserDTO.lastName" class="form-label">Apellido materno:</label>
-                        <input asp-for="newUserDTO.lastName" id="InputLastName" class="form-control" autocomplete="none" />
-                        <span class="text-danger" asp-validation-for="newUserDTO.lastName"></span>
-                    </div>
-                    <div class="mb-3 mx-auto">
-                        <label asp-for="newUserDTO.username" class="form-label">Nombre de usuario:</label>
-                        <input asp-for="newUserDTO.username" id="InputUsername" class="form-control" autocomplete="none" />
-                        <span class="text-danger" asp-validation-for="newUserDTO.username"></span>
-                    </div>
+<h1 class=" mb-3">Crear cuenta</h1>
+<div class="container">
+    <form method="post" id="signInForm" novalidate class="text-">
+        <div class="row">
+            <div class="col-6 text-start">
+                <div class="mb-3 mx-auto">
+                    <label asp-for="newUserDTO.firstName" class="form-label">Nombre:</label>
+                    <input asp-for="newUserDTO.firstName" id="InputFirstName" class="form-control" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="newUserDTO.firstName"></span>
                 </div>
-                <div class="col-6 g-3">
-                    <div class="mb-3 mx-auto">
-                        <label asp-for="newUserDTO.email" class="form-label">Correo electrónico:</label>
-                        <input asp-for="newUserDTO.email" id="InputEmail" class="form-control" type="email" autocomplete="none" />
-                        <span class="text-danger" asp-validation-for="newUserDTO.email"></span>
-                    </div>
-                    <div class="mb-3 mx-auto">
-                        <label asp-for="newUserDTO.areaCode" class="form-label">Lada nacional:</label>
-                        <input asp-for="newUserDTO.areaCode" id="InputAreaCode" class="form-control" type="text" autocomplete="none" />
-                        <span class="text-danger" asp-validation-for="newUserDTO.areaCode"></span>
-                    </div>
-                    <div class="mb-3 mx-auto">
-                        <label asp-for="newUserDTO.phoneNumber" class="form-label">Número de teléfono:</label>
-                        <input asp-for="newUserDTO.phoneNumber" id="InputPhoneNumber" class="form-control" type="text" autocomplete="none" />
-                        <span class="text-danger" asp-validation-for="newUserDTO.phoneNumber"></span>
-                    </div>
-                    <div class="mb-3 mx-auto">
-                        <label asp-for="newUserDTO.password" class="form-label">Contraseña segura:</label>
-                        <input asp-for="newUserDTO.password" id="InputPassword" class="form-control" type="text" autocomplete="none" />
-                        <span class="text-danger" asp-validation-for="newUserDTO.password"></span>
-                    </div>
+                <div class="mb-3 mx-auto">
+                    <label asp-for="newUserDTO.middleName" class="form-label">Apellido paterno:</label>
+                    <input asp-for="newUserDTO.middleName" id="InputMiddleName" class="form-control" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="newUserDTO.middleName"></span>
+                </div>
+                <div class="mb-3 mx-auto">
+                    <label asp-for="newUserDTO.lastName" class="form-label">Apellido materno:</label>
+                    <input asp-for="newUserDTO.lastName" id="InputLastName" class="form-control" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="newUserDTO.lastName"></span>
+                </div>
+                <div class="mb-3 mx-auto">
+                    <label asp-for="newUserDTO.username" class="form-label">Nombre de usuario:</label>
+                    <input asp-for="newUserDTO.username" id="InputUsername" class="form-control" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="newUserDTO.username"></span>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Registrarse</button>
-        </form>
-    </div>
+            <div class="col-6 text-start">
+                <div class="mb-3 mx-auto">
+                    <label asp-for="newUserDTO.email" class="form-label">Correo electrónico:</label>
+                    <input asp-for="newUserDTO.email" id="InputEmail" class="form-control" type="email" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="newUserDTO.email"></span>
+                </div>
+                <div class="mb-3 mx-auto">
+                    <label asp-for="newUserDTO.areaCode" class="form-label">Lada nacional:</label>
+                    <input asp-for="newUserDTO.areaCode" id="InputAreaCode" class="form-control" type="text" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="newUserDTO.areaCode"></span>
+                </div>
+                <div class="mb-3 mx-auto">
+                    <label asp-for="newUserDTO.phoneNumber" class="form-label">Número de teléfono:</label>
+                    <input asp-for="newUserDTO.phoneNumber" id="InputPhoneNumber" class="form-control" type="text" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="newUserDTO.phoneNumber"></span>
+                </div>
+                <div class="mb-3 mx-auto">
+                    <label asp-for="newUserDTO.password" class="form-label">Contraseña segura:</label>
+                    <input asp-for="newUserDTO.password" id="InputPassword" class="form-control" type="text" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="newUserDTO.password"></span>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+    </form>
 </div>
 
 <script type="module" src="~/js/User/Registration.js"></script>

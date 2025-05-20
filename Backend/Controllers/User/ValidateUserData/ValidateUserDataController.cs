@@ -27,9 +27,7 @@ namespace Backend.Controllers.User.ValidateUserData {
                     return Ok (new {
                         exists = true
                     });
-                return NotFound (new {
-                    exists = false
-                });
+                return NoContent ();
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);
             }
@@ -47,29 +45,25 @@ namespace Backend.Controllers.User.ValidateUserData {
                     return Ok (new {
                         exists = true
                     });
-                return NotFound (new {
-                    exists = false
-                });
+                return NoContent ();
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);
             }
         }
 
         [HttpGet ("VerifyExistencePhoneNumber")]
-        public async Task<IActionResult> GetExistsEmail ([FromQuery] PhoneNumberDTO phoneNumberDTO) {
+        public async Task<IActionResult> GetExistsPhoneNumber ([FromQuery] PhoneNumberDTO phoneNumberDTO) {
             try {
                 if (!ModelState.IsValid || string.IsNullOrEmpty (phoneNumberDTO.areaCode) || string.IsNullOrEmpty (phoneNumberDTO.phoneNumber))
                     return BadRequest ($"Número de teléfono no válido. {ModelState}");
                 MessageResponse<bool> response = await _validateDataService.VerifyExistsPhoneNumber (phoneNumberDTO.areaCode, phoneNumberDTO.phoneNumber);
-                if(response.isError)
+                if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
                 if (response.dataRetrieved)
                     return Ok (new {
                         exists = true
                     });
-                return NotFound (new {
-                    exists = false
-                });
+                return NoContent ();
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);
             }
