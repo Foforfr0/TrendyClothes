@@ -1,4 +1,4 @@
-﻿namespace UI.DTO {
+﻿namespace UI_ASP.DTO {
     public class ApiBody<T> {
         public object? contentType {
             get; set;

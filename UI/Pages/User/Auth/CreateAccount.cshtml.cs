@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using UI.DTO.User.Registration;
+using UI_ASP.DTO.User.Registration;
 
-namespace UI.Pages.User.Auth {
+namespace UI_ASP.Pages.User.Auth {
     public class CreateAccountModel : PageModel {
         [BindProperty]
         public required RegistrationUserDTO newUserDTO {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UI.DTO.User.Auth {
+namespace UI_ASP.DTO.User.Auth {
     public class LoginDTO {
         [Required (ErrorMessage = "El usuario es requerido.")]
         public required string username {

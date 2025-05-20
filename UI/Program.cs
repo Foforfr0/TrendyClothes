@@ -1,9 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
-using System.Security.Claims;
-using System.Text;
 
 DotNetEnv.Env.Load ();
 

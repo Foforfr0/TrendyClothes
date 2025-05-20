@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UI\UI.csproj" />
+    <ProjectReference Include="..\UI\UI_ASP.csproj" />
   </ItemGroup>
 
   <ItemGroup>

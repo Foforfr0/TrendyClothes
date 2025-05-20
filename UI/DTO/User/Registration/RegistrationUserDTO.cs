@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UI.DTO.User.Registration {
+namespace UI_ASP.DTO.User.Registration {
     public class RegistrationUserDTO {
         [Required (AllowEmptyStrings = false, ErrorMessage = "El nombre es requerido.")]
         [MaxLength (50, ErrorMessage = "El nombre es muy largo.")]

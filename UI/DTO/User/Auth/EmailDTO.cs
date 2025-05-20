@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UI.DTO.User.Auth {
+namespace UI_ASP.DTO.User.Auth {
     public class EmailDTO {
         [Required (ErrorMessage = "El correo es requerido.")]
         [EmailAddress (ErrorMessage = "Correo inválido.")]

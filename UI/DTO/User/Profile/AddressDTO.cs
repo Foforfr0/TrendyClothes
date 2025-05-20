@@ -1,4 +1,4 @@
-﻿namespace UI.DTO.User.Profile {
+﻿namespace UI_ASP.DTO.User.Profile {
     public class AddressDTO {
         public string? numberExterior {
             get; set;

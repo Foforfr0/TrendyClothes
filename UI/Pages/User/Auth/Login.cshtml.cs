@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using UI.DTO.User.Auth;
+using UI_ASP.DTO.User.Auth;
 
-namespace UI.Pages.User.Auth {
+namespace UI_ASP.Pages.User.Auth {
     public class LoginModel : PageModel {
         [BindProperty]
         public required LoginDTO loginDTO {
