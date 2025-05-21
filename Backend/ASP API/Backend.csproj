@@ -27,10 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UI\UI_ASP.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Folder Include="Controllers\User\Product\" />
     <Folder Include="Entities\" />
   </ItemGroup>
 

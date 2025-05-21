@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace UI_ASP.Pages.Products {
-    public class ViewDetailsModel : PageModel {
+namespace UI_ASP.Pages.Product {
+    public class EditProductModel : PageModel {
         public void OnGet () {
         }
     }

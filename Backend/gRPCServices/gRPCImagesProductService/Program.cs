@@ -1,4 +1,4 @@
-using ProductImageService.Services;
+using gRPCImagesProductService.Services;
 
 var builder = WebApplication.CreateBuilder (args);
 

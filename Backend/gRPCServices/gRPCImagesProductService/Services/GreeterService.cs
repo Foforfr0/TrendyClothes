@@ -1,7 +1,6 @@
 using Grpc.Core;
-using ProductImageService;
 
-namespace ProductImageService.Services {
+namespace gRPCImagesProductService.Services {
     public class GreeterService : Greeter.GreeterBase {
         private readonly ILogger<GreeterService> _logger;
         public GreeterService (ILogger<GreeterService> logger) {
