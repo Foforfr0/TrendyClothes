@@ -21,6 +21,7 @@ html {
 body {
     margin-bottom: 60px;
     background-color: #EBEBEB;
+    overscroll-behavior-y: auto;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {

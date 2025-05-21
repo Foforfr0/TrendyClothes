@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="~/css/pages/Products.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/UI_ASP.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 90dvh;">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -74,13 +74,20 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            <div class="container text-center bg-white row px-3 py-3 mb-1 d-block">
+
+    <div class="container text-center" style="flex-grow: 1; padding: 0px; overflow: auto; min-height: 100%">
+        <main role="main" class="h-100 p-0 m-0 container text-center" style="min-height: 100%">
+            <div class="container text-center bg-white row px-3 py-3 d-block h-100" style="min-height: 72dvh;">
                 @RenderBody()
             </div>
         </main>
     </div>
+
+    <footer class="border-top footer text-muted box-shadow mt-3 bg-white d-block" style="flex-shrink: 0;">
+        <div class="container">
+            &copy; 2025 - TrendyClothes
+        </div>
+    </footer>
 
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div class="toast-container position-static">
@@ -93,12 +100,6 @@
         </div>
     </div>
 
-    <footer class="border-top footer text-muted box-shadow bg-white mt-1 d-block">
-        <div class="container">
-            &copy; 2025 - TrendyClothes
-        </div>
-    </footer>
-    <script>console.log('Inicio de agregación de scripts.');</script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -107,8 +108,6 @@
     <script>
         window.BACKEND_URL = '@Context.Items["BACKEND_URL"]';
     </script>
-    <script>console.log('Fin de agregación de scripts.');</script>
-
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
