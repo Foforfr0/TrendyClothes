@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Backend.Entities;
+namespace ImagesProductService.Entities;
 
 public partial class PhotosProduct
 {

@@ -31,6 +31,10 @@ builder.Services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationS
     });
 builder.Services.AddAuthorization ();
 builder.Services.AddControllers (); // Para API
+builder.Services.AddGrpcClient<ImageProduct.ImageProductService.ImageProductServiceClient> (options => {
+    options.Address = new Uri ("https://localhost:5101"); // Dirección de tu servidor gRPC
+});
+
 
 
 WebApplication? app = builder.Build ();

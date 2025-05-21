@@ -93,6 +93,7 @@ CREATE TABLE PhotosProduct (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Photo VARBINARY(MAX) NOT NULL,
     ProductId INT NOT NULL,
+    Mime VARCHAR(25) NOT NULL
 
     CONSTRAINT FK_PhotoProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id)
 );
@@ -151,33 +152,50 @@ INSERT INTO User_Address (UserId, AddressId, IsActive) VALUES
 
 -- CategoriesProduct
 INSERT INTO CategoriesProduct (Category) VALUES 
-('Playeras'),
-('Pantalones'),
-('Blusas');
+('Pantalón'), ('Playera'), ('Short'), ('Ropa interior'), 
+('Accesorios'), ('Joyería'), ('Gorra'), ('Calzado'), ('Suéter'),
+('Chamarra');
 
 -- TypesProduct
 INSERT INTO TypesProduct (Type) VALUES 
-('New'),
-('Used');
+('Nuevo'),
+('Usado');
 
 -- StatusesProduct
 INSERT INTO StatusesProduct (Status) VALUES 
-('Available'),
-('Paused'),
-('Sold out');
+('Activo'), ('Pausado');
 
 -- Products
 INSERT INTO Products (Name, Price, Discount, NumberSold, AverageStars, Description, StockAvailable, SellerId, CategoryId, TypeId, StatusId) VALUES 
-('Playera Blanca',      199.99, 0, 15, 4.5,     'Playera 100% algodón',     10, 2, 1, 1, 1),
-('Pantalón Jeans Azul', 499.50, 50, 30, 4.0,    'Jeans de mezclilla',       25, 2, 2, 2, 1),
-('Blusa Estampada',     349.00, 20, 10, 3.5,    'Blusa con diseño floral',  5, 3, 3, 1, 2),
-('Blusa negra',         123.30, 0, 10, 3.5,     'Blusa de color negro',     5, 3, 3, 1, 2);
+('Tenis blanco',        199.99, 0, 15, 4.5,     'Tenis blanco 1.',          10, 3, 8, 1, 1),
+('Tenis converse',      299.99, 10,16, 4.3,     'Tenis converse mezclilla.',11, 3, 8, 1, 1),
+('Tenis rojos',         399.99, 11,14, 4.0,     'Tenis rojos 3.',           21, 3, 8, 1, 1),
+('Pantalón mezclilla',  150.99, 0, 1, 5.0,      'Pantalón mezclilla 1.',    12, 3, 1, 1, 1),
+('Pantalón blanco',     151.99, 2, 100, 4.2,    'Pantalón blamco.',         13, 3, 1, 1, 1),
+('Pantalón mezclilla',  152.99, 3, 22, 3.0,     'Pantalón mezclilla 2.',    14, 3, 1, 1, 1),
+('Lentes',              52.99,  0, 2,  3.0,     'Lentes bonitos.',          15, 3, 5, 1, 1),
+('Playera negra',       100.99, 0, 2,  3.0,     'Playera negra 1.',         16, 4, 2, 1, 1),
+('Playera blanca',      100.99, 0, 2,  3.0,     'Playera blanca.',          17, 4, 2, 1, 1),
+('Playera negra',       100.99, 0, 2,  3.0,     'Playera negra 2.',         18, 4, 2, 1, 1),
+('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 1.',         18, 4, 4, 1, 1),
+('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 2.',         18, 4, 4, 1, 1),
+('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 3.',         18, 4, 4, 1, 1);
 
 -- PhotosProduct (solo insert de ejemplo sin foto real, usa NULL o CONVERT si deseas agregar imágenes reales)
-INSERT INTO PhotosProduct (Photo, ProductId) VALUES 
-(CAST('0x' AS VARBINARY(MAX)), 1),
-(CAST('0x' AS VARBINARY(MAX)), 2),
-(CAST('0x' AS VARBINARY(MAX)), 3);
+INSERT INTO PhotosProduct (Photo, ProductId, Mime) VALUES 
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 1.jpg', SINGLE_BLOB) AS Photo), 1, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 2.jpg', SINGLE_BLOB) AS Photo), 2, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 3.jpg', SINGLE_BLOB) AS Photo), 3, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Pantalones 1.jpg', SINGLE_BLOB) AS Photo), 4, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Pantalones 2.jpg', SINGLE_BLOB) AS Photo), 5, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Pantalones 3.jpg', SINGLE_BLOB) AS Photo), 6, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Accesorio 1.jpg', SINGLE_BLOB) AS Photo), 7, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Playera 1.jpg', SINGLE_BLOB) AS Photo), 8, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Playera 2.jpg', SINGLE_BLOB) AS Photo), 9, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Playera 3.jpg', SINGLE_BLOB) AS Photo), 10, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 1.jpg', SINGLE_BLOB) AS Photo), 11, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 2.jpg', SINGLE_BLOB) AS Photo), 12, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 3.jpg', SINGLE_BLOB) AS Photo), 13, 'image/jpg');
 
 -- QAProduct
 INSERT INTO QAProduct (Stars, Description, Date, ProductId, UserId) VALUES 

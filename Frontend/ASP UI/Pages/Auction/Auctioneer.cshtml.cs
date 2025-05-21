@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace UI_ASP.Pages.Auction {
+namespace WebPage.Pages.Auction {
     public class AuctioneerModel : PageModel {
         public void OnGet () {
         }

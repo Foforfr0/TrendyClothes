@@ -1,4 +1,4 @@
-﻿namespace UI_ASP.DTO {
+﻿namespace WebPage.DTO {
     public class ApiResponse<T> {
         public string? message {
             get; set;

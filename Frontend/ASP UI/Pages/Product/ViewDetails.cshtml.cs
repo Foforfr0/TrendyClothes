@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace UI_ASP.Pages.Product {
+namespace WebPage.Pages.Product {
     public class ViewDetailsModel : PageModel {
         public void OnGet () {
         }

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using UI_ASP.DTO.User.Profile;
+using WebPage.DTO.User.Profile;
 
-namespace UI_ASP.Pages.User.Profile {
+namespace WebPage.Pages.User.Profile {
     public class ViewMyProfileModel : PageModel {
         [BindProperty]
         public MyPersonalInformationDTO? currentUser { get; set; } = new MyPersonalInformationDTO ();

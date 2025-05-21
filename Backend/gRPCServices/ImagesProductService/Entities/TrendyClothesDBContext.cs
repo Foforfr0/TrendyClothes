@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Entities;
+namespace ImagesProductService.Entities;
 
 public partial class TrendyClothesDBContext : DbContext
 {
