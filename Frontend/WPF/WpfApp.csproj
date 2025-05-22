@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Images\" />
     <Folder Include="Services\Implementations\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Utils\" />
@@ -23,6 +22,14 @@
     <Resource Include="Resources\Icons\icon-search.png" />
 	<Resource Include="Resources\Icons\icon-user.png" />
 	<Resource Include="Resources\Icons\icon-shopping-cart.png" />
+	<Resource Include="Resources\Images\CarouselExample1.jpg" />
+	<Resource Include="Resources\Images\CarouselExample2.jpg" />
+	<Resource Include="Resources\Images\CarouselExample3.jpg" />
+	<Resource Include="Resources\Images\CarouselExample4.jpg" />
+	<Resource Include="Resources\Images\CarouselExample5.jpg" />
+	<Resource Include="Resources\Images\CarouselExample6.jpg" />
+	<Resource Include="Resources\Images\CarouselExample7.jpg" />
+	<Resource Include="Resources\Images\CarouselExample8.jpg" />
 	<Resource Include="Resources\Images\logo-business.jpg" />
 	<Resource Include="Resources\Images\image-empty.jpg" />
   </ItemGroup>

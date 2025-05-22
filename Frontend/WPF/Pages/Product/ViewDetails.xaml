@@ -10,13 +10,13 @@
     <DockPanel>
         <components:NavigationBar Height="20" DockPanel.Dock="Top"/>
         <Grid MinHeight="575" Background="#FFFFFF">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" MaxWidth="1000">
                 <Image Source="/Resources/Images/image-empty.jpg"  Width="350" Margin="10" VerticalAlignment="Top"/>
 
-                <StackPanel Orientation="Vertical" Width="620">
+                <StackPanel Orientation="Vertical" Width="610" Margin="10 0">
                     <Label Content="Nombre de producto" Style="{StaticResource HeaderText}"/>
                     <StackPanel Orientation="Horizontal" >
-                        <StackPanel Margin="0 0 345 0">
+                        <StackPanel Margin="0 0 320 0">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Stock disponible: " FontWeight="Bold" FontSize="16"/>
                                 <Label Content="#" FontSize="16"/>
@@ -37,7 +37,7 @@
                         </StackPanel>
                     </StackPanel>
                     <Label Content="Descripción: " FontWeight="Bold" FontSize="20"/>
-                    <TextBlock Text="Ejemplo de descripción" TextWrapping="Wrap" MaxWidth="620"/>
+                    <TextBlock Text="Ejemplo de descripción" FontSize="16" TextWrapping="Wrap" MaxWidth="620"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

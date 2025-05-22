@@ -13,6 +13,44 @@
             <Grid.Background>
                 <SolidColorBrush Color="#BEBEBE"/>
             </Grid.Background>
+            <StackPanel Margin="60 0">
+                <StackPanel Orientation="Horizontal">
+                    <components:CategorieCard
+                        CategoryName="Playeras"
+                        ImageSource="/Resources/Images/CarouselExample1.jpg"
+                        ShowCategoryClicked="ClickShowTShirt"/>
+                    <components:CategorieCard
+                        CategoryName="Suéteres"
+                        ImageSource="/Resources/Images/CarouselExample2.jpg"
+                        ShowCategoryClicked="ClickShowTShirt"/>
+                    <components:CategorieCard
+                        CategoryName="Pantalones"
+                        ImageSource="/Resources/Images/CarouselExample3.jpg"
+                        ShowCategoryClicked="ClickShowTShirt"/>
+                    <components:CategorieCard
+                        CategoryName="Tenis"
+                        ImageSource="/Resources/Images/CarouselExample4.jpg"
+                        ShowCategoryClicked="ClickShowTShirt"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <components:CategorieCard
+                        CategoryName="Gorras"
+                        ImageSource="/Resources/Images/CarouselExample5.jpg"
+                        ShowCategoryClicked="ClickShowTShirt"/>
+                    <components:CategorieCard
+                        CategoryName="Bolsas"
+                        ImageSource="/Resources/Images/CarouselExample6.jpg"
+                        ShowCategoryClicked="ClickShowTShirt"/>
+                    <components:CategorieCard
+                        CategoryName="Accesorios"
+                        ImageSource="/Resources/Images/CarouselExample7.jpg"
+                        ShowCategoryClicked="ClickShowTShirt"/>
+                    <components:CategorieCard
+                        CategoryName="Relojes"
+                        ImageSource="/Resources/Images/CarouselExample8.jpg"
+                        ShowCategoryClicked="ClickShowTShirt"/>
+                </StackPanel>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </Page>

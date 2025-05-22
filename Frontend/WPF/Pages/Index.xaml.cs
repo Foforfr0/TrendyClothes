@@ -8,5 +8,9 @@ namespace WpfApp.Pages {
         public Index () {
             InitializeComponent ();
         }
+
+        public void ClickShowTShirt (object sender, System.Windows.RoutedEventArgs e) {
+
+        }
     }
 }

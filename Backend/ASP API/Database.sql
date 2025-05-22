@@ -154,7 +154,7 @@ INSERT INTO User_Address (UserId, AddressId, IsActive) VALUES
 INSERT INTO CategoriesProduct (Category) VALUES 
 ('Pantalón'), ('Playera'), ('Short'), ('Ropa interior'), 
 ('Accesorios'), ('Joyería'), ('Gorra'), ('Calzado'), ('Suéter'),
-('Chamarra');
+('Chamarra'), ('Relojes');
 
 -- TypesProduct
 INSERT INTO TypesProduct (Type) VALUES 
