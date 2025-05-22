@@ -1,0 +1,55 @@
+﻿<Page x:Class="WpfApp.Pages.User.Auth.Login"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp.Pages.User.Auth" mc:Ignorable="d"
+      Title="Inicio de sesión">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#EADDD9" Offset="0"/>
+                <GradientStop Color="#E9E7D7" Offset="0.5"/>
+                <GradientStop Color="#DFE2DD" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <StackPanel x:Name="stackPanel_MainContainer" Width="650" Height="328" Background="#FFFFFF">
+            <StackPanel.Effect>
+                <DropShadowEffect ShadowDepth="5" Direction="320" Opacity="0.5" BlurRadius="5" Color="Black"/>
+            </StackPanel.Effect>
+            <StackPanel Margin="25 10" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Width="40" Source="/Resources/Images/logo-business.jpg"/>
+                    <Label Content="TrendyClothes                                Iniciar sesión" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel x:Name="stackPanel_FormLogin" Margin="15 0" Orientation="Horizontal">
+                <StackPanel Width="310" x:Name="FirstPartForm">
+                    <Label Content="Usuario:" FontSize="15" Margin="20 0"/>
+                    <TextBox x:Name="textBox_Username" Margin="20 0" Padding="2"/>
+                    <Label x:Name="label_ErrorFirstName" d:Content="Message Error" d:Visibility="Visible" Margin="20 0" Padding="0" Style="{StaticResource LabelErrorForm}"/>
+                    <Label Content="Contraseña:" FontSize="15" Margin="20 7 20 0" Padding="0"/>
+                    <TextBox x:Name="textBox_Password" Margin="20 0" Padding="2"/>
+                    <Label x:Name="label_ErrorPassword" d:Content="Message Error" d:Visibility="Visible" Margin="20 0" Style="{StaticResource LabelErrorForm}"/>
+                    <Button Content="Ingresar" Width="80" Margin="0 7 0 0" Padding="0 8" Background="#0B5ED7" Foreground="#FFFFFF"/>
+                    <StackPanel Orientation="Horizontal" Width="300" Margin="0 5 0 0">
+                        <TextBlock Margin="0 0 74 0">¿Olvidó su usuario?</TextBlock>
+                        <TextBlock>¿Olvidó su contraseña?</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Width="310" x:Name="SecondPartForm">
+                    <Label Content="Correo electrónico:" FontSize="15" Margin="20 0"/>
+                    <TextBox x:Name="textBox_Email" Margin="20 0" Padding="2"/>
+                    <Label x:Name="label_ErrorEmail" d:Content="Message Error" d:Visibility="Visible" Margin="20 0" Padding="0" Style="{StaticResource LabelErrorForm}"/>
+                    <Button Content="Enviar código" Width="110" Margin="0 7 0 0" Padding="0 8" Background="#0B5ED7" Foreground="#FFFFFF"/>
+                    <TextBlock Margin="0 4 0 0" HorizontalAlignment="Center">¿Olvidó su contraseña?</TextBlock>
+                    <Label Content="Código de verificación:" FontSize="15" Margin="20 7 20 0" Padding="0"/>
+                    <TextBox x:Name="textBox_TwoFactorCode" Margin="20 0" Padding="2"/>
+                    <Label x:Name="label_ErrorTwoFactorCode" d:Content="Message Error" d:Visibility="Visible" Margin="20 0" Padding="0" Style="{StaticResource LabelErrorForm}"/>
+                    <Button Content="Validar código" Click="CheckInformation" Width="110" Margin="0 7 0 0"  Padding="0 8" Background="#0B5ED7" Foreground="#FFFFFF"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

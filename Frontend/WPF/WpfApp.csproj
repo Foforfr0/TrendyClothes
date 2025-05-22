@@ -8,4 +8,23 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Images\" />
+    <Folder Include="Services\Implementations\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\icon-eye-close.png" />
+    <Resource Include="Resources\Icons\icon-eye-open.png" />
+    <Resource Include="Resources\Icons\icon-left-arrow.png" />
+    <Resource Include="Resources\Icons\icon-right-arrow.png" />
+    <Resource Include="Resources\Icons\icon-search.png" />
+	<Resource Include="Resources\Icons\icon-user.png" />
+	<Resource Include="Resources\Icons\icon-shopping-cart.png" />
+	<Resource Include="Resources\Images\logo-business.jpg" />
+	<Resource Include="Resources\Images\image-empty.jpg" />
+  </ItemGroup>
+
 </Project>

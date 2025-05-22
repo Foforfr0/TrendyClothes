@@ -1,9 +1,9 @@
 ﻿namespace ImagesProductService.DTO {
     public class OneImageDTO {
-        public byte[] image {
+        public required byte[] image {
             get; set;
         }
-        public string mime {
+        public required string mime {
             get; set;
         }
     }
