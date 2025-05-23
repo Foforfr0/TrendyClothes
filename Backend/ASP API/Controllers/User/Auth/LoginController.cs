@@ -103,7 +103,7 @@ namespace Backend.Controllers.User.Auth {
 
                 string jwtToken = "";
                 try {
-                    jwtToken = _manageJWTToken.GenerateToken (response.dataRetrieved?.username??"No logged in.", response.dataRetrieved.role);
+                    jwtToken = _manageJWTToken.GenerateToken (response.dataRetrieved?.username ?? "No logged in.", response.dataRetrieved.role);
                     Response.Cookies.Append ("jwtToken", jwtToken, new CookieOptions {
                         HttpOnly = true,
                         Secure = true,

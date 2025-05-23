@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using WpfApp.Pages.User.Auth;
+using WpfApp.Services.User.Auth;
 
 namespace WpfApp.Pages {
     /// <summary>
@@ -10,6 +11,7 @@ namespace WpfApp.Pages {
             InitializeComponent ();
 
             MainFrame.Navigate (new Login ());
+            //MainFrame.Navigate (new Login (_loginService));
         }
     }
 }
