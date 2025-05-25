@@ -3,7 +3,7 @@
         public string? message {
             get; set;
         }
-        public ApiBody<T>? body {
+        public T? body {
             get; set;
         }
     }

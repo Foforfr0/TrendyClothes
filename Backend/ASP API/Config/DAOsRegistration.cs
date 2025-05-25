@@ -1,4 +1,5 @@
-﻿using Backend.DAO.User;
+﻿using Backend.DAO.Product;
+using Backend.DAO.User;
 
 namespace Backend.Config {
     public static class DAOsRegistration {
@@ -7,6 +8,8 @@ namespace Backend.Config {
             services.AddScoped<AuthDAO> ();
             services.AddScoped<ProfileDAO> ();
             services.AddScoped<RegistrationDAO> ();
+
+            services.AddScoped<ConsultDAO> ();
         }
     }
 }

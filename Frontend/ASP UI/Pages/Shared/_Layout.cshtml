@@ -5,22 +5,21 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-mx">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/components/Navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pages/Home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pages/Login.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pages/Products.css" asp-append-version="true" />
-    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />    
 </head>
-<body style="display: flex; flex-direction: column; min-height: 90dvh;">
+<body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -46,11 +45,8 @@
                     </ul>
                 </div>
                 <div class="input-group search-box">
-                    <!-- TODO -->
-                    <span class="input-group-text">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" class="form-control" placeholder="Buscar...">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos...">
                 </div>
                 <a class="nav-link text-dark me-3" asp-area="" asp-page="/Index">
                     <img src="~/images/shoppingCart.png" class="profile-img" alt="Perfil" />
@@ -75,15 +71,17 @@
         </nav>
     </header>
 
-    <div class="container text-center" style="flex-grow: 1; padding: 0px; overflow: auto; min-height: 100%">
-        <main role="main" class="h-100 p-0 m-0 container text-center" style="min-height: 100%">
-            <div class="container text-center bg-white row px-3 py-3 d-block h-100" style="min-height: 72dvh;">
-                @RenderBody()
+    <div class="container text-center mb-2">
+        <main role="main">
+            <div class="container text-center px-2 pt-2 pb-3 bg-white row d-flex" style="min-height: 72dvh; height: auto;">
+                <div class="col-12">
+                    @RenderBody()
+                </div>
             </div>
         </main>
     </div>
 
-    <footer class="border-top footer text-muted box-shadow mt-3 bg-white d-block" style="flex-shrink: 0;">
+    <footer class="footer border-top text-muted box-shadow bg-white d-block align-content-center mb-0" style="min-height: 10dvh;">
         <div class="container">
             &copy; 2025 - TrendyClothes
         </div>
@@ -105,6 +103,7 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
     <script type="module" src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/Layout.js" asp-append-version="true"></script>
     <script>
         window.BACKEND_URL = '@Context.Items["BACKEND_URL"]';
     </script>

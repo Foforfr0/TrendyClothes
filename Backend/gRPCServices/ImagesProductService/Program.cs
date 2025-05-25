@@ -7,7 +7,6 @@ WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
 
 // === Add Services ===
 builder.Services.AddGrpc ();
-
 builder.Services.AddCors (options => {
     options.AddPolicy ("FromFrontend", policy => {
         policy.WithOrigins ("https://localhost:8081")
@@ -32,6 +31,7 @@ builder.Services.AddDbContext<TrendyClothesDBContext> (options =>
 var app = builder.Build ();
 
 // === Middleware ===
+app.UseHttpsRedirection ();
 app.UseCors ("FromFrontend");
 
 // Muestra información básica si acceden vía HTTP

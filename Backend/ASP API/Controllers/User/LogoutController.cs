@@ -3,7 +3,7 @@ using Backend.Services.Intefaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controllers.User.Auth {
+namespace Backend.Controllers.User {
     [Authorize]
     [ApiController]
     [Route ("api/User/[controller]")]

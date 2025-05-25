@@ -5,6 +5,7 @@ DotNetEnv.Env.Load ();
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
 string backendUrl = builder.Configuration["BackendSettings:BackendUrl"] ?? "https://localhost:5001";
+string gRPCServer = builder.Configuration["BackendSettings:gRPCServer"] ?? "https://localhost:5002";;
 
 CultureInfo currentCulture = new CultureInfo ("es-MX");
 CultureInfo.DefaultThreadCurrentCulture = currentCulture;
@@ -32,7 +33,12 @@ builder.Services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationS
 builder.Services.AddAuthorization ();
 builder.Services.AddControllers (); // Para API
 builder.Services.AddGrpcClient<ImageProduct.ImageProductService.ImageProductServiceClient> (options => {
-    options.Address = new Uri ("https://localhost:5101"); // Dirección de tu servidor gRPC
+    options.Address = new Uri (gRPCServer); // Dirección de tu servidor gRPC
+}).ConfigurePrimaryHttpMessageHandler (() => {
+    return new HttpClientHandler {
+        // Esto es para ignorar errores de certificado solo si usas HTTPS con un cert autofirmado (desarrollo).
+        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
 });
 
 

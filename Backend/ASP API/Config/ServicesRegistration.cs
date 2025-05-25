@@ -1,4 +1,6 @@
-﻿using Backend.Services.Implements.User;
+﻿using Backend.Services.Implements.Product;
+using Backend.Services.Implements.User;
+using Backend.Services.Intefaces.Product;
 using Backend.Services.Intefaces.User;
 
 namespace Backend.Config {
@@ -8,6 +10,8 @@ namespace Backend.Config {
             services.AddScoped<IProfileService, ProfileService> ();
             services.AddScoped<IRegistrationService, RegistrationService> ();
             services.AddScoped<IValidateDataService, ValidateDataService> ();
+
+            services.AddScoped<IConsultService, ConsultService> ();
         }
     }
 }

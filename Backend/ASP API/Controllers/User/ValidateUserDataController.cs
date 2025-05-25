@@ -3,7 +3,7 @@ using Backend.DTO.User.ValidateUserData;
 using Backend.Services.Intefaces.User;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controllers.User.ValidateUserData {
+namespace Backend.Controllers.User {
     [ApiController]
     [Route ("api/User/[controller]")]
     public class ValidateUserDataController : ControllerBase {

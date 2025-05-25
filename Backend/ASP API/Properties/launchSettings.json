@@ -43,7 +43,6 @@
       "distributionName": ""
     }
   },
-  "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -51,5 +50,6 @@
       "applicationUrl": "https://localhost:5001/",
       "sslPort": 5001
     }
-  }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
 }

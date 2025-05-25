@@ -77,7 +77,7 @@ CREATE TABLE Products (
     NumberSold INT NOT NULL,
     AverageStars DECIMAL(2,1),
     "Description" TEXT,
-    StockAvailable INT,
+    StockAvailable INT NOT NULL,
     SellerId INT NOT NULL,
     CategoryId INT NOT NULL,
     TypeId INT NOT NULL,
@@ -220,3 +220,5 @@ SELECT * FROM Users
 LEFT JOIN RolesUser ON RolesUser.Id = Users.RoleId
 LEFT JOIN User_Address ON User_Address.UserId = Users.Id
 LEFT JOIN Addresses ON User_Address.AddressId = Addresses.Id;
+
+SELECT * FROM Products;

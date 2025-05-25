@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\User\Product\" />
     <Folder Include="Entities\" />
   </ItemGroup>
 

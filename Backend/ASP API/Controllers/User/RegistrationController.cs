@@ -4,7 +4,7 @@ using Backend.Services.Intefaces.User;
 using Backend.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controllers.User.Registration {
+namespace Backend.Controllers.User {
     [ApiController]
     [Route ("api/User/[controller]")]
     public class RegistrationController : Controller {

@@ -5,7 +5,7 @@ using Backend.Services.Intefaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controllers.User.Profile {
+namespace Backend.Controllers.User {
     [ApiController]
     [Route ("api/User/[controller]")]
     [Authorize]
@@ -24,9 +24,8 @@ namespace Backend.Controllers.User.Profile {
         [HttpGet ("GetPersonalData")]
         public async Task<IActionResult> GetMyData ([FromQuery] string? username) {
             try {
-                if (string.IsNullOrEmpty (username)) {
+                if (string.IsNullOrEmpty (username))
                     username = User.Identity?.Name;
-                }
                 if (string.IsNullOrEmpty (username))
                     return BadRequest ("Nombre de usuario no encontrado.");
                 MessageResponse<MyPersonalInformationDTO> response = await _profileService.GetMyDataInformation (username);
@@ -49,11 +48,10 @@ namespace Backend.Controllers.User.Profile {
         [HttpGet ("GetAddresses")]
         public async Task<IActionResult> GetMyAddresses ([FromQuery] string? username) {
             try {
-                if (string.IsNullOrEmpty (username)) {
-                    username = User.Identity?.Name;
-                }
                 if (string.IsNullOrEmpty (username))
-                    return BadRequest ("Nombre de usuario no encontrado."+ User.Identity?.Name?? "Usuario nulo.");
+                    username = User.Identity?.Name;
+                if (string.IsNullOrEmpty (username))
+                    return BadRequest ("Nombre de usuario no encontrado." + User.Identity?.Name ?? "Usuario nulo.");
                 MessageResponse<List<AddressDTO>> response = await _profileService.GetAddressesAsync (username);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
@@ -61,7 +59,7 @@ namespace Backend.Controllers.User.Profile {
                     return NotFound (response.message);
                 return Ok (new {
                     response.message,
-                    body = new JsonResult (response.dataRetrieved)
+                    body = response.dataRetrieved
                 });
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);

@@ -10,7 +10,6 @@ namespace Backend.DTO.User.ValidateUserData {
         }
         [Required (AllowEmptyStrings = false, ErrorMessage = "El número de teléfono es requerido.")]
         [RegularExpression (@"^\d{10}$", ErrorMessage = "El número de teléfono debe tener 10 dígitos.")]
-        [Phone (ErrorMessage = "El número de teléfono es inválido.")]
         public required string phoneNumber {
             get; set;
         }

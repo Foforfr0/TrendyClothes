@@ -4,7 +4,7 @@ using Backend.DTO.User.Auth;
 using Backend.Services.Intefaces.User;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controllers.User.Auth {
+namespace Backend.Controllers.User {
     [ApiController]
     [Route ("api/User/[controller]")]
     public class LoginController : ControllerBase {
@@ -23,7 +23,7 @@ namespace Backend.Controllers.User.Auth {
             try {
                 if (!ModelState.IsValid || loginDTO == null || loginDTO.username.Length <= 0 || loginDTO.password.Length <= 0)
                     return BadRequest ($"Datos recibidos inválidos. {ModelState}");
-                MessageResponse<LoginDTO> response = await _authService.PostLoginAsync (loginDTO);
+                MessageResponse<LoginDTO> response = await _authService.ValidateLoginAsync (loginDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
                 if (response.dataRetrieved == null)
@@ -32,7 +32,7 @@ namespace Backend.Controllers.User.Auth {
                     });
                 return Ok (new {
                     response.message,
-                    body = new JsonResult (response.dataRetrieved)
+                    body = response.dataRetrieved
                 });
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);
@@ -44,7 +44,7 @@ namespace Backend.Controllers.User.Auth {
             try {
                 if (!ModelState.IsValid || emailDTO == null || emailDTO.username.Length <= 0 || emailDTO.email.Length <= 0)
                     return BadRequest ($"Datos recibidos inválidos. {ModelState}");
-                MessageResponse<EmailDTO> response = await _authService.GetValidateEmailUserAsync (emailDTO);
+                MessageResponse<EmailDTO> response = await _authService.ValidateEmailUserAsync (emailDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
                 if (response.dataRetrieved == null)
@@ -53,7 +53,7 @@ namespace Backend.Controllers.User.Auth {
                     });
                 return Ok (new {
                     response.message,
-                    body = new JsonResult (response.dataRetrieved)
+                    body = response.dataRetrieved
                 });
             } catch (Exception ex) {
                 return HttpResponses.InternalServerError (ex.Message);
@@ -85,7 +85,7 @@ namespace Backend.Controllers.User.Auth {
             try {
                 if (!ModelState.IsValid || codeTwoFactorDTO == null || codeTwoFactorDTO.username.Length <= 0 || codeTwoFactorDTO.twoFactorCode.Length <= 0)
                     return BadRequest ($"Datos recibidos inválidos. {ModelState}");
-                MessageResponse<jwtDTO> response = await _authService.GetValidateTwoFactorCode (codeTwoFactorDTO);
+                MessageResponse<jwtDTO> response = await _authService.ValidateTwoFactorCode (codeTwoFactorDTO);
                 if (response.isError)
                     return HttpResponses.InternalServerError (response.message);
                 if (response.dataRetrieved == null && response.message.Equals ("Usuario no encontrado."))

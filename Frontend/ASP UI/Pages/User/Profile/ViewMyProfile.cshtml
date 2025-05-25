@@ -4,6 +4,10 @@
     ViewData["Title"] = "Perfil de usuario";
 }
 
+<p>User.Identity: @(User.Identity != null)</p>
+<p>User.Identity.IsAuthenticated: @User.Identity?.IsAuthenticated</p>
+<p>User.Identity.Name: @User.Identity?.Name</p>
+
 <h1 class="text-center mb-3">Perfil de usuario</h1>
 <div class="container text-center">
     <!-- Personal data -->

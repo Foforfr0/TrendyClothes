@@ -7,14 +7,14 @@ document.getElementById('signInForm'), addEventListener('submit', async function
     const vPhoneNumber = await ValidateExistencePhoneNumber();
 
     if (vUsername == false && vEmail == false && vPhoneNumber == false) {
-        const firstName = getValueDOMElementNullOrEmpty('InputFirstName');
-        const middleName = getValueDOMElementNullOrEmpty('InputMiddleName');
-        const lastName = getValueDOMElementNullOrEmpty('InputLastName');
-        const username = getValueDOMElementNullOrEmpty('InputUsername');
-        const email = getValueDOMElementNullOrEmpty('InputEmail');
-        const areaCode = getValueDOMElementNullOrEmpty('InputAreaCode');
-        const phoneNumber = getValueDOMElementNullOrEmpty('InputPhoneNumber');
-        const password = getValueDOMElementNullOrEmpty('InputPassword');
+        const firstName = utils.getValueDOMElementNullOrEmpty('InputFirstName');
+        const middleName = utils.getValueDOMElementNullOrEmpty('InputMiddleName');
+        const lastName = utils.getValueDOMElementNullOrEmpty('InputLastName');
+        const username = utils.getValueDOMElementNullOrEmpty('InputUsername');
+        const email = utils.getValueDOMElementNullOrEmpty('InputEmail');
+        const areaCode = utils.getValueDOMElementNullOrEmpty('InputAreaCode');
+        const phoneNumber = utils.getValueDOMElementNullOrEmpty('InputPhoneNumber');
+        const password = utils.getValueDOMElementNullOrEmpty('InputPassword');
 
         if (!firstName || !middleName || !lastName || !username || !email || !areaCode || !phoneNumber || !password) return;
 
@@ -32,6 +32,7 @@ document.getElementById('signInForm'), addEventListener('submit', async function
             switch (response.status) {
                 case 200:
                     utils.showToast(data.message, 'success');
+                    window.location.replace('/User/Auth/Login');
                     return true;
                 case 400:
                 case 409:
@@ -132,7 +133,7 @@ async function ValidateExistencePhoneNumber() {
     if (!areaCode || !phoneNumber) return true;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/ValidateUserData/VerifyExistencePhoneNumber?areaCode=${encodeURI(areaCode)}&phoneNumber=${encodeURI(phoneNumber)}`, {
+        const response = await fetch(`${window.BACKEND_URL}/api/User/ValidateUserData/VerifyExistencePhoneNumber?areaCode=${encodeURIComponent(areaCode)}&phoneNumber=${encodeURI(phoneNumber)}`, {
             method: 'GET',
             headers: {
                 'content-Type': 'application/json'
@@ -148,8 +149,8 @@ async function ValidateExistencePhoneNumber() {
             case 204:
                 return false;
             case 400:
-                textDanger.textContent = 'El número de teléfono es requerido.';
-                utils.showToast('El número de teléfono es requerido.', 'warning');
+                textDanger.textContent = 'El número de teléfono es inválido.';
+                utils.showToast('El número de teléfono es inválido.', 'warning');
                 return true;
             case 500:
                 utils.showToast('Error validando existencia número de teléfono.', 'danger');

@@ -11,7 +11,7 @@ namespace Backend.Services.Implements.User {
             _authDAO = authDAO;
         }
 
-        public async Task<MessageResponse<LoginDTO>> PostLoginAsync (LoginDTO loginDTO) {
+        public async Task<MessageResponse<LoginDTO>> ValidateLoginAsync (LoginDTO loginDTO) {
             MessageResponse<Entities.User> response = await _authDAO.ValidateLoginAsync (loginDTO);
 
             if (response.isError)
@@ -24,7 +24,7 @@ namespace Backend.Services.Implements.User {
             return MessageResponse<LoginDTO>.Success ("Credenciales correctas.", loginDTO);
         }
 
-        public async Task<MessageResponse<EmailDTO>> GetValidateEmailUserAsync (EmailDTO emailDTO) {
+        public async Task<MessageResponse<EmailDTO>> ValidateEmailUserAsync (EmailDTO emailDTO) {
             MessageResponse<Entities.User> response = await _authDAO.ValidateEmailUserAsync (emailDTO);
 
             if (response.isError)
@@ -48,7 +48,7 @@ namespace Backend.Services.Implements.User {
             return MessageResponse<bool>.Success (response.message, true);
         }
 
-        public async Task<MessageResponse<jwtDTO>> GetValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
+        public async Task<MessageResponse<jwtDTO>> ValidateTwoFactorCode (CodeTwoFactorDTO codeTwoFactorDTO) {
             MessageResponse<jwtDTO> response = await _authDAO.ValidateTwoFactorCodeAsync (codeTwoFactorDTO);
 
             if (response.isError)
