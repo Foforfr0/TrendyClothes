@@ -2,18 +2,24 @@
 using Backend.DTO;
 using Backend.DTO.User.Auth;
 using Backend.Services.Intefaces.User;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Backend.Controllers.User {
     [ApiController]
     [Route ("api/User/[controller]")]
     public class LoginController : ControllerBase {
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly ILogger<LoginController> _logger;
         private readonly ManageJWTToken _manageJWTToken;
         private readonly IAuthService _authService;
 
-        public LoginController (IHttpContextAccessor contextAccesor, ManageJWTToken manageJWTToken, IAuthService authService) {
+        public LoginController (IHttpContextAccessor contextAccesor, ILogger<LoginController> logger, ManageJWTToken manageJWTToken, IAuthService authService) {
             _contextAccessor = contextAccesor;
+            _logger = logger;
             _manageJWTToken = manageJWTToken;
             _authService = authService;
         }
@@ -104,7 +110,8 @@ namespace Backend.Controllers.User {
                 string jwtToken = "";
                 try {
                     jwtToken = _manageJWTToken.GenerateToken (response.dataRetrieved?.username ?? "No logged in.", response.dataRetrieved.role);
-                    Response.Cookies.Append ("jwtToken", jwtToken, new CookieOptions {
+                    _logger.LogInformation ("JWT TOKEN " + jwtToken);
+                    _contextAccessor.HttpContext?.Response.Cookies.Append ("jwtToken", jwtToken, new CookieOptions {
                         HttpOnly = true,
                         Secure = true,
                         SameSite = SameSiteMode.Strict,
@@ -112,7 +119,30 @@ namespace Backend.Controllers.User {
                         IsEssential = true,
                         Path = "/",
                     });
+
+                    JwtSecurityTokenHandler? handler = new JwtSecurityTokenHandler ();
+                    JwtSecurityToken? jwtSecurityToken = handler.ReadJwtToken (jwtToken);
+
+                    string usernameJWT = jwtSecurityToken.Claims.First (c => c.Type == ClaimTypes.Name).Value;
+                    _logger.LogInformation ("Username: " + usernameJWT);
+                    string role = jwtSecurityToken.Claims.First (c => c.Type == ClaimTypes.Role).Value;
+                    _logger.LogInformation ("Role: " + role);
+                    string sid = jwtSecurityToken.Claims.First (c => c.Type == ClaimTypes.Sid).Value;
+                    _logger.LogInformation ("SID: " + sid);
+
+                    List<Claim>? claims = new List<Claim> {
+                        new Claim(ClaimTypes.Name, usernameJWT),
+                        new Claim(ClaimTypes.Role, role),
+                        new Claim(ClaimTypes.Sid, sid)
+                    };
+
+                    ClaimsIdentity? identity = new ClaimsIdentity (claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    ClaimsPrincipal? principal = new ClaimsPrincipal (identity);
+
+                    _logger.LogInformation ("jwtToken cookie created and appended to Response.Cookies");
+                    _logger.LogInformation ("After HttpContext.SignInAsync");
                 } catch (Exception ex) {
+                    _logger.LogCritical ("Exepcion: " + ex.ToString ());
                     return HttpResponses.InternalServerError (ex.ToString ());
                 }
 

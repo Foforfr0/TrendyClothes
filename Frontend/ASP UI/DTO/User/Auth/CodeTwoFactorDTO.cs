@@ -7,5 +7,8 @@ namespace WebPage.DTO.User.Auth {
         public required string twoFactorCode {
             get; set;
         }
+        public required string username {
+            get; set;
+        }
     }
 }

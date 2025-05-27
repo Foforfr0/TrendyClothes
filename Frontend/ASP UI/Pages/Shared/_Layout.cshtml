@@ -60,7 +60,9 @@
                             <li><a class="dropdown-item" asp-page="/User/Profile/ViewMyProfile">Ver perfil</a></li>
                             <li><a class="dropdown-item" asp-page="">Lista de deseos</a></li>
                             <li><a class="dropdown-item" asp-page="">Favoritos</a></li>
-                            <li><a class="dropdown-item" id="LogoutBtn">Cerrar sesión</a></li>
+                            <form method="post" asp-page="/User/Auth/Login" asp-page-handler="Logout" id="logoutForm" class="d-inline">
+                                <li><a href="javascript:void(0);" class="dropdown-item" onclick="document.getElementById('logoutForm').submit();">Cerrar sesión</a></li>
+                            </form>
                         }else{
                             <li><a class="dropdown-item" asp-page="/User/Auth/CreateAccount">Crear cuenta</a></li>
                             <li><a class="dropdown-item" asp-page="/User/Auth/Login">Iniciar sesión</a></li>

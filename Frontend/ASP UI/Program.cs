@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+Ôªøusing Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 
 DotNetEnv.Env.Load ();
@@ -15,31 +15,45 @@ CultureInfo.DefaultThreadCurrentUICulture = currentCulture;
 builder.Services.AddHttpClient ();
 builder.Services.AddRazorPages ();
 builder.Services.AddSingleton (new HttpClient ());
-builder.Services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie (options => {
-        options.Cookie.Name = "jwtToken"; // El nombre de la cookie
-        options.Cookie.HttpOnly = true;   // Importante para seguridad (evita acceso JS)
+builder.Services.AddAuthentication (options => {
+    options.DefaultScheme = "signInScheme";
+    options.DefaultAuthenticateScheme = "signInScheme";
+    options.DefaultChallengeScheme = "signInScheme";
+    options.DefaultSignInScheme = "signInScheme";
+})
+    .AddCookie ("signInScheme", options => {
+        options.Cookie.Name = "signInCookie";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.Cookie.SameSite = SameSiteMode.Strict;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Usa HTTPS
-
-        // Redirecciones autom·ticas si el usuario no est· autenticado
-        options.LoginPath = "/Login"; // P·gina de login
-        options.AccessDeniedPath = "/AccessDenied"; // P·gina de acceso denegado
-
-        // Tiempo de expiraciÛn de la cookie (persistencia de sesiÛn)
+        options.LoginPath = "/User/Auth/Login";
+        options.AccessDeniedPath = "/AccessDenied";
         options.ExpireTimeSpan = TimeSpan.FromDays (7);
-        options.SlidingExpiration = true; // Renovar cookie si el usuario sigue activo
+        options.SlidingExpiration = true;
+    })
+    .AddCookie ("jwtScheme", options => {
+        options.Cookie.Name = "jwtToken"; // Cookie usada SOLO por backend si decides hacerlo (aunque aqu√≠ no es necesaria si t√∫ la pones manualmente)
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.LoginPath = "/User/Auth/Login";
+        options.AccessDeniedPath = "/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromDays (7);
+        options.SlidingExpiration = true;
     });
 builder.Services.AddAuthorization ();
 builder.Services.AddControllers (); // Para API
 builder.Services.AddGrpcClient<ImageProduct.ImageProductService.ImageProductServiceClient> (options => {
-    options.Address = new Uri (gRPCServer); // DirecciÛn de tu servidor gRPC
+    options.Address = new Uri (gRPCServer); // Direcci√≥n de tu servidor gRPC
 }).ConfigurePrimaryHttpMessageHandler (() => {
     return new HttpClientHandler {
         // Esto es para ignorar errores de certificado solo si usas HTTPS con un cert autofirmado (desarrollo).
         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
     };
 });
+builder.Logging.ClearProviders ();
+builder.Logging.AddConsole (); // Esto es lo que imprime en consola
+builder.Logging.SetMinimumLevel (LogLevel.Debug);
 
 
 
@@ -60,9 +74,12 @@ app.Use (middleware: async (HttpContext context, Func<Task> next) => {
 app.UseHttpsRedirection ();
 app.UseStaticFiles ();
 app.UseRouting ();
+
 app.UseAuthentication ();
 app.UseAuthorization ();
-app.MapControllers ();
+
+// Solo usa estos:
 app.MapRazorPages ();
+app.MapControllers ();
 
 app.Run ();

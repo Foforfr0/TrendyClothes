@@ -51,7 +51,9 @@ namespace Backend.DAO.User {
                     return MessageResponse<jwtDTO>.Success ("Usuario no posee un código doble factor.", null);
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                Entities.User? currentUser = await _context.Users.Where (user =>
+                Entities.User? currentUser = await _context.Users
+                    .Include(u => u.Role)
+                    .Where (user =>
                     user.Username.Equals (codeTwoFactorDTO.username) &&
                     user.TwoFactorCode.Equals (codeTwoFactorDTO.twoFactorCode))
                     .FirstOrDefaultAsync ();
@@ -63,7 +65,7 @@ namespace Backend.DAO.User {
                 return MessageResponse<jwtDTO>.Success ("Código doble factor correcto.",
                     new jwtDTO {
                         username = currentUser.Username ?? "---",
-                        role = currentUser.TwoFactorCode ?? "---"
+                        role = currentUser.Role.Role ?? "---"
                     });
             } catch (Exception ex) {
                 return MessageResponse<jwtDTO>.Failure ($"Error interno del servidor: {ex.Message}");
