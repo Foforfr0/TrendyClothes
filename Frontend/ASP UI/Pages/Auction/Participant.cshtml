@@ -1,4 +1,29 @@
-﻿@page
-@model WebPage.Pages.Auction.Participant_Model
+﻿@page "{id:int}"
+@model WebPage.Pages.Auction.ParticipantModel
+
 @{
+    ViewData["Title"] = "Subasta";
 }
+
+<a asp-page="/Product/Index" class="btn btn-secondary mb-3">← Regresar</a>
+
+<div class="card mb-4">
+    <img src="data:@Model.Auction.mimeImage;base64,@Model.Auction.imageBase64" class="card-img-top" style="max-height: 400px; object-fit: cover;" alt="Producto" />
+    <div class="card-body">
+        <h5 class="card-title">@Model.Auction.ProductName</h5>
+        <p class="card-text"><strong>Precio original:</strong> $@Model.Auction.FirstPrice</p>
+        <p class="card-text"><strong>Última puja:</strong> $@Model.Auction.LastPrice</p>
+
+        <form method="post">
+            <input type="hidden" name="id" value="@Model.Auction.AuctionId" />
+
+            <button type="submit" name="type" value="min" class="btn btn-primary mb-3">Pujar mínima (@Model.Auction.MinBid)</button>
+
+            <div class="form-group">
+                <label for="CustomBid">Puja personalizada</label>
+                <input type="number" min="0" step="1" class="form-control" name="CustomBid" required />
+            </div>
+            <button type="submit" name="type" value="custom" class="btn btn-success mt-2">Pujar</button>
+        </form>
+    </div>
+</div>
