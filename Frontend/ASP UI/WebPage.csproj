@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Product\NewFolder\" />
+    <Folder Include="Pages\Product\Seller\" />
     <Folder Include="wwwroot\css\base\" />
     <Folder Include="wwwroot\css\layout\" />
     <Folder Include="wwwroot\css\themes\" />
