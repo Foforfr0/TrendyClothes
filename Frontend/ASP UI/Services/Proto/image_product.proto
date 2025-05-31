@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "ImageProduct";
+
+package imageproduct;
+
+// Servicio que expone el método GetImage
+service ImageProductService {
+  rpc GetImage (ImageProductRequest) returns (ImageProductReply);
+}
+
+// Solicitud que incluye el ID del producto
+message ImageProductRequest {
+  int32 product_id = 1;
+}
+
+// Respuesta que contiene los bytes de la imagen y su tipo MIME
+message ImageProductReply {
+  bytes image_data = 1;
+  string image_type = 2; // ejemplo: "image/png"
+}

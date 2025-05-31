@@ -1,0 +1,58 @@
+html {
+    font-size: 14px;
+    font-family: "Proxima Nova", -apple-system, Roboto, Arial, sans-serif, sans-serif;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100dvh;
+}
+
+body {
+    background-color: #EBEBEB;
+    overscroll-behavior-y: auto;
+    height:auto;
+    min-height: 100svh;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+.footer {
+    box-shadow: 0 -0.25rem .75rem rgba(0, 0, 0, .05);
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.truncate-two-lines {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Número de líneas que quieres mostrar */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; /* Permite que el texto se envuelva en líneas */
+}

@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "TrendyClothes";
+}
+
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components/Navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/Home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/Login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/Products.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />    
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">TrendyClothes</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Inicio</a> <!--TODO-->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Product/EditProduct">Categorías</a> <!--TODO-->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Product/ViewDetails">Ofertas</a> <!--TODO-->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Moda</a> <!--TODO-->
+                        </li>
+                    </ul>
+                </div>
+                <div class="input-group search-box">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos...">
+                </div>
+                <a class="nav-link text-dark me-3" asp-area="" asp-page="/Index">
+                    <img src="~/images/shoppingCart.png" class="profile-img" alt="Perfil" />
+                </a>
+                <div class="dropdown">
+                    <button class="btn btn-transparent dropdown-toggle " type="button">
+                        <img src="~/images/noprofilephoto.png" class="profile-img bg-transparent" /> <!--TODO-->
+                    </button>
+                    <ul class="dropdown-menu">
+                        @if(User.Identity != null && User.Identity.IsAuthenticated){
+                            <li><a class="dropdown-item" asp-page="/User/Profile/ViewMyProfile">Ver perfil</a></li>
+                            <li><a class="dropdown-item" asp-page="">Lista de deseos</a></li>
+                            <li><a class="dropdown-item" asp-page="">Favoritos</a></li>
+                            <form method="post" asp-page="/User/Auth/Login" asp-page-handler="Logout" id="logoutForm" class="d-inline">
+                                <li><a href="javascript:void(0);" class="dropdown-item" onclick="document.getElementById('logoutForm').submit();">Cerrar sesión</a></li>
+                            </form>
+                        }else{
+                            <li><a class="dropdown-item" asp-page="/User/Auth/CreateAccount">Crear cuenta</a></li>
+                            <li><a class="dropdown-item" asp-page="/User/Auth/Login">Iniciar sesión</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container text-center mb-2">
+        <main role="main">
+            <div class="container text-center px-2 pt-2 pb-3 bg-white row d-flex" style="min-height: 72dvh; height: auto;">
+                <div class="col-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer border-top text-muted box-shadow bg-white d-block align-content-center mb-0" style="min-height: 10dvh;">
+        <div class="container">
+            &copy; 2025 - TrendyClothes
+        </div>
+    </footer>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div class="toast-container position-static">
+            <div id="liveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastMessage"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script type="module" src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/Layout.js" asp-append-version="true"></script>
+    <script>
+        window.BACKEND_URL = '@Context.Items["BACKEND_URL"]';
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

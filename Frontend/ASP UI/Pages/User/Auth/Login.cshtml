@@ -1,0 +1,60 @@
+﻿@page
+@model WebPage.Pages.User.Auth.LoginModel
+@{
+    ViewData["Title"] = "Inicio de sesión";
+}
+
+<h1 class="text-center mb-4">Ingresar a TrendyClothes</h1>
+<div class="row">
+    <!-- Section Username and Password -->
+    <div class="container text-center col-6 border-end padding mx-auto">
+        <fieldset id="firstFieldsetLogin" enabled>
+            <form id="loginForm" novalidate>
+                <div class="mb-3 col-9 mx-auto text-start">
+                    <label asp-for="loginDTO.username" class="form-label">Nombre de usuario:</label>
+                    <input asp-for="loginDTO.username" id="InputUsername" class="form-control" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="loginDTO.username"></span>
+                </div>
+                <div class="mb-3 col-9 mx-auto text-start">
+                    <label asp-for="loginDTO.password" class="form-label">Contraseña:</label>
+                    <input asp-for="loginDTO.password" id="InputPassword" class="form-control" type="password" autocomplete="none" />
+                    <span class="text-danger" asp-validation-for="loginDTO.password"></span>
+                </div>
+                <button type="submit" id="firstBtn" class="btn btn-primary">Ingresar</button>
+            </form>
+            <div class="mt-1">
+                <button type="button" id="joa" class="btn btn-link" asp-route="/User/Auth/CreateAccount">¿Olvidó su usuario?</button>
+                <button type="button" class="btn btn-link">¿Olvidó su contraseña?</button>
+            </div>
+        </fieldset>
+    </div>
+
+    <!-- Section TwoFactorCode -->
+    <div class="container text-center col-6 border-start padding mx-auto">
+        <form id="emailForm" novalidate>
+            <div class="mb-3 col-9 mx-auto text-start">
+                <label asp-for="emailDTO.email" class="form-label">Correo electrónico:</label>
+                <input asp-for="emailDTO.email" id="InputEmail" class="form-control" type="email" autocomplete="none" />
+                <span class="text-danger" asp-validation-for="emailDTO.email"></span>
+            </div>
+            <button type="submit" id="btnEmail" class="btn btn-primary">Enviar código</button>
+        </form>
+        <button type="button" class="btn btn-link mt-1">¿Olvidó cual es su correo?</button>
+
+        <form method="post" id="twoFactorForm" asp-page-handler="FinalValidation" novalidate>
+            <div class="mb-3 col-9 mx-auto text-start">
+                <label asp-for="codeTwoFactorDTO.twoFactorCode" class="form-label">Código enviado:</label>
+                <input asp-for="codeTwoFactorDTO.username" id="InputUsername2" name="username" class="d-none form-control" />
+                <input asp-for="codeTwoFactorDTO.twoFactorCode" id="InputTwoFactorCode" name="twoFactorCode" class="form-control" autocomplete="none"
+                       inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                <span class="text-danger" asp-validation-for="codeTwoFactorDTO.twoFactorCode"></span>
+            </div>
+            <button type="submit" class="btn btn-primary mb-3">Validar código</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/User/Login.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}
