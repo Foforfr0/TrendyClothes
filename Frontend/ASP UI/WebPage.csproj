@@ -7,15 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Product\NewFolder\" />
-    <Folder Include="Pages\Product\Seller\" />
     <Folder Include="wwwroot\css\base\" />
     <Folder Include="wwwroot\css\layout\" />
     <Folder Include="wwwroot\css\themes\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\Auction\Participant.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Services\Proto\image_product.proto" GrpcServices="Client" />
+    <Protobuf Include="Connections\Proto\image_product.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

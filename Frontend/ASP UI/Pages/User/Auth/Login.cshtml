@@ -1,4 +1,5 @@
 ﻿@page
+@inject WebPage.Connections.ServicesBuilder UrlBuilder
 @model WebPage.Pages.User.Auth.LoginModel
 @{
     ViewData["Title"] = "Inicio de sesión";
@@ -55,6 +56,14 @@
 </div>
 
 @section Scripts {
+    <script>
+        window.config = {
+            PostLoginUrl: '@UrlBuilder.UserPostLoginUrl',
+            ValidateEmailUrl: '@UrlBuilder.UserGetValidateEmailUrl',
+            Post2FAUrl: '@UrlBuilder.UserPost2FAUrl',
+            Delete2FAUrl: '@UrlBuilder.UserDelete2FAUrl',
+        };
+    </script>
     <script type="module" src="~/js/User/Login.js"></script>
     <partial name="_ValidationScriptsPartial" />
 }

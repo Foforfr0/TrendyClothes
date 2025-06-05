@@ -1,30 +1,30 @@
 ﻿namespace Backend.DTO.User.Profile {
     public class AddressDTO {
-        public string? street {
+        public string? Street {
             get; set;
         }
-        public string? numberExterior {
+        public string? NumberExterior {
             get; set;
         }
-        public string? numberInterior {
+        public string? NumberInterior {
             get; set;
         }
-        public string? neighborhood {
+        public string? Neighborhood {
             get; set;
         }
-        public string? city {
+        public string? City {
             get; set;
         }
-        public string? postalCode {
+        public string? PostalCode {
             get; set;
         }
-        public string? state {
+        public string? State {
             get; set;
         }
-        public string? country {
+        public string? Country {
             get; set;
         }
-        public bool? isActive {
+        public bool? IsActive {
             get; set;
         }
     }

@@ -17,7 +17,7 @@ public partial class Product
 
     public decimal? AverageStars { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; } = null!;
 
     public int StockAvailable { get; set; }
 

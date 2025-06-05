@@ -1,21 +1,21 @@
 ﻿namespace Backend.DTO.User.Profile {
     public class MyPersonalInformationDTO {
-        public string? email {
+        public string? Email {
             get; set;
         }
-        public string? username {
+        public string? Username {
             get; set;
         }
-        public string? fullName {
+        public string? FullName {
             get; set;
         }
-        public string? areaCode {
+        public string? AreaCode {
             get; set;
         }
-        public string? phoneNumber {
+        public string? PhoneNumber {
             get; set;
         }
-        public string? role {
+        public string? Role {
             get; set;
         }
     }

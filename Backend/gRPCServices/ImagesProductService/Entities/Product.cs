@@ -19,7 +19,7 @@ public partial class Product
 
     public string? Description { get; set; }
 
-    public int? StockAvailable { get; set; }
+    public int StockAvailable { get; set; }
 
     public int SellerId { get; set; }
 

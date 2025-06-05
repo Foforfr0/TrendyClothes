@@ -19,7 +19,7 @@ document.getElementById('signInForm'), addEventListener('submit', async function
         if (!firstName || !middleName || !lastName || !username || !email || !areaCode || !phoneNumber || !password) return;
 
         try {
-            const response = await fetch(`${window.BACKEND_URL}/api/User/Registration/AddUser`, {
+            const response = await fetch(window.config.PostUserUrl, {
                 method: 'POST',
                 headers: {
                     'content-Type': 'application/json'
@@ -58,7 +58,7 @@ async function ValidateExistenceUsername() {
     if (!username) return true;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/ValidateUserData/VerifyExistenceUsername?username=${encodeURI(username)}`, {
+        const response = await fetch(`${window.config.ValidateUsernameUrl}?username=${encodeURI(username)}`, {
             method: 'GET',
             headers: {
                 'content-Type': 'application/json'
@@ -95,7 +95,7 @@ async function ValidateExistenceEmail() {
     if (!email) return true;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/ValidateUserData/VerifyExistenceEmail?email=${encodeURI(email)}`, {
+        const response = await fetch(`${window.config.ValidateEmailUrl}?email=${encodeURI(email)}`, {
             method: 'GET',
             headers: {
                 'content-Type': 'application/json'
@@ -133,7 +133,7 @@ async function ValidateExistencePhoneNumber() {
     if (!areaCode || !phoneNumber) return true;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/ValidateUserData/VerifyExistencePhoneNumber?areaCode=${encodeURIComponent(areaCode)}&phoneNumber=${encodeURI(phoneNumber)}`, {
+        const response = await fetch(`${window.config.ValidatePhoneNumberUrl}?areaCode=${encodeURIComponent(areaCode)}&phoneNumber=${encodeURI(phoneNumber)}`, {
             method: 'GET',
             headers: {
                 'content-Type': 'application/json'

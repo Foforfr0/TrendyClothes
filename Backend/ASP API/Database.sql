@@ -76,7 +76,7 @@ CREATE TABLE Products (
     Discount DECIMAL(12,2),
     NumberSold INT NOT NULL,
     AverageStars DECIMAL(2,1),
-    "Description" TEXT,
+    "Description" VARCHAR(MAX) NOT NULL,
     StockAvailable INT NOT NULL,
     SellerId INT NOT NULL,
     CategoryId INT NOT NULL,
@@ -117,27 +117,42 @@ CREATE TABLE StatusesAuction (
 
 CREATE TABLE AuctionsProduct (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    Number INT NOT NULL,
+    Name VARCHAR(100) NOT NULL,
     FirstPrice DECIMAL(12,2),
     MinBid DECIMAL(12,2),
     LastPrice DECIMAL(12,2),
+    DateStart DATETIME NOT NULL,
+    DateEnd DATETIME NOT NULL,
+    NumberProducts INT NOT NULL,
+    SellerId INT NOT NULL,
     ProductId INT NOT NULL,
     StatusId INT NOT NULL,
-    BuyerId INT,
 
     CONSTRAINT FK_AuctionProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id),
     CONSTRAINT FK_StatusAuction_Auction FOREIGN KEY (StatusId) REFERENCES StatusesAuction(Id),
-    CONSTRAINT FK_BuyerProduct_Product FOREIGN KEY (BuyerId) REFERENCES Users(Id),
+    CONSTRAINT FK_BuyerProduct_Product FOREIGN KEY (SellerId) REFERENCES Users(Id),
 );
 
+CREATE TABLE BidsAuction (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Bid DECIMAL(12,2) NOT NULL,
+    DateBid DATETIME NOT NULL,
+    BuyerId INT NOT NULL,
+    AuctionId INT NOT NULL,
+
+    CONSTRAINT FK_BidUser_Auction FOREIGN KEY (BuyerId) REFERENCES Users(Id),
+    CONSTRAINT FK_BidAuction_Auction FOREIGN KEY (AuctionId) REFERENCES AuctionsProduct(Id)
+);
+
+
 -- RolesUser
-INSERT INTO RolesUser(Role) VALUES ('Administrator');
-INSERT INTO RolesUser(Role) VALUES ('Seller/Buyer');
+INSERT INTO RolesUser(Role) VALUES ('Administrador');
+INSERT INTO RolesUser(Role) VALUES ('Comprador/Vendedor');
 
 -- Users
 INSERT INTO Users (FirstName, MiddleName, LastName, Username, Email, AreaCode, PhoneNumber, Password, RoleId) VALUES 
 ('Juan', 'Carlos', 'Hernández', 'juancho', 'juan@example.com', '+52', '1234567890', '123456', 1),
-('Rodolfo', 'Fernández', 'Rodríguez', 'foforfr', 'foforfr007@gmail.com', '+52', '2281856845', '123456', 1),
+('Rodolfo', 'Fernández', 'Rodríguez', 'foforfr', 'foforfr007@gmail.com', '+52', '2281856845', '123456', 2),
 ('Maria', 'Luisa', 'Gonzalez', 'marilu', 'maria@example.com', '+52', '0987654321','abcdef', 2),
 ('Pedro', 'José', 'Ramirez', 'pedrito', 'pedro@example.com', '+52', '1324354657', 'pass123', 2);
 
@@ -167,19 +182,19 @@ INSERT INTO StatusesProduct (Status) VALUES
 
 -- Products
 INSERT INTO Products (Name, Price, Discount, NumberSold, AverageStars, Description, StockAvailable, SellerId, CategoryId, TypeId, StatusId) VALUES 
-('Tenis blanco',        199.99, 0, 15, 4.5,     'Tenis blanco 1.',          10, 3, 8, 1, 1),
+('Tenis blanco',        199.99, 0, 15, 4.5,     'Tenis blanco 1.',          10, 2, 8, 1, 1),
 ('Tenis converse',      299.99, 10,16, 4.3,     'Tenis converse mezclilla.',11, 3, 8, 1, 1),
-('Tenis rojos',         399.99, 11,14, 4.0,     'Tenis rojos 3.',           21, 3, 8, 1, 1),
-('Pantalón mezclilla',  150.99, 0, 1, 5.0,      'Pantalón mezclilla 1.',    12, 3, 1, 1, 1),
+('Tenis rojos',         399.99, 11,14, 4.0,     'Tenis rojos 3.',           21, 4, 8, 1, 1),
+('Pantalón mezclilla',  150.99, 0, 1, 5.0,      'Pantalón mezclilla 1.',    12, 2, 1, 1, 1),
 ('Pantalón blanco',     151.99, 2, 100, 4.2,    'Pantalón blamco.',         13, 3, 1, 1, 1),
-('Pantalón mezclilla',  152.99, 3, 22, 3.0,     'Pantalón mezclilla 2.',    14, 3, 1, 1, 1),
-('Lentes',              52.99,  0, 2,  3.0,     'Lentes bonitos.',          15, 3, 5, 1, 1),
-('Playera negra',       100.99, 0, 2,  3.0,     'Playera negra 1.',         16, 4, 2, 1, 1),
+('Pantalón mezclilla',  152.99, 3, 22, 3.0,     'Pantalón mezclilla 2.',    14, 4, 1, 1, 1),
+('Lentes',              52.99,  0, 2,  3.0,     'Lentes bonitos.',          15, 2, 5, 1, 1),
+('Playera negra',       100.99, 0, 2,  3.0,     'Playera negra 1.',         16, 3, 2, 1, 1),
 ('Playera blanca',      100.99, 0, 2,  3.0,     'Playera blanca.',          17, 4, 2, 1, 1),
-('Playera negra',       100.99, 0, 2,  3.0,     'Playera negra 2.',         18, 4, 2, 1, 1),
-('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 1.',         18, 4, 4, 1, 1),
+('Playera negra',       100.99, 0, 2,  3.0,     'Playera negra 2.',         18, 2, 2, 1, 1),
+('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 1.',         18, 3, 4, 1, 1),
 ('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 2.',         18, 4, 4, 1, 1),
-('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 3.',         18, 4, 4, 1, 1);
+('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 3.',         18, 2, 4, 1, 1);
 
 -- PhotosProduct (solo insert de ejemplo sin foto real, usa NULL o CONVERT si deseas agregar imágenes reales)
 INSERT INTO PhotosProduct (Photo, ProductId, Mime) VALUES 
@@ -205,20 +220,6 @@ INSERT INTO QAProduct (Stars, Description, Date, ProductId, UserId) VALUES
 
 -- StatusesAuction
 INSERT INTO StatusesAuction (Status) VALUES 
-('Active'),
-('Paused'),
-('Canceled');
-
--- AuctionsProduct
-INSERT INTO AuctionsProduct (Number, FirstPrice, MinBid, LastPrice, ProductId, StatusId, BuyerId) VALUES 
-(1, 100.00, 10.00, 130.00, 1, 1, 3),
-(2, 200.00, 15.00, 250.00, 2, 2, 2),
-(3, 300.00, 20.00, 0.00, 3, 1, NULL);
-
-
-SELECT * FROM Users 
-LEFT JOIN RolesUser ON RolesUser.Id = Users.RoleId
-LEFT JOIN User_Address ON User_Address.UserId = Users.Id
-LEFT JOIN Addresses ON User_Address.AddressId = Addresses.Id;
-
-SELECT * FROM Products;
+('Activo'),
+('Pausado'),
+('Cancelado');

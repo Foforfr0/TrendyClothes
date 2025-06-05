@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Globalization;
+﻿using System.Globalization;
+using WebPage.Connections;
 
 DotNetEnv.Env.Load ();
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
 string backendUrl = builder.Configuration["BackendSettings:BackendUrl"] ?? "https://localhost:5001";
-string gRPCServer = builder.Configuration["BackendSettings:gRPCServer"] ?? "https://localhost:5002";;
+string gRPCServer = builder.Configuration["BackendSettings:gRPCServer"] ?? "https://localhost:5002";
 
 CultureInfo currentCulture = new CultureInfo ("es-MX");
 CultureInfo.DefaultThreadCurrentCulture = currentCulture;
 CultureInfo.DefaultThreadCurrentUICulture = currentCulture;
 
 // Add services to the container.
+builder.Services.Configure<ServicesConfig> (
+    builder.Configuration.GetSection ("Services"));
+builder.Services.AddSingleton<ServicesBuilder> ();
 builder.Services.AddHttpClient ();
 builder.Services.AddRazorPages ();
 builder.Services.AddSingleton (new HttpClient ());
@@ -45,15 +48,16 @@ builder.Services.AddAuthorization ();
 builder.Services.AddControllers (); // Para API
 builder.Services.AddGrpcClient<ImageProduct.ImageProductService.ImageProductServiceClient> (options => {
     options.Address = new Uri (gRPCServer); // Dirección de tu servidor gRPC
-}).ConfigurePrimaryHttpMessageHandler (() => {
-    return new HttpClientHandler {
-        // Esto es para ignorar errores de certificado solo si usas HTTPS con un cert autofirmado (desarrollo).
-        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-    };
-});
+})
+    .ConfigurePrimaryHttpMessageHandler (() => {
+        return new HttpClientHandler {
+            // Esto es para ignorar errores de certificado solo si usas HTTPS con un cert autofirmado (desarrollo).
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+    });
 builder.Logging.ClearProviders ();
 builder.Logging.AddConsole (); // Esto es lo que imprime en consola
-builder.Logging.SetMinimumLevel (LogLevel.Debug);
+builder.Logging.SetMinimumLevel (LogLevel.Trace);
 
 
 

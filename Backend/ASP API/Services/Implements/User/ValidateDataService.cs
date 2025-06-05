@@ -4,9 +4,9 @@ using Backend.Services.Intefaces.User;
 
 namespace Backend.Services.Implements.User {
     public class ValidateDataService : IValidateDataService {
-        private readonly UserDAO _userDAO;
+        private readonly ConsultUserDAO _userDAO;
 
-        public ValidateDataService (UserDAO userDAO) {
+        public ValidateDataService (ConsultUserDAO userDAO) {
             _userDAO = userDAO;
         }
 
@@ -28,7 +28,7 @@ namespace Backend.Services.Implements.User {
                     return MessageResponse<bool>.Success ("Email de usuario no existe.", false);
                 return MessageResponse<bool>.Success ("Email de usuario si existe.", true);
             } catch (Exception ex) {
-                return MessageResponse<bool>.Failure ($"Error al verififcar existencia del email de usuario: {ex.Message}");
+                return MessageResponse<bool>.Failure ($"Error al verififcar existencia del Email de usuario: {ex.Message}");
             }
         }
 

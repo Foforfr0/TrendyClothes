@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.DAO.User {
     public class ProfileDAO {
         private readonly TrendyClothesDBContext _context;
-        private readonly UserDAO _userDAO;
+        private readonly ConsultUserDAO _userDAO;
 
-        public ProfileDAO (TrendyClothesDBContext context, UserDAO userDAO) {
+        public ProfileDAO (TrendyClothesDBContext context, ConsultUserDAO userDAO) {
             _context = context;
             _userDAO = userDAO;
         }
@@ -29,13 +29,13 @@ namespace Backend.DAO.User {
                 if (currentUser == null)
                     return MessageResponse<List<Entities.Address>>.Success ("Usuario no encontrado.", default);
 
-#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target Type.
                 List<Entities.Address> addresses = await _context.Users
                     .Where (u => u.Username == username)
                     .SelectMany (u => u.User_Addresses) // accede a la colección intermedia
                     .Select (ua => ua.Address)
                     .ToListAsync ();
-#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target Type.
                 return MessageResponse<List<Entities.Address>>.Success ("Direcciones recuperadas.", addresses);
             } catch (Exception ex) {
                 return MessageResponse<List<Entities.Address>>.Failure ($"Error interno del servidor: {ex.Message}");

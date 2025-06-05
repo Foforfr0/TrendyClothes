@@ -1,0 +1,53 @@
+﻿@model WebPage.DTO.Product.Consult.ProductsDTO
+@{
+}
+
+<div class="container w-75 my-1 border border-1 border-light-subtle" style="max-height: 100px;">
+    <div class="row mb-1 h-100 p-1">
+        <div class="col-4 h-100 object-fit-contain">
+            <img src="data:@Model.mimeImage;base64,@Model.imageBase64" class="h-100 object-fit-contain" alt="Producto" />
+        </div>
+        <div class="col-8 h-100">
+            <div class="row">
+                <div class="col text-start">
+                    <h5 class="card-title">@Model.name</h5>
+                </div>
+            </div>
+            <div class="row">
+                @if (Model.discount != 0)
+                {
+                    <div class="col text-start text-decoration-line-through">
+                        <p class="card-text">$@Model.price</p>
+                    </div>
+                    <div class="col text-start">
+                        <p class="card-text">$@(((double)(Model.price - (Model.price * Model.discount / 100))).ToString("F2"))</p>
+                    </div>
+                    <div class="col text-start" style="color: #00A650">
+                        <p class="card-text">@Model.discount% off</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="col text-start">
+                        <p class="card-text">$@Model.price</p>
+                    </div>
+                }
+            </div>
+            <div class="row align-items-center">
+                <div class="col-auto fw-bold pe-0">
+                    @Model.numberSold &nbsp;Vendidos.&nbsp;
+                </div>
+                <div class="col-auto text-start">
+                    <p class="card-text mb-0">
+                        @Model.averageStars / 5.0
+                        <i class="bi bi-star-half"></i>
+                    </p>
+                </div>
+                <div class="col-auto ms-auto">
+                    <a class="btn btn-primary" style="width: 81px; height: 38px;" 
+                        asp-page="/Product/Buyer/ViewDetails" asp-route-id="@Model.id">Detalles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

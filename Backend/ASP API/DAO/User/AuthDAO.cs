@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.DAO.User {
     public class AuthDAO {
         private readonly TrendyClothesDBContext _context;
-        private readonly UserDAO _userDAO;
-        private readonly ManageEmail _manageEmail;
+        private readonly ConsultUserDAO _userDAO;
+        private readonly ManageEmail _manageEmail; //TODO
 
-        public AuthDAO (TrendyClothesDBContext context, UserDAO userDAO, ManageEmail manageEmail) {
+        public AuthDAO (TrendyClothesDBContext context, ConsultUserDAO userDAO, ManageEmail manageEmail) {
             _context = context;
             _userDAO = userDAO;
             this._manageEmail = manageEmail;
@@ -20,8 +20,8 @@ namespace Backend.DAO.User {
             try {
                 return MessageResponse<Entities.User>.Success ("",
                     await _context.Users.Where (user =>
-                        user.Username.Equals (loginDTO.username) &&
-                        user.Password.Equals (loginDTO.password))
+                        user.Username.Equals (loginDTO.Username) &&
+                        user.Password.Equals (loginDTO.Password))
                         .FirstOrDefaultAsync ());
             } catch (Exception ex) {
                 return MessageResponse<Entities.User>.Failure ($"Error interno del servidor: {ex.Message}");
@@ -32,8 +32,8 @@ namespace Backend.DAO.User {
             try {
                 return MessageResponse<Entities.User>.Success ("",
                     await _context.Users.Where (user =>
-                        user.Username.Equals (emailDTO.username) &&
-                        user.Email.Equals (emailDTO.email))
+                        user.Username.Equals (emailDTO.Username) &&
+                        user.Email.Equals (emailDTO.Email))
                         .FirstOrDefaultAsync ());
             } catch (Exception ex) {
                 return MessageResponse<Entities.User>.Failure ($"Error interno del servidor: {ex.Message}");
@@ -43,19 +43,19 @@ namespace Backend.DAO.User {
         public async Task<MessageResponse<jwtDTO>> ValidateTwoFactorCodeAsync (CodeTwoFactorDTO codeTwoFactorDTO) {
             try {
                 // Validate Username
-                if (await _userDAO.GetUserAsync (codeTwoFactorDTO.username) == null)
+                if (await _userDAO.GetUserAsync (codeTwoFactorDTO.Username) == null)
                     return MessageResponse<jwtDTO>.Success ("Usuario no encontrado.", null);
 
-                // Validate if username has twoFactorCode
-                if (string.IsNullOrEmpty (await _userDAO.GetTwoFactorCodeAsync (codeTwoFactorDTO.username)))
+                // Validate if Username has TwoFactorCode
+                if (string.IsNullOrEmpty (await _userDAO.GetTwoFactorCodeAsync (codeTwoFactorDTO.Username)))
                     return MessageResponse<jwtDTO>.Success ("Usuario no posee un código doble factor.", null);
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                 Entities.User? currentUser = await _context.Users
                     .Include(u => u.Role)
                     .Where (user =>
-                    user.Username.Equals (codeTwoFactorDTO.username) &&
-                    user.TwoFactorCode.Equals (codeTwoFactorDTO.twoFactorCode))
+                    user.Username.Equals (codeTwoFactorDTO.Username) &&
+                    user.TwoFactorCode.Equals (codeTwoFactorDTO.TwoFactorCode))
                     .FirstOrDefaultAsync ();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
@@ -64,8 +64,8 @@ namespace Backend.DAO.User {
 
                 return MessageResponse<jwtDTO>.Success ("Código doble factor correcto.",
                     new jwtDTO {
-                        username = currentUser.Username ?? "---",
-                        role = currentUser.Role.Role ?? "---"
+                        Username = currentUser.Username ?? "---",
+                        Role = currentUser.Role.Role ?? "---"
                     });
             } catch (Exception ex) {
                 return MessageResponse<jwtDTO>.Failure ($"Error interno del servidor: {ex.Message}");
@@ -75,13 +75,13 @@ namespace Backend.DAO.User {
         public async Task<MessageResponse<bool>> PostTwoFactorCodeAsync (EmailDTO emailDTO) {
             try {
                 Entities.User? currentUser = await _context.Users
-                   .Where (user => user.Username.Equals (emailDTO.username))
+                   .Where (user => user.Username.Equals (emailDTO.Username))
                    .FirstOrDefaultAsync ();
 
                 if (currentUser == null)
                     return MessageResponse<bool>.Success ("Usuario no encontrado.", false);
 
-                // TODO Just to try faster string twoFactorCode = new Random ().Next (100000, 999999).ToString ();
+                // TODO Just to try faster string TwoFactorCode = new Random ().Next (100000, 999999).ToString ();
                 currentUser.TwoFactorCode = "123456";
 
                 bool saveFailed = false;
@@ -105,7 +105,7 @@ namespace Backend.DAO.User {
                     }
                 } while (saveFailed);
 
-                // TODO Just to try faster await _manageEmail.SendAsync (emailDTO.username, emailDTO.email, twoFactorCode).ConfigureAwait (false);
+                // TODO Just to try faster await _manageEmail.SendAsync (emailDTO.Username, emailDTO.Email, TwoFactorCode).ConfigureAwait (false);
                 return MessageResponse<bool>.Success ("Código doble factor enviado.", true);
             } catch (InvalidOperationException ex) {
                 return MessageResponse<bool>.Failure ($"Error al enviar el código doble factor al correo: {ex.Message}");

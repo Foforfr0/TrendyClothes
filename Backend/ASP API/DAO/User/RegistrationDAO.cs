@@ -5,9 +5,9 @@ using Backend.Entities;
 namespace Backend.DAO.User {
     public class RegistrationDAO {
         private readonly TrendyClothesDBContext _context;
-        private readonly UserDAO _userDAO;
+        private readonly ConsultUserDAO _userDAO;
 
-        public RegistrationDAO (TrendyClothesDBContext context, UserDAO userDAO) {
+        public RegistrationDAO (TrendyClothesDBContext context, ConsultUserDAO userDAO) {
             _context = context;
             _userDAO = userDAO;
         }
@@ -17,14 +17,14 @@ namespace Backend.DAO.User {
                 if (newUserDTO == null)
                     return MessageResponse<bool>.Success ("Datos de usuario vacíos.", false);
                 Entities.User newUser = new Entities.User ();
-                newUser.FirstName = newUserDTO.firstName;
-                newUser.MiddleName = newUserDTO.middleName;
-                newUser.LastName = newUserDTO.lastName;
-                newUser.Username = newUserDTO.username;
-                newUser.Email = newUserDTO.email;
-                newUser.AreaCode = newUserDTO.areaCode;
-                newUser.PhoneNumber = newUserDTO.phoneNumber;
-                newUser.Password = newUserDTO.password;
+                newUser.FirstName = newUserDTO.FirstName;
+                newUser.MiddleName = newUserDTO.MiddleName;
+                newUser.LastName = newUserDTO.LastName;
+                newUser.Username = newUserDTO.Username;
+                newUser.Email = newUserDTO.Email;
+                newUser.AreaCode = newUserDTO.AreaCode;
+                newUser.PhoneNumber = newUserDTO.PhoneNumber;
+                newUser.Password = newUserDTO.Password;
                 newUser.RoleId = 2;
 
                 _context.Users.Add (newUser);

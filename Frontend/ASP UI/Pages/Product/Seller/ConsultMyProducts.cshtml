@@ -1,0 +1,23 @@
+﻿@page
+@using WebPage.DTO.Product.MyProducts;
+@model WebPage.Pages.Product.Seller.ConsultMyProductsModel
+@{
+    ViewData["Title"] = "Resultados de búsqueda";
+}
+
+<div class="container w-75">
+    <div class="row text-center px-auto">
+        <h2 class="text-start col-12 px-auto">Productos publicados</h2>
+    </div>
+</div>
+
+@if (Model.Products?.Count > 0) {
+    <div class="row" id="productsContainer">
+        @foreach (MyProductsDTO product in Model.Products) {
+            @await Html.PartialAsync("ConsultProductsPartial", product).ConfigureAwait(false);
+        }
+    </div>
+}
+else {
+    <p>No se encontraron productos.</p>
+}

@@ -29,6 +29,8 @@ public partial class User
 
     public virtual ICollection<AuctionsProduct> AuctionsProducts { get; set; } = new List<AuctionsProduct>();
 
+    public virtual ICollection<BidsAuction> BidsAuctions { get; set; } = new List<BidsAuction>();
+
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 
     public virtual ICollection<QAProduct> QAProducts { get; set; } = new List<QAProduct>();

@@ -7,13 +7,14 @@ using System.Net;
 using System.Security.Claims;
 using System.Text.Json;
 using WebPage.Auth;
+using WebPage.Connections;
 using WebPage.DTO.User.Auth;
 using WebPage.Pages.User.Profile;
 
 namespace WebPage.Pages.User.Auth {
     public class LoginModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _config;
+        private readonly ServicesBuilder _services;
         private readonly ILogger<LoginModel> _logger;
 
         [BindProperty]
@@ -29,9 +30,9 @@ namespace WebPage.Pages.User.Auth {
             get; set;
         }
 
-        public LoginModel (IHttpClientFactory httpClientFactory, IConfiguration config, ILogger<LoginModel> logger) {
+        public LoginModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, ILogger<LoginModel> logger) {
             _httpClientFactory = httpClientFactory;
-            _config = config;
+            _services = services;
             _logger = logger;
         }
 
@@ -39,7 +40,6 @@ namespace WebPage.Pages.User.Auth {
         }
 
         public async Task<IActionResult> OnPostFinalValidationAsync () {
-            _logger.LogInformation ("Inicia método OnPost");
             try {
                 string username = Request.Form["username"];
                 string twoFactorCode = Request.Form["twoFactorCode"];
@@ -49,10 +49,8 @@ namespace WebPage.Pages.User.Auth {
                     ModelState.AddModelError (string.Empty, "Usuario y código son requeridos.");
                     return Page ();
                 }
-
-                // Verificar credenciales (puedes hacer fetch a tu API REST aquí)
                 HttpClient httpClient = _httpClientFactory.CreateClient ();
-                string requestURL = $"{_config["BackendSettings:BackendUrl"]}/api/User/Login/ValidateTwoFactorCode";
+                string requestURL = _services.UserGetValidate2FAUrl;
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync (requestURL, new {
                     username, twoFactorCode
                 });
@@ -113,7 +111,7 @@ namespace WebPage.Pages.User.Auth {
 
                 await HttpContext.SignInAsync ("signInScheme", principal, authProperties);
 
-                return RedirectToPage ("/User/Profile/ViewMyProfile"); // Puedes cambiar la redirección si lo deseas
+                return RedirectToPage ("/User/Profile/ViewMyProfile"); 
             } catch (Exception ex) {
                 _logger.LogError (ex, "Error en FinalValidation");
                 ModelState.AddModelError (string.Empty, "Error al validar el código doble factor.");
@@ -123,7 +121,7 @@ namespace WebPage.Pages.User.Auth {
 
         public async Task<IActionResult> OnPostLogoutAsync () {
             await HttpContext.SignOutAsync ("signInScheme");
-            return RedirectToPage ("/User/Auth/Login"); // Puedes cambiar la redirección si lo deseas
+            return RedirectToPage ("/User/Auth/Login");
         }
     }
 }
