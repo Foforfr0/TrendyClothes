@@ -27,7 +27,8 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="Protos\image_product.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\GetImageProduct.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\SaveImageProduct.proto" GrpcServices="Server" />
 	</ItemGroup>
 
 	<ItemGroup>

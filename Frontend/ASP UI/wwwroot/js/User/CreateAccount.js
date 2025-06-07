@@ -32,7 +32,9 @@ document.getElementById('signInForm'), addEventListener('submit', async function
             switch (response.status) {
                 case 200:
                     utils.showToast(data.message, 'success');
-                    window.location.replace('/User/Auth/Login');
+                    setTimeout(() => {
+                        window.location.replace('/User/Auth/Login');
+                    }, 2000);
                     return true;
                 case 400:
                 case 409:

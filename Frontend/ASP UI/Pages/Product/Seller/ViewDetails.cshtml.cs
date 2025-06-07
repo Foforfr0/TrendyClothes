@@ -1,4 +1,4 @@
-using ImageProduct;
+using GetImageProduct;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebPage.Connections;
@@ -9,7 +9,7 @@ namespace WebPage.Pages.Product.Seller {
     public class ViewDetailsModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ServicesBuilder _services;
-        private readonly ImageProductService.ImageProductServiceClient _grpcClient;
+        private readonly GetImageService.GetImageServiceClient _grpcClient;
 
         [BindProperty (SupportsGet = true)]
         public int id {
@@ -21,7 +21,7 @@ namespace WebPage.Pages.Product.Seller {
         }
 
 
-        public ViewDetailsModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, ImageProductService.ImageProductServiceClient grpcClient) {
+        public ViewDetailsModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient) {
             _httpClientFactory = httpClientFactory;
             _services = services;
             _grpcClient = grpcClient;
@@ -39,7 +39,7 @@ namespace WebPage.Pages.Product.Seller {
 
             if (response?.body != null) {
                 product = response.body;
-                ImageProductReply? grpcResponse = await _grpcClient.GetImageAsync (new ImageProductRequest { ProductId = id });
+                GetImageReply? grpcResponse = await _grpcClient.GetImageAsync (new GetImageRequest{ ProductId = id });
                 product.imageBase64 = Convert.ToBase64String (grpcResponse.ImageData.ToByteArray ());
                 product.mimeImage = grpcResponse.ImageType;
             }

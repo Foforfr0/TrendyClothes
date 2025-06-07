@@ -26,7 +26,7 @@ async function retrievePersonalData() {
                 showPersonalData(data.body);
                 break;
             case 401:
-                showPersonalData('Error con las cookies.');
+                utils.showToast('Error con las cookies.', 'danger');
                 break;
             case 400:
             case 404:
@@ -105,6 +105,17 @@ function showAddresses(addresses) {
     }
 }
 
-document.getElementById('startAuction').addEventListener('submit', async function (event) {
-    event.preventDefault();
+document.getElementById('startAuction').addEventListener('click', (event) => {
+    fetch(`/Product/Seller/ConsultProductsToCreateAuction`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('modal-content').innerHTML = html;
+        })
+        .catch(err => {
+            console.error('Error loading partial:', err);
+            utils.showToast("Error al cargar el formulario", "danger");
+        });
 });

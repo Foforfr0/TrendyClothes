@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.Json;
 using WebPage.Connections;
 
 DotNetEnv.Env.Load ();
@@ -16,7 +17,10 @@ builder.Services.Configure<ServicesConfig> (
     builder.Configuration.GetSection ("Services"));
 builder.Services.AddSingleton<ServicesBuilder> ();
 builder.Services.AddHttpClient ();
-builder.Services.AddRazorPages ();
+builder.Services.AddRazorPages ()
+    .AddJsonOptions (options => {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddSingleton (new HttpClient ());
 builder.Services.AddAuthentication (options => {
     options.DefaultScheme = "signInScheme";
@@ -46,15 +50,30 @@ builder.Services.AddAuthentication (options => {
     });
 builder.Services.AddAuthorization ();
 builder.Services.AddControllers (); // Para API
-builder.Services.AddGrpcClient<ImageProduct.ImageProductService.ImageProductServiceClient> (options => {
-    options.Address = new Uri (gRPCServer); // Dirección de tu servidor gRPC
+builder.Services.AddGrpcClient<GetImageProduct.GetImageService.GetImageServiceClient>(options =>
+{
+    options.Address = new Uri(gRPCServer); // Dirección del servidor gRPC
 })
-    .ConfigurePrimaryHttpMessageHandler (() => {
-        return new HttpClientHandler {
-            // Esto es para ignorar errores de certificado solo si usas HTTPS con un cert autofirmado (desarrollo).
+    .ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        return new HttpClientHandler
+        {
             ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         };
     });
+
+builder.Services.AddGrpcClient<SaveImageProduct.SaveImageService.SaveImageServiceClient>(options =>
+{
+    options.Address = new Uri(gRPCServer); // Mismo servidor o diferente, si aplica
+})
+    .ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        return new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+    });
+
 builder.Logging.ClearProviders ();
 builder.Logging.AddConsole (); // Esto es lo que imprime en consola
 builder.Logging.SetMinimumLevel (LogLevel.Trace);

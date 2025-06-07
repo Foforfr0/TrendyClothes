@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IdentityModel.Tokens.Jwt;
@@ -110,7 +111,6 @@ namespace WebPage.Pages.User.Auth {
                 });
 
                 await HttpContext.SignInAsync ("signInScheme", principal, authProperties);
-
                 return RedirectToPage ("/User/Profile/ViewMyProfile"); 
             } catch (Exception ex) {
                 _logger.LogError (ex, "Error en FinalValidation");

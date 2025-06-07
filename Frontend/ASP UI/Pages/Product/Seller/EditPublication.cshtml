@@ -1,21 +1,22 @@
 ﻿@page
-@model WebPage.Pages.Product.EditPublicationModel
+@inject WebPage.Connections.ServicesBuilder UrlBuilder
+@model WebPage.Pages.Product.Seller.EditPublicationModel
 @{
     ViewData["Title"] = "Modificar publicación";
 }
 
 <div class="container h-100">
-    <form method="post" id="modificationForm">
+    <form method="POST" id="modificationForm">
+        @Html.AntiForgeryToken()
         <div class="row h-100">
             <div class="row text-center align-content-center">
                 <h1 class="col text-start">@ViewData["Title"]</h1>
                 <div class="col-auto text-end align-content-center m-auto">
                     <div class="row align-content-center">
-                        <button type="submit" class="col-auto btn btn-primary bg-success border-0 p-2 m-1 text-white">
+                        <button type="submit" id="submitForm" class="col-auto btn btn-primary bg-success border-0 p-2 m-1 text-white">
                             <i class="bi bi-bookmark-check fs-5 fw-bold"></i>
                         </button>
-                        <button type="button" class="col-auto btn btn-secondary bg-danger border-0 p-2 m-1 text-white"
-                            onclick="confirmCancel('/Product/Seller/ViewDetails?id=@Model.id')">
+                        <button type="button" class="col-auto btn btn-secondary bg-danger border-0 p-2 m-1 text-white" onclick="confirmCancel()">
                             <i class="bi bi-bookmark-x fs-5 fw-bold"></i>
                         </button>
                     </div>
@@ -25,16 +26,21 @@
                 <div class="w-100">
                     @if (Model.product?.imageBase64 == null || Model.product.imageBase64.Length <= 0)
                     {
-                        <img class="object-fit-contain w-100" alt="Producto" src="https://th.bing.com/th/id/OIP.WeSkkwLXkUXbRcLJuN7I_gHaHa?cb=iwp2&rs=1&pid=ImgDetMain" />
+                        <img id="previewImage" class="object-fit-contain w-100" alt="Producto" src="https://th.bing.com/th/id/OIP.WeSkkwLXkUXbRcLJuN7I_gHaHa?cb=iwp2&rs=1&pid=ImgDetMain" />
                     }
                     else
                     {
-                        <img class="object-fit-contain w-100" style="min-width: 100%;" alt="Producto" src="data:@Model.product.mimeImage;base64,@Model.product.imageBase64" />
+                        <img id="previewImage" class="object-fit-contain w-100" style="min-width: 100%;" alt="Producto" src="data:@Model.product.mimeImage;base64,@Model.product.imageBase64" />
                     }
                 </div>
                 <span class="text-danger"></span>
                 <div class="container text-center mt-3">
-                    <button type="button" class="btn btn-primary p-1">Subir imagen</button>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+                    <button type="button" id="selectImageBtn" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Seleccionar Imagen
+                    </button>
+                    <input type="hidden" asp-for="@Model.product.imageBase64" id="imageBase64Input" />
+                    <input type="hidden" asp-for="@Model.product.mimeImage" id="mimeInput" />
                 </div>
             </div>
             <div class="col-8 text-start d-block align-content-top border-start">
@@ -107,11 +113,12 @@
 
 @section Scripts {
     <script>
-        function confirmCancel(redirectUrl) {
-            if (confirm("¿Estás seguro de que deseas cancelar los cambios?\nSe perderán todos los datos no guardados.")) {
-                window.location.href = redirectUrl;
-            }
-        }
+        window.data = {
+            idProduct: @Model.id
+        };
+        window.config = {
+            PutProductData: '@UrlBuilder.SellerPutProductDetailsUrl'
+        };
     </script>
-    <script src="~/js/Product/EditProduct.js"></script>
+    <script type="module" src="~/js/Product/EditProduct.js"></script>
 }

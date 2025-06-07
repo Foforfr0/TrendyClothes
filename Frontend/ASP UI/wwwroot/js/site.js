@@ -65,19 +65,6 @@ export function showConfirmationToast(message) {
     });
 }
 
-// Uso de ejemplo:
-document.querySelector("#tuBoton").addEventListener("click", async () => {
-    const confirmado = await showConfirmationToast("¿Quieres guardar los cambios?");
-    if (confirmado) {
-        console.log("Usuario confirmó");
-        // Lógica de aceptación
-    } else {
-        console.log("Usuario canceló");
-        // Lógica de cancelación
-    }
-});
-
-
 export function getTextDangerInput(inputField) {
     const input = document.getElementById(inputField);
     if (input) {

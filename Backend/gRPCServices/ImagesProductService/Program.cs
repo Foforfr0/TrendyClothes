@@ -39,6 +39,7 @@ app.MapGet ("/", () =>
     "Este servicio gRPC solo acepta conexiones a través de clientes gRPC. Visita: https://go.microsoft.com/fwlink/?linkid=2086909");
 
 // === Mapear Servicios gRPC ===
-app.MapGrpcService<ImageProductServiceImpl> ();
+app.MapGrpcService<GetImageServiceImpl> ();
+app.MapGrpcService<SaveImageServiceImpl> ();
 
 app.Run ();

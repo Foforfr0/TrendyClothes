@@ -1,63 +1,62 @@
 using GetImageProduct;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
 using WebPage.Connections;
 using WebPage.DTO;
-using WebPage.DTO.Product.Consult;
+using WebPage.DTO.Product.MyProducts;
 
-namespace WebPage.Pages.Product.Buyer {
-    public class ConsultProductsModel : PageModel {
+namespace WebPage.Pages.Product.Seller {
+    public class ConsultProductsToCreateAuctionModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<ConsultProductsModel> _logger;
         private readonly ServicesBuilder _services;
         private readonly GetImageService.GetImageServiceClient _grpcClient;
 
-        [BindProperty (SupportsGet = true)]
-        public string query {
-            get; set;
-        }
-
-        public List<ProductsDTO> Products {
-            get; set;
-        }
-
-        public ConsultProductsModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient, ILogger<ConsultProductsModel> logger) {
+        public ConsultProductsToCreateAuctionModel (
+                IHttpClientFactory httpClientFactory, ServicesBuilder servicesBuilder,
+                GetImageService.GetImageServiceClient grpcClient) {
             _httpClientFactory = httpClientFactory;
-            _services = services;
+            _services = servicesBuilder;
             _grpcClient = grpcClient;
-            _logger = logger;
+        }
+
+        private string? username {
+            get; set;
+        }
+
+        public List<MyProductsDTO> Products {
+            get; set;
         }
 
         public async Task OnGetAsync () {
-            if (string.IsNullOrWhiteSpace (query)) {
-                Products = new List<ProductsDTO> ();
-                return;
-            }
+            this.username = HttpContext?.User.Identity?.Name ?? string.Empty;
+
+            string requestURL = $"{_services.SellerGetProductsUrl}?username={username}";
+            string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
 
             HttpClient httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = $"{_services.BuyerGetProductsUrl}?query={query}";
-            _logger.LogInformation ("ConsultProductsModel.OnGetAsync: " + requestURL);
+
+            if (!string.IsNullOrEmpty (cookies))
+                httpClient.DefaultRequestHeaders.Add ("Cookie", cookies);
             HttpResponseMessage response = await httpClient.GetAsync (requestURL);
 
             HttpStatusCode statusCode = response.StatusCode;
 
-            ApiResponse<List<ProductsDTO>>? responseData = new ApiResponse<List<ProductsDTO>> ();
+            ApiResponse<List<MyProductsDTO>>? responseData = new ApiResponse<List<MyProductsDTO>> ();
 
             if (statusCode == HttpStatusCode.NotFound) {
-                responseData = new ApiResponse<List<ProductsDTO>> ();
+                responseData = new ApiResponse<List<MyProductsDTO>> ();
                 return;
             }
 
             if (statusCode == HttpStatusCode.OK)
-                responseData = await response.Content.ReadFromJsonAsync<ApiResponse<List<ProductsDTO>>> ();
+                responseData = await response.Content.ReadFromJsonAsync<ApiResponse<List<MyProductsDTO>>> ();
 
             if (responseData?.body != null)
-                Products = new List<ProductsDTO> ();
-            foreach (ProductsDTO prod in responseData.body) {
+                Products = new List<MyProductsDTO> ();
+            foreach (MyProductsDTO prod in responseData.body) {
                 GetImageReply grpcResponse = await _grpcClient.GetImageAsync (new GetImageRequest { ProductId = prod.id });
 
-                ProductsDTO aux = new ProductsDTO {
+                MyProductsDTO aux = new MyProductsDTO {
                     id = prod.id,
                     name = prod.name,
                     price = prod.price,
@@ -66,7 +65,8 @@ namespace WebPage.Pages.Product.Buyer {
                     averageStars = prod.averageStars,
                     stockAvailable = prod.stockAvailable,
                     category = prod.category,
-                    type = prod.type
+                    type = prod.type,
+                    status = prod.status
                 };
                 aux.imageBase64 = Convert.ToBase64String (grpcResponse.ImageData.ToByteArray ());
                 aux.mimeImage = grpcResponse.ImageType;

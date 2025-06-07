@@ -1,4 +1,4 @@
-using ImageProduct;
+using GetImageProduct;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
@@ -11,7 +11,7 @@ namespace WebPage.Pages.Product.Seller {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<ConsultMyProductsModel> _logger;
         private readonly ServicesBuilder _services;
-        private readonly ImageProductService.ImageProductServiceClient _grpcClient;
+        private readonly GetImageService.GetImageServiceClient _grpcClient;
 
         [BindProperty (SupportsGet = true)]
         public string username {
@@ -22,7 +22,7 @@ namespace WebPage.Pages.Product.Seller {
             get; set;
         }
 
-        public ConsultMyProductsModel (IHttpClientFactory httpClientFactory, ILogger<ConsultMyProductsModel> logger, ServicesBuilder services, ImageProductService.ImageProductServiceClient grpcClient) {
+        public ConsultMyProductsModel (IHttpClientFactory httpClientFactory, ILogger<ConsultMyProductsModel> logger, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient) {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
             _services = services;
@@ -55,7 +55,7 @@ namespace WebPage.Pages.Product.Seller {
             if (responseData?.body != null)
                 Products = new List<MyProductsDTO> ();
             foreach (MyProductsDTO prod in responseData.body) {
-                ImageProductReply grpcResponse = await _grpcClient.GetImageAsync (new ImageProductRequest { ProductId = prod.id });
+                GetImageReply grpcResponse = await _grpcClient.GetImageAsync (new GetImageRequest { ProductId = prod.id });
 
                 MyProductsDTO aux = new MyProductsDTO {
                     id = prod.id,
