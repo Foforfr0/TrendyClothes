@@ -1,4 +1,5 @@
-﻿using Backend.DTO;
+﻿using Backend.DAO.User;
+using Backend.DTO;
 using Backend.DTO.Auction.Create;
 using Backend.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -6,13 +7,17 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.DAO.Auction {
     public class CreateAuctionDAO {
         private readonly TrendyClothesDBContext _context;
+        private readonly ConsultUserDAO _consultUserDAO;
 
-        public CreateAuctionDAO (TrendyClothesDBContext context) {
+        public CreateAuctionDAO (TrendyClothesDBContext context, ConsultUserDAO consultUserDAO) {
             _context = context;
+            _consultUserDAO = consultUserDAO;
         }
 
-        public async Task<MessageResponse<bool>> PostAuctionAsync (CreateAuctionDTO createAuctionDTO) {
+        public async Task<MessageResponse<bool>> PostAuctionAsync (CreateAuctionDTO createAuctionDTO, string username) {
             try {
+                int idUser = await _consultUserDAO.GetIdUserFromUsername (username);
+
                 if (createAuctionDTO == null)
                     return MessageResponse<bool>.Success ("Datos de subasta vacíos.", false);
                 Entities.AuctionsProduct newAuction = new Entities.AuctionsProduct ();
@@ -23,7 +28,7 @@ namespace Backend.DAO.Auction {
                 newAuction.DateStart = createAuctionDTO.DateStart;
                 newAuction.DateEnd = createAuctionDTO.DateEnd;
                 newAuction.NumberProducts = createAuctionDTO.NumberProducts;
-                newAuction.SellerId = createAuctionDTO.SellerId;
+                newAuction.SellerId = idUser;
                 newAuction.ProductId = createAuctionDTO.ProductId;
                 newAuction.StatusId = 1;
 

@@ -24,7 +24,7 @@ namespace Backend.Controllers.Aution.Auctioneer {
                         message = $"Los datos de la nueva subasta son inválidos.",
                         error = ModelState.GetErrors ()
                     });
-                MessageResponse<bool> response = await _createAuctionService.CreateAuctionAsync (createAuctionDTO);
+                MessageResponse<bool> response = await _createAuctionService.CreateAuctionAsync (createAuctionDTO, User.Identity.Name);
                 if (response.IsError)
                     return HttpResponses.InternalServerError (response.Message);
                 if (!response.DataRetrieved)

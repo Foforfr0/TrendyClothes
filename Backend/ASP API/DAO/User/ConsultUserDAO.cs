@@ -21,6 +21,20 @@ namespace Backend.DAO.User {
             }
         }
 
+        public async Task<int> GetIdUserFromUsername (string username) {
+            try {
+                int? userId = await _context.Users
+                    .Where (user => user.Username.Equals (username))
+                    .Select (user => user.Id)
+                    .FirstOrDefaultAsync ();
+                if (userId == null)
+                    throw new Exception ("Usuario no encontrado.");
+                return userId.Value;
+            } catch (Exception ex) {
+                throw new Exception ("Error al obtener el ID del usuario desde el token.", ex);
+            }
+        }
+
         public async Task<string?> GetUsernameAsync (string username) {
             try {
                 string? response = await _context.Users
