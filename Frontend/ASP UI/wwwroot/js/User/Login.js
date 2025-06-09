@@ -50,10 +50,28 @@ function EnabledSecondPartLogin() {
     document.getElementById('InputPassword').value = '**********';
     const firstFieldsetLogin = document.getElementById('firstFieldsetLogin');
     firstFieldsetLogin.disabled = !firstFieldsetLogin.disabled;
-    const emailForm = document.getElementById('emailForm');
-    emailForm.disabled = !emailForm.disabled;
-    const twoFactorForm = document.getElementById('twoFactorForm');
-    twoFactorForm.disabled = !twoFactorForm.disabled;
+
+    const inputEmail = document.getElementById('InputEmail');
+    inputEmail.disabled = !inputEmail.disabled;
+    const btnEmail = document.getElementById('btnEmail');
+    btnEmail.disabled = !btnEmail.disabled;
+    const btnForgotEmail = document.getElementById('btnForgotEmail');
+    btnForgotEmail.disabled = !btnForgotEmail.disabled;
+}
+
+function EnabledThirdPartLogin() {
+    const inputEmail = document.getElementById('InputEmail');
+    inputEmail.disabled = !inputEmail.disabled;
+    inputEmail.value = '*****' + inputEmail.value.slice(inputEmail.value.indexOf('@'));
+    const btnEmail = document.getElementById('btnEmail');
+    btnEmail.disabled = !btnEmail.disabled;
+    const btnForgotEmail = document.getElementById('btnForgotEmail');
+    btnForgotEmail.disabled = !btnForgotEmail.disabled;
+
+    const inputTwoFactorCode = document.getElementById('InputTwoFactorCode');
+    inputTwoFactorCode.disabled = !inputTwoFactorCode.disabled;
+    const btnValidate2fc = document.getElementById('btnValidate2fc');
+    btnValidate2fc.disabled = !btnValidate2fc.disabled;
 }
 
 // Validate Email from User on server
@@ -83,7 +101,7 @@ document.getElementById('emailForm').addEventListener('submit', async function (
 
         switch (response.status) {
             case 200:
-                utils.showToast(data.message, 'success');
+                EnabledThirdPartLogin();
                 await CreateTwoFactorCode(username, email);
                 break;
             case 400:

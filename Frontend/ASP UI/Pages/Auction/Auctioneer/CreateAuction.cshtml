@@ -1,4 +1,212 @@
 ﻿@page
+@inject WebPage.Connections.ServicesBuilder UrlBuilder
 @model WebPage.Pages.Auction.Auctioneer.CreateAuctionModel
 @{
+}
+
+    <!-- Header -->
+    <div class="header-section">
+        <h1>Creación de Subasta</h1>
+        <p class="subtitle">Ingrese lo datos de la subasta</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content-wrapper">
+        <div class="row g-4">
+            <!-- Product Details -->
+            <div class="col-lg-5">
+                <div class="product-card">
+                    <div class="product-image-container">
+                        @if (Model.product?.imageBase64 == null || Model.product.imageBase64.Length <= 0) {
+                            <img src="https://placehold.co/600x400/FFFFFF/000000/png?text=Product" class="product-image" alt="Producto" />
+                        } else {
+                            <img class="product-image" alt="Producto" src="data:@Model.product.mimeImage;base64,@Model.product.imageBase64" />
+                        }
+                    </div>
+
+                    <h4 class="product-title">@Model.product.name</h4>
+
+                    <div class="product-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Precio original</span>
+                            <span class="detail-value price-value">$@Model.product.price</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">Descuento</span>
+                            <span class="detail-value discount-value">-$@Model.product.discount</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">Precio final</span>
+                            <span class="detail-value final-price">
+                                $@(((double)(Model.product.price - (Model.product.price * Model.product.discount / 100)??0)).ToString("F2")) 
+                            </span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">Stock disponible</span>
+                            <span class="detail-value">@Model.product.stockAvailable unidades</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span class="detail-label">Calificación</span>
+                            <div class="rating-section">
+                                <span class="detail-value"></span>
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-half"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="description-section">
+                            <h6 class="mb-2"><i class="bi bi-info-circle me-2"></i>Descripción</h6>
+                            <p class="mb-0 text-muted">@Model.product.description</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auction Form -->
+            <div class="col-lg-7">
+                <div class="form-card">
+                    <h2 class="form-section-title">Detalles de la Subasta</h2>
+
+                    <form method="post" id="auctionForm">
+                        <div class="row mb-1">
+                            <div class="col">
+                                <label class="form-label">
+                                    <i class="bi bi-tag me-1"></i>Nombre de la Subasta
+                                </label>
+                                <div class="input-icon">
+                                    <i class="bi bi-pencil-square icon"></i>
+                                    <input id="InputName" class="form-control" type="text"
+                                           placeholder="Ej: MacBook Pro 16 - Subasta Especial"
+                                           autocomplete="off" asp-for="@Model.newAuction.Name" />
+                                </div>
+                                <span class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="bi bi-currency-dollar me-1"></i>Precio Inicial
+                                </label>
+                                <div class="input-icon">
+                                    <i class="bi bi-cash icon"></i>
+                                    <input id="InputFirstPrice" class="form-control" type="number"
+                                           placeholder="25000" step="0.01" min="0"
+                                           autocomplete="off" asp-for="@Model.newAuction.FirstPrice" />
+                                </div>
+                                <span class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="bi bi-arrow-up-circle me-1"></i>Puja Mínima
+                                </label>
+                                <div class="input-icon">
+                                    <i class="bi bi-plus-circle icon"></i>
+                                    <input id="InputMinBid" class="form-control" type="number"
+                                           placeholder="500" step="0.01" min="0"
+                                           autocomplete="off" asp-for="@Model.newAuction.MinBid"/>
+                                </div>
+                                <span class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="bi bi-calendar-event me-1"></i>Fecha de Inicio
+                                </label>
+                                <div class="input-icon">
+                                    <i class="bi bi-calendar-plus icon"></i>
+                                    <input id="InputDateStart" class="form-control" type="datetime-local"
+                                           autocomplete="off" asp-for="@Model.newAuction.DateStart" />
+                                </div>
+                                <span class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="bi bi-calendar-x me-1"></i>Fecha de Fin
+                                </label>
+                                <div class="input-icon">
+                                    <i class="bi bi-calendar-check icon"></i>
+                                    <input id="InputDateEnd" class="form-control" type="datetime-local"
+                                           autocomplete="off" asp-for="@Model.newAuction.DateEnd" />
+                                </div>
+                                <span class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="bi bi-box me-1"></i>Cantidad de Productos
+                                </label>
+                                <div class="input-icon">
+                                    <i class="bi bi-123 icon"></i>
+                                    <input id="InputNumberProducts" class="form-control" type="number"
+                                           placeholder="1" min="1"
+                                           autocomplete="off" asp-for="@Model.newAuction.NumberProducts" />
+                                </div>
+                                <span class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="bi bi-person me-1"></i>Vendedor
+                                </label>
+                                <div class="input-icon">
+                                    <i class="bi bi-person-circle icon"></i>
+                                    <input id="InputUsernameSeller" class="form-control" type="text"
+                                           placeholder="Nombre del vendedor" readonly
+                                           value="@(User.Identity?.Name ?? "Juan Pérez")" autocomplete="off" />
+                                </div>
+                                <span class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="actions-section">
+                            <button type="button" class="btn btn-danger" id="cancelBtn">
+                                <i class="bi bi-x-circle me-2"></i>Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-success" id="submitBtn">
+                                <i class="bi bi-check-circle me-2"></i>Crear Subasta
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Floating Alert (hidden by default) -->
+<div class="alert alert-success floating-alert d-none" id="successAlert" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    <strong>¡Éxito!</strong> La subasta ha sido creada correctamente.
+</div>
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/CreateAuction.css" />
+}
+
+@section Scripts {
+    <script>
+        window.data = {
+            idProduct: @Model.idProduct
+        };
+        window.config = {
+            PostAuction: '@UrlBuilder.AuctioneerPostAuctionUrl'
+        };
+    </script>
+    <script src="~/js/Auction/CreateAuction.js"></script>
 }

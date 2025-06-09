@@ -21,7 +21,7 @@
         public required int NumberProducts {
             get; set;
         }
-        public required int SellerId {
+        public int? SellerId {
             get; set;
         }
     }

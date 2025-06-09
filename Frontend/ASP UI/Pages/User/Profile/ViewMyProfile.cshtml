@@ -73,13 +73,20 @@
 </div>
 
 <!-- Modal for starting an auction -->
-<div class="modal fade" id="modalSearchProduct" data-bs-backdrop="true" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+<div class="modal fade" id="modalSearchProduct" tabindex="-1" aria-labelledby="modalSearchProductLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-lg"
          style="min-height: 80dvh; max-height: 90dvh; min-width: 50dvw; max-width: 70dvw;">
-        <div class="modal-content text-center h-100 w-100" id="modal-content">
+        <div class="modal-content h-100 w-100" id="modal-content">
+            <!-- Managed by: 
+                ~/js/User/ViewMyProfile
+            document.getElementById('startAuction').addEventListener('click', (event) => { -->
         </div>
     </div>
 </div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/ConsultProductsToAuction.css" />
+}
 
 @section Scripts {
     <script>

@@ -11,6 +11,12 @@ namespace WebPage.Pages.Product.Buyer {
         private readonly ServicesBuilder _services;
         private readonly GetImageService.GetImageServiceClient _grpcClient;
 
+        public ViewDetailsModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient) {
+            _httpClientFactory = httpClientFactory;
+            _services = services;
+            _grpcClient = grpcClient;
+        }
+
         [BindProperty (SupportsGet = true)]
         public int id {
             get; set;
@@ -20,23 +26,16 @@ namespace WebPage.Pages.Product.Buyer {
             get; set;
         }
 
-
-        public ViewDetailsModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient) {
-            _httpClientFactory = httpClientFactory;
-            _services = services;
-            _grpcClient = grpcClient;
-        }
-
         public async Task OnGetAsync () {
             product = new ProductDetailsDTO ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            ApiResponse<ProductDetailsDTO>? response = 
+            ApiResponse<ProductDetailsDTO>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<ProductDetailsDTO>> ($"{_services.BuyerGetProductDetailsUrl}?Id={id}");
 
             if (response?.body != null) {
                 product = response.body;
-                GetImageReply? grpcResponse = await _grpcClient.GetImageAsync (new GetImageRequest{ ProductId = id});
+                GetImageReply? grpcResponse = await _grpcClient.GetImageAsync (new GetImageRequest { ProductId = id });
                 product.imageBase64 = Convert.ToBase64String (grpcResponse.ImageData.ToByteArray ());
                 product.mimeImage = grpcResponse.ImageType;
             }

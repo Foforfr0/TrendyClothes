@@ -55,8 +55,6 @@ namespace WebPage.Pages.Product.Buyer {
             if (responseData?.body != null)
                 Products = new List<ProductsDTO> ();
             foreach (ProductsDTO prod in responseData.body) {
-                GetImageReply grpcResponse = await _grpcClient.GetImageAsync (new GetImageRequest { ProductId = prod.id });
-
                 ProductsDTO aux = new ProductsDTO {
                     id = prod.id,
                     name = prod.name,
@@ -68,6 +66,7 @@ namespace WebPage.Pages.Product.Buyer {
                     category = prod.category,
                     type = prod.type
                 };
+                GetImageReply grpcResponse = await _grpcClient.GetImageAsync (new GetImageRequest { ProductId = prod.id });
                 aux.imageBase64 = Convert.ToBase64String (grpcResponse.ImageData.ToByteArray ());
                 aux.mimeImage = grpcResponse.ImageType;
 

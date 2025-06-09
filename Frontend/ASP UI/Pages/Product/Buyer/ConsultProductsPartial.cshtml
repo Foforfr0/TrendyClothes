@@ -5,7 +5,11 @@
 <div class="container w-75 my-1 border border-1 border-light-subtle" style="max-height: 100px;">
     <div class="row mb-1 h-100 p-1">
         <div class="col-4 h-100 object-fit-contain">
-            <img src="data:@Model.mimeImage;base64,@Model.imageBase64" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" />
+            @if (Model.imageBase64 == null || Model.imageBase64.Length <= 0) {
+                <img src="https://placehold.co/600x400/FFFFFF/000000/png?text=Product" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" />
+            } else {
+                <img src="data:@Model.mimeImage;base64,@Model.imageBase64" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" />
+            }
         </div>
         <div class="col-8 h-100">
             <div class="row">
