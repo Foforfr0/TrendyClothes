@@ -4,7 +4,21 @@
              xmlns:local="clr-namespace:WpfApp"
              StartupUri="Pages/WindowContainer.xaml">
     <Application.Resources>
-        <Style TargetType="{x:Type Control}">
+        <ResourceDictionary>
+            <!--Styles-->
+            <ResourceDictionary.MergedDictionaries>
+                
+                <ResourceDictionary Source="/Resources/Lang/Strings.es.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Animations.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/UIElementals.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/LabelsStyles.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/ButtonsStyles.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/TextBoxStyles.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/ScrollerStyles.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type Control}">
             <Setter Property="FontFamily" Value="Segoe UI"/>
         </Style>
         <Style TargetType="Label">
@@ -31,12 +45,13 @@
             <Setter Property="Margin" Value="10 5 10 0"/>
         </Style>
 
-        <Style x:Key="LabelErrorForm" TargetType="Label">
-            <Setter Property="Content" Value=""/>
-            <Setter Property="Foreground" Value="Red"/>
-            <Setter Property="Visibility" Value="Collapsed"/>
-            <Setter Property="Margin" Value="0 0 0 0"/>
-            <Setter Property="Padding" Value="5 0 0 5"/>
-        </Style>
+            <Style x:Key="LabelErrorForm" TargetType="Label">
+                <Setter Property="Content" Value=""/>
+                <Setter Property="Foreground" Value="Red"/>
+                <Setter Property="Visibility" Value="Collapsed"/>
+                <Setter Property="Margin" Value="0 0 0 0"/>
+                <Setter Property="Padding" Value="5 0 0 5"/>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

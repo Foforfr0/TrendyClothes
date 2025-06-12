@@ -3,15 +3,18 @@ using WpfApp.Pages.User.Auth;
 using WpfApp.Services.User.Auth;
 
 namespace WpfApp.Pages {
-    /// <summary>
-    /// Interaction logic for WindowContainer.xaml
-    /// </summary>
     public partial class WindowContainer : Window {
         public WindowContainer () {
             InitializeComponent ();
-
-            MainFrame.Navigate (new Login ());
             //MainFrame.Navigate (new Login (_loginService));
+        }
+
+        private void BtnHome_Click(object sender, RoutedEventArgs e)
+        {
+            /*TODO:
+             * Reload Index on click
+             * Create NavigationManager
+             */
         }
     }
 }
