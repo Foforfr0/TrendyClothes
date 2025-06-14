@@ -1,0 +1,15 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AuthService.Models {
+    public class CodeTwoFactorDTO {
+        [Required (ErrorMessage = "El nombre de usuario es requerido.")]
+        public required string Username {
+            get; set;
+        }
+        [Required (ErrorMessage = "El código doble factor es requerido.")]
+        [StringLength (maximumLength: 6, MinimumLength = 6, ErrorMessage = "El código debe contener 6 dígitos.")]
+        public required string TwoFactorCode {
+            get; set;
+        }
+    }
+}
