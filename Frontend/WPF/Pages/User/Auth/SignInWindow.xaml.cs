@@ -33,7 +33,6 @@ namespace WpfApp.Pages.User.Auth
         {
             Step1Panel.IsEnabled = currentStep == 1;
             Step2Panel.IsEnabled = currentStep == 2;
-            Step3Panel.IsEnabled = currentStep == 3;
         }
 
         private void NavigateToMainWindow()
@@ -65,12 +64,16 @@ namespace WpfApp.Pages.User.Auth
         {
             //TODO: login validation
 
+            Step1Panel.IsEnabled = false;
             currentStep = 2;
             UpdateUISteps();
         }
 
         private void BtnSendCode_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: send two factor code 
+
+            Step2Panel.IsEnabled = false;
             currentStep = 3;
             UpdateUISteps();
         }

@@ -62,11 +62,29 @@
     <sys:String x:Key="Login_TbUsername">Nombre de usuario:</sys:String>
     <sys:String x:Key="Login_TbPassword">Contraseña:</sys:String>
     <sys:String x:Key="Login_DialogTSignedIn">Sesión iniciada</sys:String>
-    <sys:String x:Key="Login_DialogDSignedIn">La sesión fue iniciada correctamente. Ahora puedes acceder a todas las funcionalidades del sistema de Italia Pizza.</sys:String>
+    <sys:String x:Key="Login_DialogDSignedIn">La sesión fue iniciada correctamente. Ahora puedes acceder a todas las funcionalidades de la plataforma.</sys:String>
     <sys:String x:Key="Login_DialogTSignOut">¿Cerrar Sesión?</sys:String>
     <sys:String x:Key="Login_DialogDSignOut">¿Estás seguro de que deseas cerrar la sesión actual? La próxima vez que desees ingresar al sistema, deberás autenticarte nuevamente.</sys:String>
     <sys:String x:Key="Login_DialogTSignedOut">Sesión cerrada</sys:String>
-    <sys:String x:Key="Login_DialogDSignedOut">La sesión fue cerrada exitosamente. Esperamos verte pronto nuevamente en el sistema de Italia Pizza.</sys:String>
+    <sys:String x:Key="Login_DialogDSignedOut">La sesión fue cerrada exitosamente.</sys:String>
+
+    <!--Registro de usuario-->
+    <sys:String x:Key="RegUser_Header">Crea tu cuenta</sys:String>
+    <sys:String x:Key="RegUser_Desc">Ingresa los datos para tu cuenta</sys:String>
+    <sys:String x:Key="RegUser_UserData">Datos de la cuenta</sys:String>
+    <sys:String x:Key="RegUser_FirstName">Nombre(s)</sys:String>
+    <sys:String x:Key="RegUser_LastName">Apellido(s)</sys:String>
+    <sys:String x:Key="RegUser_AccountData">Credenciales</sys:String>
+    <sys:String x:Key="RegUser_Password">Crea tu contraseña</sys:String>
+    <sys:String x:Key="RegUser_RepeatPassword">Confirma tu contraseña</sys:String>
+    <sys:String x:Key="RegUser_BtnRegister">Crear cuenta</sys:String>
+    <sys:String x:Key="RegUser_DialogTSuccess">Registro exitoso</sys:String>
+    <sys:String x:Key="RegUser_DialogDSucess">Se ha registrado tu cuenta, ahora podras iniciar sesion en la plataforma</sys:String>
+    <sys:String x:Key="RegUser_TInvalidPassword">Contraseña invalida</sys:String>
+    <sys:String x:Key="RegUser_DInvalidPassword">La contraseña es muy corta, debe tener entre 8 y 16 caracteres</sys:String>
+    <sys:String x:Key="RegUser_TInvalidEmail">Correo invalido</sys:String>
+    <sys:String x:Key="RegUser_DInvalidEmail">El correo debe tener un formato valido</sys:String>
+    <sys:String x:Key="RegUser_DUsedEmail">El correo que ingresaste ya esta en uso.</sys:String>
 
     <!--Inicio-->
     <sys:String x:Key="Home_ProductName">ITEMsNAME_PLACEHOLDER</sys:String>

@@ -45,7 +45,7 @@
                             <Button x:Name="Btn" Margin="25, 0, 0, 0"
                                     Content="{DynamicResource Glb_Trending}"
                                     Style="{DynamicResource TableHeaderButtonStyle}"
-                                    Click="Btn_Click"/>
+                                    Click="BtnTrends_Click"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">

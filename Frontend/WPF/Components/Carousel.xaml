@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="WpfApp.Components.Carousel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="900">
+    <Border Background="{DynamicResource BackgroundBrush}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" x:Name="BtnLeft"
+                    Style="{DynamicResource BackButtonStyle}"/>
+            <Button Grid.Column="2" x:Name="BtnRight"
+                    Style="{DynamicResource ForwardButtonStyle}"/>
+
+            <!--
+            <ScrollViewer x:Name="ScrollViewer" Grid.Column="1" CanContentScroll="True"
+                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                <ItemsControl x:Name="ItemContainer">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                
+                            </StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+            -->
+        </Grid>
+    </Border>
+</UserControl>

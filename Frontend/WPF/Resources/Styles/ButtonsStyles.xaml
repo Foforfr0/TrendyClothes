@@ -301,7 +301,44 @@
                     Background="Transparent"
                     CornerRadius="6"
                     Padding="5">
-                            
+                            <Image x:Name="ButtonImage"
+                                   Source="/Resources/Icons/icon-left-arrow.png"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Stretch="Uniform"
+                                   Width="18" 
+                                   Height="18"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#FFD3D3D3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ForwardButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="Border"
+                Background="Transparent"
+                CornerRadius="6"
+                Padding="5">
+                            <Image x:Name="ButtonImage"
+                               Source="/Resources/Icons/icon-right-arrow.png"
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               Stretch="Uniform"
+                               Width="18" 
+                               Height="18"/>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
