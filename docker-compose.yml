@@ -8,14 +8,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.2
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - authservice
-      - profileservice
       - grpcimageservice
 
   # BACKEND REST SERVICES
@@ -26,9 +22,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5001:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.3
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -41,9 +34,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5002:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.4
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -56,9 +46,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5003:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.5
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -71,9 +58,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5004:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.6
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -86,9 +70,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5005:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.7
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -101,9 +82,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5006:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.8
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -116,9 +94,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5007:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.9
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -131,9 +106,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5008:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.10
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -147,9 +119,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5109:80"
-    networks:
-      interna:
-        ipv4_address: 172.16.0.11
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
@@ -160,15 +129,12 @@ services:
     container_name: sqlserver
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
-      - SA_PASSWORD=q1w2e3r4t5y6
+      - SA_PASSWORD=StrongP@ssw0rd!
       - ACCEPT_EULA=Y
     ports:
       - "1433:1433"
     volumes:
       - sql_data:/var/opt/mssql
-    networks:
-      interna:
-        ipv4_address: 172.16.0.12
 
 volumes:
   sql_data:

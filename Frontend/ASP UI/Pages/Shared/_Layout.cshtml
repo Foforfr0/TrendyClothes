@@ -54,8 +54,8 @@
                     <img src="~/images/shoppingCart.png" class="profile-img" alt="Perfil" />
                 </a>
                 <div class="dropdown">
-                    <button class="btn btn-transparent dropdown-toggle " type="button">
-                        <img src="~/images/noprofilephoto.png" class="profile-img bg-transparent" /> <!--TODO-->
+                    <button class="btn btn-transparent dropdown-toggle p-1" type="button">
+                        <i class="bi bi-person-circle fs-3"></i>
                     </button>
                     <ul class="dropdown-menu">
                         @if(User.Identity != null && User.Identity.IsAuthenticated){

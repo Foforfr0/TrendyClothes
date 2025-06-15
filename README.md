@@ -1,1 +1,49 @@
-# TrendyClothes ASP
+﻿# TrendyClothes ASP
+## Docker
+Iniciar imágenes y contenedores
+	docker compose up --build --no-start
+		docker compose down -v  # Elimina el volumen (En caso de fallo)
+	docker compose start
+	(Iniciar el contenedor de sqlserver)
+	(Instalar sqlcmd en host para la creación de la base de datos)
+	sqlcmd -S localhost,1433 -U SA -P StrongP@ssw0rd! // Verificar que se puede acceder
+Copiar archivos necesarios para sqlserver
+	docker cp ./Database.sql sqlserver:/tmp/Database.sql
+	docker cp "C:\Archivos\Example Files\TrendyClothes\." sqlserver:/var/opt/mssql/data
+	sqlcmd -S localhost,1433 -U sa -P StrongP@ssw0rd! -i "C:\Archivos\Projects Programs\Páginas web\TrendyClothes\Database.sql"
+
+
+# 👗 TrendyClothes ASP.NET
+
+Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, utilizando ASP.NET y SQL Server.
+
+---
+
+## 🐳 Docker
+
+### 🔧 Inicialización de contenedores
+
+```bash
+# Construye las imágenes sin iniciarlas
+docker compose up --build --no-start
+# Inicia los contenedores ya construidos
+docker compose start
+# (Opcional) Elimina los volúmenes persistentes si ocurre un error
+docker compose down -v
+
+### 🛢️ Base de datos (SQL Server)
+# Inicia el contenedor de SQL Server.
+#Instala sqlcmd en el host si aún no lo tienes.
+#Verifica la conexión al servidor SQL:
+sqlcmd -S localhost,1433 -U SA -P StrongP@ssw0rd!
+
+### 📂 Copiar archivos necesarios al contenedor
+# Copia el script SQL de creación de base de datos
+docker cp ./Database.sql sqlserver:/tmp/Database.sql
+
+# Copia los archivos de la base de datos (si aplica)
+docker cp "C:\Archivos\Example Files\TrendyClothes\." sqlserver:/var/opt/mssql/data
+
+▶️ Ejecutar el script SQL desde el host
+sqlcmd -S localhost,1433 -U sa -P StrongP@ssw0rd! -i "C:\Archivos\Projects Programs\Páginas web\TrendyClothes\Database.sql"
+

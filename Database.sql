@@ -19,7 +19,7 @@ CREATE TABLE Addresses (
     Neighborhood VARCHAR(50) NOT NULL,
     City VARCHAR(50) NOT NULL,
     PostalCode VARCHAR(8) NOT NULL,
-    "State" VARCHAR(80) NOT NULL,
+    State VARCHAR(80) NOT NULL,
     Country VARCHAR(80) NOT NULL,
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE Users (
     Email VARCHAR(100) NOT NULL UNIQUE,
     AreaCode VARCHAR(5) NOT NULL,
     PhoneNumber VARCHAR(10) NOT NULL,
-    "Password" NVARCHAR(200) NOT NULL,
+    Password NVARCHAR(200) NOT NULL,
     TwoFactorCode NVARCHAR(6),
     RoleId INT NOT NULL,
 
@@ -61,22 +61,22 @@ CREATE TABLE CategoriesProduct (    -- t-shirt, jeans, pants, trousers, blouse, 
 
 CREATE TABLE TypesProduct (        -- New, used
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    "Type" VARCHAR(20) NOT NULL UNIQUE
+    Type VARCHAR(20) NOT NULL UNIQUE
 );
 
 CREATE TABLE StatusesProduct (        -- Not paused, Paused
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    "Status" VARCHAR(20) NOT NULL UNIQUE
+    Status VARCHAR(20) NOT NULL UNIQUE
 );
 
 CREATE TABLE Products (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    "Name" VARCHAR(100) NOT NULL,
+    Name VARCHAR(100) NOT NULL,
     Price DECIMAL(12,2) NOT NULL,
     Discount DECIMAL(12,2),
     NumberSold INT NOT NULL,
     AverageStars DECIMAL(2,1),
-    "Description" VARCHAR(MAX) NOT NULL,
+    Description VARCHAR(MAX) NOT NULL,
     StockAvailable INT NOT NULL,
     SellerId INT NOT NULL,
     CategoryId INT NOT NULL,
@@ -101,8 +101,8 @@ CREATE TABLE PhotosProduct (
 CREATE TABLE QAProduct (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Stars DECIMAL(2,1),
-    "Description" TEXT,
-    "Date" Date NOT NULL,
+    Description TEXT,
+    Date Date NOT NULL,
     ProductId INT NOT NULL,
     UserId INT NOT NULL
 
@@ -112,7 +112,7 @@ CREATE TABLE QAProduct (
 
 CREATE TABLE StatusesAuction (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    "Status" VARCHAR(20) NOT NULL UNIQUE
+    Status VARCHAR(20) NOT NULL UNIQUE
 );
 
 CREATE TABLE AuctionsProduct (
@@ -158,7 +158,7 @@ INSERT INTO Users (FirstName, MiddleName, LastName, Username, Email, AreaCode, P
 
 
 -- Addresses
-INSERT INTO Addresses (Street, ExtNumber, IntNumber, Neighborhood, City, PostalCode, "State", Country) VALUES 
+INSERT INTO Addresses (Street, ExtNumber, IntNumber, Neighborhood, City, PostalCode, State, Country) VALUES 
 ('Enriquez', '232', '2', 'Centro', 'Xalapa', '91097', 'Veracruz', 'México');
 
 -- User_Address
@@ -198,6 +198,20 @@ INSERT INTO Products (Name, Price, Discount, NumberSold, AverageStars, Descripti
 
 -- PhotosProduct (solo insert de ejemplo sin foto real, usa NULL o CONVERT si deseas agregar imágenes reales)
 INSERT INTO PhotosProduct (Photo, ProductId, Mime) VALUES 
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 1.jpg', SINGLE_BLOB) AS Photo), 1, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 2.jpg', SINGLE_BLOB) AS Photo), 2, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 3.jpg', SINGLE_BLOB) AS Photo), 3, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Pantalones 1.jpg', SINGLE_BLOB) AS Photo), 4, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Pantalones 2.jpg', SINGLE_BLOB) AS Photo), 5, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Pantalones 3.jpg', SINGLE_BLOB) AS Photo), 6, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Accesorio 1.jpg', SINGLE_BLOB) AS Photo), 7, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Playera 1.jpg', SINGLE_BLOB) AS Photo), 8, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Playera 2.jpg', SINGLE_BLOB) AS Photo), 9, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Playera 3.jpg', SINGLE_BLOB) AS Photo), 10, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 1.jpg', SINGLE_BLOB) AS Photo), 11, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 2.jpg', SINGLE_BLOB) AS Photo), 12, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 3.jpg', SINGLE_BLOB) AS Photo), 13, 'image/jpg');
+/*
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 1.jpg', SINGLE_BLOB) AS Photo), 1, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 2.jpg', SINGLE_BLOB) AS Photo), 2, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 3.jpg', SINGLE_BLOB) AS Photo), 3, 'image/jpg'),
@@ -211,6 +225,7 @@ INSERT INTO PhotosProduct (Photo, ProductId, Mime) VALUES
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 1.jpg', SINGLE_BLOB) AS Photo), 11, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 2.jpg', SINGLE_BLOB) AS Photo), 12, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 3.jpg', SINGLE_BLOB) AS Photo), 13, 'image/jpg');
+*/
 
 -- QAProduct
 INSERT INTO QAProduct (Stars, Description, Date, ProductId, UserId) VALUES 
