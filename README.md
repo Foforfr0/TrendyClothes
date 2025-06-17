@@ -1,21 +1,4 @@
-﻿# TrendyClothes ASP
-## Docker
-Iniciar imágenes y contenedores
-```docker
-```
-	docker compose up --build --no-start
-		docker compose down -v  # Elimina el volumen (En caso de fallo)
-	docker compose start
-	(Iniciar el contenedor de sqlserver)
-	(Instalar sqlcmd en host para la creación de la base de datos)
-	sqlcmd -S localhost,1433 -U SA -P StrongP@ssw0rd! // Verificar que se puede acceder
-Copiar archivos necesarios para sqlserver
-	docker cp ./Database.sql sqlserver:/tmp/Database.sql
-	docker cp "C:\Archivos\Example Files\TrendyClothes\." sqlserver:/var/opt/mssql/data
-	sqlcmd -S localhost,1433 -U sa -P StrongP@ssw0rd! -i "C:\Archivos\Projects Programs\Páginas web\TrendyClothes\Database.sql"
-
-
-# 👗 TrendyClothes ASP.NET
+﻿# 👗 TrendyClothes ASP.NET
 
 Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, utilizando ASP.NET y SQL Server.
 
