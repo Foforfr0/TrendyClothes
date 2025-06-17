@@ -43,11 +43,15 @@ public partial class TrendyClothesDBContext : DbContext
 
     protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder) {
         if (!optionsBuilder.IsConfigured) {
-            IConfigurationRoot? config = new ConfigurationBuilder ()
-                .AddJsonFile ("appsettings.json")
+            var environment = Environment.GetEnvironmentVariable ("ASPNETCORE_ENVIRONMENT") ?? "Production";
+
+            var config = new ConfigurationBuilder ()
+                .SetBasePath (Directory.GetCurrentDirectory ())
+                .AddJsonFile ("appsettings.json", optional: false)
+                .AddJsonFile ($"appsettings.{environment}.json", optional: true) // <- Este es el cambio
                 .Build ();
 
-            string? connectionString = config.GetConnectionString ("DefaultConnection");
+            var connectionString = config.GetConnectionString ("SQLServer");
 
             optionsBuilder.UseSqlServer (connectionString);
         }

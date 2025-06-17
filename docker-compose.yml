@@ -1,5 +1,7 @@
-services:
+# TODO Quitar declaración PORTS excepto en webui
 
+
+services:
   # FRONTEND UI
   webui:
     container_name: webui
@@ -10,9 +12,10 @@ services:
       - "8081:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
     depends_on:
       - grpcimageservice
+    networks:
+      - internal
 
   # BACKEND REST SERVICES
   authservice:
@@ -26,6 +29,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   profileservice:
     container_name: profileservice
@@ -38,6 +43,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   accountservice:
     container_name: accountservice
@@ -50,6 +57,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   productservice:
     container_name: productservice
@@ -62,6 +71,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   productbuyerservice:
     container_name: productbuyerservice
@@ -74,6 +85,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   productsellerservice:
     container_name: productsellerservice
@@ -86,6 +99,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   auctionauctioneerservice:
     container_name: auctionauctioneerservice
@@ -98,6 +113,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   auctionparticipantservice:
     container_name: auctionparticipantservice
@@ -110,6 +127,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   # gRPC SERVICE
   grpcimageservice:
@@ -123,6 +142,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - sqlserver
+    networks:
+      - internal
 
   # SQL Server Database
   sqlserver:
@@ -135,12 +156,14 @@ services:
       - "1433:1433"
     volumes:
       - sql_data:/var/opt/mssql
+    networks:
+      - internal
 
 volumes:
   sql_data:
 
 networks:
-  interna:
+  internal:
     ipam:
       driver: default
       config:
