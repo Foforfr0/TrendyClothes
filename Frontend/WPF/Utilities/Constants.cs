@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace WpfApp.Utilities
 {
-    public class Constants
+    public  static class Constants
     {
+        public static readonly string DEFAULT_PROFILE_PIC_PATH = "/Resources/Images/default-profile-pic.png";
+
         public static readonly long MAX_IMAGE_SIZE = 5 * 1024 * 1024;
         public static readonly int MAX_LENGTH_PHONENUMBER = 10;
         public static readonly int MAX_LENGTH_NAMES = 32;

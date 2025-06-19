@@ -85,6 +85,7 @@
     <sys:String x:Key="RegUser_TInvalidEmail">Correo invalido</sys:String>
     <sys:String x:Key="RegUser_DInvalidEmail">El correo debe tener un formato valido</sys:String>
     <sys:String x:Key="RegUser_DUsedEmail">El correo que ingresaste ya esta en uso.</sys:String>
+    <sys:String x:Key="RegUser_DialogSelectProfilePic">Seleccionar imagen de perfil</sys:String>
 
     <!--Inicio-->
     <sys:String x:Key="Home_ProductName">ITEMsNAME_PLACEHOLDER</sys:String>

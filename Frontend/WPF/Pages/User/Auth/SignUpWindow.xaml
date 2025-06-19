@@ -83,7 +83,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBox x:Name="TbEmployeeName" 
+                            <TextBox x:Name="TbFirstName" 
                                      Grid.Column="0" Grid.Row="0"
                                      Tag="{DynamicResource RegUser_FirstName}" 
                                      Style="{DynamicResource TextBoxStyle}"
@@ -120,12 +120,12 @@
                                          Tag="{DynamicResource RegUser_Password}"
                                          Style="{DynamicResource PasswordBoxStyle}"
                                          Margin="5"
-                                         PasswordChanged="PbAccountPassword_PasswordChanged"/>
+                                         PasswordChanged="Password_TextChanged"/>
                                 <TextBox x:Name="TbAccountPassword" Grid.Column="0"
                                         Tag="{DynamicResource RegUser_Password}"
                                         Style="{DynamicResource ShowPasswordStyle}"
                                         Margin="5" Visibility="Collapsed"
-                                        TextChanged="TbAccountPassword_TextChanged"/>
+                                        TextChanged="Password_TextChanged"/>
                                 <CheckBox x:Name="ChbShowPassword" Margin="10, 5, 0, 0"
                                       Content="{DynamicResource Glb_ShowPassword}"
                                       Style="{DynamicResource CheckBoxStyle}"
@@ -144,7 +144,7 @@
                                          Tag="{DynamicResource RegUser_RepeatPassword}"
                                          Style="{DynamicResource ShowPasswordStyle}"
                                          Margin="5" Visibility="Collapsed"
-                                         TextChanged="TbAccountPassword_TextChanged"/>
+                                         TextChanged="Password_TextChanged"/>
                                 <CheckBox x:Name="ChbShowConfirmPassword" Margin="10, 5, 0, 0"
                                           Content="{DynamicResource Glb_ShowPassword}"
                                           Style="{DynamicResource CheckBoxStyle}"
