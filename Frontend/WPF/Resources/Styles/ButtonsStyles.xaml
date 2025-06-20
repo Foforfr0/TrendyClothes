@@ -77,7 +77,7 @@
                     <Border Background="{StaticResource SecondaryButtonBrush}"
                     BorderBrush="{StaticResource BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="12"
+                    CornerRadius="15"
                     Padding="10 8">
                         <Grid>
                             <Grid.ColumnDefinitions>

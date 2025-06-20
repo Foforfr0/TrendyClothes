@@ -86,6 +86,19 @@ namespace WpfApp.Pages.User.Auth
             }
         }
 
+        private void RequiredFields_TextChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Password_TextChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox && PbAccountPassword.Password != textBox.Text)
+                PbAccountPassword.Password = textBox.Text;
+            else if (sender is PasswordBox passwordBox && TbAccountPassword.Text != passwordBox.Password)
+                TbAccountPassword.Text = passwordBox.Password;
+        }
+
         private void BtnSelectImage_Click(object sender, RoutedEventArgs e)
         {
             SelectProfilePicture(UserProfilePic);
@@ -94,14 +107,6 @@ namespace WpfApp.Pages.User.Auth
         private void BtnDeleteImage_Click(object sender, RoutedEventArgs e)
         {
             BtnDeleteImage.IsEnabled = false;
-        }
-
-        private void Password_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (sender is TextBox textBox && PbAccountPassword.Password != textBox.Text)
-                PbAccountPassword.Password = textBox.Text;
-            else if (sender is PasswordBox passwordBox && TbAccountPassword.Text != passwordBox.Password)
-                TbAccountPassword.Text = passwordBox.Password;
         }
 
         private void ChbShowPassword_Unchecked(object sender, RoutedEventArgs e)

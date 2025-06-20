@@ -24,5 +24,15 @@ namespace WpfApp.Pages.Product
         {
             InitializeComponent();
         }
+
+        private void BtnAddToCart_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnBuyNow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

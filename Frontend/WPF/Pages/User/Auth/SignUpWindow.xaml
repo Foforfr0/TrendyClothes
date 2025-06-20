@@ -139,7 +139,7 @@
                                          Tag="{DynamicResource RegUser_RepeatPassword}"
                                          Style="{DynamicResource PasswordBoxStyle}"
                                          Margin="5"
-                                         PasswordChanged="PbAccountPassword_PasswordChanged"/>
+                                         PasswordChanged="Password_TextChanged"/>
                                 <TextBox x:Name="TbConfirmPassword" Grid.Column="0"
                                          Tag="{DynamicResource RegUser_RepeatPassword}"
                                          Style="{DynamicResource ShowPasswordStyle}"

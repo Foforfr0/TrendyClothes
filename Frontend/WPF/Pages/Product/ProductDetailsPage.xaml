@@ -10,11 +10,12 @@
 
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0">
+        <Border Grid.Row="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -27,9 +28,75 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
+
+                        <Image Name="ProductPic" Margin="15, 15"
+                               Grid.Row="0"
+                               HorizontalAlignment="Center"
+                               Stretch="Uniform"
+                               Source="/Resources/Images/image-empty.jpg"
+                               VerticalAlignment="Center"
+                               RenderOptions.BitmapScalingMode="HighQuality">
+                        </Image>
+
+                        <ScrollViewer Grid.Row="1">
+                            <!--To see the rest of product images-->
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2.5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Vertical" Margin="15" Grid.Row="0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <TextBlock Name="ItemTitle" Text="{DynamicResource Post_Header}"
+                                       Margin="0, 20" Style="{DynamicResource SubtitleLabelStyle}"/>
+                            <TextBox Name="ItemDesc" Text="{DynamicResource Post_Desc}"
+                                     Style="{DynamicResource TextAreaStyle}" MaxWidth="350"
+                                     MaxHeight="150" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left"
+                                    Margin="15" Grid.Row="1">
+                            <TextBlock Text="{DynamicResource Post_Sizes}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="BtnSize1" Content="{DynamicResource Glb_Size1}"
+                                        Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                        Margin="5, 5"/>
+                                <Button x:Name="BtnSize2" Content="{DynamicResource Glb_Size2}"
+                                        Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                        Margin="10, 5"/>
+                                <Button x:Name="BtnSize3" Content="{DynamicResource Glb_Size3}"
+                                        Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                        Margin="10, 5"/>
+                                <Button x:Name="BtnSize4" Content="{DynamicResource Glb_Size4}"
+                                        Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                        Margin="10, 5"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel>
+                            
+                        </StackPanel>
                     </Grid>
                 </Border>
             </Grid>
         </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Button x:Name="BtnBuyNow"
+                    Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                    Content="{DynamicResource Post_Buy}"
+                    Margin="0, 0, 15, 0"
+                    Click="BtnBuyNow_Click"/>
+            <Button x:Name="BtnAddToCart"
+                    Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                    Content="{DynamicResource Post_AddToCart}"
+                    Margin="0, 0, 10, 0"
+                    Click="BtnAddToCart_Click"/>
+        </StackPanel>
     </Grid>
 </Page>

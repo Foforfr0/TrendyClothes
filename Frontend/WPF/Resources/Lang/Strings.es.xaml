@@ -30,6 +30,11 @@
     <sys:String x:Key="Glb_UserRole">Tipo de usuario</sys:String>
     <sys:String x:Key="Glb_Address">Direccion</sys:String>
     <sys:String x:Key="Glb_Cart">Carrito</sys:String>
+    <sys:String x:Key="Glb_Size1">XS</sys:String>
+    <sys:String x:Key="Glb_Size2">S</sys:String>
+    <sys:String x:Key="Glb_Size3">M</sys:String>
+    <sys:String x:Key="Glb_Size4">L</sys:String>
+    <sys:String x:Key="Glb_Size5">XL</sys:String>
     <sys:String x:Key="Glb_SearchBar">Buscar...</sys:String>
     <sys:String x:Key="Glb_Description">Descripcion</sys:String>
     <sys:String x:Key="Glb_ViewAll">Ver todos</sys:String>
@@ -145,6 +150,8 @@
     <sys:String x:Key="Post_AddToCart">Agregar a carrito</sys:String>
     <sys:String x:Key="Post_SendMessage">Contactar al vendedor</sys:String>
     <sys:String x:Key="Post_Buy">Comprar</sys:String>
+    <sys:String x:Key="Post_Sizes">Tallas disponibles: </sys:String>
+    <sys:String x:Key="Post_Quantity">Cantidad: </sys:String>
 
     <!--Subasta-->
 
