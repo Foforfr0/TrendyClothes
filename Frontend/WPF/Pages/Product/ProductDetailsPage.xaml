@@ -61,7 +61,8 @@
                         </StackPanel>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Left"
                                     Margin="15" Grid.Row="1">
-                            <TextBlock Text="{DynamicResource Post_Sizes}"/>
+                            <TextBlock Text="{DynamicResource Post_Sizes}"
+                                       Style="{DynamicResource RegularLabelStyle}"/>
                             <StackPanel Orientation="Horizontal">
                                 <Button x:Name="BtnSize1" Content="{DynamicResource Glb_Size1}"
                                         Style="{DynamicResource SecondaryButtonNoIconStyle}"
@@ -77,8 +78,21 @@
                                         Margin="10, 5"/>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel>
-                            
+                        <StackPanel Grid.Row="2" Orientation="Vertical"
+                                    VerticalAlignment="Center" Margin="15">
+                            <TextBlock Text="{DynamicResource Post_Quantity}"
+                                       Style="{DynamicResource RegularLabelStyle}"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                        HorizontalAlignment="Left" Margin="0, 5">
+                                <Button Width="40" Height="30" Click="Decrease_Click"
+                                        Content="-" Style="{DynamicResource SecondaryButtonNoIconStyle}"/>
+                                <TextBox x:Name="TbQuantity" Width="50" Height="30"
+                                         Text="0" HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center" IsReadOnly="True"
+                                         Margin="5, 0" Style="{DynamicResource TextBoxStyle}"/>
+                                <Button Content="+" Height="30" Width="40" Click="Increase_Click"
+                                        Style="{DynamicResource SecondaryButtonNoIconStyle}"/>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </Border>

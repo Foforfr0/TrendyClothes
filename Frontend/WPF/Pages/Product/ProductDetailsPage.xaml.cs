@@ -23,6 +23,12 @@ namespace WpfApp.Pages.Product
         public ProductDetailsPage()
         {
             InitializeComponent();
+            UpdateQuantityDisplay();
+        }
+
+        private void UpdateQuantityDisplay()
+        {
+            //TODO
         }
 
         private void BtnAddToCart_Click(object sender, RoutedEventArgs e)
@@ -32,7 +38,17 @@ namespace WpfApp.Pages.Product
 
         private void BtnBuyNow_Click(object sender, RoutedEventArgs e)
         {
+            
+        }
 
+        private void Decrease_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateQuantityDisplay();
+        }
+
+        private void Increase_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateQuantityDisplay();
         }
     }
 }
