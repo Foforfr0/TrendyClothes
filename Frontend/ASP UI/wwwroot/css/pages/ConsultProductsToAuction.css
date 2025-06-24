@@ -1,0 +1,218 @@
+﻿.product-item {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-item:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.15);
+    transform: translateY(-2px);
+}
+
+.product-item.selected {
+    border-color: #198754;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+    box-shadow: 0 8px 25px rgba(25, 135, 84, 0.2);
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #dee2e6;
+    flex-shrink: 0;
+}
+
+.product-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.product-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.selection-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #198754;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s ease;
+}
+
+.product-item.selected .selection-indicator {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.product-price {
+    color: #198754;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.product-status {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-available {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-low-stock {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-out-of-stock {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Estilo para grid de productos */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+    .products-grid .product-item {
+        display: block;
+    }
+
+    .products-grid .product-image {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 1rem;
+    }
+
+/* Estilo para lista de productos */
+.products-list .product-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.products-list .product-content {
+    flex: 1;
+}
+
+/* Modal footer sticky */
+.modal-footer.sticky-bottom {
+    border-top: 1px solid #dee2e6;
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+/* Animaciones */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.product-item.selecting {
+    animation: pulse 0.3s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .products-list .product-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .products-list .product-image {
+        width: 100%;
+        height: 120px;
+        margin-bottom: 0.5rem;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estados de carga */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+    .loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.custom-toast {
+    min-width: 300px;
+    margin-bottom: 0.5rem;
+}

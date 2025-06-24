@@ -1,0 +1,210 @@
+# TODO Quitar declaraci�n PORTS excepto en webui
+services:
+  # FRONTEND UI
+  webui:
+    container_name: webui
+    build:
+      context: ./Frontend/ASP UI
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      grpcimageservice:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  # BACKEND REST SERVICES
+  authservice:
+    container_name: authservice
+    build:
+      context: ./Backend/UserService/AuthService
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  profileservice:
+    container_name: profileservice
+    build:
+      context: ./Backend/UserService/ProfileService
+      dockerfile: Dockerfile
+    ports:
+      - "5002:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  accountservice:
+    container_name: accountservice
+    build:
+      context: ./Backend/UserService/AccountService
+      dockerfile: Dockerfile
+    ports:
+      - "5003:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  productservice:
+    container_name: productservice
+    build:
+      context: ./Backend/ProductService/Product
+      dockerfile: Dockerfile
+    ports:
+      - "5004:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  productbuyerservice:
+    container_name: productbuyerservice
+    build:
+      context: ./Backend/ProductService/Buyer
+      dockerfile: Dockerfile
+    ports:
+      - "5005:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  productsellerservice:
+    container_name: productsellerservice
+    build:
+      context: ./Backend/ProductService/Seller
+      dockerfile: Dockerfile
+    ports:
+      - "5006:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  auctionauctioneerservice:
+    container_name: auctionauctioneerservice
+    build:
+      context: ./Backend/AuctionService/Auctioneer
+      dockerfile: Dockerfile
+    ports:
+      - "5007:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  auctionparticipantservice:
+    container_name: auctionparticipantservice
+    build:
+      context: ./Backend/AuctionService/Participant
+      dockerfile: Dockerfile
+    ports:
+      - "5008:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  # gRPC SERVICE
+  grpcimageservice:
+    container_name: grpcimageservice
+    build:
+      context: ./Backend/gRPCServices/ImagesProductService
+      dockerfile: Dockerfile
+    ports:
+      - "5109:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
+
+  # SQL Server Database
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=StrongP@ssw0rd!
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - internal
+
+volumes:
+  sql_data:
+  dataprotectionkeys:
+
+networks:
+  internal:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/16
+          gateway: 172.16.0.254

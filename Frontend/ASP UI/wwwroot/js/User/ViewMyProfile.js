@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 async function retrievePersonalData() {
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/ViewProfile/GetPersonalData`, {
+        const response = await fetch(window.config?.GetPersonalDataUrl, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -26,7 +26,7 @@ async function retrievePersonalData() {
                 showPersonalData(data.body);
                 break;
             case 401:
-                showPersonalData('Error con las cookies.');
+                utils.showToast('Error con las cookies.', 'danger');
                 break;
             case 400:
             case 404:
@@ -52,7 +52,7 @@ function showPersonalData(userData) {
 
 async function retrieveAddresses() {
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/ViewProfile/GetAddresses`, {
+        const response = await fetch(window.config.GetAddressesUrl, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -105,6 +105,54 @@ function showAddresses(addresses) {
     }
 }
 
-document.getElementById('startAuction').addEventListener('submit', async function (event) {
-    event.preventDefault();
+document.getElementById('startAuction').addEventListener('click', (event) => {
+    fetch(`/Product/Seller/ConsultProductsToCreateAuction`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('modal-content').innerHTML = html;
+        })
+        .catch(err => {
+            console.error('Error loading partial:', err);
+            utils.showToast("Error al cargar el formulario", "danger");
+        });
+});
+
+// Replace the existing modal initialization code with this:
+$('#modalSearchProduct').on('shown.bs.modal', function () {
+    // Clear any previous content to avoid duplicates
+    document.getElementById('modal-content').innerHTML = '';
+
+    fetch(`/Product/Seller/ConsultProductsToCreateAuction`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('modal-content').innerHTML = html;
+            // Initialize product selector after content is loaded
+            if (typeof initializeProductSelector === 'function') {
+                initializeProductSelector();
+            } else {
+                // Load the script if not already loaded
+                const script = document.createElement('script');
+                script.src = '/js/Product/ConsultProductsToAuction.js';
+                script.onload = () => {
+                    initializeProductSelector();
+                };
+                document.body.appendChild(script);
+            }
+        })
+        .catch(err => {
+            console.error('Error loading partial:', err);
+            utils.showToast("Error al cargar el formulario", "danger");
+        });
+});
+
+// Remove the existing startAuction event listener and replace with this:
+document.getElementById('startAuction').addEventListener('click', (event) => {
+    const modal = new bootstrap.Modal(document.getElementById('modalSearchProduct'));
+    modal.show();
 });

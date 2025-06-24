@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\base\" />
-    <Folder Include="wwwroot\css\layout\" />
-    <Folder Include="wwwroot\css\themes\" />
+    <Content Include=".env" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Auction\Participant.cshtml" />
+    <Folder Include="wwwroot\css\base\" />
+    <Folder Include="wwwroot\css\layout\" />
+    <Folder Include="wwwroot\css\themes\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Services\Proto\image_product.proto" GrpcServices="Client" />
+	<Protobuf Include="Connections\Proto\GetImageProduct.proto" GrpcServices="Client" />
+	<Protobuf Include="Connections\Proto\SaveImageProduct.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

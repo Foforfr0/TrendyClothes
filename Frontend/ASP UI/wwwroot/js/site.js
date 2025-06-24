@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (button) {
         button.addEventListener('click', async function () {
-            await fetch(`${window.BACKEND_URL}/api/User/Logout`, {
+            await fetch(window.config?.logoutUrl, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -31,12 +31,38 @@ export function showToast(message, type) {
     // type: success, danger, warning, info, primary
     const toastEl = document.getElementById('liveToast');
     const toastBody = document.getElementById('toastMessage');
+    if (!toastEl || !toastBody) return;
 
     toastBody.textContent = message;
     toastEl.className = `toast align-items-center text-bg-${type} border-0`;
 
-    const toast = new bootstrap.Toast(toastEl);
+    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
     toast.show();
+}
+
+export function showConfirmationToast(message) {
+    return new Promise((resolve) => {
+        const container = document.getElementById("confirmationToastContainer");
+        const toastBodyText = container?.querySelector(".toast-body span");
+        const btnConfirm = document.getElementById("btnConfirm");
+        const btnCancel = document.getElementById("btnCancel");
+
+        if (!container || !toastBodyText || !btnConfirm || !btnCancel) {
+            console.error("No se encontraron elementos del toast de confirmación.");
+            return resolve(false);
+        }
+
+        toastBodyText.textContent = message;
+        container.classList.remove("d-none");
+
+        const handleResponse = (result) => {
+            container.classList.add("d-none");
+            resolve(result);
+        };
+
+        btnConfirm.onclick = () => handleResponse(true);
+        btnCancel.onclick = () => handleResponse(false);
+    });
 }
 
 export function getTextDangerInput(inputField) {

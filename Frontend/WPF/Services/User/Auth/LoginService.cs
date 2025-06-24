@@ -58,7 +58,7 @@ namespace WpfApp.Services.User.Auth {
 
         public async Task<MessageResponse<HttpStatusCode>> CreateTwoFactorCodeAsync (string username, string email) {
             try {
-                HttpResponseMessage response = await _httpClient.PostAsJsonAsync (
+                HttpResponseMessage response = await _httpClient.PatchAsJsonAsync (
                     $"https://localhost:5001/api/User/Login/CreateTwoFactorCode",
                     new {
                         username, email
@@ -110,7 +110,7 @@ namespace WpfApp.Services.User.Auth {
 
         public async Task DeleteTwoFactorCodeAsync (string username) {
             HttpResponseMessage response = await _httpClient.DeleteAsync (
-                $"https://localhost:5001/api/User/Login/ValidateTwoFactorCode?username={Uri.EscapeDataString (username)}");
+                $"https://localhost:5001/api/User/Login/DeleteTwoFactorCode?username={Uri.EscapeDataString (username)}");
         }
     }
 }

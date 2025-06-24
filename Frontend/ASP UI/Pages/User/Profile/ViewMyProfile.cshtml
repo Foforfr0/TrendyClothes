@@ -1,13 +1,9 @@
 ﻿@page
+@inject WebPage.Connections.ServicesBuilder UrlBuilder
 @model WebPage.Pages.User.Profile.ViewMyProfileModel
 @{
     ViewData["Title"] = "Perfil de usuario";
 }
-
-
-<p>Identity: @User.Identity</p
-<p>Name: @User.Identity.Name</p>
-<p>Autenticado: @User.Identity.IsAuthenticated</p>
 
 <h1 class="text-center mb-3">Perfil de usuario</h1>
 <div class="container text-center">
@@ -16,7 +12,9 @@
         <div class="col">
             <table class="table table-striped table-bordered">
                 <thead>
-                <th class="bg-primary text-white" colspan="2"><h3>Datos personales</h3></th>
+                    <tr>
+                        <th class="bg-primary text-white" colspan="2"><h3>Datos personales</h3></th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>
@@ -48,8 +46,10 @@
         <div class="col">
             <table class="table table-striped table-bordered table-responsive">
                 <thead>
-                <th class="bg-primary text-white"><h3>Activa</h3></th>
-                <th class="bg-primary text-white"><h3>Dirección</h3></th>
+                    <tr>
+                        <th class="bg-primary text-white"><h3>Activa</h3></th>
+                        <th class="bg-primary text-white"><h3>Dirección</h3></th>
+                    </tr>
                 </thead>
                 <tbody id="addressesTableBody">
                 </tbody>
@@ -58,10 +58,42 @@
     </div>
 </div>
 
-<!-- Botón para iniciar subasta -->
-<div class="text-center mt-5">
-    <h2 class="mb-4">Subastar productos</h2>
-    <button id="startAuction" class="btn btn-secondary btn-lg">Iniciar subasta</button>
+<!-- Auction -->
+<div class="text-center w-auto mx-5 mb-5">
+    <h2 class="mb-2">Subastar productos</h2>
+    <div class="row justify-content-evenly w-auto">
+        <button id="startAuction" type="button" class="col btn btn-secondary btn-lg p-1" style="max-width: 180px;"
+                data-bs-toggle="modal" data-bs-target="#modalSearchProduct">
+            Iniciar subasta
+        </button>
+        <button id="consultAuctions" type="button" class="col btn btn-secondary btn-lg p-1" style="max-width: 180px;">
+            Mis subastas
+        </button>
+    </div>
 </div>
 
-<script type="module" src="~/js/User/ViewMyProfile.js"></script>
+<!-- Modal for starting an auction -->
+<div class="modal fade" id="modalSearchProduct" tabindex="-1" aria-labelledby="modalSearchProductLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-lg"
+         style="min-height: 80dvh; max-height: 90dvh; min-width: 50dvw; max-width: 70dvw;">
+        <div class="modal-content h-100 w-100" id="modal-content">
+            <!-- Managed by: 
+                ~/js/User/ViewMyProfile
+            document.getElementById('startAuction').addEventListener('click', (event) => { -->
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/ConsultProductsToAuction.css" />
+}
+
+@section Scripts {
+    <script>
+        window.config = {
+            GetPersonalDataUrl: '@UrlBuilder.UserGetPersonalDataUrl',
+            GetAddressesUrl: '@UrlBuilder.UserGetAddressesUrl',
+        };
+    </script>
+    <script type="module" src="~/js/User/ViewMyProfile.js"></script>
+}

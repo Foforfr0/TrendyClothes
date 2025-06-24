@@ -6,5 +6,8 @@
         public T? body {
             get; set;
         }
+        public bool success {
+            get; set;
+        }
     }
 }

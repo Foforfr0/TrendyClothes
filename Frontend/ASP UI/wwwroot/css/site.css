@@ -19,7 +19,7 @@ html {
 }
 
 body {
-    background-color: #EBEBEB;
+    background-color: #EBEBEB !important;
     overscroll-behavior-y: auto;
     height:auto;
     min-height: 100svh;
@@ -32,6 +32,21 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
+}
+
+/* Animación de pulso para nuevo elemento */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .footer {

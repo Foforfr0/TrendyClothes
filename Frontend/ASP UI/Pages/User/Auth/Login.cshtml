@@ -1,4 +1,5 @@
 ﻿@page
+@inject WebPage.Connections.ServicesBuilder UrlBuilder
 @model WebPage.Pages.User.Auth.LoginModel
 @{
     ViewData["Title"] = "Inicio de sesión";
@@ -34,27 +35,38 @@
         <form id="emailForm" novalidate>
             <div class="mb-3 col-9 mx-auto text-start">
                 <label asp-for="emailDTO.email" class="form-label">Correo electrónico:</label>
-                <input asp-for="emailDTO.email" id="InputEmail" class="form-control" type="email" autocomplete="none" />
+                <input asp-for="emailDTO.email" id="InputEmail" class="form-control" type="email" autocomplete="none" disabled/>
                 <span class="text-danger" asp-validation-for="emailDTO.email"></span>
             </div>
-            <button type="submit" id="btnEmail" class="btn btn-primary">Enviar código</button>
+            <button type="submit" id="btnEmail" class="btn btn-primary" disabled>Enviar código</button>
         </form>
-        <button type="button" class="btn btn-link mt-1">¿Olvidó cual es su correo?</button>
+        <button type="button" id="btnForgotEmail" class="btn btn-link mt-1" disabled>¿Olvidó cual es su correo?</button>
 
         <form method="post" id="twoFactorForm" asp-page-handler="FinalValidation" novalidate>
             <div class="mb-3 col-9 mx-auto text-start">
                 <label asp-for="codeTwoFactorDTO.twoFactorCode" class="form-label">Código enviado:</label>
-                <input asp-for="codeTwoFactorDTO.username" id="InputUsername2" name="username" class="d-none form-control" />
+                <input asp-for="codeTwoFactorDTO.username" id="InputUsername2" name="username" class="d-none form-control"/>
                 <input asp-for="codeTwoFactorDTO.twoFactorCode" id="InputTwoFactorCode" name="twoFactorCode" class="form-control" autocomplete="none"
-                       inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                       inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" disabled/>
                 <span class="text-danger" asp-validation-for="codeTwoFactorDTO.twoFactorCode"></span>
             </div>
-            <button type="submit" class="btn btn-primary mb-3">Validar código</button>
+            <button type="submit" id="btnValidate2fc" class="btn btn-primary mb-3" disabled>Validar código</button>
         </form>
     </div>
 </div>
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/pages/Login.css"/>
+}
 @section Scripts {
+    <script>
+        window.config = {
+            PostLoginUrl: '@UrlBuilder.UserPostLoginUrl',
+            ValidateEmailUrl: '@UrlBuilder.UserGetValidateEmailUrl',
+            Post2FAUrl: '@UrlBuilder.UserPost2FAUrl',
+            Delete2FAUrl: '@UrlBuilder.UserDelete2FAUrl',
+        };
+    </script>
     <script type="module" src="~/js/User/Login.js"></script>
     <partial name="_ValidationScriptsPartial" />
 }

@@ -7,6 +7,8 @@ using WpfApp.Utilities;
 
 namespace WpfApp.Pages {
     public partial class WindowContainer : Window {
+        private static Frame _mainFrame = new Frame ();
+
         public WindowContainer () {
             InitializeComponent ();
             NavigationManager.Initialize(MainFrame);
@@ -57,6 +59,10 @@ namespace WpfApp.Pages {
         private void BtnShoppingCart_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Load ShoppingCartPage
+        }
+
+        public static void SetFrame (Page page) {
+            _mainFrame.Navigate (page);
         }
     }
 }
