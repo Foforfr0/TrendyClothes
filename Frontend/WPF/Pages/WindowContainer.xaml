@@ -60,7 +60,7 @@
                                     Content="{DynamicResource Glb_Cart}"
                                     Style="{DynamicResource PrimaryButtonNoIconStyle}"
                                     Click="BtnShoppingCart_Click"/>
-                            <Button x:Name="BtnProfile"
+                            <Button x:Name="BtnProfile" Width="53"
                                     Style="{DynamicResource UserButtonStyle}"
                                     Click="BtnProfile_Click"/>
                         </StackPanel>

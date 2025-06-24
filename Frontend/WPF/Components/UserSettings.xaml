@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="WpfApp.Components.UserSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp.Components"
+             mc:Ignorable="d" 
+             MinWidth="180" MinHeight="120"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch">
+
+    <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="15"
+            BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0, 0, 0, 0.5" Grid.Row="0">
+                <StackPanel Margin="5, 10">
+                    <TextBlock x:Name="TbUsername" Text="Hallo"
+                               Style="{DynamicResource SubtitleLabelStyle}"
+                               HorizontalAlignment="Center"
+                               Margin="0, 10, 0, 0"/>
+                </StackPanel>
+            </Border>
+            <StackPanel Grid.Row="1" Margin="6">
+                <Button Style="{DynamicResource SettingButtonStyle}"
+                        Tag="/Resources/Icons/edit2-icon.png"
+                        Content="{DynamicResource Glb_Profile}"
+                        Click="GoToProfile_Click"/>
+                <Button Style="{DynamicResource SignOutButtonStyle}"
+                        Content="{DynamicResource Glb_SignOut}"
+                        Click="SignOut_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

@@ -30,6 +30,12 @@
     <sys:String x:Key="Glb_UserRole">Tipo de usuario</sys:String>
     <sys:String x:Key="Glb_Address">Direccion</sys:String>
     <sys:String x:Key="Glb_Cart">Carrito</sys:String>
+    <sys:String x:Key="Glb_Pieces">Pzas</sys:String>
+    <sys:String x:Key="Glb_Size1">XS</sys:String>
+    <sys:String x:Key="Glb_Size2">S</sys:String>
+    <sys:String x:Key="Glb_Size3">M</sys:String>
+    <sys:String x:Key="Glb_Size4">L</sys:String>
+    <sys:String x:Key="Glb_Size5">XL</sys:String>
     <sys:String x:Key="Glb_SearchBar">Buscar...</sys:String>
     <sys:String x:Key="Glb_Description">Descripcion</sys:String>
     <sys:String x:Key="Glb_ViewAll">Ver todos</sys:String>
@@ -85,7 +91,15 @@
     <sys:String x:Key="RegUser_TInvalidEmail">Correo invalido</sys:String>
     <sys:String x:Key="RegUser_DInvalidEmail">El correo debe tener un formato valido</sys:String>
     <sys:String x:Key="RegUser_DUsedEmail">El correo que ingresaste ya esta en uso.</sys:String>
+    <sys:String x:Key="RegUser_DialogSelectProfilePic">Seleccionar imagen de perfil</sys:String>
 
+    
+    <!--Editar perfil de usuario-->
+    <sys:String x:Key="EditProfile_Header">Editar perfil</sys:String>
+    <sys:String x:Key="EditProfile_Desc">Aqui podras editar algunos datos de tu perfil</sys:String>
+    <sys:String x:Key="EditProfile_ModifyPic">Modificar foto de perfil</sys:String>
+    
+    
     <!--Inicio-->
     <sys:String x:Key="Home_ProductName">ITEMsNAME_PLACEHOLDER</sys:String>
     <sys:String x:Key="Home_ProductPrice">ITEMsPRICE_PLACEHOLDER</sys:String>
@@ -117,6 +131,7 @@
     <sys:String x:Key="Items_Edit">Editar publiacion</sys:String>
     <sys:String x:Key="EditItem_Header">Editar producto</sys:String>
     <sys:String x:Key="EditItem_Desc">Modifica los datos de tu producto</sys:String>
+    <sys:String x:Key="EditItem_BtnEdit">Modificar producto</sys:String>
     <sys:String x:Key="EditItem_DialogTSuccess">Producto actualizado</sys:String>
     <sys:String x:Key="EditItem_DialogDSuccess">La informacion del producto ha sido actualizada</sys:String>
     <sys:String x:Key="EditItem_DialogTDelete">Se eliminara el producto</sys:String>
@@ -127,6 +142,22 @@
     <sys:String x:Key="Items_SerialNumber">Codigo del producto</sys:String>
     <sys:String x:Key="Items_ItemDesc">Descripcion breve del producto.</sys:String>
     <sys:String x:Key="Items_NoItems">No has publicado ningun producto aun.</sys:String>
+    
+    <!--Registrar producto-->
+    <sys:String x:Key="RegItem_Header">Registrar producto</sys:String>
+    <sys:String x:Key="RegItem_Desc">Aqui podras registrar los datos de tu publicacion</sys:String>
+    <sys:String x:Key="RegItem_ItemTitle">Titulo:</sys:String>
+    <sys:String x:Key="RegItem_ItemDesc">Descripcion breve del producto:</sys:String>
+    <sys:String x:Key="RegItem_StockDetails">Tallas y piezas:</sys:String>
+    <sys:String x:Key="RegItem_Stock">Piezas disponibles:</sys:String>
+    <sys:String x:Key="RegItem_isUnique">¿Es pieza unica?</sys:String>
+    <sys:String x:Key="RegItem_Sizes">Tallas disponibles:</sys:String>
+    <sys:String x:Key="RegItem_Reg">Crear publicacion</sys:String>
+    <sys:String x:Key="RegItem_DialogSelectProductPic">Selecciona una foto para tu producto</sys:String>
+    <sys:String x:Key="RegItem_DialogTSuccess">Producto registrado</sys:String>
+    <sys:String x:Key="RegItem_DialogDSuccess">Se ha creado tu publicacion, ahora aparecera en el apartado 'Mis productos'</sys:String>
+    <sys:String x:Key="RegItem_DialogTCancel">Cancelando</sys:String>
+    <sys:String x:Key="RegItem_DialogDCancel">Se descartaran los datos del producto</sys:String>
 
     <!--Mensajes-->
     <sys:String x:Key="UserMessage_Header">Mensajes:</sys:String>
@@ -144,6 +175,8 @@
     <sys:String x:Key="Post_AddToCart">Agregar a carrito</sys:String>
     <sys:String x:Key="Post_SendMessage">Contactar al vendedor</sys:String>
     <sys:String x:Key="Post_Buy">Comprar</sys:String>
+    <sys:String x:Key="Post_Sizes">Tallas disponibles: </sys:String>
+    <sys:String x:Key="Post_Quantity">Cantidad: </sys:String>
 
     <!--Subasta-->
 

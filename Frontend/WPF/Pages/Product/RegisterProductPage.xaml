@@ -1,0 +1,165 @@
+﻿<Page x:Class="WpfApp.Pages.Product.RegisterProductPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp.Pages.Product"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="RegisterProductPage">
+
+    <Border Background="{StaticResource BackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="8*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="BtnBack" Content="{DynamicResource Glb_Back}"
+                            Style="{DynamicResource BackButtonStyle}" Grid.Column="0"/>
+                    <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center"
+                                HorizontalAlignment="Left" Margin="15, 0">
+                        <TextBlock x:Name="PageHeader"
+                                   Text="{DynamicResource RegItem_Header}"
+                                   Style="{DynamicResource HeaderLabelStyle}"/>
+                        <TextBlock x:Name="PageDescription"
+                                   Text="{DynamicResource RegItem_Desc}"
+                                   Style="{DynamicResource DescriptionLabelStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center"
+                            VerticalAlignment="Top" Margin="0, 10">
+                    <Image Name="ProductPic" HorizontalAlignment="Center"
+                           Width="120" Height="160"/>
+                    <Button x:Name="BtnSelectImage" Content="{DynamicResource Glb_BtnSelectImage}"
+                            Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                            Click="BtnSelectImage_Click" Margin="0, 20, 0, 5"/>
+                    <Button x:Name="BtnDeleteImage" Content="{DynamicResource Glb_BtnDeleteImage}"
+                            Style="{DynamicResource DangerButtonStyle}" IsEnabled="False"
+                            Click="BtnDeleteImage_Click" Margin="0, 10, 0, 5"/>
+                </StackPanel>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0.3*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
+                        <TextBlock Text="{DynamicResource RegItem_ItemDesc}"
+                                   Style="{DynamicResource DescriptionLabelStyle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+
+                        <Grid Grid.Column="0" HorizontalAlignment="Stretch">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox x:Name="TbItemTitle" Grid.Row="0"
+                                     Tag="{DynamicResource RegItem_ItemTitle}"
+                                     Style="{DynamicResource TextBoxStyle}" Margin="0, 5, 50, 10"
+                                     TextChanged="RequiredFields_TextChanged"/>
+                            <TextBox x:Name="TbItemDesc" Grid.Row="1"
+                                     Tag="{DynamicResource RegItem_ItemDesc}"
+                                     Style="{DynamicResource TextAreaStyle}" Margin="0, 5, 50, 10"
+                                     Height="70" TextChanged="RequiredFields_TextChanged"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="10">
+                        <TextBlock Text="{DynamicResource RegItem_StockDetails}"
+                                   Style="{DynamicResource DescriptionLabelStyle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Vertical">
+                                <TextBox x:Name="TbStock" Tag="{DynamicResource RegItem_Stock}"
+                                         Style="{DynamicResource TextBoxStyle}" IsEnabled="True"
+                                         TextChanged="RequiredFields_TextChanged"/>
+                                <CheckBox x:Name="ChIsUnique" Margin="0, 5"
+                                          Content="{DynamicResource RegItem_isUnique}"
+                                          Style="{DynamicResource CheckBoxStyle}" IsChecked="False"
+                                          HorizontalAlignment="Left"
+                                          Checked="ChIsUnique_Checked"
+                                          Unchecked="ChIsUnique_Unchecked"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top"
+                                        HorizontalAlignment="Left" Margin="10, 0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel x:Name="SPSizes" Grid.Row="0" Orientation="Horizontal"
+                                                Visibility="Visible">
+                                        <Button x:Name="BtnSize1" Content="{DynamicResource Glb_Size1}"
+                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                                Margin="10, 0"/>
+                                        <Button x:Name="BtnSize2" Content="{DynamicResource Glb_Size2}"
+                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                                Margin="10, 0"/>
+                                        <Button x:Name="BtnSize3" Content="{DynamicResource Glb_Size3}"
+                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                                Margin="10, 0"/>
+                                        <Button x:Name="BtnSize4" Content="{DynamicResource Glb_Size4}"
+                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                                Margin="10, 0"/>
+                                        <Button x:Name="BtnSize5" Content="{DynamicResource Glb_Size5}"
+                                                Style="{DynamicResource SecondaryButtonNoIconStyle}" 
+                                                Margin="10, 0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10, 15">
+                                        <TextBox x:Name="TbPrice" Tag="{DynamicResource Items_Price}"
+                                                 Style="{DynamicResource TextBoxStyle}" Width="120"
+                                                 TextChanged="RequiredFields_TextChanged"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"
+                                VerticalAlignment="Center" Margin="20, 0">
+                        <Button x:Name="BtnCancel" Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                Content="{DynamicResource Glb_Cancel}" Margin="15"
+                                Click="BtnCancel_Click"/>
+                        <Button x:Name="BtnRegisterProduct" Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                                Content="{DynamicResource RegItem_Reg}" 
+                                Click="BtnRegisterProduct_Click" Visibility="Visible"/>
+                        <Button x:Name="BtnEditProduct" Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                                Content="{DynamicResource EditItem_BtnEdit}"
+                                Click="BtnEditProduct_Click" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Page>
