@@ -1,4 +1,5 @@
 using AccountService.Config;
+using Microsoft.AspNetCore.DataProtection;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
 
@@ -11,22 +12,34 @@ builder.Services.ConfigureAuth (builder: builder);
 builder.Services.AddAplicationDAOs ();
 builder.Services.AddAplicationServices ();
 builder.Services.AddSwaggerGen ();
+builder.WebHost.UseUrls ("http://+:80");
+
+if (!builder.Environment.IsDevelopment ()) {
+    builder.Services.AddDataProtection ()
+    .PersistKeysToFileSystem (new DirectoryInfo ("/var/dpkeys"))
+    .SetApplicationName ("TrendyClothes");
+}
+
+if (!builder.Environment.IsDevelopment ()) {
+    builder.Services.AddDataProtection ()
+    .PersistKeysToFileSystem (new DirectoryInfo ("/var/dpkeys"))
+    .SetApplicationName ("TrendyClothes");
+}
 
 var app = builder.Build ();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment ()) {
     app.MapOpenApi ();
     app.UseDeveloperExceptionPage ();
     app.UseSwagger ();
     app.UseSwaggerUI ();
+    app.UseHttpsRedirection ();                     // Redirige automáticamente cualquier petición HTTP a HTTPS.
 } else {
     app.UseExceptionHandler ("/Home/Error");
     app.UseHsts ();
 }
 
 // Middleware in correct orden: Routing -> CORS -> Auth -> Controllers.
-app.UseHttpsRedirection ();                     // Redirige automáticamente cualquier petición HTTP a HTTPS.
 app.UseRouting ();                              // Activa el middleware que permite enrutar las solicitudes entrantes
 app.UseCors ("FromFrontend");         // Sirve para permitir o restringir solicitudes desde otros dominios 
 app.UseAuthentication ();

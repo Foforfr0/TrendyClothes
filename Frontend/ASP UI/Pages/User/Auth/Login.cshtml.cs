@@ -1,16 +1,13 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text.Json;
-using WebPage.Auth;
 using WebPage.Connections;
 using WebPage.DTO.User.Auth;
-using WebPage.Pages.User.Profile;
 
 namespace WebPage.Pages.User.Auth {
     public class LoginModel : PageModel {
@@ -44,7 +41,7 @@ namespace WebPage.Pages.User.Auth {
             try {
                 string username = Request.Form["username"];
                 string twoFactorCode = Request.Form["twoFactorCode"];
-                TwoFactorCodeDTO dto = new TwoFactorCodeDTO { username = username, twoFactorCode = twoFactorCode };
+                _logger.LogInformation ("username = " + username + "twoFactorCode = " + twoFactorCode);
 
                 if (string.IsNullOrWhiteSpace (codeTwoFactorDTO.username) || string.IsNullOrWhiteSpace (codeTwoFactorDTO.twoFactorCode)) {
                     ModelState.AddModelError (string.Empty, "Usuario y código son requeridos.");
@@ -52,9 +49,11 @@ namespace WebPage.Pages.User.Auth {
                 }
                 HttpClient httpClient = _httpClientFactory.CreateClient ();
                 string requestURL = _services.UserGetValidate2FAUrl;
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync (requestURL, new {
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync ("http://authservice/api/User/Login/ValidateTwoFactorCode", new {
                     username, twoFactorCode
                 });
+
+                _logger.LogInformation ("Status code: " + response.StatusCode);
 
                 if (response.StatusCode == HttpStatusCode.NotFound) {
                     ModelState.AddModelError (string.Empty, "Usuario no encontrado o código doble factor no asignado.");
@@ -111,7 +110,7 @@ namespace WebPage.Pages.User.Auth {
                 });
 
                 await HttpContext.SignInAsync ("signInScheme", principal, authProperties);
-                return RedirectToPage ("/User/Profile/ViewMyProfile"); 
+                return RedirectToPage ("/User/Profile/ViewMyProfile");
             } catch (Exception ex) {
                 _logger.LogError (ex, "Error en FinalValidation");
                 ModelState.AddModelError (string.Empty, "Error al validar el código doble factor.");

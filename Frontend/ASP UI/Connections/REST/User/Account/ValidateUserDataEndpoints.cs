@@ -1,4 +1,4 @@
-﻿namespace WebPage.Connections.REST.User {
+﻿namespace WebPage.Connections.REST.User.Account {
     public class ValidateUserDataEndpoints {
         public string ExistenceUsername {
             get; set;

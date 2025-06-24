@@ -11,6 +11,17 @@ GO
 USE TrendyClothesDB;
 GO
 
+CREATE LOGIN trendyuser WITH PASSWORD = 'P@ssw0rd123';
+GO
+
+CREATE USER trendyuser FOR LOGIN trendyuser;
+GO
+
+-- Darle permisos básicos (CRUD)
+ALTER ROLE db_datareader ADD MEMBER trendyuser;
+ALTER ROLE db_datawriter ADD MEMBER trendyuser;
+GO
+
 CREATE TABLE Addresses (
     Id INT IDENTITY(1, 1) PRIMARY KEY,
     Street VARCHAR(100) NOT NULL,
@@ -238,3 +249,6 @@ INSERT INTO StatusesAuction (Status) VALUES
 ('Activo'),
 ('Pausado'),
 ('Cancelado');
+
+
+SELECT * FROM Users

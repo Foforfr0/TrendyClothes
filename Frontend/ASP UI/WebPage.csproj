@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include=".env" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\css\base\" />
     <Folder Include="wwwroot\css\layout\" />
     <Folder Include="wwwroot\css\themes\" />

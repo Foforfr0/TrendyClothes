@@ -1,8 +1,8 @@
-﻿namespace WebPage.Connections.REST.Auction {
+﻿using WebPage.Connections.REST.Auction.Auctioneer;
+using WebPage.Connections.REST.Auction.Participant;
+
+namespace WebPage.Connections.REST.Auction {
     public class AuctionConfig {
-        public string BaseUrl {
-            get; set;
-        }
         public AuctioneerConfig Auctioneer {
             get; set;
         }

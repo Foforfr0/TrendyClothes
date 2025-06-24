@@ -1,5 +1,5 @@
-﻿namespace WebPage.Connections.REST.User {
-    public class UserRegistrationConfig {
+﻿namespace WebPage.Connections.REST.User.Account {
+    public class UserAccountConfig {
         public string BaseUrl {
             get; set;
         }

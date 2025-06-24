@@ -1,6 +1,4 @@
-# TODO Quitar declaración PORTS excepto en webui
-
-
+# TODO Quitar declaraciï¿½n PORTS excepto en webui
 services:
   # FRONTEND UI
   webui:
@@ -12,10 +10,14 @@ services:
       - "8081:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - grpcimageservice
+      grpcimageservice:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   # BACKEND REST SERVICES
   authservice:
@@ -27,10 +29,14 @@ services:
       - "5001:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   profileservice:
     container_name: profileservice
@@ -41,10 +47,14 @@ services:
       - "5002:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   accountservice:
     container_name: accountservice
@@ -55,10 +65,14 @@ services:
       - "5003:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   productservice:
     container_name: productservice
@@ -69,10 +83,14 @@ services:
       - "5004:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   productbuyerservice:
     container_name: productbuyerservice
@@ -83,10 +101,14 @@ services:
       - "5005:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   productsellerservice:
     container_name: productsellerservice
@@ -97,10 +119,14 @@ services:
       - "5006:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   auctionauctioneerservice:
     container_name: auctionauctioneerservice
@@ -111,10 +137,14 @@ services:
       - "5007:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   auctionparticipantservice:
     container_name: auctionparticipantservice
@@ -125,10 +155,14 @@ services:
       - "5008:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   # gRPC SERVICE
   grpcimageservice:
@@ -140,10 +174,14 @@ services:
       - "5109:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_started
     networks:
       - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   # SQL Server Database
   sqlserver:
@@ -161,6 +199,7 @@ services:
 
 volumes:
   sql_data:
+  dataprotectionkeys:
 
 networks:
   internal:

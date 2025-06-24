@@ -9,7 +9,7 @@ Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, util
 ### 🔧 Inicialización de contenedores
 ```bash
 # Construye las imágenes sin iniciarlas
-docker compose up --build --no-start}
+docker compose up --build --no-start
 # Elimina el volumen (En caso de fallo)
 docker compose down -v
 # Inicia los contenedores ya construidos

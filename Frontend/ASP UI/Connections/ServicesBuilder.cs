@@ -67,7 +67,7 @@ namespace WebPage.Connections {
 
         public string UserDeleteAccountUrl {
             get {
-                return Combine (_config.REST.User.Account.BaseUrl, _config.REST.User.Account.PostAccount);
+                return Combine (_config.REST.User.Account.BaseUrl, _config.REST.User.Account.DeleteAccount);
             }
         }
 
@@ -94,51 +94,51 @@ namespace WebPage.Connections {
         // ------------- Seller --------
         public string SellerGetProductsUrl {
             get {
-                return Combine (_config.REST.Product.BaseUrl, _config.REST.Product.Seller.GetProducts);
+                return Combine (_config.REST.Product.Seller.BaseUrl, _config.REST.Product.Seller.GetProducts);
             }
         }
 
         public string SellerGetProductDetailsUrl {
             get {
-                return Combine (_config.REST.Product.BaseUrl, _config.REST.Product.Seller.GetDetailsProduct);
+                return Combine (_config.REST.Product.Seller.BaseUrl, _config.REST.Product.Seller.GetDetailsProduct);
             }
         }
 
         public string SellerPutProductDetailsUrl {
             get {
-                return Combine (_config.REST.Product.BaseUrl, _config.REST.Product.Seller.PutDetailsProduct);
+                return Combine (_config.REST.Product.Seller.BaseUrl, _config.REST.Product.Seller.PutDetailsProduct);
             }
         }
 
         // ------------- Buyer --------
         public string BuyerGetProductsUrl {
             get {
-                return Combine (_config.REST.Product.BaseUrl, _config.REST.Product.Buyer.GetProducts);
+                return Combine (_config.REST.Product.Buyer.BaseUrl, _config.REST.Product.Buyer.GetProducts);
             }
         }
 
         public string BuyerGetProductDetailsUrl {
             get {
-                return Combine (_config.REST.Product.BaseUrl, _config.REST.Product.Buyer.GetDetailsProduct);
+                return Combine (_config.REST.Product.Buyer.BaseUrl, _config.REST.Product.Buyer.GetDetailsProduct);
             }
         }
 
-        // ------------- Tags --------
+        // ------------- Product --------
         public string ProductGetCategoriesUrl {
             get {
-                return Combine (_config.REST.Product.BaseUrl, _config.REST.Product.Tags.GetCategories);
+                return Combine (_config.REST.Product.Product.BaseUrl, _config.REST.Product.Product.GetCategories);
             }
         }
 
         public string ProductGetTypesUrl {
             get {
-                return Combine (_config.REST.Product.BaseUrl, _config.REST.Product.Tags.GetTypes);
+                return Combine (_config.REST.Product.Product.BaseUrl, _config.REST.Product.Product.GetTypes);
             }
         }
 
         public string ProductGetStatussesUrl {
             get {
-                return Combine (_config.REST.Product.BaseUrl, _config.REST.Product.Tags.GetStatusses);
+                return Combine (_config.REST.Product.Product.BaseUrl, _config.REST.Product.Product.GetStatusses);
             }
         }
 
@@ -146,44 +146,44 @@ namespace WebPage.Connections {
         // ------------- Auctioneer --------
         public string AuctioneerGetAuctionsUrl {
             get {
-                return Combine (_config.REST.Auction.BaseUrl, _config.REST.Auction.Auctioneer.GetAuctions);
+                return Combine (_config.REST.Auction.Auctioneer.BaseUrl, _config.REST.Auction.Auctioneer.GetAuctions);
             }
         }
 
         public string AuctioneerGetAuctionDetailsUrl {
             get {
-                return Combine (_config.REST.Auction.BaseUrl, _config.REST.Auction.Auctioneer.GetDetailsAuction);
+                return Combine (_config.REST.Auction.Auctioneer.BaseUrl, _config.REST.Auction.Auctioneer.GetDetailsAuction);
             }
         }
 
         public string AuctioneerPostAuctionUrl {
             get {
-                return Combine (_config.REST.Auction.BaseUrl, _config.REST.Auction.Auctioneer.PostAuction);
+                return Combine (_config.REST.Auction.Auctioneer.BaseUrl, _config.REST.Auction.Auctioneer.PostAuction);
             }
         }
 
         public string AuctioneerPatchAuctionUrl {
             get {
-                return Combine (_config.REST.Auction.BaseUrl, _config.REST.Auction.Auctioneer.PatchAuction);
+                return Combine (_config.REST.Auction.Auctioneer.BaseUrl, _config.REST.Auction.Auctioneer.PatchAuction);
             }
         }
 
         // ------------- Participant --------
         public string ParticipantGetAuctionsUrl {
             get {
-                return Combine (_config.REST.Auction.BaseUrl, _config.REST.Auction.Participant.GetAuctions);
+                return Combine (_config.REST.Auction.Participant.BaseUrl, _config.REST.Auction.Participant.GetAuctions);
             }
         }
 
         public string ParticipantGetAuctionDetailsUrl {
             get {
-                return Combine (_config.REST.Auction.BaseUrl, _config.REST.Auction.Participant.GetDetailsAuction);
+                return Combine (_config.REST.Auction.Participant.BaseUrl, _config.REST.Auction.Participant.GetDetailsAuction);
             }
         }
 
         public string ParticipantPostBidUrl {
             get {
-                return Combine (_config.REST.Auction.BaseUrl, _config.REST.Auction.Participant.PostBid);
+                return Combine (_config.REST.Auction.Participant.BaseUrl, _config.REST.Auction.Participant.PostBid);
             }
         }
 

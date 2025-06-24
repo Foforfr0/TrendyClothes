@@ -11,7 +11,7 @@ namespace ProfileService.Config {
                 });
             builder.Services.AddCors (options => {
                 options.AddPolicy ("FromFrontend", policy => {
-                    policy.WithOrigins ("https://localhost:8081")
+                    policy.WithOrigins ("http://localhost:8081")
                         .AllowCredentials ()                              // Necesary for Cookies.
                         .AllowAnyHeader ()                                // Allow any header (JSON, tokens, etc).
                         .AllowAnyMethod ();                               // Allow any HTTP method.

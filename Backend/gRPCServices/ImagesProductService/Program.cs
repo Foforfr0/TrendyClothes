@@ -1,6 +1,7 @@
 using ImagesProductService.DAO;
 using ImagesProductService.Entities;
 using ImagesProductService.Services;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
@@ -9,7 +10,7 @@ WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
 builder.Services.AddGrpc ();
 builder.Services.AddCors (options => {
     options.AddPolicy ("FromFrontend", policy => {
-        policy.WithOrigins ("https://localhost:8081")
+        policy.WithOrigins ("http://localhost:8081")
               .AllowCredentials ()
               .AllowAnyHeader ()
               .AllowAnyMethod ();
@@ -28,10 +29,24 @@ builder.Services.AddDbContext<TrendyClothesDBContext> (options =>
     options.UseSqlServer (connectionString),
     ServiceLifetime.Scoped);
 
+builder.WebHost.UseUrls ("http://+:80");
+
+if (!builder.Environment.IsDevelopment ()) {
+    builder.Services.AddDataProtection ()
+    .PersistKeysToFileSystem (new DirectoryInfo ("/var/dpkeys"))
+    .SetApplicationName ("TrendyClothes");
+}
+
 var app = builder.Build ();
 
+if (app.Environment.IsDevelopment ()) {
+    app.UseDeveloperExceptionPage ();
+} else {
+    app.UseExceptionHandler ("/Home/Error");
+    app.UseHsts ();
+}
+
 // === Middleware ===
-app.UseHttpsRedirection ();
 app.UseCors ("FromFrontend");
 
 // Muestra información básica si acceden vía HTTP

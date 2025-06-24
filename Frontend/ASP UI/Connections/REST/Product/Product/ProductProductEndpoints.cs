@@ -1,5 +1,8 @@
-﻿namespace WebPage.Connections.REST.Product {
-    public class ProductTagsEndpoints {
+﻿namespace WebPage.Connections.REST.Product.Product {
+    public class ProductProductEndpoints {
+        public string BaseUrl {
+            get; set;
+        }
         public string GetCategories {
             get; set;
         }
