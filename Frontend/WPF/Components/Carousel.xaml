@@ -19,7 +19,7 @@
             <Button Grid.Column="2" x:Name="BtnRight"
                     Style="{DynamicResource ForwardButtonStyle}"/>
 
-            <!--
+            
             <ScrollViewer x:Name="ScrollViewer" Grid.Column="1" CanContentScroll="True"
                           HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="ItemContainer">
@@ -32,7 +32,7 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </ScrollViewer>
-            -->
+            
         </Grid>
     </Border>
 </UserControl>

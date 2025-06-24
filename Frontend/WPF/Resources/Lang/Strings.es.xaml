@@ -93,6 +93,13 @@
     <sys:String x:Key="RegUser_DUsedEmail">El correo que ingresaste ya esta en uso.</sys:String>
     <sys:String x:Key="RegUser_DialogSelectProfilePic">Seleccionar imagen de perfil</sys:String>
 
+    
+    <!--Editar perfil de usuario-->
+    <sys:String x:Key="EditProfile_Header">Editar perfil</sys:String>
+    <sys:String x:Key="EditProfile_Desc">Aqui podras editar algunos datos de tu perfil</sys:String>
+    <sys:String x:Key="EditProfile_ModifyPic">Modificar foto de perfil</sys:String>
+    
+    
     <!--Inicio-->
     <sys:String x:Key="Home_ProductName">ITEMsNAME_PLACEHOLDER</sys:String>
     <sys:String x:Key="Home_ProductPrice">ITEMsPRICE_PLACEHOLDER</sys:String>
