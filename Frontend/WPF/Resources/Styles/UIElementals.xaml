@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Tipografías utilizadas -->
+    <FontFamily x:Key="SFProRegular">pack://application:,,,/Resources/Fonts/SFProDisplay-Regular.otf#SF Pro Display</FontFamily>
+    <FontFamily x:Key="SFProMedium">pack://application:,,,/Resources/Fonts/SFProDisplay-Medium.otf#SF Pro Display</FontFamily>
+    <FontFamily x:Key="SFProSemiBold">pack://application:,,,/Resources/Fonts/SFProDisplay-Semibold.otf#SF Pro Display</FontFamily>
+    <FontFamily x:Key="SFProBold">pack://application:,,,/Resources/Fonts/SFProDisplay-Bold.otf#SF Pro Display</FontFamily>
+    <FontFamily x:Key="SFMonoRegular">pack://application:,,,/Resources/Fonts/SFMono-Regular.otf#SF Mono Regular</FontFamily>
+
+    <!-- Definición de colores -->
+    <Color x:Key="BackgroundColor">#F4F4FA</Color>
+    <Color x:Key="PrimaryColor">#2D2C32</Color>
+    <Color x:Key="SecondaryColor">#7E7B8D</Color>
+    <Color x:Key="SideMenuColor">#EDEDFE</Color>
+    <Color x:Key="BorderColor">#D3D1DB</Color>
+    <Color x:Key="DangerColor">#FF1654</Color>
+    <Color x:Key="SuccessColor">#00AB64</Color>
+    <Color x:Key="WarningColor">#F3BB19</Color>
+    <Color x:Key="PrimaryButtonColor">#1E52CB</Color>
+    <Color x:Key="PrimaryButtonHoverColor">#2B60DA</Color>
+    <Color x:Key="SecondaryButtonColor">#EFEDF7</Color>
+    <Color x:Key="SecondaryButtonHoverColor">#F0EDFC</Color>
+
+    <!-- Brochas basadas en los colores -->
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}"/>
+    <SolidColorBrush x:Key="SideMenuBrush" Color="{StaticResource SideMenuColor}"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
+    <SolidColorBrush x:Key="PrimaryButtonBrush" Color="{StaticResource PrimaryButtonColor}"/>
+    <SolidColorBrush x:Key="PrimaryButtonHoverBrush" Color="{StaticResource PrimaryButtonHoverColor}"/>
+    <SolidColorBrush x:Key="SecondaryButtonBrush" Color="{StaticResource SecondaryButtonColor}"/>
+    <SolidColorBrush x:Key="SecondaryButtonHoverBrush" Color="{StaticResource SecondaryButtonHoverColor}"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}"/>
+
+</ResourceDictionary>
