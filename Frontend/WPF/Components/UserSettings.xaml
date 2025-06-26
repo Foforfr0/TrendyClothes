@@ -28,7 +28,7 @@
             </Border>
             <StackPanel Grid.Row="1" Margin="6">
                 <Button Style="{DynamicResource SettingButtonStyle}"
-                        Tag="/Resources/Icons/edit2-icon.png"
+                        Tag="/Resources/Icons/icon-user.png"
                         Content="{DynamicResource Glb_Profile}"
                         Click="GoToProfile_Click"/>
                 <Button Style="{DynamicResource SignOutButtonStyle}"

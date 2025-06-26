@@ -105,6 +105,12 @@
                                    FontSize="11"
                                    Style="{DynamicResource DescriptionLabelStyle}"/>
                             </StackPanel>
+
+                            <Viewbox Width="14" Height="14" Grid.Column="2" VerticalAlignment="Center">
+                                <Image Source="/Resources/Icons/sort-header-icon.png"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       Stretch="Fill"/>
+                            </Viewbox>
                         </Grid>
                     </Border>
                 </ControlTemplate>

@@ -180,5 +180,10 @@ namespace WpfApp.Pages.Product
         {
             NavigationManager.Instance.GoBack();
         }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationManager.Instance.GoBack();
+        }
     }
 }

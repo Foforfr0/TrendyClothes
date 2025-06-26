@@ -8,5 +8,10 @@ namespace WpfApp.Components {
         public NavigationBar () {
             InitializeComponent ();
         }
+
+        private void BtnGoBack(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
     }
 }
