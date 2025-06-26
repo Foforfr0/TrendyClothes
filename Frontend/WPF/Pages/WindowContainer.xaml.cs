@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using WpfApp.Components;
+using WpfApp.Pages.Auction;
 using WpfApp.Pages.Home;
 using WpfApp.Pages.User.Auth;
 using WpfApp.Services.User.Auth;

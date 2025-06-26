@@ -6,20 +6,21 @@
         xmlns:local="clr-namespace:WpfApp.Pages"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1000"
+        MaxHeight="650" MaxWidth="1000"
         WindowStartupLocation="CenterScreen">
     <Border Background="FloralWhite">
         <Grid>
             <Grid x:Name="RootGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="700"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Border x:Name="DialogContainer" Grid.RowSpan="2">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="90"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="8*"/>
                         </Grid.RowDefinitions>
 
                         <Border Grid.Row="0" Background="#EDEDFE"

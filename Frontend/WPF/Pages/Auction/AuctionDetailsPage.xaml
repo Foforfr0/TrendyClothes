@@ -1,0 +1,158 @@
+﻿<Page x:Class="WpfApp.Pages.Auction.AuctionDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp.Pages.Auction"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AuctionDetailsPage">
+
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" 
+                    VerticalAlignment="Center">
+            <Button Grid.Row="0" Style="{DynamicResource BackButtonStyle}"
+                    HorizontalAlignment="Left" Click="BtnBack_Click"
+                    VerticalAlignment="Center"/>
+            <TextBlock x:Name="PageHeader" Text="{DynamicResource AuctionDetails_Header}"
+                       Style="{DynamicResource SubtitleLabelStyle}"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+        <Border Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Name="AuctionItemPic" Margin="15, 15" Grid.Row="0"
+                               HorizontalAlignment="Center" Stretch="Uniform"
+                               Source="/Resources/Images/image-empty.jpg"
+                               VerticalAlignment="Center"
+                               RenderOptions.BitmapScalingMode="HighQuality">
+                        </Image>
+
+                        <!--Temporizador-->
+                        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="15">
+                            <TextBlock Text="{DynamicResource Auction_TimeLeft}"/>
+                            <TextBlock x:Name="TbAuctionTimer"
+                                       Style="{DynamicResource AuctionTimerStyle}"
+                                       Text="00:00:00"
+                                       Margin="10, 15, 0, 50"/>
+                            <Button x:Name="SendMessageToAuctioner" Content="{DynamicResource Auction_SendMessage}"
+                                    Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                    IsEnabled="False" Click="SendMessageToAuctioner_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top"
+                                    HorizontalAlignment="Left">
+                            <TextBlock Name="AuctionTitle" Text="{DynamicResource Auction_Title}"
+                                       Style="{DynamicResource SubtitleLabelStyle}"
+                                       Margin="0, 20"/>
+                            <TextBox Name="AuctionDesc" Text="{DynamicResource Auction_Description}"
+                                       Style="{DynamicResource TextAreaStyle}" MaxHeight="150"
+                                       MaxWidth="350" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+                        </StackPanel>
+                        <Border Grid.Row="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left"
+                                        Margin="5" Grid.Column="0" VerticalAlignment="Top">
+                                    <TextBlock Text="{DynamicResource Auction_ActualPrice}"
+                                           Style="{DynamicResource SubtitleLabelStyle}"
+                                           Margin="0, 0, 0, 10"/>
+                                    <TextBlock Name="TbActualPrice" Text="00.00"
+                                           Style="{DynamicResource HeaderLabelStyle}"
+                                           FontSize="24" Margin="0, 0, 0, 40"/>
+
+                                    <!--Ultima puja-->
+                                    <TextBlock Name="LatestBidder" Text="USER_****:"
+                                               Style="{DynamicResource DescriptionLabelStyle}"
+                                               Margin="0, 0, 0, 5" Visibility="Collapsed"/>
+                                    <TextBlock Name="LatestBid" Text="XX.XX"
+                                               Style="{DynamicResource DescriptionLabelStyle}" Visibility="Collapsed"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Top"
+                                            HorizontalAlignment="Left" Margin="5">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                                HorizontalAlignment="Left">
+                                        <TextBlock Text="{DynamicResource Auction_LowestBid}"
+                                                   Style="{DynamicResource DescriptionLabelStyle}"
+                                                   Margin="0, 0, 5, 0"/>
+                                        <TextBlock Name="TbLowestBid" Text="00.00"
+                                                   Style="{DynamicResource DescriptionLabelStyle}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                                HorizontalAlignment="Left">
+                                        <TextBlock Text="{DynamicResource Auction_Highestbid}"
+                                                   Style="{DynamicResource DescriptionLabelStyle}"
+                                                   Margin="0, 10, 5, 0"/>
+                                        <TextBlock Name="TbHighestBid" Text="00.00"
+                                                   Style="{DynamicResource DescriptionLabelStyle}"
+                                                   Margin="0, 10, 0, 0"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{DynamicResource Auction_Bid}"
+                                               Style="{DynamicResource SubtitleLabelStyle}"
+                                               Margin="20, 15"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" 
+                                                HorizontalAlignment="Left" Margin="0">
+                                        <Button Width="40" Height="30" Content="-"
+                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                                Click="DecreaseBid_Click"/>
+                                        <TextBox x:Name="TbBiddedAmount" Width="50" Height="30"
+                                                 Text="00.00" HorizontalContentAlignment="Center"
+                                                 VerticalContentAlignment="Center" IsReadOnly="True"
+                                                 Margin="6, 0" Style="{DynamicResource TextBoxStyle}"/>
+                                        <Button Content="+" Width="40" Height="30"
+                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                                Click="IncreaseBid_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Button x:Name="BtnCancelBid"
+                    Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                    Content="{DynamicResource Auction_CancelBid}"
+                    Margin="0, 0, 15, 0"
+                    Click="BtnCancelBid_Click"/>
+            <Button x:Name="BtnRegisterBid"
+                    Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                    Content="{DynamicResource Auction_RegisterBid}"
+                    Margin="0, 0, 15, 0"
+                    Click="BtnRegisterBid_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
