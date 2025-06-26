@@ -30,7 +30,7 @@ namespace WebPage.Pages.Product.Seller {
         }
 
         public async Task OnGetAsync () {
-            string requestURL = $"{_services.SellerGetProductsUrl}?username={username}";
+            string requestURL = $"http://productsellerservice/api/MyProducts/Search?username={username}";
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
 
             _logger.LogInformation ("ConsultProductsModel.OnGetAsync: " + requestURL);

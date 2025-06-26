@@ -42,7 +42,7 @@
                                     Content="{DynamicResource Glb_Offers}"
                                     Style="{DynamicResource TableHeaderButtonStyle}"
                                     Click="BtnOffers_Click"/>
-                            <Button x:Name="Btn" Margin="25, 0, 0, 0"
+                            <Button x:Name="BtnTrends" Margin="25, 0, 0, 0"
                                     Content="{DynamicResource Glb_Trending}"
                                     Style="{DynamicResource TableHeaderButtonStyle}"
                                     Click="BtnTrends_Click"/>

@@ -14,6 +14,8 @@ services:
     depends_on:
       grpcimageservice:
         condition: service_started
+      apigateway:
+        condition: service_started
     networks:
       - internal
     volumes:
@@ -194,6 +196,37 @@ services:
       - "1433:1433"
     volumes:
       - sql_data:/var/opt/mssql
+    networks:
+      - internal
+
+  # ApiGateway YARP
+  apigateway:
+    container_name: apigateway
+    build:
+      context: ./Infrastructure/ApiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "6000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      authservice:
+        condition: service_started
+      profileservice:
+        condition: service_started
+      accountservice:
+        condition: service_started
+      productservice:
+        condition: service_started
+      productbuyerservice:
+        condition: service_started
+      productsellerservice:
+        condition: service_started
+      auctionauctioneerservice:
+        condition: service_started
+      auctionparticipantservice:
+        condition: service_started
     networks:
       - internal
 

@@ -36,7 +36,7 @@ namespace WebPage.Pages.Product.Buyer {
             }
 
             HttpClient httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = $"{_services.BuyerGetProductsUrl}?query={query}";
+            string requestURL = $"http://productbuyerservice/api/Product/Search?query={query}";
             _logger.LogInformation ("ConsultProductsModel.OnGetAsync: " + requestURL);
             HttpResponseMessage response = await httpClient.GetAsync (requestURL);
 
