@@ -188,12 +188,26 @@
     <!--Subasta-->
     <sys:String x:Key="Auction_Header">Crear subasta</sys:String>
     <sys:String x:Key="Auction_Desc">Ingresa los detalles de tu subasta</sys:String>
+    <sys:String x:Key="AuctionDetails_Header">Detalles de la subasta</sys:String>
+    <sys:String x:Key="Auction_Title">TITLE_PLACEHOLDER</sys:String>
+    <sys:String x:Key="Auction_Description">DESCRIPTION_PLACEHOLDER</sys:String>
     <sys:String x:Key="Auction_Create">Registrar subasta</sys:String>
     <sys:String x:Key="Auction_Start">Iniciar subasta</sys:String>
     <sys:String x:Key="Auction_PriceDetails">Parametros de la subasta</sys:String>
     <sys:String x:Key="Auction_StartingPrice">Precio inicial:</sys:String>
+    <sys:String x:Key="Auction_ActualPrice">Precio actual:</sys:String>
+    <sys:String x:Key="Auction_Bid">Ingresa tu puja:</sys:String>
+    <sys:String x:Key="Auction_LatestBid">Ultima puja: </sys:String>
     <sys:String x:Key="Auction_LowestBid">Puja minima:</sys:String>
     <sys:String x:Key="Auction_Highestbid">Puja maxima:</sys:String>
+    <sys:String x:Key="Auction_RegisterBid">Confirmar puja</sys:String>
+    <sys:String x:Key="Auction_CancelBid">Cancelar puja</sys:String>
     <sys:String x:Key="Auction_Duration">Duracion de la subasta (en horas)</sys:String>
+    <sys:String x:Key="Auction_TimeLeft">Tiempo para que termine la subasta:</sys:String>
+    <sys:String x:Key="Auction_SendMessage">Enviar mensaje al vendedor</sys:String>
+    <sys:String x:Key="Auction_DialogTDisclaimer">Aviso</sys:String>
+    <sys:String x:Key="Auction_DialogDDisclaimer">Participar en una subasta implica responsabilidad, solo puja lo que puedes pagar</sys:String>
+    <sys:String x:Key="Auction_DialogTUnbid">Cancelar puja</sys:String>
+    <sys:String x:Key="Auction_DialogDUnbid">Se retirara tu puja de la subasta...</sys:String>
     
 </ResourceDictionary>
