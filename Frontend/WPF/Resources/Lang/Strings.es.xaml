@@ -22,6 +22,10 @@
     <sys:String x:Key="Glb_Offers">Ofertas</sys:String>
     <sys:String x:Key="Glb_Trending">Moda</sys:String>
     <sys:String x:Key="Glb_Profile">Perfil</sys:String>
+    <sys:String x:Key="Glb_RegisterProduct">Registrar producto</sys:String>
+    <sys:String x:Key="Glb_RegisterAuction">Crear subasta</sys:String>
+    <sys:String x:Key="Glb_Messages">Mensajes</sys:String>
+    <sys:String x:Key="Glb_EditProfile">Editar perfil</sys:String>
     <sys:String x:Key="Glb_UserProfile">Perfil de usuario</sys:String>
     <sys:String x:Key="Glb_UserData">Datos personales</sys:String>
     <sys:String x:Key="Glb_Email">Correo electronico</sys:String>
@@ -98,7 +102,9 @@
     <sys:String x:Key="EditProfile_Header">Editar perfil</sys:String>
     <sys:String x:Key="EditProfile_Desc">Aqui podras editar algunos datos de tu perfil</sys:String>
     <sys:String x:Key="EditProfile_ModifyPic">Modificar foto de perfil</sys:String>
-    
+    <sys:String x:Key="EditProfile_Update">Actualizar datos</sys:String>
+    <sys:String x:Key="EditProfile_ActualPassword">Contraseña actual</sys:String>
+    <sys:String x:Key="EditProfile_NewPassword">Nueva contraseña</sys:String>
     
     <!--Inicio-->
     <sys:String x:Key="Home_ProductName">ITEMsNAME_PLACEHOLDER</sys:String>
@@ -108,6 +114,7 @@
     <sys:String x:Key="Home_Outwear">Sueteres</sys:String>
     <sys:String x:Key="Home_Pants">Pantalones</sys:String>
     <sys:String x:Key="Home_Filters">Filtros</sys:String>
+    
 
     <!--Filtros-->
     <sys:String x:Key="Filters_Remove">Limpiar filtros</sys:String>
@@ -179,5 +186,14 @@
     <sys:String x:Key="Post_Quantity">Cantidad: </sys:String>
 
     <!--Subasta-->
-
+    <sys:String x:Key="Auction_Header">Crear subasta</sys:String>
+    <sys:String x:Key="Auction_Desc">Ingresa los detalles de tu subasta</sys:String>
+    <sys:String x:Key="Auction_Create">Registrar subasta</sys:String>
+    <sys:String x:Key="Auction_Start">Iniciar subasta</sys:String>
+    <sys:String x:Key="Auction_PriceDetails">Parametros de la subasta</sys:String>
+    <sys:String x:Key="Auction_StartingPrice">Precio inicial:</sys:String>
+    <sys:String x:Key="Auction_LowestBid">Puja minima:</sys:String>
+    <sys:String x:Key="Auction_Highestbid">Puja maxima:</sys:String>
+    <sys:String x:Key="Auction_Duration">Duracion de la subasta (en horas)</sys:String>
+    
 </ResourceDictionary>

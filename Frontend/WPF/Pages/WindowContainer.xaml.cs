@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using WpfApp.Components;
 using WpfApp.Pages.Home;
 using WpfApp.Pages.User.Auth;
 using WpfApp.Services.User.Auth;
@@ -50,10 +51,20 @@ namespace WpfApp.Pages {
         {
             //TODO: Load searchResults, perhaps another page
         }
+        private void PopUpOverlay_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource == PopUpOverlay)
+            {
+                PopUpOverlay.Visibility = Visibility.Collapsed;
+                PopUpHost.Content = null;
+            }
+
+            e.Handled = true;
+        }
 
         private void BtnProfile_Click(object sender, RoutedEventArgs e)
         {
-            //TODO show popup
+            UserSettings.Show(sender as FrameworkElement);
         }
 
         private void BtnShoppingCart_Click(object sender, RoutedEventArgs e)
