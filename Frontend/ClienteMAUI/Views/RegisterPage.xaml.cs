@@ -1,3 +1,6 @@
+using ClienteMAUI.Models;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace ClienteMAUI.Views;
@@ -23,9 +26,53 @@ public partial class RegisterPage : ContentPage
             return;
         }
 
-        // Aquí iría el POST real
-        await DisplayAlert("Registro exitoso", "Tu cuenta ha sido creada. Inicia sesión para continuar.", "OK");
-        await Shell.Current.GoToAsync("..");
+        var registerData = new RegisterRequest
+        {
+            FirstName = txtFirstName.Text.Trim(),
+            LastName = txtLastName.Text.Trim(),
+            MiddleName = txtMiddleName.Text.Trim(),
+            Username = txtUsername.Text.Trim(),
+            Email = txtEmail.Text.Trim(),
+            AreaCode = txtAreaCode.Text.Trim(),
+            PhoneNumber = txtPhoneNumber.Text.Trim(),
+            Password = txtPassword.Text.Trim()
+        };
+        try
+        {
+            using var testClient = new HttpClient();
+            var pingResponse = await testClient.GetAsync("http://10.0.2.2:5003"); // prueba simple
+            Console.WriteLine($"[PING] Status: {pingResponse.StatusCode}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[PING] Error de conexión: {ex.Message}");
+        }
+
+
+        try
+        {
+            using var httpClient = new HttpClient();
+            var url = "http://10.0.2.2:5003/api/User/Registration"; // o la IP de tu contenedor
+            var response = await httpClient.PostAsJsonAsync(url, registerData);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await DisplayAlert("Registro exitoso", "Tu cuenta ha sido creada. Inicia sesión para continuar.", "OK");
+                await Shell.Current.GoToAsync("..");
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var errores = JsonSerializer.Deserialize<Dictionary<string, object>>(content);
+                lblError.Text = "Error: " + errores?["title"] ?? "No se pudo registrar.";
+                lblError.IsVisible = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            lblError.Text = $"Error al conectar con el servidor: {ex.Message}";
+            lblError.IsVisible = true;
+        }
     }
 
     private bool CamposRequeridosCompletos()

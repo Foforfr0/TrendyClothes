@@ -63,16 +63,10 @@
 	  <AndroidJavaSource Remove="NewFolder1\**" />
 	  <AndroidLibrary Remove="NewFolder1\**" />
 	  <AndroidNativeLibrary Remove="NewFolder1\**" />
-	  <AndroidResource Remove="NewFolder\**" />
 	  <Compile Remove="NewFolder1\**" />
-	  <Compile Remove="NewFolder\**" />
 	  <EmbeddedResource Remove="NewFolder1\**" />
-	  <EmbeddedResource Remove="NewFolder\**" />
 	  <JavaSourceJar Remove="NewFolder1\**" />
-	  <MauiCss Remove="NewFolder\**" />
-	  <MauiXaml Remove="NewFolder\**" />
 	  <None Remove="NewFolder1\**" />
-	  <None Remove="NewFolder\**" />
 	  <ProguardConfiguration Remove="NewFolder1\**" />
 	  <TransformFile Remove="NewFolder1\**" />
 	</ItemGroup>
