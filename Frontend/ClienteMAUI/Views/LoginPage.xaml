@@ -1,0 +1,97 @@
+<ContentPage
+    x:Class="ClienteMAUI.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#F2F2F2"
+    Title="Iniciar sesión">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20" VerticalOptions="Center">
+
+            <!-- LOGO Y ENCABEZADO -->
+            <Image Source="logo_placeholder.png"
+                   HeightRequest="100"
+                   HorizontalOptions="Center"
+                   Margin="0,20" />
+
+            <Label Text="Trendy Clothes"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="#333"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Inicia sesión"
+                   FontSize="18"
+                   TextColor="#666"
+                   HorizontalOptions="Center" />
+
+            <!-- TARJETA CONTENEDORA -->
+            <Border Stroke="#CCC" StrokeThickness="1" BackgroundColor="White" StrokeShape="RoundRectangle 12">
+                <Grid Padding="20" ColumnDefinitions="*,*" ColumnSpacing="20">
+
+                    <!-- LOGIN CON USUARIO Y CONTRASEÑA -->
+                    <VerticalStackLayout Grid.Column="0" Spacing="12">
+                        <Label Text="Nombre de usuario:" FontAttributes="Bold" />
+                        <Entry x:Name="txtUsername" Placeholder="Usuario"
+                               BackgroundColor="#EFEFEF" />
+
+                        <Label Text="Contraseña:" FontAttributes="Bold" />
+                        <Entry x:Name="txtPassword" Placeholder="Contraseña"
+                               IsPassword="True"
+                               BackgroundColor="#EFEFEF" />
+
+                        <Label Text="¿Olvidó su contraseña?" FontSize="12" TextColor="#888" />
+
+                        <Button Text="Ingresar"
+                                Clicked="OnLoginClicked"
+                                BackgroundColor="#00E6E6"
+                                TextColor="Black"
+                                CornerRadius="12" />
+                        
+                        <Button Text="Registrarse"
+                                Clicked="OnRegsiterClicked"
+                                BackgroundColor="#00E6E6"
+                                TextColor="Black"
+                                CornerRadius="12" />
+                    </VerticalStackLayout>
+
+                    <!-- LOGIN CON CÓDIGO -->
+                    <VerticalStackLayout Grid.Column="1" Spacing="12">
+                        <Label Text="Correo electrónico:" FontAttributes="Bold" />
+                        <Entry x:Name="txtEmail" Placeholder="Correo"
+                               BackgroundColor="#EFEFEF"
+                               Keyboard="Email" />
+
+                        <Label Text="¿Olvidó su correo?" FontSize="12" TextColor="#888" />
+
+                        <Button Text="Enviar código"
+                                Clicked="OnSendCodeClicked"
+                                BackgroundColor="#00E6E6"
+                                TextColor="Black"
+                                CornerRadius="12" />
+
+                        <Label Text="Código enviado:" FontAttributes="Bold" />
+                        <Entry x:Name="txtCode" Placeholder="Código recibido"
+                               BackgroundColor="#EFEFEF" />
+
+                        <Button Text="Validar código"
+                                Clicked="OnValidateCodeClicked"
+                                BackgroundColor="#00E6E6"
+                                TextColor="Black"
+                                CornerRadius="12" />
+                    </VerticalStackLayout>
+
+                </Grid>
+            </Border>
+
+            <!-- MENSAJE DE ERROR -->
+            <Label x:Name="lblError"
+                   TextColor="Red"
+                   FontAttributes="Bold"
+                   IsVisible="False"
+                   HorizontalOptions="Center"
+                   FontSize="14" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
