@@ -64,7 +64,8 @@ namespace WebPage.Pages.Product.Seller {
             }
             HttpResponseMessage httpResponse;
             try {
-                httpResponse = await httpClient.GetAsync ($"{_services.SellerGetProductDetailsUrl}?id={id}");
+
+                httpResponse = await httpClient.GetAsync ($"http://apigateway/api/MyProducts/Details?id={id}");
             } catch (Exception ex) {
                 _logger.LogError (ex, "Error al conectar con el servicio externo: {Url}");
                 return StatusCode (500, new {
@@ -174,8 +175,9 @@ namespace WebPage.Pages.Product.Seller {
             categories = new List<CategoriesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
+            string requestURL = "http://apigateway/api/Product/Tags/Categories";
             ApiResponse<List<CategoriesDTO>>? response =
-                await httpClient.GetFromJsonAsync<ApiResponse<List<CategoriesDTO>>> ($"{_services.ProductGetCategoriesUrl}");
+                await httpClient.GetFromJsonAsync<ApiResponse<List<CategoriesDTO>>> (requestURL);
 
             if (response?.body != null) {
                 categories = response.body;
@@ -187,8 +189,9 @@ namespace WebPage.Pages.Product.Seller {
             types = new List<TypesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
+            string requestURL = "http://apigateway/api/Product/Tags/Types";
             ApiResponse<List<TypesDTO>>? response =
-                await httpClient.GetFromJsonAsync<ApiResponse<List<TypesDTO>>> ($"{_services.ProductGetTypesUrl}");
+                await httpClient.GetFromJsonAsync<ApiResponse<List<TypesDTO>>> (requestURL);
 
             if (response?.body != null) {
                 types = response.body;
@@ -200,8 +203,9 @@ namespace WebPage.Pages.Product.Seller {
             statusses = new List<StatussesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
+            string requestURL = "http://apigateway/api/Product/Tags/Statusses";
             ApiResponse<List<StatussesDTO>>? response =
-                await httpClient.GetFromJsonAsync<ApiResponse<List<StatussesDTO>>> ($"{_services.ProductGetStatussesUrl}");
+                await httpClient.GetFromJsonAsync<ApiResponse<List<StatussesDTO>>> (requestURL);
 
             if (response?.body != null) {
                 statusses = response.body;
