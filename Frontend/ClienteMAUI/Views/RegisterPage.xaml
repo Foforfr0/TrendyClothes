@@ -1,0 +1,33 @@
+<ContentPage
+    x:Class="ClienteMAUI.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Crear Cuenta"
+    BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Crear cuenta" FontSize="24" HorizontalOptions="Center" FontAttributes="Bold" />
+
+            <Entry x:Name="txtFirstName" Placeholder="Nombre(s)" />
+            <Entry x:Name="txtLastName" Placeholder="Apellido paterno" />
+            <Entry x:Name="txtMiddleName" Placeholder="Apellido materno" />
+            <Entry x:Name="txtUsername" Placeholder="Nombre de usuario" />
+            <Entry x:Name="txtEmail" Placeholder="Correo electrónico" Keyboard="Email" />
+            <Entry x:Name="txtAreaCode" Placeholder="Clave lada (ej. 228)" Keyboard="Telephone" />
+            <Entry x:Name="txtPhoneNumber" Placeholder="Teléfono" Keyboard="Telephone" />
+            <Entry x:Name="txtPassword" Placeholder="Contraseña" IsPassword="True" />
+            <Entry x:Name="txtConfirmPassword" Placeholder="Confirmar contraseña" IsPassword="True" />
+
+            <Label x:Name="lblError" TextColor="Red" IsVisible="False" />
+
+            <Button Text="Registrarse"
+                    Clicked="OnRegisterClicked"
+                    BackgroundColor="#28A745"
+                    TextColor="White"
+                    CornerRadius="8" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

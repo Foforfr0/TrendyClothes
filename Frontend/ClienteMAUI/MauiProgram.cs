@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls;
 
 namespace ClienteMAUI
 {
@@ -16,10 +17,14 @@ namespace ClienteMAUI
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var mauiApp = builder.Build();
+
+            
+
+            return mauiApp;
         }
     }
 }
