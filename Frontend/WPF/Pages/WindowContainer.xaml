@@ -6,70 +6,105 @@
         xmlns:local="clr-namespace:WpfApp.Pages"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1000"
+        MaxHeight="650" MaxWidth="1000"
         WindowStartupLocation="CenterScreen">
     <Border Background="FloralWhite">
         <Grid>
             <Grid x:Name="RootGrid">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="8*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0">
+                <Border x:Name="DialogContainer" Grid.RowSpan="2">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.5*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="2.5*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="90"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="10, 10, 0, 10" VerticalAlignment="Center">
-                            <TextBlock Text="{DynamicResource Glb_TrendyClothes}" 
-                                       Style="{DynamicResource HeaderLabelStyle}"/>
-                        </StackPanel>
+                        <Border Grid.Row="0" Background="#EDEDFE"
+                                BorderBrush="{StaticResource SecondaryBrush}"
+                                BorderThickness="0.5, 0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0, 10, 0, 10">
-                            <Button x:Name="BtnHome" Margin="20, 0, 0, 0"
-                                    Content="{DynamicResource Glb_Home}"
-                                    Style="{DynamicResource TableHeaderButtonStyle}"
-                                    Click="BtnHome_Click"/>
-                            <Button x:Name="BtnCategories" Margin="25, 0, 0, 0"
-                                    Content="{DynamicResource Glb_Categories}"
-                                    Style="{DynamicResource TableHeaderButtonStyle}"
-                                    Click="BtnCategories_Click"/>
-                            <Button x:Name="BtnOffers" Margin="25, 0, 0, 0"
-                                    Content="{DynamicResource Glb_Offers}"
-                                    Style="{DynamicResource TableHeaderButtonStyle}"
-                                    Click="BtnOffers_Click"/>
-                            <Button x:Name="Btn" Margin="25, 0, 0, 0"
-                                    Content="{DynamicResource Glb_Trending}"
-                                    Style="{DynamicResource TableHeaderButtonStyle}"
-                                    Click="BtnTrends_Click"/>
-                        </StackPanel>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                                            Margin="10, 10, 0, 10" VerticalAlignment="Center">
+                                    <TextBlock Text="{DynamicResource Glb_TrendyClothes}"
+                                               Style="{DynamicResource HeaderLabelStyle}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0, 10, 0, 10">
+                                    <Button x:Name="BtnHome" Margin="20, 0, 0, 0"
+                                            Content="{DynamicResource Glb_Home}"
+                                            Style="{DynamicResource TableHeaderButtonStyle}"
+                                            Click="BtnHome_Click"/>
+                                    <Button x:Name="BtnCategories" Margin="25, 0, 0, 0"
+                                            Content="{DynamicResource Glb_Categories}"
+                                            Style="{DynamicResource TableHeaderButtonStyle}"
+                                            Click="BtnCategories_Click"/>
+                                    <Button x:Name="BtnOffers" Margin="25, 0, 0, 0"
+                                            Content="{DynamicResource Glb_Offers}"
+                                            Style="{DynamicResource TableHeaderButtonStyle}"
+                                            Click="BtnOffers_Click"/>
+                                    <Button x:Name="Btn" Margin="25, 0, 0, 0"
+                                            Content="{DynamicResource Glb_Trending}"
+                                            Style="{DynamicResource TableHeaderButtonStyle}"
+                                            Click="BtnTrends_Click"/>
+                                </StackPanel>
 
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBox x:Name="SearchBox" Width="300"
-                                     Margin="10, 0, 10, 0"
-                                     Style="{StaticResource PrimarySearchBoxStyle}"
-                                     TextChanged="SearchBox_TextChanged"/>
-                        </StackPanel>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBox x:Name="SearchBox" Width="300"
+                                             Margin="10, 0, 10, 0"
+                                             Style="{StaticResource PrimarySearchBoxStyle}"
+                                             TextChanged="SearchBox_TextChanged"/>
+                                </StackPanel>
 
-                        <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                            <Button x:Name="BtnShoppingCart" Margin="0, 10, 5, 10"
-                                    Content="{DynamicResource Glb_Cart}"
-                                    Style="{DynamicResource PrimaryButtonNoIconStyle}"
-                                    Click="BtnShoppingCart_Click"/>
-                            <Button x:Name="BtnProfile" Width="53"
-                                    Style="{DynamicResource UserButtonStyle}"
-                                    Click="BtnProfile_Click"/>
-                        </StackPanel>
+                                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button x:Name="BtnShoppingCart" Margin="0, 10, 5, 10"
+                                            Content="{DynamicResource Glb_Cart}"
+                                            Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                                            Click="BtnShoppingCart_Click"/>
+                                    <Button x:Name="BtnProfile" Width="53"
+                                            Style="{DynamicResource UserButtonStyle}"
+                                            Click="BtnProfile_Click"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="1" ClipToBounds="True">
+                            <Frame Name="MainFrame"/>
+                        </Border>
                     </Grid>
                 </Border>
-                <Border Grid.Row="1" ClipToBounds="True">
-                    <Frame Name="MainFrame"/>
-                </Border>
             </Grid>
+
+            <Border x:Name="PopUpOverlay"
+                    Visibility="Collapsed"
+                    Grid.RowSpan="2"
+                    Background="Transparent"
+                    MouseDown="PopUpOverlay_MouseDown"
+                    IsHitTestVisible="True">
+                <Canvas>
+                    <ContentControl x:Name="PopUpHost"
+                                    Canvas.Left="0" Canvas.Top="0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"/>
+                </Canvas>
+            </Border>
+
+            <Border x:Name="DialogOverlay"
+                    Background="#80000000"
+                    Visibility="Collapsed" Grid.RowSpan="2">
+                <ContentControl x:Name="DialogHost"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+            </Border>
         </Grid>
     </Border>
 </Window>

@@ -30,7 +30,8 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal"
                             VerticalAlignment="Center">
                     <TextBlock Text="{DynamicResource Glb_Home}"
-                               Style="{DynamicResource SubtitleLabelStyle}"/>
+                               Style="{DynamicResource SubtitleLabelStyle}"
+                               x:Name="PageHeader"/>
                 </StackPanel>
 
                 <Grid Grid.Row="1">

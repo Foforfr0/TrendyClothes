@@ -34,8 +34,9 @@ namespace WebPage.Pages.Product.Seller {
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
             if (!string.IsNullOrEmpty (cookies))
                 httpClient.DefaultRequestHeaders.Add ("Cookie", cookies);
+            string requestURL = $"http://apigateway/api/MyProducts/Details?id={id}";
             ApiResponse<MyProductDetailsDTO>? response =
-                await httpClient.GetFromJsonAsync<ApiResponse<MyProductDetailsDTO>> ($"{_services.SellerGetProductDetailsUrl}?id={id}");
+                await httpClient.GetFromJsonAsync<ApiResponse<MyProductDetailsDTO>> (requestURL);
 
             if (response?.body != null) {
                 product = response.body;

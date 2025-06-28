@@ -23,7 +23,8 @@
                     </Grid.ColumnDefinitions>
 
                     <Button x:Name="BtnBack" Content="{DynamicResource Glb_Back}"
-                            Style="{DynamicResource BackButtonStyle}" Grid.Column="0"/>
+                            Style="{DynamicResource BackButtonStyle}" Grid.Column="0"
+                            Click="BtnBack_Click"/>
                     <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center"
                                 HorizontalAlignment="Left" Margin="15, 0">
                         <TextBlock x:Name="PageHeader"
@@ -98,7 +99,7 @@
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" Orientation="Vertical">
+                            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0, 5">
                                 <TextBox x:Name="TbStock" Tag="{DynamicResource RegItem_Stock}"
                                          Style="{DynamicResource TextBoxStyle}" IsEnabled="True"
                                          TextChanged="RequiredFields_TextChanged"/>
@@ -149,7 +150,7 @@
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"
                                 VerticalAlignment="Center" Margin="20, 0">
                         <Button x:Name="BtnCancel" Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                Content="{DynamicResource Glb_Cancel}" Margin="15"
+                                Content="{DynamicResource Glb_Cancel}" Margin="15, 0"
                                 Click="BtnCancel_Click"/>
                         <Button x:Name="BtnRegisterProduct" Style="{DynamicResource PrimaryButtonNoIconStyle}"
                                 Content="{DynamicResource RegItem_Reg}" 

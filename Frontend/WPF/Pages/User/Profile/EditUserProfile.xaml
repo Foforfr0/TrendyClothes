@@ -22,7 +22,8 @@
                         <ColumnDefinition Width="8*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="BtnBack" Style="{DynamicResource BackButtonStyle}"/>
+                    <Button x:Name="BtnBack" Style="{DynamicResource BackButtonStyle}"
+                            Click="BtnBack_Click"/>
 
                     <StackPanel Grid.Column="1" Orientation="Vertical" Margin="15, 0"
                                 VerticalAlignment="Center" HorizontalAlignment="Left">
@@ -53,6 +54,111 @@
                             Style="{DynamicResource PrimaryButtonNoIconStyle}"
                             Click="BtnModifyImage_Click" Margin="0, 5, 0, 6"/>
                 </StackPanel>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0.5*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
+                        <TextBlock Text="{DynamicResource RegUser_UserData}"
+                                   Style="{DynamicResource DescriptionLabelStyle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+
+                        <Grid Grid.Column="0" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox x:Name="TbFirstName" 
+                                     Grid.Column="0" Grid.Row="0"
+                                     Tag="{DynamicResource RegUser_FirstName}" 
+                                     Style="{DynamicResource TextBoxStyle}"
+                                     HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                     Margin="0,0,10,10"
+                                     TextChanged="RequiredFields_TextChanged"/>
+                            <TextBox x:Name="TbLastName" 
+                                     Grid.Column="1" Grid.Row="0"
+                                     Tag="{DynamicResource RegUser_LastName}" 
+                                     Style="{DynamicResource TextBoxStyle}"
+                                     HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                     Margin="10,0,0,10"
+                                     TextChanged="RequiredFields_TextChanged"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="10">
+                        <TextBlock Text="{DynamicResource RegUser_AccountData}"
+                                   Style="{DynamicResource DescriptionLabelStyle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <PasswordBox x:Name="PbActualPassword" Grid.Column="0"
+                                             Tag="{DynamicResource EditProfile_ActualPassword}"
+                                             Style="{DynamicResource PasswordBoxStyle}"
+                                             Margin="5"
+                                             PasswordChanged="ActualPassword_TextChanged"/>
+                                <TextBox x:Name="TbActualPassword" Grid.Column="0"
+                                         Tag="{DynamicResource EditProfile_ActualPassword}"
+                                         Style="{DynamicResource ShowPasswordStyle}"
+                                         Margin="5" Visibility="Collapsed"
+                                         TextChanged="ActualPassword_TextChanged"/>
+                                <CheckBox x:Name="ChbShowPassword" Margin="10, 5, 0, 0"
+                                          Content="{DynamicResource Glb_ShowPassword}"
+                                          Style="{DynamicResource CheckBoxStyle}"
+                                          IsChecked="False" HorizontalAlignment="Left"
+                                          Checked="ChbShowPassword_Checked"
+                                          Unchecked="ChbShowPassword_Unchecked"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <PasswordBox x:Name="PbNewPassword" Grid.Column="1"
+                                             Tag="{DynamicResource EditProfile_NewPassword}"
+                                             Style="{DynamicResource PasswordBoxStyle}"
+                                             Margin="5"
+                                             PasswordChanged="NewPassword_TextChanged"/>
+                                <TextBox x:Name="TbNewPassword" Grid.Column="0"
+                                         Tag="{DynamicResource RegUser_RepeatPassword}"
+                                         Style="{DynamicResource ShowPasswordStyle}"
+                                         Margin="5" Visibility="Collapsed"
+                                         TextChanged="NewPassword_TextChanged"/>
+                                <CheckBox x:Name="ChbShowConfirmPassword" Margin="10, 5, 0, 0"
+                                          Content="{DynamicResource Glb_ShowPassword}"
+                                          Style="{DynamicResource CheckBoxStyle}"
+                                          IsChecked="False" HorizontalAlignment="Left"
+                                          Checked="ChbShowPassword_Checked"
+                                          Unchecked="ChbShowPassword_Unchecked"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"
+                                VerticalAlignment="Center" Margin="20, 0">
+                        <Button x:Name="BtnCancel" Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                Content="{DynamicResource Glb_Cancel}"
+                                Click="BtnCancel_Click" Margin="0, 0, 15, 0"/>
+                        <Button x:Name="BtnEditProfile" Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                                Content="{DynamicResource EditProfile_Update}"
+                                Click="BtnEditProfile_Click"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </Grid>
     </Border>

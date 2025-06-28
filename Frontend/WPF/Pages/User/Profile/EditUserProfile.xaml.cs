@@ -12,12 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp.Utilities;
 
 namespace WpfApp.Pages.User.Profile
 {
-    /// <summary>
-    /// Lógica de interacción para EditUserProfile.xaml
-    /// </summary>
     public partial class EditUserProfile : Page
     {
         public EditUserProfile()
@@ -28,6 +26,44 @@ namespace WpfApp.Pages.User.Profile
         private void BtnModifyImage_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void RequiredFields_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void ActualPassword_TextChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void ChbShowPassword_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ChbShowPassword_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NewPassword_TextChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnEditProfile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationManager.Instance.GoBack();
         }
     }
 }
