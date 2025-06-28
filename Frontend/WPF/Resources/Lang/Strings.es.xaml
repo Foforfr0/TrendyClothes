@@ -5,6 +5,7 @@
     <!--Globals-->
     <sys:String x:Key="Glb_TrendyClothes">Trendy Clothes</sys:String>
     <sys:String x:Key="Glb_SignOut">Cerrar sesion</sys:String>
+    <sys:String x:Key="Glb_SignUp">Crear cuenta</sys:String>
     <sys:String x:Key="Glb_Accept">Aceptar</sys:String>
     <sys:String x:Key="Glb_Cancel">Cancelar</sys:String>
     <sys:String x:Key="Glb_Confirm">Confirmar</sys:String>
@@ -19,9 +20,10 @@
     <sys:String x:Key="Glb_Selected">seleccionados</sys:String>
     <sys:String x:Key="Glb_Home">Inicio</sys:String>
     <sys:String x:Key="Glb_Categories">Categorias</sys:String>
-    <sys:String x:Key="Glb_Offers">Ofertas</sys:String>
+    <sys:String x:Key="Glb_Auctions">Subastas</sys:String>
     <sys:String x:Key="Glb_Trending">Moda</sys:String>
     <sys:String x:Key="Glb_Profile">Perfil</sys:String>
+    <sys:String x:Key="Glb_Admin">Bienvenido:</sys:String>
     <sys:String x:Key="Glb_RegisterProduct">Registrar producto</sys:String>
     <sys:String x:Key="Glb_RegisterAuction">Crear subasta</sys:String>
     <sys:String x:Key="Glb_Messages">Mensajes</sys:String>
@@ -48,6 +50,8 @@
     <sys:String x:Key="Glb_BtnSelectImage">Selecionar foto</sys:String>
     <sys:String x:Key="Glb_BtnDeleteImage">Eliminar foto</sys:String>
     <sys:String x:Key="Glb_ShowPassword">Mostrar contraseña</sys:String>
+    <sys:String x:Key="Glb_DialogTDiscard">Estas seguro?</sys:String>
+    <sys:String x:Key="Glb_DialogDDiscard">Se perderan los datos no guardados</sys:String>
     <sys:String x:Key="GlbDialogT_NoConnection">Sin conexion con el servidor</sys:String>
     <sys:String x:Key="GlbDialogD_NoConnection">No se pudo establecer conexión con el servidor. Verifica la conexión a Internet o inténtalo de nuevo más tarde.</sys:String>
     <sys:String x:Key="GlbDialogT_TimeOut">Tiempo de espera excedido</sys:String>
@@ -89,7 +93,7 @@
     <sys:String x:Key="RegUser_RepeatPassword">Confirma tu contraseña</sys:String>
     <sys:String x:Key="RegUser_BtnRegister">Crear cuenta</sys:String>
     <sys:String x:Key="RegUser_DialogTSuccess">Registro exitoso</sys:String>
-    <sys:String x:Key="RegUser_DialogDSucess">Se ha registrado tu cuenta, ahora podras iniciar sesion en la plataforma</sys:String>
+    <sys:String x:Key="RegUser_DialogDSucsess">Se ha registrado tu cuenta, ahora podras iniciar sesion en la plataforma</sys:String>
     <sys:String x:Key="RegUser_TInvalidPassword">Contraseña invalida</sys:String>
     <sys:String x:Key="RegUser_DInvalidPassword">La contraseña es muy corta, debe tener entre 8 y 16 caracteres</sys:String>
     <sys:String x:Key="RegUser_TInvalidEmail">Correo invalido</sys:String>
@@ -105,6 +109,8 @@
     <sys:String x:Key="EditProfile_Update">Actualizar datos</sys:String>
     <sys:String x:Key="EditProfile_ActualPassword">Contraseña actual</sys:String>
     <sys:String x:Key="EditProfile_NewPassword">Nueva contraseña</sys:String>
+    <sys:String x:Key="EditProfile_Success">Edicion exitosa</sys:String>
+    <sys:String x:Key="EditProfile_SuccessD">Se han modificado tus datos de manera exitosa</sys:String>
     
     <!--Inicio-->
     <sys:String x:Key="Home_ProductName">ITEMsNAME_PLACEHOLDER</sys:String>
@@ -130,6 +136,10 @@
     <sys:String x:Key="Filters_MinPrice">Desde:</sys:String>
     <sys:String x:Key="Filters_MaxPrice">Hasta:</sys:String>
     <sys:String x:Key="Filters_Apply">Aplicar filtros</sys:String>
+    
+    <!--Productos-->
+    <sys:String x:Key="Product_Header">Producto:</sys:String>
+    <sys:String x:Key="Product_Desc">Detalles:</sys:String>
 
     <!--Mis productos-->
     <sys:String x:Key="Items_Header">Mis productos</sys:String>
@@ -209,5 +219,10 @@
     <sys:String x:Key="Auction_DialogDDisclaimer">Participar en una subasta implica responsabilidad, solo puja lo que puedes pagar</sys:String>
     <sys:String x:Key="Auction_DialogTUnbid">Cancelar puja</sys:String>
     <sys:String x:Key="Auction_DialogDUnbid">Se retirara tu puja de la subasta...</sys:String>
+    
+    <!--Reportes-->
+    <sys:String x:Key="Reports_Header">Reportes</sys:String>
+    <sys:String x:Key="Reports_Desc">Aqui podras gestionar los reportes enviados por los usuarios</sys:String>
+    
     
 </ResourceDictionary>

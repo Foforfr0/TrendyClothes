@@ -5,34 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp.Components"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="900">
-    <Border Background="{DynamicResource BackgroundBrush}">
+             d:DesignHeight="150" d:DesignWidth="1000">
+    <Border Background="{DynamicResource BackgroundBrush}" HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" x:Name="BtnLeft"
-                    Style="{DynamicResource BackButtonStyle}"/>
-            <Button Grid.Column="2" x:Name="BtnRight"
-                    Style="{DynamicResource ForwardButtonStyle}"/>
+                    Style="{DynamicResource BackButtonStyle}"
+                    Click="BtnLeft_Click"
+                    Margin="10"/>
 
-            
-            <ScrollViewer x:Name="ScrollViewer" Grid.Column="1" CanContentScroll="True"
-                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
-                <ItemsControl x:Name="ItemContainer">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                
-                            </StackPanel>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
-            
+            <ContentControl x:Name="CardHost"
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" />
+
+            <Button Grid.Column="2" x:Name="BtnRight"
+                    Style="{DynamicResource ForwardButtonStyle}"
+                    Click="BtnRight_Click"
+                    Margin="10"/>
         </Grid>
     </Border>
 </UserControl>

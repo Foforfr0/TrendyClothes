@@ -6,16 +6,13 @@ using WpfApp.Utilities;
 
 namespace WpfApp.Pages.User.Auth
 {
-    /// <summary>
-    /// Lógica de interacción para SignUpWindow.xaml
-    /// </summary>
     public partial class SignUpWindow : Window
     {
         public SignUpWindow()
         {
             InitializeComponent();
             SetInputFields();
-            ImageUtilities.SetImageSource(UserProfilePic, null, Utilities.Constants.DEFAULT_PROFILE_PIC_PATH);
+            UpdateRegisterButtonState();
         }
 
         private void SetInputFields()
@@ -24,7 +21,8 @@ namespace WpfApp.Pages.User.Auth
             {
                 (TbFirstName, Utilities.Constants.NAMES_PATTERN, Utilities.Constants.MAX_LENGTH_NAMES),
                 (TbLastName, Utilities.Constants.NAMES_PATTERN, Utilities.Constants.MAX_LENGTH_NAMES),
-                (TbAccountPassword, Utilities.Constants.ALPHANUMERIC_PATTERN, Utilities.Constants.MAX_LENGTH_PASSWORD)
+                (TbAccountPassword, Utilities.Constants.ALPHANUMERIC_PATTERN, Utilities.Constants.MAX_LENGTH_PASSWORD),
+                (TbEmailAddress, Constants.EMAIL_ALLOWED_CHARS_PATTERN, Constants.MAX_LENGTH_EMAIL)
             };
 
             foreach (var (textBox, pattern, maxLength) in validations)
@@ -32,6 +30,7 @@ namespace WpfApp.Pages.User.Auth
 
             InputUtilities.ValidatePasswordInput(PbAccountPassword, Utilities.Constants.ALPHANUMERIC_PATTERN,
                 Utilities.Constants.MAX_LENGTH_PASSWORD);
+            InputUtilities.ConvertToLowerCase(TbEmailAddress);
         }
 
         private void UpdateFormButtonState(Button button)
@@ -53,6 +52,30 @@ namespace WpfApp.Pages.User.Auth
             }
 
             button.IsEnabled = allFieldsFilled;
+        }
+
+        private void UpdateRegisterButtonState()
+        {
+            var requiredFields = new List<object>
+            {
+                TbFirstName,
+                TbLastName,
+                TbEmailAddress,
+                TbAccountPassword,
+                TbConfirmPassword
+            };
+
+            bool allFieldsFilled = true;
+            foreach (TextBox field in requiredFields)
+            {
+                if (string.IsNullOrWhiteSpace(field.Text))
+                {
+                    allFieldsFilled = false;
+                    break;
+                }
+            }
+
+            BtnRegisterUser.IsEnabled = allFieldsFilled;
         }
 
         private void SelectProfilePicture(Image targetImageControl)
@@ -88,7 +111,7 @@ namespace WpfApp.Pages.User.Auth
 
         private void RequiredFields_TextChanged(object sender, RoutedEventArgs e)
         {
-
+            UpdateRegisterButtonState();
         }
 
         private void Password_TextChanged(object sender, RoutedEventArgs e)
@@ -119,6 +142,15 @@ namespace WpfApp.Pages.User.Auth
             PasswordUtilities.HidePassword(TbAccountPassword, PbAccountPassword);
         }
 
+        private void ChbShowConfirmPassword_Checked(object sender, RoutedEventArgs e)
+        {
+            PasswordUtilities.ShowPassword(TbConfirmPassword, PbConfirmPassword);
+        }
+
+        private void ChbShowConfirmPassword_Unchecked(object sender, RoutedEventArgs e)
+        {
+            PasswordUtilities.HidePassword(TbConfirmPassword, PbConfirmPassword);
+        }
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
             
@@ -126,7 +158,15 @@ namespace WpfApp.Pages.User.Auth
 
         private void BtnRegisterUser_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageDialog.Show("RegUser_DialogTSuccess", "RegUser_DialogDSuccess", AlertType.SUCCESS);
         }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            var container = new WindowContainer();
+            container.Show();
+            this.Close();
+        }
+
     }
 }

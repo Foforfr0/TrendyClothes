@@ -47,21 +47,25 @@
                                      Style="{DynamicResource PasswordBoxStyle}"
                                      Tag="{DynamicResource Login_TbPassword}"
                                      PasswordChanged="PbPassword_PasswordChanged"/>
+                        <TextBox x:Name="TbPassword" Width="300"
+                                     Visibility="Collapsed"
+                                     Style="{DynamicResource ShowPasswordStyle}"
+                                     Tag="{DynamicResource Login_TbPassword}"
+                                     TextChanged="TbPassword_TextChanged"/>
                         <CheckBox x:Name="ChbShowPassword" Margin="10, 5, 0, 0"
                                   Content="{DynamicResource Glb_ShowPassword}"
                                   Style="{DynamicResource CheckBoxStyle}"
                                   IsChecked="False" HorizontalAlignment="Left"
                                   Checked="ChbShowPassword_Checked"
                                   Unchecked="ChbShowPassword_Unchecked"/>
-                        <TextBox x:Name="TbPassword" Width="300"
-                                 Visibility="Collapsed"
-                                 Style="{DynamicResource ShowPasswordStyle}"
-                                 Tag="{DynamicResource Login_TbPassword}"
-                                 TextChanged="TbPassword_TextChanged"/>
-                        <Button x:Name="BtnSignIn" Margin="30" Width="120"
+                        <Button x:Name="BtnSignIn" Margin="10, 0" Width="120"
                                 Style="{DynamicResource PrimaryButtonNoIconStyle}"
                                 Content="{DynamicResource Login_Header}"
                                 Click="BtnSignIn_Click"/>
+                        <Button x:Name="BtnSignUp" Margin="10" Width="120"
+                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
+                                Content="{DynamicResource Glb_SignUp}"
+                                Click="BtnSignUp_Click"/>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Column="1">
@@ -71,7 +75,8 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left"
                                 VerticalAlignment="Top" Margin="20, 0, 0, 0"
-                                Grid.Row="0" x:Name="Step2Panel">
+                                Grid.Row="0" x:Name="Step2Panel"
+                                IsEnabled="False">
                         <TextBox x:Name="TbEmail" Width="300"
                                  Style="{DynamicResource TextBoxStyle}"
                                  Tag="{DynamicResource Glb_Email}"
@@ -84,7 +89,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left"
                                 VerticalAlignment="Top" Margin="20, 0, 0, 0"
-                                Grid.Row="1">
+                                Grid.Row="1" IsEnabled="False" x:Name="Step3Panel">
                         <TextBox x:Name="TbVerificationCode" Width="300"
                                  Style="{DynamicResource TextBoxStyle}"
                                  Tag="{DynamicResource Login_2FCode}"/>
