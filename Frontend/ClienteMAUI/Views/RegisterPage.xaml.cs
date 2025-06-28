@@ -37,23 +37,12 @@ public partial class RegisterPage : ContentPage
             PhoneNumber = txtPhoneNumber.Text.Trim(),
             Password = txtPassword.Text.Trim()
         };
-        try
-        {
-            using var testClient = new HttpClient();
-            var pingResponse = await testClient.GetAsync("http://10.0.2.2:5003"); // prueba simple
-            Console.WriteLine($"[PING] Status: {pingResponse.StatusCode}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[PING] Error de conexión: {ex.Message}");
-        }
-
 
         try
         {
             using var httpClient = new HttpClient();
-            var url = "http://10.0.2.2:5003/api/User/Registration"; // o la IP de tu contenedor
-            var response = await httpClient.PostAsJsonAsync(url, registerData);
+            var url = "http://10.0.2.2:5003/api/User/ValidateUserData/VerifyExistenceUsername?username=edmundo123"; // o la IP de tu contenedor
+            var response = await httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
@@ -107,13 +96,20 @@ public partial class RegisterPage : ContentPage
     {
         string areaCode = txtAreaCode.Text.Trim();
         string phone = txtPhoneNumber.Text.Trim();
-        if (!Regex.IsMatch(areaCode, @"^\d{2,5}$") || !Regex.IsMatch(phone, @"^\d{7,10}$"))
+
+        bool areaCodeValido = Regex.IsMatch(areaCode, @"^\+\d{1,4}$");
+
+        bool phoneValido = Regex.IsMatch(phone, @"^\d{7,10}$");
+
+        if (!areaCodeValido || !phoneValido)
         {
             lblError.Text = "El número telefónico o la lada no es válido.";
             return false;
         }
+
         return true;
     }
+
 
     private bool PasswordSegura()
     {
