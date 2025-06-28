@@ -30,8 +30,9 @@ namespace WebPage.Pages.Product.Buyer {
             product = new ProductDetailsDTO ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
+            string requestURL = $"http://apigateway/api/Product/Details?Id={id}";
             ApiResponse<ProductDetailsDTO>? response =
-                await httpClient.GetFromJsonAsync<ApiResponse<ProductDetailsDTO>> ($"{_services.BuyerGetProductDetailsUrl}?Id={id}");
+                await httpClient.GetFromJsonAsync<ApiResponse<ProductDetailsDTO>> (requestURL);
 
             if (response?.body != null) {
                 product = response.body;

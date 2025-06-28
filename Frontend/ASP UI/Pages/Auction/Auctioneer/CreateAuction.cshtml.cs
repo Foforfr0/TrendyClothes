@@ -39,8 +39,9 @@ namespace WebPage.Pages.Auction.Auctioneer {
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
             if (!string.IsNullOrEmpty (cookies))
                 httpClient.DefaultRequestHeaders.Add ("Cookie", cookies);
+            string requestURL = $"http://apigateway/api/MyProducts/Search?id={this.idProduct}";
             ApiResponse<MyProductDetailsDTO>? response =
-                await httpClient.GetFromJsonAsync<ApiResponse<MyProductDetailsDTO>> ($"{_services.SellerGetProductDetailsUrl}?id={this.idProduct}");
+                await httpClient.GetFromJsonAsync<ApiResponse<MyProductDetailsDTO>> (requestURL);
 
             if (response?.body != null) {
                 product = response.body;
