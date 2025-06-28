@@ -1,7 +1,7 @@
 ﻿namespace WebPage.Config {
     public static class gRPC {
         public static void ConfiguregRPC(this IServiceCollection services, WebApplicationBuilder builder) {
-            string gRPCServer = builder.Configuration["BackendSettings:gRPCServer"] ?? "https://localhost:5002";
+            string gRPCServer = builder.Configuration["Services:REST:gRPC:BaseUrl"] ?? "http://grpcimageservice";
 
             builder.Services.AddGrpcClient<GetImageProduct.GetImageService.GetImageServiceClient> (options => {
                 options.Address = new Uri (gRPCServer); // Dirección del servidor gRPC

@@ -30,7 +30,7 @@ namespace WebPage.Pages.Product.Seller {
         public async Task OnGetAsync () {
             this.username = HttpContext?.User.Identity?.Name ?? string.Empty;
 
-            string requestURL = $"http://productsellerservice/api/MyProducts/Search?username={username}";
+            string requestURL = $"http://apigateway/api/MyProducts/Search?username={username}";
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
 
             HttpClient httpClient = _httpClientFactory.CreateClient ();

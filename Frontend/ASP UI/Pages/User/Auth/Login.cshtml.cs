@@ -48,7 +48,7 @@ namespace WebPage.Pages.User.Auth {
                     return Page ();
                 }
                 HttpClient httpClient = _httpClientFactory.CreateClient ();
-                string requestURL = "http://authservice/api/User/Login/ValidateTwoFactorCode";
+                string requestURL = "http://apigateway/api/User/Login/ValidateTwoFactorCode";
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync (requestURL, new {
                     username, twoFactorCode
                 });
