@@ -16,7 +16,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     if (!username || !password) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Login`, {
+        const response = await fetch(window.config.PostLoginUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,10 +50,28 @@ function EnabledSecondPartLogin() {
     document.getElementById('InputPassword').value = '**********';
     const firstFieldsetLogin = document.getElementById('firstFieldsetLogin');
     firstFieldsetLogin.disabled = !firstFieldsetLogin.disabled;
-    const emailForm = document.getElementById('emailForm');
-    emailForm.disabled = !emailForm.disabled;
-    const twoFactorForm = document.getElementById('twoFactorForm');
-    twoFactorForm.disabled = !twoFactorForm.disabled;
+
+    const inputEmail = document.getElementById('InputEmail');
+    inputEmail.disabled = !inputEmail.disabled;
+    const btnEmail = document.getElementById('btnEmail');
+    btnEmail.disabled = !btnEmail.disabled;
+    const btnForgotEmail = document.getElementById('btnForgotEmail');
+    btnForgotEmail.disabled = !btnForgotEmail.disabled;
+}
+
+function EnabledThirdPartLogin() {
+    const inputEmail = document.getElementById('InputEmail');
+    inputEmail.disabled = !inputEmail.disabled;
+    inputEmail.value = '*****' + inputEmail.value.slice(inputEmail.value.indexOf('@'));
+    const btnEmail = document.getElementById('btnEmail');
+    btnEmail.disabled = !btnEmail.disabled;
+    const btnForgotEmail = document.getElementById('btnForgotEmail');
+    btnForgotEmail.disabled = !btnForgotEmail.disabled;
+
+    const inputTwoFactorCode = document.getElementById('InputTwoFactorCode');
+    inputTwoFactorCode.disabled = !inputTwoFactorCode.disabled;
+    const btnValidate2fc = document.getElementById('btnValidate2fc');
+    btnValidate2fc.disabled = !btnValidate2fc.disabled;
 }
 
 // Validate Email from User on server
@@ -68,7 +86,7 @@ document.getElementById('emailForm').addEventListener('submit', async function (
     if (!username || !email) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Login/ValidateEmailUser?username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`, {
+        const response = await fetch(`${window.config.ValidateEmailUrl}?username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -83,7 +101,7 @@ document.getElementById('emailForm').addEventListener('submit', async function (
 
         switch (response.status) {
             case 200:
-                utils.showToast(data.message, 'success');
+                EnabledThirdPartLogin();
                 await CreateTwoFactorCode(username, email);
                 break;
             case 400:
@@ -105,8 +123,8 @@ async function CreateTwoFactorCode(username, email) {
     if (!username || !email) return;
 
     try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Login/CreateTwoFactorCode`, {
-            method: 'POST',
+        const response = await fetch(window.config.Post2FAUrl, {
+            method: 'PATCH',
             headers: {
                 'Content-type': 'application/json'
             },
@@ -139,7 +157,7 @@ async function DeleteTwoFactorCode(username) {
     if (!username) return;
 
     try {
-        await fetch(`${window.BACKEND_URL}/api/User/Login/DeleteTwoFactorCode?username=${encodeURI(username)}`, {
+        await fetch(`${window.config.Delete2FAUrl}?username=${encodeURI(username)}`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json'
@@ -149,80 +167,3 @@ async function DeleteTwoFactorCode(username) {
         console.error('Error al eliminar el código doble factor: ', error);
     }
 }
-
-// Validate TwoFactorCode on server
-/*
-document.getElementById('twoFactorForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const username = utils.getValueDOMElementNullOrEmpty('InputUsername');
-    const twoFactorCode = utils.getValueDOMElementNullOrEmpty('InputTwoFactorCode');
-
-    if (!username || !twoFactorCode) return;
-
-    try {
-        const response = await fetch("/User/Auth/Login?handler=FinalValidation", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include", // ⬅️ importante para que el navegador acepte la cookie
-            body: JSON.stringify({ username, twoFactorCode})
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-            utils.showToast(data.message, 'success');
-            await DeleteTwoFactorCode(username)
-            window.location.replace('/User/Profile/ViewMyProfile');
-        } else {
-            utils.showToast(data.message, 'warning');
-        }
-    } catch (error) {
-        utils.showToast('Error al conectarse con el servidor.', 'danger');
-        console.error('Error al validar el código doble factor: ', error);
-    }
-});
-*/
-
-
-/*document.getElementById('twoFactorForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const username = utils.getValueDOMElementNullOrEmpty('InputUsername');
-    const twoFactorCode = utils.getValueDOMElementNullOrEmpty('InputTwoFactorCode');
-
-    if (!username || !twoFactorCode) return;
-
-    try {
-        const response = await fetch(`${window.BACKEND_URL}/api/User/Login/ValidateTwoFactorCode`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({ username, twoFactorCode })
-        });
-
-        const data = await response.json();
-
-        switch (response.status) {
-            case 200:
-                utils.showToast(data.message, 'success');
-                await DeleteTwoFactorCode(username)
-                window.location.replace('/User/Profile/ViewMyProfile');
-                break;
-            case 400:
-            case 401:
-            case 404:
-                utils.showToast(data.message, 'warning');
-                break;
-            case 500:
-                utils.showToast('Error interno del servidor.', 'danger');
-                break;
-        }
-    } catch (error) {
-        utils.showToast('Error al conectarse con el servidor.', 'danger');
-        console.error('Error al validar el código doble factor: ', error);
-    }
-});
-*/

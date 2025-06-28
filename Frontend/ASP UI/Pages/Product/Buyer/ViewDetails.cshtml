@@ -1,0 +1,84 @@
+﻿@page  
+@model WebPage.Pages.Product.Buyer.ViewDetailsModel  
+@{  
+    ViewData["Title"] = "Detalles de producto.";  
+}  
+
+<div class="container h-100">  
+    <div class="row h-100">  
+        <div class="col-4 d-block align-items-center justify-content-center">  
+            @if (Model.product?.imageBase64 == null || Model.product.imageBase64.Length <= 0) {  
+                <img class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" src="https://placehold.co/600x400/FFFFFF/000000/png?text=Product" />  
+            } else {  
+                <img class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" src="data:@Model.product.mimeImage;base64,@Model.product.imageBase64" />  
+            }  
+        </div>  
+        <div class="col-8 text-start d-block align-content-top border-start">  
+            <h2 class="align-content-start truncate-two-lines text-start">@Model.product.name</h2>  
+            <div class="row mt-2 ms-2">  
+                <div class="col">  
+                    @if (Model.product.discount > 0)  
+                    {  
+                        <div class="row">  
+                            <div class="col-auto p-0 fw-bold">Precio:&nbsp;</div>  
+                            <div class="col-auto p-0 text-decoration-line-through">$@Model.product.price</div>&nbsp;-&nbsp;  
+                            <div class="col p-0">  
+                                $@(((double)(Model.product.price - (Model.product.price * Model.product.discount / 100))).ToString("F2"))   
+                            </div>  
+                        </div>  
+                        <div class="row">  
+                            <div class="col-auto p-0 fw-bold">Descuento:&nbsp;</div>  
+                            <div class="col p-0 text-success">@Model.product.discount % off</div>  
+                        </div>  
+                    }  
+                    else  
+                    {  
+                        <div class="row w-auto">  
+                            <div class="col-auto p-0 fw-bold">Precio:&nbsp;</div>  
+                            <div class="col p-0">$@Model.product.price</div>  
+                        </div>  
+                    }  
+                    <div class="row">  
+                        <div class="col-auto p-0 fw-bold">Stock restante:&nbsp;</div>  
+                        <div class="col p-0">@Model.product.stockAvailable</div>  
+                    </div>  
+                    <div class="row">  
+                        <div class="col-auto p-0 fw-bold">Vendidos:&nbsp;</div>  
+                        <div class="col p-0">@Model.product.numberSold</div>  
+                    </div>  
+                </div>  
+                <div class="col text-end">  
+                    <div class="row text-end">  
+                        <p class="col my-auto text-end">  
+                            @Model.product.averageStars / 5.0  
+                            <i class="bi bi-star-half"></i>  
+                        </p>  
+                    </div>  
+                    <div class="col container d-flex justify-content-end align-items-center" style="height: 4em;">  
+                        <input class="me-1 p-1" style="width: 2.5em; height: 2em;" type="number" />  
+                        <button type="button" class="btn btn-secondary p-1 fs-6">  
+                            <i class="bi bi-cart-plus"></i>  
+                        </button>  
+                    </div>  
+                </div>  
+            </div>  
+            <div class="container row align-content-center justify-content-center align-items-center">  
+                <div class="col-auto fw-bold">Etiquetas:&nbsp;</div>  
+                <a class="col-auto btn btn-primary border-primary p-1 mx-auto" asp-page="/Product/Buyer/ConsultProducts" asp-route-query="@Model.product.category">@Model.product.category</a>  
+                <a class="col-auto btn btn-secondary border-secondary p-1 mx-auto" asp-page="/Product/Buyer/ConsultProducts" asp-route-query="@Model.product.type">@Model.product.type</a>  
+                @if (Model.product.idStatus == 1)  
+                {  
+                    <a class="col-auto btn btn-success border-success p-1 mx-auto" asp-page="/Product/Buyer/ConsultProducts" asp-route-query="@Model.product.status">@Model.product.status</a>  
+                }  
+                else if (Model.product.idStatus == 2)  
+                {  
+                    <a class="col-auto btn btn-danger border-danger p-1 mx-auto" asp-page="/Product/Buyer/ConsultProducts" asp-route-query="@Model.product.status">@Model.product.status</a>      
+                }  
+            </div>  
+            <div class="container text-start mt-2">  
+                <h3>Descripción:</h3>  
+                <div>@Model.product.description</div>  
+            </div>  
+        </div>  
+    </div>  
+</div>

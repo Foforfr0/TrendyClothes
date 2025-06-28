@@ -1,0 +1,43 @@
+﻿<Page x:Class="WpfApp.Pages.Home.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp.Pages.Home"
+      xmlns:uc="clr-namespace:WpfApp.Components"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="1000"
+      Title="HomePage">
+
+    <Border Background="{StaticResource BackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            
+            <!--Carousel-->
+            <Grid Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <uc:Carousel/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{DynamicResource Glb_Home}"
+                               Style="{DynamicResource SubtitleLabelStyle}"
+                               x:Name="PageHeader"/>
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Page>

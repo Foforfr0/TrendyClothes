@@ -1,19 +1,27 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.DataProtection;
 using System.Globalization;
+using System.Text.Json;
+using WebPage.Connections;
 
 DotNetEnv.Env.Load ();
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder (args);
-string backendUrl = builder.Configuration["BackendSettings:BackendUrl"] ?? "https://localhost:5001";
-string gRPCServer = builder.Configuration["BackendSettings:gRPCServer"] ?? "https://localhost:5002";;
+string gRPCServer = builder.Configuration["BackendSettings:gRPCServer"] ?? "https://localhost:5002";
 
 CultureInfo currentCulture = new CultureInfo ("es-MX");
 CultureInfo.DefaultThreadCurrentCulture = currentCulture;
 CultureInfo.DefaultThreadCurrentUICulture = currentCulture;
 
 // Add services to the container.
+builder.WebHost.UseUrls ("http://+:80");
+builder.Services.Configure<ServicesConfig> (
+    builder.Configuration.GetSection ("Services"));
+builder.Services.AddSingleton<ServicesBuilder> ();
 builder.Services.AddHttpClient ();
-builder.Services.AddRazorPages ();
+builder.Services.AddRazorPages ()
+    .AddJsonOptions (options => {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddSingleton (new HttpClient ());
 builder.Services.AddAuthentication (options => {
     options.DefaultScheme = "signInScheme";
@@ -43,19 +51,33 @@ builder.Services.AddAuthentication (options => {
     });
 builder.Services.AddAuthorization ();
 builder.Services.AddControllers (); // Para API
-builder.Services.AddGrpcClient<ImageProduct.ImageProductService.ImageProductServiceClient> (options => {
-    options.Address = new Uri (gRPCServer); // Dirección de tu servidor gRPC
-}).ConfigurePrimaryHttpMessageHandler (() => {
-    return new HttpClientHandler {
-        // Esto es para ignorar errores de certificado solo si usas HTTPS con un cert autofirmado (desarrollo).
-        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-    };
-});
+builder.Services.AddGrpcClient<GetImageProduct.GetImageService.GetImageServiceClient> (options => {
+    options.Address = new Uri (gRPCServer); // Dirección del servidor gRPC
+})
+    .ConfigurePrimaryHttpMessageHandler (() => {
+        return new HttpClientHandler {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+    });
+
+builder.Services.AddGrpcClient<SaveImageProduct.SaveImageService.SaveImageServiceClient> (options => {
+    options.Address = new Uri (gRPCServer); // Mismo servidor o diferente, si aplica
+})
+    .ConfigurePrimaryHttpMessageHandler (() => {
+        return new HttpClientHandler {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+    });
+
 builder.Logging.ClearProviders ();
 builder.Logging.AddConsole (); // Esto es lo que imprime en consola
-builder.Logging.SetMinimumLevel (LogLevel.Debug);
+builder.Logging.SetMinimumLevel (LogLevel.Trace);
 
-
+if (!builder.Environment.IsDevelopment ()) {
+    builder.Services.AddDataProtection ()
+    .PersistKeysToFileSystem (new DirectoryInfo ("/var/dpkeys"))
+    .SetApplicationName ("TrendyClothes");
+}
 
 WebApplication? app = builder.Build ();
 
@@ -64,14 +86,15 @@ if (!app.Environment.IsDevelopment ()) {
     app.UseExceptionHandler ("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts ();
+} else {
+    app.UseHttpsRedirection ();
 }
 app.Use (middleware: async (HttpContext context, Func<Task> next) => {
-    context.Items["BACKEND_URL"] = backendUrl;
+    context.Items["BACKEND_URL"] = "http://localhost:5001";
     await next ();
 });
 
 // Middleware in correct orden: Routing -> CORS -> Auth -> Controllers.
-app.UseHttpsRedirection ();
 app.UseStaticFiles ();
 app.UseRouting ();
 

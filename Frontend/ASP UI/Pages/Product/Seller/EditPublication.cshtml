@@ -1,0 +1,124 @@
+﻿@page
+@inject WebPage.Connections.ServicesBuilder UrlBuilder
+@model WebPage.Pages.Product.Seller.EditPublicationModel
+@{
+    ViewData["Title"] = "Modificar publicación";
+}
+
+<div class="container h-100">
+    <form method="POST" id="modificationForm">
+        @Html.AntiForgeryToken()
+        <div class="row h-100">
+            <div class="row text-center align-content-center">
+                <h1 class="col text-start">@ViewData["Title"]</h1>
+                <div class="col-auto text-end align-content-center m-auto">
+                    <div class="row align-content-center">
+                        <button type="submit" id="submitForm" class="col-auto btn btn-primary bg-success border-0 p-2 m-1 text-white">
+                            <i class="bi bi-bookmark-check fs-5 fw-bold"></i>
+                        </button>
+                        <button type="button" class="col-auto btn btn-secondary bg-danger border-0 p-2 m-1 text-white" onclick="confirmCancel()">
+                            <i class="bi bi-bookmark-x fs-5 fw-bold"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 d-block align-items-center justify-content-center">
+                <div class="w-100">
+                    @if (Model.product?.imageBase64 == null || Model.product.imageBase64.Length <= 0)
+                    {
+                        <img id="previewImage" class="object-fit-contain w-100" alt="Producto" src="https://placehold.co/600x400/FFFFFF/000000/png?text=Product" />
+                    }
+                    else
+                    {
+                        <img id="previewImage" class="object-fit-contain w-100" style="min-width: 100%;" alt="Producto" src="data:@Model.product.mimeImage;base64,@Model.product.imageBase64" />
+                    }
+                </div>
+                <span class="text-danger"></span>
+                <div class="container text-center mt-3">
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+                    <button type="button" id="selectImageBtn" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Seleccionar Imagen
+                    </button>
+                    <input type="hidden" asp-for="@Model.product.imageBase64" id="imageBase64Input" />
+                    <input type="hidden" asp-for="@Model.product.mimeImage" id="mimeInput" />
+                </div>
+            </div>
+            <div class="col-8 text-start d-block align-content-top border-start">
+                <div class="row">
+                    <div class="align-content-start text-start" style="min-width: 20em; max-width:100%;">
+                        <label asp-for="product.name" class="form-label mb-0 fw-bold">Nombre:</label>
+                        <input asp-for="product.name" id="InputName" class="form-control m-0" autocomplete="none" />
+                        <span asp-validation-for="product.name" class="text-danger m-0"></span>
+                    </div>
+                </div>
+                <div class="row mt-2 ms-2">
+                    <div class="col">
+                        <div class="row">
+                            <label asp-for="product.price" class="form-label mb-0 fw-bold col align-content-center text-start">Precio:</label>
+                            <input asp-for="product.price" id="InputPrice" class="form-control my-1 mx-2 col p-1" style="width: 2em;" type="number" autocomplete="none" />
+                            <span asp-validation-for="product.price" class="text-danger m-0"></span>
+                        </div>
+                        <div class="row">
+                            <label asp-for="product.discount" class="form-label mb-0 fw-bold col align-content-center text-start">Descuento (%):</label>
+                            <input asp-for="product.discount" id="InputDiscount" class="form-control my-1 mx-2 col p-1" style="width: 2em;" type="number" autocomplete="none" />
+                            <span asp-validation-for="product.discount" class="text-danger m-0"></span>
+                        </div>
+                        <div class="row">
+                            <label asp-for="product.stockAvailable" class="form-label mb-0 fw-bold col align-content-center text-start">Stock disponible:</label>
+                            <input asp-for="product.stockAvailable" id="InputStockAvailable" class="form-control my-1 mx-2 col p-1" style="width: 2em;" type="number" autocomplete="none" />
+                            <span asp-validation-for="product.stockAvailable" class="text-danger m-0"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="container row align-content-center justify-content-center align-items-center">
+                    <label class="form-label ms-2 mb-0 fw-bold row align-content-center text-start">Etiquetas:&nbsp;</label>
+                    <div class="row justify-content-evenly">
+                        <div class="col-auto text-center">
+                            <label asp-for="product.categoryId" class="form-label mb-0 fw-bold align-content-center text-center">Categoría:</label>
+                            <select id="InputCategory" asp-for="product.categoryId" class="form-select my-1 mx-2 p-1"
+                                    asp-items="Model.categorySelectList">
+                                <option value="">-- Seleccione --</option>
+                            </select>
+                            <span asp-validation-for="product.categoryId" class="text-danger m-0"></span>
+                        </div>
+                        <div class="col-auto text-center">
+                            <label asp-for="product.typeId" class="form-label mb-0 fw-bold align-content-center text-center">Tipo:</label>
+                            <select id="InputType" asp-for="product.typeId" class="form-select my-1 mx-2 p-1"
+                                    asp-items="Model.typeSelectList">
+                                <option value="">-- Seleccione --</option>
+                            </select>
+                            <span asp-validation-for="product.typeId" class="text-danger m-0"></span>
+                        </div>
+                        <div class="col-auto text-center">
+                            <label asp-for="product.statusId" class="form-label mb-0 fw-bold align-content-center text-center">Estado:</label>
+                            <select id="InputStatus" asp-for="product.statusId" class="form-select my-1 mx-2 p-1"
+                                    asp-items="Model.statusSelectList">
+                                <option value="">-- Seleccione --</option>
+                            </select>
+                            <span asp-validation-for="product.statusId" class="text-danger m-0"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="align-content-start text-start" style="min-width: 20em; max-width:100%;">
+                        <label asp-for="product.description" class="form-label mb-0 fw-bold">Descripción:</label>
+                        <textarea asp-for="product.description" id="InputDescription" class="form-control m-0" rows="4" autocomplete="off"></textarea>
+                        <span asp-validation-for="product.description" class="text-danger m-0"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        window.data = {
+            idProduct: @Model.id
+        };
+        window.config = {
+            PutProductData: '@UrlBuilder.SellerPutProductDetailsUrl'
+        };
+    </script>
+    <script type="module" src="~/js/Product/EditProduct.js"></script>
+}

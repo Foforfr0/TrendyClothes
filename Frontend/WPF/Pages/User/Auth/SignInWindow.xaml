@@ -1,0 +1,100 @@
+﻿<Window x:Class="WpfApp.Pages.User.Auth.SignInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp.Pages.User.Auth"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="SignInWindow" Height="450" Width="800">
+    <Border Background="{StaticResource BackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="{DynamicResource Glb_TrendyClothes}"
+                           Style="{DynamicResource HeaderLabelStyle}"/>
+                <Image Width="100" Source="/Resources/Images/logo-business.jpg"/>
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="{DynamicResource Login_Header}"
+                               Style="{DynamicResource SubtitleLabelStyle}"/>
+                </StackPanel>
+            </Grid>
+            
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left"
+                                VerticalAlignment="Top" Margin="20, 0, 0, 0"
+                                x:Name="Step1Panel">
+                        <TextBox x:Name="TbUsername" Width="300"
+                                 Style="{DynamicResource TextBoxStyle}"
+                                 Tag="{DynamicResource Login_TbUsername}"
+                                 Margin="0, 0, 0, 30"/>
+                        <PasswordBox x:Name="PbPassword" Width="300" 
+                                     Visibility="Visible"
+                                     Style="{DynamicResource PasswordBoxStyle}"
+                                     Tag="{DynamicResource Login_TbPassword}"
+                                     PasswordChanged="PbPassword_PasswordChanged"/>
+                        <CheckBox x:Name="ChbShowPassword" Margin="10, 5, 0, 0"
+                                  Content="{DynamicResource Glb_ShowPassword}"
+                                  Style="{DynamicResource CheckBoxStyle}"
+                                  IsChecked="False" HorizontalAlignment="Left"
+                                  Checked="ChbShowPassword_Checked"
+                                  Unchecked="ChbShowPassword_Unchecked"/>
+                        <TextBox x:Name="TbPassword" Width="300"
+                                 Visibility="Collapsed"
+                                 Style="{DynamicResource ShowPasswordStyle}"
+                                 Tag="{DynamicResource Login_TbPassword}"
+                                 TextChanged="TbPassword_TextChanged"/>
+                        <Button x:Name="BtnSignIn" Margin="30" Width="120"
+                                Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                                Content="{DynamicResource Login_Header}"
+                                Click="BtnSignIn_Click"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left"
+                                VerticalAlignment="Top" Margin="20, 0, 0, 0"
+                                Grid.Row="0" x:Name="Step2Panel">
+                        <TextBox x:Name="TbEmail" Width="300"
+                                 Style="{DynamicResource TextBoxStyle}"
+                                 Tag="{DynamicResource Glb_Email}"
+                                 Margin="0, 0, 0, 15"/>
+                        <Button x:Name="BtnSendCode" Margin="0, 0, 0, 10"
+                                Width="120"
+                                Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                                Content="{DynamicResource Login_SendCode}"
+                                Click="BtnSendCode_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left"
+                                VerticalAlignment="Top" Margin="20, 0, 0, 0"
+                                Grid.Row="1">
+                        <TextBox x:Name="TbVerificationCode" Width="300"
+                                 Style="{DynamicResource TextBoxStyle}"
+                                 Tag="{DynamicResource Login_2FCode}"/>
+                        <Button x:Name="BtnValidateCode" Margin="15" Width="120"
+                                Style="{DynamicResource PrimaryButtonNoIconStyle}"
+                                Content="{DynamicResource Login_ValidateCode}"
+                                Click="BtnValidateCode_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

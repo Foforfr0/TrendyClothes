@@ -12,20 +12,20 @@
             </Grid.Background>
 
             <StackPanel Orientation="Horizontal" Margin="20 10">
-                <TextBlock Text="TrendyClothes" FontSize="23" Margin="0 0 30 0"/>
+                <TextBlock Text="{DynamicResource Glb_TrendyClothes}" FontSize="23" Margin="0 0 30 0"/>
                 <Label VerticalAlignment="Center" Margin="0 0 20 0">
                     <Hyperlink Click="ClickStart">
-                        <Run Text="Inicio" FontSize="19"/>
+                        <Run Text="{DynamicResource Glb_Home}" FontSize="19"/>
                     </Hyperlink>
                 </Label>
                 <Label VerticalAlignment="Center" Margin="0 0 20 0">
                     <Hyperlink Click="ClickShowCategories">
-                        <Run Text="Categorías" FontSize="19"/>
+                        <Run Text="{DynamicResource Glb_Categories}" FontSize="19"/>
                     </Hyperlink>
                 </Label>
                 <Label VerticalAlignment="Center" Margin="0 0 20 0">
                     <Hyperlink Click="ClickShowOffers">
-                        <Run Text="Ofertas" FontSize="19"/>
+                        <Run Text="{DynamicResource Glb_Offers}" FontSize="19"/>
                     </Hyperlink>
                 </Label>
                 <Label VerticalAlignment="Center" Margin="0 0 20 0">
@@ -35,7 +35,8 @@
                 </Label>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                     <TextBox x:Name="textBox_KeyWord" Width="260" Padding="5" VerticalAlignment="Center"/>
-                    <Button Click="ClickSearchProducts" BorderBrush="Transparent" Margin="0 0"  Height="30" Width="30">
+                    <Button Click="ClickSearchProducts" BorderBrush="Transparent" Margin="0 0"
+                            Height="30" Width="30">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Grid>

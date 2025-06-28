@@ -2,7 +2,7 @@
     if (event.key === 'Enter') {
         const query = event.target.value.trim();
         if (query) {
-            window.location.href = `/Product/ConsultProducts?query=${encodeURIComponent(query)}`;
+            window.location.href = `/Product/Buyer/ConsultProducts?query=${encodeURIComponent(query)}`;
         }
     }
 });

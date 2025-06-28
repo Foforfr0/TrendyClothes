@@ -68,7 +68,7 @@ namespace WpfApp.Pages.User.Auth {
             MessageBox.Show (response.message);
 
             if (_passedFirstPart && _passedSecondPart && _passedThirdPart)
-                NavigationService.Navigate (new Index ());
+                WindowContainer.SetFrame (new Layout ());
         }
     }
 }
