@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp.Pages.Dialogs;
 using WpfApp.Utilities;
 
 namespace WpfApp.Pages.User.Auth
@@ -33,6 +34,7 @@ namespace WpfApp.Pages.User.Auth
         {
             Step1Panel.IsEnabled = currentStep == 1;
             Step2Panel.IsEnabled = currentStep == 2;
+            Step3Panel.IsEnabled = currentStep == 3;
         }
 
         private void NavigateToMainWindow()
@@ -80,6 +82,7 @@ namespace WpfApp.Pages.User.Auth
 
         private void BtnValidateCode_Click(object sender, RoutedEventArgs e)
         {
+            MessageDialog.Show("Login_DialogTSignedIn", "Login_DialogDSignedIn", AlertType.SUCCESS);
             NavigateToMainWindow();
         }
 
@@ -91,6 +94,15 @@ namespace WpfApp.Pages.User.Auth
         private void ChbShowPassword_Unchecked(object sender, RoutedEventArgs e)
         {
             PasswordUtilities.HidePassword(TbPassword, PbPassword);
+        }
+
+        private void BtnSignUp_Click(object sender, RoutedEventArgs e)
+        {
+            var signUpWindow = new SignUpWindow();
+            signUpWindow.Show();
+
+            Application.Current.MainWindow = signUpWindow;
+            this.Close();
         }
     }
 }

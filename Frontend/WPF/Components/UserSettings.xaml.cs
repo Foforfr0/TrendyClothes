@@ -78,6 +78,15 @@ namespace WpfApp.Components
             Application.Current.MainWindow.Close();
         }
 
+        private void NavigateToSignUp()
+        {
+            NavigationManager.Reset();
+            var signUp = new SignUpWindow();
+            signUp.Show();
+
+            Application.Current.MainWindow.Close();
+        }
+
         private void LogOut()
         {
             //TODO not a void
@@ -91,6 +100,16 @@ namespace WpfApp.Components
         private void GoToProfile_Click(object sender, RoutedEventArgs e)
         {
             NavigationManager.Instance.NavigateToPage("Glb_Profile", new UserProfilePage());
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToSignIn();
+        }
+
+        private void SignUp_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToSignUp();
         }
     }
 }

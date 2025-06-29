@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp.Pages.Dialogs;
 using WpfApp.Utilities;
 
 namespace WpfApp.Pages.Auction
@@ -48,7 +49,10 @@ namespace WpfApp.Pages.Auction
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageDialog.ShowConfirm(
+                "Glb_DialogTDiscard",
+                "Glb_DialogDDiscard",
+                onConfirm: () => { NavigationManager.Instance.GoBack(); });
         }
 
         private void BtnStartAcution_Click(object sender, RoutedEventArgs e)

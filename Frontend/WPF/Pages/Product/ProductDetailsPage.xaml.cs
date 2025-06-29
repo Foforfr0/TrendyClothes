@@ -12,14 +12,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp.Utilities;
 
 namespace WpfApp.Pages.Product
 {
-    /// <summary>
-    /// Lógica de interacción para ProductDetailsPage.xaml
-    /// </summary>
     public partial class ProductDetailsPage : Page
     {
+        private Button _selectedSizeButton;
         public ProductDetailsPage()
         {
             InitializeComponent();
@@ -49,6 +48,24 @@ namespace WpfApp.Pages.Product
         private void Increase_Click(object sender, RoutedEventArgs e)
         {
             UpdateQuantityDisplay();
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationManager.Instance.GoBack();
+        }
+
+        private void BtnSize_Click(object sender, RoutedEventArgs e)
+        {
+            var clickedButton = sender as Button;
+            if (clickedButton == null) return;
+
+            if (_selectedSizeButton != null)
+                _selectedSizeButton.Style = (Style)FindResource("SecondaryButtonNoIconStyle");
+
+            clickedButton.Style = (Style)FindResource("PrimaryButtonNoIconStyle");
+
+            _selectedSizeButton = clickedButton;
         }
     }
 }

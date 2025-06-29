@@ -12,28 +12,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WpfApp.Components;
+using WpfApp.Utilities;
 
 namespace WpfApp.Pages.Home
 {
     /// <summary>
-    /// Lógica de interacción para HomePage.xaml
+    /// Lógica de interacción para AuctionsPage.xaml
     /// </summary>
-    public partial class HomePage : Page
+    public partial class AuctionsPage : Page
     {
-        public HomePage()
+        public AuctionsPage()
         {
             InitializeComponent();
-            LoadMockItemCards();
         }
 
-        private void LoadMockItemCards()
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < 10; i++)
-            {
-                var card = new ItemCard2(); // Or pass a view model or data as needed
-                ItemFeed.Items.Add(card);
-            }
+            NavigationManager.Instance.GoBack();
         }
     }
 }

@@ -10,10 +10,18 @@
 
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Style="{DynamicResource BackButtonStyle}"
+                    Click="BtnBack_Click"/>
+            <TextBlock Text="{DynamicResource Product_Header}"
+                       x:Name="PageHeader"
+                       Visibility="Hidden"/>
+        </StackPanel>
 
         <Border Grid.Row="1">
             <Grid>
@@ -66,16 +74,16 @@
                             <StackPanel Orientation="Horizontal">
                                 <Button x:Name="BtnSize1" Content="{DynamicResource Glb_Size1}"
                                         Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                        Margin="5, 5"/>
+                                        Margin="5, 5" Click="BtnSize_Click"/>
                                 <Button x:Name="BtnSize2" Content="{DynamicResource Glb_Size2}"
                                         Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                        Margin="10, 5"/>
+                                        Margin="10, 5" Click="BtnSize_Click"/>
                                 <Button x:Name="BtnSize3" Content="{DynamicResource Glb_Size3}"
                                         Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                        Margin="10, 5"/>
+                                        Margin="10, 5" Click="BtnSize_Click"/>
                                 <Button x:Name="BtnSize4" Content="{DynamicResource Glb_Size4}"
                                         Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                        Margin="10, 5"/>
+                                        Margin="10, 5" Click="BtnSize_Click"/>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Row="2" Orientation="Vertical"

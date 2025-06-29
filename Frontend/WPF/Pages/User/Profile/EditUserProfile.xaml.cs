@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp.Pages.Dialogs;
 using WpfApp.Utilities;
 
 namespace WpfApp.Pages.User.Profile
@@ -53,12 +54,16 @@ namespace WpfApp.Pages.User.Profile
         }
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageDialog.ShowConfirm(
+                "Glb_DialogTDiscard",
+                "Glb_DialogDDiscard",
+                onConfirm: () => { NavigationManager.Instance.GoBack(); });
         }
 
         private void BtnEditProfile_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageDialog.Show("EditProfile_Success", "EditProfile_SuccessD", AlertType.SUCCESS,
+                () => NavigationManager.Instance.GoBack());
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)

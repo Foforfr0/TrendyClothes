@@ -38,9 +38,9 @@ namespace WpfApp.Pages {
             //TODO: Load Categories UserControl
         }
 
-        private void BtnOffers_Click(object sender, RoutedEventArgs e)
+        private void BtnAuctions_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Load OffersPage
+            NavigateToPage("Glb_Auctions", new AuctionsPage());
         }
 
         private void BtnTrends_Click(object sender, RoutedEventArgs e)

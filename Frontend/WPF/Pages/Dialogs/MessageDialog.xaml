@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp.Pages.Dialogs"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="320">
+             d:DesignHeight="300" d:DesignWidth="320"
+             MinHeight="300" MinWidth="320">
     
     <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="16">
         <Grid>
