@@ -19,14 +19,16 @@
                         <ColumnDefinition Width="0.5*"/>
                         <ColumnDefinition Width="8*"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <Button x:Name="BtnBack" Content="{DynamicResource Glb_Back}"
-                            Style="{DynamicResource BackButtonStyle}" Grid.Column="0"/>
-                    
+                            Style="{DynamicResource BackButtonStyle}" Grid.Column="0"
+                            Click="BtnBack_Click"/>
+
                     <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center"
                                 HorizontalAlignment="Left" Margin="15, 0">
                         <TextBlock Text="{DynamicResource RegUser_Header}" 
-                                   Style="{DynamicResource HeaderLabelStyle}"/>
+                                   Style="{DynamicResource HeaderLabelStyle}"
+                                   x:Name="PageHeader"/>
                         <TextBlock Text="{DynamicResource RegUser_Desc}"
                                    Style="{DynamicResource DescriptionLabelStyle}"/>
                     </StackPanel>
@@ -149,8 +151,8 @@
                                           Content="{DynamicResource Glb_ShowPassword}"
                                           Style="{DynamicResource CheckBoxStyle}"
                                           IsChecked="False" HorizontalAlignment="Left"
-                                          Checked="ChbShowPassword_Checked"
-                                          Unchecked="ChbShowPassword_Unchecked"/>
+                                          Checked="ChbShowConfirmPassword_Checked"
+                                          Unchecked="ChbShowConfirmPassword_Unchecked"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -166,6 +168,20 @@
                     </StackPanel>
                 </Grid>
             </Grid>
+
+            <Border x:Name="DialogOverlay"
+                    Background="#80000000"
+                    Visibility="Collapsed"
+                    Panel.ZIndex="100"
+                    Grid.RowSpan="2">
+            </Border>
+
+            <ContentControl x:Name="DialogHost"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Panel.ZIndex="101"
+                            Grid.RowSpan="2"/>
         </Grid>
     </Border>
+
 </Window>

@@ -12,7 +12,7 @@
         <Grid>
             <Grid x:Name="RootGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="90"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -49,9 +49,9 @@
                                             Style="{DynamicResource TableHeaderButtonStyle}"
                                             Click="BtnCategories_Click"/>
                                     <Button x:Name="BtnOffers" Margin="25, 0, 0, 0"
-                                            Content="{DynamicResource Glb_Offers}"
+                                            Content="{DynamicResource Glb_Auctions}"
                                             Style="{DynamicResource TableHeaderButtonStyle}"
-                                            Click="BtnOffers_Click"/>
+                                            Click="BtnAuctions_Click"/>
                                     <Button x:Name="Btn" Margin="25, 0, 0, 0"
                                             Content="{DynamicResource Glb_Trending}"
                                             Style="{DynamicResource TableHeaderButtonStyle}"

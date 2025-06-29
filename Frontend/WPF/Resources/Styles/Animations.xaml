@@ -11,6 +11,12 @@
         </DoubleAnimationUsingKeyFrames>
     </Storyboard>
 
+    <Storyboard x:Key="PopupFadeInAnimation">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" From="0.4" To="1" Duration="0:0:0.22"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" From="0.4" To="1" Duration="0:0:0.22"/>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.10"/>
+    </Storyboard>
+
     <Storyboard x:Key="ShowBorderAnimation">
         <DoubleAnimation Storyboard.TargetProperty="Opacity"
                      From="0" To="1" Duration="0:0:0.3"/>

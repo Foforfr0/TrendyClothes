@@ -178,7 +178,10 @@ namespace WpfApp.Pages.Product
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            NavigationManager.Instance.GoBack();
+            MessageDialog.ShowConfirm(
+                "Glb_DialogTDiscard",
+                "Glb_DialogDDiscard",
+                onConfirm: () => { NavigationManager.Instance.GoBack(); });
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)

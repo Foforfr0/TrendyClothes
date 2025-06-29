@@ -12,28 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WpfApp.Components;
 
-namespace WpfApp.Pages.Home
+namespace WpfApp.Pages.Admin
 {
     /// <summary>
-    /// Lógica de interacción para HomePage.xaml
+    /// Lógica de interacción para AdminHomePage.xaml
     /// </summary>
-    public partial class HomePage : Page
+    public partial class AdminHomePage : Page
     {
-        public HomePage()
+        public AdminHomePage()
         {
             InitializeComponent();
-            LoadMockItemCards();
-        }
-
-        private void LoadMockItemCards()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                var card = new ItemCard2(); // Or pass a view model or data as needed
-                ItemFeed.Items.Add(card);
-            }
         }
     }
 }

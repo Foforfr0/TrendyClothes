@@ -30,10 +30,17 @@
                 <Button Style="{DynamicResource SettingButtonStyle}"
                         Tag="/Resources/Icons/icon-user.png"
                         Content="{DynamicResource Glb_Profile}"
-                        Click="GoToProfile_Click"/>
+                        Click="GoToProfile_Click"
+                        Visibility="Visible"/>
+                <Button Style="{DynamicResource SettingButtonStyle}"
+                        Content="{DynamicResource Glb_SignUp}"
+                        Click="SignUp_Click" Visibility="Collapsed"/>
                 <Button Style="{DynamicResource SignOutButtonStyle}"
                         Content="{DynamicResource Glb_SignOut}"
-                        Click="SignOut_Click"/>
+                        Click="SignOut_Click" Visibility="Collapsed"/>
+                <Button Style="{DynamicResource SignOutButtonStyle}"
+                        Content="{DynamicResource Login_Header}"
+                        Click="Login_Click" Visibility="Visible"/>
             </StackPanel>
         </Grid>
     </Border>
