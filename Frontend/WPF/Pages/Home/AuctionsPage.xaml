@@ -33,7 +33,9 @@
             </Grid>
             <!--ItemCards-->
             <Grid Grid.Row="1">
-                
+                <StackPanel>
+                    
+                </StackPanel>
             </Grid>
         </Grid>
     </Border>
