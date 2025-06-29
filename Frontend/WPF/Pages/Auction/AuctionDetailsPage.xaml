@@ -15,15 +15,6 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" 
-                    VerticalAlignment="Center">
-            <Button Grid.Row="0" Style="{DynamicResource BackButtonStyle}"
-                    HorizontalAlignment="Left" Click="BtnBack_Click"
-                    VerticalAlignment="Center"/>
-            <TextBlock x:Name="PageHeader" Text="{DynamicResource AuctionDetails_Header}"
-                       Style="{DynamicResource SubtitleLabelStyle}"
-                       VerticalAlignment="Center"/>
-        </StackPanel>
         <Border Grid.Row="1">
             <Grid>
                 <Grid.ColumnDefinitions>
