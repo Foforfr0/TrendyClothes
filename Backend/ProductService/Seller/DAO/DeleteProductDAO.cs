@@ -27,34 +27,6 @@ namespace ProductSellerService.DAO
                 productToDelete.StatusId = 2; // Eliminado
                 await _context.SaveChangesAsync();
 
-                bool SaveFailed = false;
-                do
-                {
-                    try
-                    {
-                        _context.Entry(productToDelete).State = EntityState.Modified;
-                        _context.SaveChanges();
-                    }
-                    catch (DbUpdateConcurrencyException ex)
-                    {
-                        SaveFailed = true;
-                        foreach (var entry in ex.Entries)
-                        {
-                            if (entry.Entity is Product)
-                            {
-                                var proposedValues = entry.CurrentValues;
-                                var databaseValues = entry.GetDatabaseValues();
-
-                                if (databaseValues != null)
-                                {
-                                    entry.OriginalValues.SetValues(databaseValues);
-                                    entry.CurrentValues.SetValues(proposedValues);
-                                }
-                            }
-                        }
-                    }
-                } while (SaveFailed);
-
                 return MessageResponse<bool>.Success("Producto eliminado correctamente (eliminación lógica).", true);
             }
             catch (Exception ex)

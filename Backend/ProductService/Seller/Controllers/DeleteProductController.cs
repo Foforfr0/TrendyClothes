@@ -17,7 +17,7 @@ namespace ProductSellerService.Controllers
             _deleteProductService = deleteProductService;
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpPatch("Delete/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try
