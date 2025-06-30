@@ -85,7 +85,7 @@ CREATE TABLE Products (
     Name VARCHAR(100) NOT NULL,
     Price DECIMAL(12,2) NOT NULL,
     Discount DECIMAL(12,2),
-    NumberSold INT NOT NULL,
+    NumberSold INT,
     AverageStars DECIMAL(2,1),
     Description VARCHAR(MAX) NOT NULL,
     StockAvailable INT NOT NULL,
