@@ -8,7 +8,7 @@
              d:DesignHeight="120" d:DesignWidth="220">
     <Border Background="{StaticResource BackgroundBrush}" CornerRadius="12" 
             MouseLeftButtonDown="Border_MouseLeftButtonDown"
-            Cursor="Hand">
+            Cursor="Hand" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1.5">
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
