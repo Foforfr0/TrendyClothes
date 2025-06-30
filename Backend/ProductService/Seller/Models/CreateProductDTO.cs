@@ -59,5 +59,12 @@ namespace ProductSellerService.Models
         {
             get; set;
         }
+
+        [Required(ErrorMessage = "El ID del vendedor es requerido.")]
+        [Range(1, int.MaxValue, ErrorMessage = "El ID del vendedor debe ser un número positivo.")]
+        public required int SellerId
+        {
+            get; set;
+        }
     }
 }

@@ -12,12 +12,13 @@ namespace ProductSellerService.Controllers
     public class CreateProductController : Controller
     {
         private readonly ICreateProductService _createProductService;
-
-        public CreateProductController(ICreateProductService createProductService)
+        private readonly ILogger<CreateProductController> _logger;
+        public CreateProductController(ICreateProductService createProductService, ILogger<CreateProductController> logger)
         {
             _createProductService = createProductService;
+            _logger = logger;
         }
-
+        
         [HttpPost("Create")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductDTO request)
         {
@@ -25,6 +26,7 @@ namespace ProductSellerService.Controllers
             {
                 if (!ModelState.IsValid)
                 {
+                    _logger.LogWarning("Invalid product data: {Errors}", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
                     return BadRequest("Datos del producto inválidos.");
                 }
 
@@ -40,6 +42,7 @@ namespace ProductSellerService.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogWarning("Invalid product data: {Errors}", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
                 return HttpResponses.InternalServerError(ex.ToString());
             }
         }
