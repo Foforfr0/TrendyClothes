@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp.Pages.Dialogs;
 using WpfApp.Utilities;
 
 namespace WpfApp.Pages.Product
@@ -32,7 +33,7 @@ namespace WpfApp.Pages.Product
 
         private void BtnAddToCart_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageDialog.Show("Glb_AddedItemT", "Glb_AddedItemD", AlertType.SUCCESS);
         }
 
         private void BtnBuyNow_Click(object sender, RoutedEventArgs e)
