@@ -19,7 +19,7 @@ namespace ProductSellerService.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateProduct([FromBody] EditProductDTO request)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDTO request)
         {
             try
             {

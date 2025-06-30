@@ -13,7 +13,7 @@ namespace ProductSellerService.Services.Implements
             _createProductDAO = createProductDAO;
         }
 
-        public async Task<MessageResponse<bool>> PostProductAsync(EditProductDTO createProductDTO)
+        public async Task<MessageResponse<bool>> PostProductAsync(CreateProductDTO createProductDTO)
         {
             MessageResponse<bool> response = await _createProductDAO.PostProductAsync(createProductDTO);
 

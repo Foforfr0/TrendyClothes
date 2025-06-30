@@ -13,7 +13,7 @@ namespace ProductSellerService.DAO
             _context = context;
         }
 
-        public async Task<MessageResponse<bool>> PostProductAsync(EditProductDTO createProductDTO)
+        public async Task<MessageResponse<bool>> PostProductAsync(CreateProductDTO createProductDTO)
         {
             try
             {
