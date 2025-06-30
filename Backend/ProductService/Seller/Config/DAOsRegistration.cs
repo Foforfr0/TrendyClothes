@@ -5,6 +5,8 @@ namespace ProductSellerService.Config {
         public static void AddAplicationDAOs (this IServiceCollection services) {
             services.AddScoped<ConsultProductDAO> ();
             services.AddScoped<EditProductDAO> ();
+            services.AddScoped<CreateProductDAO> ();
+            services.AddScoped<DeleteProductDAO> ();
         }
     }
 }
