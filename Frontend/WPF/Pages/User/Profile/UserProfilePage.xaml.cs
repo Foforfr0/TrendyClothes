@@ -12,21 +12,46 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp.Components;
 using WpfApp.Pages.Auction;
+using WpfApp.Pages.Dialogs;
 using WpfApp.Pages.Product;
 using WpfApp.Utilities;
 
 namespace WpfApp.Pages.User.Profile
 {
-    /// <summary>
-    /// Lógica de interacción para UserProfilePage.xaml
-    /// </summary>
     public partial class UserProfilePage : Page
     {
         public UserProfilePage()
         {
             InitializeComponent();
+            LoadMockItemCards();
         }
+
+        //TODO: Load user products 
+        private void LoadMockItemCards()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                var card = new ItemCard2()
+                {
+                    isSelectable = true
+                };
+                card.CardSelected += Card_Selected;
+                ItemsFeed.Items.Add(card);
+            }
+        }
+
+        private void Card_Selected(object sender, EventArgs e)
+        {
+            var selectedCard = sender as ItemCard2;
+            if (selectedCard != null)
+            {
+                BtnDeletePost.Visibility = Visibility.Visible;
+                BtnEditPost.Visibility = Visibility.Visible;
+            }
+        }
+
 
         private void BtnEditProfile_Click(object sender, RoutedEventArgs e)
         {
@@ -50,12 +75,16 @@ namespace WpfApp.Pages.User.Profile
 
         private void BtnEditPost_Click(object sender, RoutedEventArgs e)
         {
-            //TODO Load post details, then redirect to EditProductPage()
+            //TODO Load post details, then redirect to EditProductPage(itemToEdit) 
+            NavigationManager.Instance.NavigateToPage("EditItem_Header", new RegisterProductPage());
         }
 
         private void BtnDeletePost_Click(object sender, RoutedEventArgs e)
         {
-
+            //TODO: call method to delete and reload page
+            MessageDialog.ShowConfirm(
+                "EditItem_DialogTDelete", "EditItem_DialogDDelete",
+                onConfirm: () => { NavigationManager.Instance.NavigateToPage("Items_Header", new UserProfilePage()); });
         }
     }
 }

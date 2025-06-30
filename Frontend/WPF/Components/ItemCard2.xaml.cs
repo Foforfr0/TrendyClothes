@@ -20,6 +20,8 @@ namespace WpfApp.Components
 {
     public partial class ItemCard2 : UserControl
     {
+        public bool isSelectable { get; set; } = false;
+        public event EventHandler CardSelected;
         public ItemCard2()
         {
             InitializeComponent();
@@ -27,7 +29,14 @@ namespace WpfApp.Components
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            NavigationManager.Instance.NavigateToPage("Product_Header", new ProductDetailsPage());
+            if (isSelectable)
+            {
+                CardSelected?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                NavigationManager.Instance.NavigateToPage("Product_Header", new ProductDetailsPage());
+            }
         }
     }
 }
