@@ -1,6 +1,7 @@
 namespace ClienteMAUI.Views;
 
 using ClienteMAUI.Connections;
+using ClienteMAUI.Models.DTO.Pruducts;
 using ClienteMAUI.Models.ViewModel;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -16,6 +17,7 @@ public partial class MainMenuPage : ContentPage
 		InitializeComponent();
         _httpClient = new HttpClient();
         _ = CargarCategoriasAsync();
+        _ = CargarProductosAsync();
     }
     
 
@@ -44,15 +46,12 @@ public partial class MainMenuPage : ContentPage
             {
                 var json = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine("JSON COMPLETO RECIBIDO:");
-                Console.WriteLine(json);
-
+            
                 var categoriaResponse = JsonSerializer.Deserialize<CategoriaResponse>(json);
 
                 if (categoriaResponse?.Body != null)
                 {
-                    Console.WriteLine($"Se recibieron {categoriaResponse?.Body?.Count} categorías");
-
+                
                     var categorias = categoriaResponse.Body;
 
                     CategoryButtonsLayout.Children.Clear();
@@ -73,6 +72,44 @@ public partial class MainMenuPage : ContentPage
             await DisplayAlert("Error", $"Error al cargar categorías:\n{ex.GetType().Name}\n{ex.Message}", "OK");
         }
     }
+
+    private async Task CargarProductosAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync(ProductEndpoints.GetProducts);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                await DisplayAlert("Error", "No se pudo obtener la lista de productos", "OK");
+                return;
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var productosResponse = JsonSerializer.Deserialize<ProductoListResponse>(json);
+
+            if (productosResponse?.Body == null)
+            {
+                await DisplayAlert("Error", "Respuesta inválida del servidor", "OK");
+                return;
+            }
+
+            var productos = productosResponse.Body.Select(p => new ProductoViewModel
+            {
+                Nombre = p.Name,
+                Precio = p.Price,
+                CantidadVendidos = p.NumberSold,
+                ImageSource = null //imagen vendrá después por gRPC
+            }).ToList();
+
+            ProductsCollection.ItemsSource = productos;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Excepción", ex.Message, "OK");
+        }
+    }
+
 
     private Button CrearBotonCategoria(string texto, int categoriaId)
     {

@@ -31,16 +31,10 @@
                         <Border Stroke="LightGray" StrokeThickness="1" Padding="10" Margin="5" StrokeShape="RoundRectangle 10">
                             <VerticalStackLayout>
                                 <Image Source="{Binding ImageSource}" HeightRequest="100" Aspect="AspectFill"/>
-                                <Label Text="{Binding Name}" FontAttributes="Bold"/>
-                                <Label Text="{Binding Category}" FontSize="12"/>
-                                <Label Text="{Binding Price, StringFormat='${0:F2}'}"/>
-                                <Label Text="{Binding QuantityAvailable, StringFormat='Disponible: {0}'}" FontSize="12"/>
 
-                                <!-- Botones visibles solo si es del usuario -->
-                                <HorizontalStackLayout IsVisible="{Binding IsOwnedByUser}" Spacing="10">
-                                    <Button Text="Modificar" Clicked="OnModificarProductoClicked" FontSize="12"/>
-                                    <Button Text="Eliminar" Clicked="OnEliminarProductoClicked" FontSize="12" BackgroundColor="Red" TextColor="White"/>
-                                </HorizontalStackLayout>
+                                <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="16" />
+                                <Label Text="{Binding Precio, StringFormat='${0:F2}'}" FontSize="14" />
+                                <Label Text="{Binding CantidadVendidos, StringFormat='Vendidos: {0}'}" FontSize="12" />
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>
