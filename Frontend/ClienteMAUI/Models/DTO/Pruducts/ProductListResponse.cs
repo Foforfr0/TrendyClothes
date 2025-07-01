@@ -29,7 +29,7 @@ namespace ClienteMAUI.Models.DTO.Pruducts
         public decimal Price { get; set; }
 
         [JsonPropertyName("discount")]
-        public int Discount { get; set; }
+        public decimal discount { get; set; }
 
         [JsonPropertyName("numberSold")]
         public int NumberSold { get; set; }

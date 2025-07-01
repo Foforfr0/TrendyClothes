@@ -22,6 +22,8 @@ namespace ClienteMAUI.Connections
 
         public static string GetCategories => $"{BaseUrl}/Tags/Categories";
 
+        public static string GetProducts => $"{BaseUrl}/Search";
+
     }
     public static class GRPCEndpoints
     {
