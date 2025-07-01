@@ -44,15 +44,12 @@ public partial class MainMenuPage : ContentPage
             {
                 var json = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine("JSON COMPLETO RECIBIDO:");
-                Console.WriteLine(json);
-
+            
                 var categoriaResponse = JsonSerializer.Deserialize<CategoriaResponse>(json);
 
                 if (categoriaResponse?.Body != null)
                 {
-                    Console.WriteLine($"Se recibieron {categoriaResponse?.Body?.Count} categorías");
-
+                
                     var categorias = categoriaResponse.Body;
 
                     CategoryButtonsLayout.Children.Clear();
