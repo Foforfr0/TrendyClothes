@@ -1,11 +1,14 @@
+using ClienteMAUI.Models.DTO.Auth;
 using Microsoft.Maui.Controls;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
+using ClienteMAUI.Connections;
 
 namespace ClienteMAUI.Views
 {
     public partial class LoginPage : ContentPage
     {
-        private const string SimulatedCode = "123456"; // Código de prueba
 
         public LoginPage()
         {
@@ -20,39 +23,118 @@ namespace ClienteMAUI.Views
             if (!AreLoginFieldsValid())
                 return;
 
-            if (IsValidUser(txtUsername.Text, txtPassword.Text))
+            var loginDto = new LoginDTO
             {
-                await DisplayAlert("Autenticación exitosa", "Usuario válido, ahora puedes verificar tu correo", "OK");
-                SetEmailPanelEnabled(true); // Habilita lado derecho
+                Username = txtUsername.Text.Trim(),
+                Password = txtPassword.Text.Trim()
+            };
+
+            try
+            {
+                using var httpClient = new HttpClient();
+                var url = AuthEndpoints.ValidateCredentials;
+                var response = await httpClient.PostAsJsonAsync(url, loginDto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await DisplayAlert("Credenciales correctas", "Ahora valida tu correo y solicita el código.", "OK");
+                    SetEmailPanelEnabled(true);
+                }
+                else
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    lblError.Text = $"Error: {content}";
+                    lblError.IsVisible = true;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ShowError("Usuario o contraseña incorrectos.");
+                lblError.Text = $"Error al conectar: {ex.Message}";
+                lblError.IsVisible = true;
             }
         }
+
 
         private async void OnSendCodeClicked(object sender, EventArgs e)
         {
-            if (!IsEmailValid(txtEmail.Text))
+            string username = txtUsername.Text?.Trim() ?? "";
+            string email = txtEmail.Text?.Trim() ?? "";
+
+            if (!IsEmailValid(email) || string.IsNullOrWhiteSpace(username))
             {
-                ShowError("Por favor, ingresa un correo válido.");
+                ShowError("Por favor, completa el usuario y un correo válido.");
                 return;
             }
 
-            await DisplayAlert("Código enviado", $"Tu código es: {SimulatedCode}", "OK");
+            try
+            {
+                using var httpClient = new HttpClient();
+
+                // Crear y enviar código 2FA directamente
+                var sendCodeUrl = AuthEndpoints.CreateTwoFactorCode;
+                var body = new { username, email };
+                var codeResponse = await httpClient.PatchAsync(sendCodeUrl, JsonContent.Create(body));
+
+                if (codeResponse.IsSuccessStatusCode)
+                {
+                    await DisplayAlert("Código enviado", "Revisa tu correo para continuar.", "OK");
+                }
+                else
+                {
+                    var error = await codeResponse.Content.ReadAsStringAsync();
+                    ShowError("Error al enviar código: " + error);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"Error al conectar con el servidor: {ex.Message}");
+            }
         }
+
+
+
 
         private async void OnValidateCodeClicked(object sender, EventArgs e)
         {
-            if (txtCode.Text?.Trim() == SimulatedCode)
+            if (string.IsNullOrWhiteSpace(txtCode.Text))
             {
-                await Navigation.PushAsync(new MainMenuPage());
+                ShowError("El código no puede estar vacío.");
+                return;
             }
-            else
+
+            var dto = new CodeTwoFactorDTO
             {
-                ShowError("El código ingresado no es válido.");
+                Username = txtUsername.Text.Trim(),
+                TwoFactorCode = txtCode.Text.Trim()
+            };
+
+            try
+            {
+                using var httpClient = new HttpClient();
+                var url = AuthEndpoints.ValidateTwoFactorCode;
+                var response = await httpClient.PostAsJsonAsync(url, dto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var resultJson = await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<TwoFactorResponseDTO>(resultJson);
+
+                    // Aquí tengo que regresar a agregar los del JWT XD
+                    Preferences.Set("jwtToken", result.JwtToken);
+
+                    await Navigation.PushAsync(new MainMenuPage());
+                }
+                else
+                {
+                    ShowError("Código incorrecto o expirado.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"Error de conexión: {ex.Message}");
             }
         }
+
 
         private async void OnRegsiterClicked(object sender, EventArgs e)
         {
@@ -78,11 +160,7 @@ namespace ClienteMAUI.Views
             return true;
         }
 
-        private bool IsValidUser(string username, string password)
-        {
-            return username == "testuser" && password == "123456";
-        }
-
+        
         private bool IsEmailValid(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -103,7 +181,6 @@ namespace ClienteMAUI.Views
             txtEmail.IsEnabled = isEnabled;
             txtCode.IsEnabled = isEnabled;
 
-            // También activa los botones relacionados si existen
             foreach (var view in ((Grid)txtEmail.Parent.Parent).Children)
             {
                 switch (view)

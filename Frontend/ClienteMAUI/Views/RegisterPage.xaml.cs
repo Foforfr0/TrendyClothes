@@ -29,8 +29,8 @@ public partial class RegisterPage : ContentPage
         var registerData = new RegisterRequest
         {
             FirstName = txtFirstName.Text.Trim(),
-            LastName = txtLastName.Text.Trim(),
-            MiddleName = txtMiddleName.Text.Trim(),
+            MiddleName = txtLastName.Text.Trim(),
+            LastName = txtMiddleName.Text.Trim(),
             Username = txtUsername.Text.Trim(),
             Email = txtEmail.Text.Trim(),
             AreaCode = txtAreaCode.Text.Trim(),
@@ -41,8 +41,8 @@ public partial class RegisterPage : ContentPage
         try
         {
             using var httpClient = new HttpClient();
-            var url = "http://10.0.2.2:5003/api/User/ValidateUserData/VerifyExistenceUsername?username=edmundo123"; // o la IP de tu contenedor
-            var response = await httpClient.GetAsync(url);
+            var url = "http://10.0.2.2:5000/api/User/Registration";
+            var response = await httpClient.PostAsJsonAsync(url, registerData);
 
             if (response.IsSuccessStatusCode)
             {
@@ -52,8 +52,23 @@ public partial class RegisterPage : ContentPage
             else
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var errores = JsonSerializer.Deserialize<Dictionary<string, object>>(content);
-                lblError.Text = "Error: " + errores?["title"] ?? "No se pudo registrar.";
+
+                try
+                {
+                    var errores = JsonSerializer.Deserialize<Dictionary<string, object>>(content);
+
+                    if (errores?.ContainsKey("message") == true)
+                        lblError.Text = "Error: " + errores["message"]?.ToString();
+                    else if (errores?.ContainsKey("title") == true)
+                        lblError.Text = "Error: " + errores["title"]?.ToString();
+                    else
+                        lblError.Text = "No se pudo registrar. Intenta más tarde.";
+                }
+                catch
+                {
+                    lblError.Text = "No se pudo interpretar la respuesta del servidor.";
+                }
+
                 lblError.IsVisible = true;
             }
         }
@@ -63,6 +78,7 @@ public partial class RegisterPage : ContentPage
             lblError.IsVisible = true;
         }
     }
+
 
     private bool CamposRequeridosCompletos()
     {
@@ -98,8 +114,7 @@ public partial class RegisterPage : ContentPage
         string phone = txtPhoneNumber.Text.Trim();
 
         bool areaCodeValido = Regex.IsMatch(areaCode, @"^\+\d{1,4}$");
-
-        bool phoneValido = Regex.IsMatch(phone, @"^\d{7,10}$");
+        bool phoneValido = Regex.IsMatch(phone, @"^\d{10}$");
 
         if (!areaCodeValido || !phoneValido)
         {
@@ -111,15 +126,19 @@ public partial class RegisterPage : ContentPage
     }
 
 
+
     private bool PasswordSegura()
     {
-        if (txtPassword.Text.Length < 6)
+        string password = txtPassword.Text.Trim();
+        var regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,200}$");
+        if (!regex.IsMatch(password))
         {
-            lblError.Text = "La contraseña debe tener al menos 6 caracteres.";
+            lblError.Text = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
             return false;
         }
         return true;
     }
+
 
     private bool PasswordsCoinciden()
     {
