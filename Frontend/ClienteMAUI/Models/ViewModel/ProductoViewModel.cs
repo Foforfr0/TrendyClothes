@@ -41,4 +41,3 @@ namespace ClienteMAUI.Models.ViewModel
         }
     }
 }
-

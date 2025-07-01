@@ -2,6 +2,7 @@ using ClienteMAUI.Models;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using ClienteMAUI.Connections;
 
 namespace ClienteMAUI.Views;
 
@@ -41,7 +42,7 @@ public partial class RegisterPage : ContentPage
         try
         {
             using var httpClient = new HttpClient();
-            var url = "http://10.0.2.2:5000/api/User/Registration";
+            var url = AuthEndpoints.RegisterUser;
             var response = await httpClient.PostAsJsonAsync(url, registerData);
 
             if (response.IsSuccessStatusCode)
