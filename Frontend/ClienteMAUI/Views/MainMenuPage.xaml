@@ -2,11 +2,53 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ClienteMAUI.Views.MainMenuPage"
-             Title="MainMenuPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Menú Principal">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="20">
+
+            <!-- Sección Categorías -->
+            <ScrollView Orientation="Horizontal">
+                <HorizontalStackLayout x:Name="CategoryButtonsLayout" Spacing="10"></HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- Sección Botón crear producto -->
+            <Button Text="Crear producto" 
+                    x:Name="btnCrearProducto"
+                    HorizontalOptions="Center"
+                    Clicked="OnCrearProductoClicked"
+                    BackgroundColor="#007AFF"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Padding="12,6" />
+
+            <!-- Sección Lista de productos -->
+            <CollectionView x:Name="ProductsCollection"
+                            ItemsLayout="VerticalGrid, 2"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="LightGray" StrokeThickness="1" Padding="10" Margin="5" StrokeShape="RoundRectangle 10">
+                            <VerticalStackLayout>
+                                <Image Source="{Binding ImageSource}" HeightRequest="100" Aspect="AspectFill"/>
+                                <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                                <Label Text="{Binding Category}" FontSize="12"/>
+                                <Label Text="{Binding Price, StringFormat='${0:F2}'}"/>
+                                <Label Text="{Binding QuantityAvailable, StringFormat='Disponible: {0}'}" FontSize="12"/>
+
+                                <!-- Botones visibles solo si es del usuario -->
+                                <HorizontalStackLayout IsVisible="{Binding IsOwnedByUser}" Spacing="10">
+                                    <Button Text="Modificar" Clicked="OnModificarProductoClicked" FontSize="12"/>
+                                    <Button Text="Eliminar" Clicked="OnEliminarProductoClicked" FontSize="12" BackgroundColor="Red" TextColor="White"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
+
+

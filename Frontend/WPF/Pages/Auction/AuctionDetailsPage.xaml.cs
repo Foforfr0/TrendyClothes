@@ -64,10 +64,5 @@ namespace WpfApp.Pages.Auction
                 "Auction_DialogDUnbid",
                 onConfirm: () => { CancelBid(); });
         }
-
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationManager.Instance.GoBack();
-        }
     }
 }

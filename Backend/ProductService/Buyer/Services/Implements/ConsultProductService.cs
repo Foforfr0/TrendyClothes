@@ -60,7 +60,6 @@ namespace ProductBuyerService.Services.Implements {
                 StatusId = response.DataRetrieved.StatusId,
                 Status = response.DataRetrieved.Status.Status
             };
-
             return MessageResponse<ProductDetailsDTO>.Success (response.Message, product);
         }
     }

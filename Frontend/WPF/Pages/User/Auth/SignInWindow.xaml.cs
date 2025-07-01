@@ -2,6 +2,13 @@
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using WpfApp.Pages.Dialogs;
 using WpfApp.DTO;
 using WpfApp.Pages.Dialogs;
 using WpfApp.Services.User.Auth;
@@ -88,10 +95,10 @@ namespace WpfApp.Pages.User.Auth {
                 MessageBox.Show (response.message);
             }
         }
-
-        private void BtnValidateCode_Click (object sender, RoutedEventArgs e) {
-            MessageDialog.Show ("Login_DialogTSignedIn", "Login_DialogDSignedIn", AlertType.SUCCESS);
-            NavigateToMainWindow ();
+        private void BtnValidateCode_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialog.Show("Login_DialogTSignedIn", "Login_DialogDSignedIn", AlertType.SUCCESS);
+            NavigateToMainWindow();
         }
 
         private void ChbShowPassword_Checked (object sender, RoutedEventArgs e) {
@@ -108,6 +115,15 @@ namespace WpfApp.Pages.User.Auth {
 
             Application.Current.MainWindow = signUpWindow;
             this.Close ();
+        }
+
+        private void BtnSignUp_Click(object sender, RoutedEventArgs e)
+        {
+            var signUpWindow = new SignUpWindow();
+            signUpWindow.Show();
+
+            Application.Current.MainWindow = signUpWindow;
+            this.Close();
         }
     }
 }

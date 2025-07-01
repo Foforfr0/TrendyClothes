@@ -50,6 +50,8 @@
     <sys:String x:Key="Glb_BtnSelectImage">Selecionar foto</sys:String>
     <sys:String x:Key="Glb_BtnDeleteImage">Eliminar foto</sys:String>
     <sys:String x:Key="Glb_ShowPassword">Mostrar contraseña</sys:String>
+    <sys:String x:Key="Glb_AddedItemT">Agregado</sys:String>
+    <sys:String x:Key="Glb_AddedItemD">Producto agregado al carrito</sys:String>
     <sys:String x:Key="Glb_DialogTDiscard">Estas seguro?</sys:String>
     <sys:String x:Key="Glb_DialogDDiscard">Se perderan los datos no guardados</sys:String>
     <sys:String x:Key="GlbDialogT_NoConnection">Sin conexion con el servidor</sys:String>
