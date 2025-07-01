@@ -55,15 +55,14 @@ public partial class MainMenuPage : ContentPage
                     var categorias = categoriaResponse.Body;
 
                     CategoryButtonsLayout.Children.Clear();
-
-                    CategoryButtonsLayout.Children.Add(CrearBotonCategoria("Todos", 0));
-                    CategoryButtonsLayout.Children.Add(CrearBotonCategoria("Mis productos", -1));
+                    CategoryButtonsLayout.Children.Add(CrearBotonCategoria("Todos"));
+                    CategoryButtonsLayout.Children.Add(CrearBotonCategoria("Mis productos"));
 
                     foreach (var cat in categorias)
                     {
-                        Console.WriteLine($"CATEGORIA -> Id: {cat.Id}, Nombre: {cat.Category}");
-                        CategoryButtonsLayout.Children.Add(CrearBotonCategoria(cat.Category, cat.Id));
+                        CategoryButtonsLayout.Children.Add(CrearBotonCategoria(cat.Category));
                     }
+
                 }
             }
         }
@@ -111,7 +110,7 @@ public partial class MainMenuPage : ContentPage
     }
 
 
-    private Button CrearBotonCategoria(string texto, int categoriaId)
+    private Button CrearBotonCategoria(string texto)
     {
         return new Button
         {
@@ -121,14 +120,49 @@ public partial class MainMenuPage : ContentPage
             BackgroundColor = Colors.LightGray,
             TextColor = Colors.Black,
             CornerRadius = 12,
-            Command = new Command(async () => await FiltrarPorCategoria(categoriaId))
+            Command = new Command(async () => await FiltrarPorCategoria(texto))
         };
     }
 
-    private async Task FiltrarPorCategoria(int categoriaId)
+
+    private async Task FiltrarPorCategoria(string nombreCategoria)
     {
-        await DisplayAlert("Categoría seleccionada", $"ID categoría: {categoriaId}", "OK");
+        try
+        {
+            var url = $"{ProductEndpoints.GetProducts}?query={Uri.EscapeDataString(nombreCategoria)}";
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                await DisplayAlert("Error", "No se pudo obtener la lista de productos", "OK");
+                return;
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var productosResponse = JsonSerializer.Deserialize<ProductoListResponse>(json);
+
+            if (productosResponse?.Body == null)
+            {
+                await DisplayAlert("Error", "Respuesta inválida del servidor", "OK");
+                return;
+            }
+
+            var productos = productosResponse.Body.Select(p => new ProductoViewModel
+            {
+                Nombre = p.Name,
+                Precio = p.Price,
+                CantidadVendidos = p.NumberSold,
+                ImageSource = null
+            }).ToList();
+
+            ProductsCollection.ItemsSource = productos;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Excepción", ex.Message, "OK");
+        }
     }
+
 
     public class CategoriaResponse
     {
