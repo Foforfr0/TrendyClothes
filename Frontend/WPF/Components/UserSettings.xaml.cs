@@ -1,11 +1,13 @@
-﻿using System.Windows;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using System.Windows.Controls;
-using WpfApp.Utilities;
-using WpfApp.Pages;
-using WpfApp.Pages.User.Profile;
-using WpfApp.Pages.User.Auth;
-using WpfApp.Pages.Dialogs;
 using System.Windows.Input;
+using WpfApp.Pages;
+using WpfApp.Pages.Dialogs;
+using WpfApp.Pages.User.Auth;
+using WpfApp.Pages.User.Profile;
+using WpfApp.Services.User.Auth;
+using WpfApp.Utilities;
 
 namespace WpfApp.Components
 {
@@ -72,7 +74,8 @@ namespace WpfApp.Components
         private void NavigateToSignIn()
         {
             NavigationManager.Reset();
-            var signIn = new SignInWindow();
+            var loginService = App.Services?.GetRequiredService<LoginService> ();
+            var signIn = new SignInWindow(loginService);
             signIn.Show();
 
             Application.Current.MainWindow.Close();

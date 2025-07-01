@@ -17,6 +17,9 @@ using WpfApp.Utilities;
 
 namespace WpfApp.Pages.Home
 {
+    /// <summary>
+    /// Lógica de interacción para AuctionsPage.xaml
+    /// </summary>
     public partial class AuctionsPage : Page
     {
         public AuctionsPage()
