@@ -19,7 +19,7 @@ document.getElementById('deleteButton').addEventListener('click', async function
                     'Content-Type': 'application/json'
                 }
             });
-            window.location.replace(`Product/Seller/ConsultMyProducts`);
+            window.location.href = `${window.location.origin}/Product/Seller/ConsultMyProducts?username=${window.data.username}`;
             /*
             if (!response) return;
 
