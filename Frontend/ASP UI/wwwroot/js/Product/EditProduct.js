@@ -8,20 +8,20 @@ async function confirmCancel() {
 }
 window.confirmCancel = confirmCancel;
 
-document.getElementById('cancelButton').addEventListener('click', async function (event) {
+document.getElementById('deleteButton').addEventListener('click', async function (event) {
     const response = await utils.showConfirmationToast('¿Estás seguro de que deseas ELIMINAR los cambios?\nSe perderán todos los datos del producto.')
     if (response) {
         try {
-            const response = await fetch(window.config.DeleteProductData, {
+            const response = await fetch(`${window.config.DeleteProductData}?id=${window.data.idProduct}`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: window.data.idProduct })
+                }
             });
+            window.location.replace(`Product/Seller/ConsultMyProducts`);
+            /*
             if (!response) return;
-            const data = await response.json();
 
             switch (response.status) {
                 case 204:
@@ -36,6 +36,7 @@ document.getElementById('cancelButton').addEventListener('click', async function
                     utils.showToast('Error interno del servidor.', 'danger');
                     break;
             }
+            */
         } catch (error) {
             utils.showToast('Error al conectarse con el servidor.', 'danger');
             console.error('Error modificando producto: ', error);
@@ -59,7 +60,7 @@ document.getElementById('modificationForm').addEventListener('submit', async fun
     try {
         const saveImage = await sendImageMime();
         if (!saveImage) return;
-        const response = await fetch(window.config.PutProductData, {
+        const response = await fetch(window.config.PutDetailsProduct, {
             method: 'PUT',
             credentials: 'include',
             headers: {

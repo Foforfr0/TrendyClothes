@@ -4,7 +4,7 @@
             string gRPCServer = builder.Configuration["Services:REST:gRPC:BaseUrl"] ?? "http://grpcimageservice";
 
             builder.Services.AddGrpcClient<GetImageProduct.GetImageService.GetImageServiceClient> (options => {
-                options.Address = new Uri (gRPCServer); // Dirección del servidor gRPC
+                options.Address = new Uri (gRPCServer); 
             })
                 .ConfigurePrimaryHttpMessageHandler (() => {
                     return new HttpClientHandler {
@@ -13,15 +13,16 @@
                 });
 
             builder.Services.AddGrpcClient<SaveImageProduct.SaveImageService.SaveImageServiceClient> (options => {
-                options.Address = new Uri (gRPCServer); // Mismo servidor o diferente, si aplica
+                options.Address = new Uri (gRPCServer);
             })
                 .ConfigurePrimaryHttpMessageHandler (() => {
                     return new HttpClientHandler {
                         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                     };
                 });
+
             builder.Services.AddGrpcClient<SaveImageNewProduct.SaveNewImageService.SaveNewImageServiceClient> (options => {
-                options.Address = new Uri (gRPCServer); // Mismo servidor o diferente, si aplica
+                options.Address = new Uri (gRPCServer);
             })
                 .ConfigurePrimaryHttpMessageHandler (() => {
                     return new HttpClientHandler {
