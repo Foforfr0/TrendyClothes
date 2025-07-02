@@ -106,7 +106,7 @@ CREATE TABLE PhotosProduct (
     ProductId INT NOT NULL,
     Mime VARCHAR(25) NOT NULL
 
-    CONSTRAINT FK_PhotoProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id)
+    CONSTRAINT FK_PhotoProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id) ON DELETE CASCADE
 );
 
 CREATE TABLE QAProduct (
@@ -117,8 +117,8 @@ CREATE TABLE QAProduct (
     ProductId INT NOT NULL,
     UserId INT NOT NULL
 
-    CONSTRAINT FK_QAProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id),
-    CONSTRAINT FK_UserQA_Product FOREIGN KEY (UserId) REFERENCES Users(Id),
+    CONSTRAINT FK_QAProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id) ON DELETE CASCADE,
+    CONSTRAINT FK_UserQA_Product FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
 );
 
 CREATE TABLE StatusesAuction (
@@ -139,9 +139,9 @@ CREATE TABLE AuctionsProduct (
     ProductId INT NOT NULL,
     StatusId INT NOT NULL,
 
-    CONSTRAINT FK_AuctionProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id),
-    CONSTRAINT FK_StatusAuction_Auction FOREIGN KEY (StatusId) REFERENCES StatusesAuction(Id),
-    CONSTRAINT FK_BuyerProduct_Product FOREIGN KEY (SellerId) REFERENCES Users(Id),
+    CONSTRAINT FK_AuctionProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id) ON DELETE CASCADE,
+    CONSTRAINT FK_StatusAuction_Auction FOREIGN KEY (StatusId) REFERENCES StatusesAuction(Id) ON DELETE CASCADE,
+    CONSTRAINT FK_BuyerProduct_Product FOREIGN KEY (SellerId) REFERENCES Users(Id) ON DELETE CASCADE,
 );
 
 CREATE TABLE BidsAuction (
@@ -152,7 +152,7 @@ CREATE TABLE BidsAuction (
     AuctionId INT NOT NULL,
 
     CONSTRAINT FK_BidUser_Auction FOREIGN KEY (BuyerId) REFERENCES Users(Id),
-    CONSTRAINT FK_BidAuction_Auction FOREIGN KEY (AuctionId) REFERENCES AuctionsProduct(Id)
+    CONSTRAINT FK_BidAuction_Auction FOREIGN KEY (AuctionId) REFERENCES AuctionsProduct(Id) ON DELETE CASCADE
 );
 
 
