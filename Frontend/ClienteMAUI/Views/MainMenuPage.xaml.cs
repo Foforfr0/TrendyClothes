@@ -43,7 +43,7 @@ public partial class MainMenuPage : ContentPage
     {
         if (sender is Button btn && btn.BindingContext is ProductoViewModel producto)
         {
-            bool confirm = await DisplayAlert("Confirmar", $"¿Eliminar el producto '{producto.Nombre}'?", "Sí", "No");
+            bool confirm = await DisplayAlert("Confirmar", $"Â¿Eliminar el producto '{producto.Nombre}'?", "SÃ­", "No");
             if (!confirm) return;
 
             try
@@ -52,7 +52,7 @@ public partial class MainMenuPage : ContentPage
 
                 if (string.IsNullOrWhiteSpace(token))
                 {
-                    await DisplayAlert("Error", "Sesión no válida. No hay token disponible.", "OK");
+                    await DisplayAlert("Error", "SesiÃ³n no vÃ¡lida. No hay token disponible.", "OK");
                     return;
                 }
 
@@ -67,7 +67,7 @@ public partial class MainMenuPage : ContentPage
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await DisplayAlert("Éxito", "Producto eliminado correctamente", "OK");
+                    await DisplayAlert("Ã‰xito", "Producto eliminado correctamente", "OK");
                     await FiltrarPorCategoria("Mis productos");
                 }
                 else
@@ -78,7 +78,7 @@ public partial class MainMenuPage : ContentPage
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Excepción", ex.Message, "OK");
+                await DisplayAlert("ExcepciÃ³n", ex.Message, "OK");
             }
         }
     }
@@ -120,7 +120,7 @@ public partial class MainMenuPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", $"Error al cargar categorías:\n{ex.GetType().Name}\n{ex.Message}", "OK");
+            await DisplayAlert("Error", $"Error al cargar categorÃ­as:\n{ex.GetType().Name}\n{ex.Message}", "OK");
         }
     }
 
@@ -141,7 +141,7 @@ public partial class MainMenuPage : ContentPage
 
             if (productosResponse?.Body == null)
             {
-                await DisplayAlert("Error", "Respuesta inválida del servidor", "OK");
+                await DisplayAlert("Error", "Respuesta invÃ¡lida del servidor", "OK");
                 return;
             }
 
@@ -150,7 +150,7 @@ public partial class MainMenuPage : ContentPage
                 Nombre = p.Name,
                 Precio = p.Price,
                 CantidadVendidos = p.NumberSold,
-                ImageSource = null, //imagen vendrá después por gRPC
+                ImageSource = null, //imagen vendrÃ¡ despuÃ©s por gRPC
                 EsPropio = false
             }).ToList();
 
@@ -158,7 +158,7 @@ public partial class MainMenuPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Excepción", ex.Message, "OK");
+            await DisplayAlert("ExcepciÃ³n", ex.Message, "OK");
         }
     }
 
@@ -191,13 +191,13 @@ public partial class MainMenuPage : ContentPage
             }
             else if (nombreCategoria.Equals("Mis productos", StringComparison.OrdinalIgnoreCase))
             {
-                // Verificar si hay sesión
+                // Verificar si hay sesiÃ³n
                 var username = UserSession.Instance.Username;
                 var token = UserSession.Instance.JwtToken;
 
                 if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(token))
                 {
-                    await DisplayAlert("Error", "No se ha iniciado sesión correctamente.", "OK");
+                    await DisplayAlert("Error", "No se ha iniciado sesiÃ³n correctamente.", "OK");
                     return;
                 }
 
@@ -210,7 +210,7 @@ public partial class MainMenuPage : ContentPage
             }
             else
             {
-                // Filtro por categoría
+                // Filtro por categorÃ­a
                 url = $"{ProductEndpoints.GetProducts}?query={Uri.EscapeDataString(nombreCategoria)}";
             }
 
@@ -227,7 +227,7 @@ public partial class MainMenuPage : ContentPage
 
             if (productosResponse?.Body == null)
             {
-                await DisplayAlert("Error", "Respuesta inválida del servidor", "OK");
+                await DisplayAlert("Error", "Respuesta invÃ¡lida del servidor", "OK");
                 return;
             }
 
@@ -245,11 +245,9 @@ public partial class MainMenuPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Excepción", ex.Message, "OK");
+            await DisplayAlert("ExcepciÃ³n", ex.Message, "OK");
         }
     }
-
-
 
     public class CategoriaResponse
     {

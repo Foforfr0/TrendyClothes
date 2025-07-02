@@ -52,6 +52,7 @@
                     Clicked="OnEliminarProductoClicked"/>
                                     </HorizontalStackLayout>
                                 </ContentView>
+
                             </VerticalStackLayout>
 
                         </Border>

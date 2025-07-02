@@ -33,6 +33,7 @@ namespace ClienteMAUI.Connections
         public static string DeleteProduct(int idproduct) => $"{BaseUrl2}/Delete/{idproduct}";
 
     }
+
     public static class GRPCEndpoints
     {
 
