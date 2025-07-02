@@ -31,11 +31,29 @@
                         <Border Stroke="LightGray" StrokeThickness="1" Padding="10" Margin="5" StrokeShape="RoundRectangle 10">
                             <VerticalStackLayout>
                                 <Image Source="{Binding ImageSource}" HeightRequest="100" Aspect="AspectFill"/>
-
                                 <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="16" />
                                 <Label Text="{Binding Precio, StringFormat='${0:F2}'}" FontSize="14" />
                                 <Label Text="{Binding CantidadVendidos, StringFormat='Vendidos: {0}'}" FontSize="12" />
+
+                                <!-- Mostrar botones solo si el producto es propio -->
+                                <ContentView IsVisible="False">
+                                    <ContentView.Triggers>
+                                        <DataTrigger TargetType="ContentView"
+                         Binding="{Binding EsPropio}"
+                         Value="True">
+                                            <Setter Property="IsVisible" Value="True" />
+                                        </DataTrigger>
+                                    </ContentView.Triggers>
+
+                                    <HorizontalStackLayout x:Name="OpcionesLayout" Spacing="10">
+                                        <Button Text="Modificar" BackgroundColor="Orange" TextColor="White" 
+                    Clicked="OnModificarProductoClicked"/>
+                                        <Button Text="Eliminar" BackgroundColor="Red" TextColor="White" 
+                    Clicked="OnEliminarProductoClicked"/>
+                                    </HorizontalStackLayout>
+                                </ContentView>
                             </VerticalStackLayout>
+
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

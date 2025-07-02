@@ -25,6 +25,14 @@ namespace ClienteMAUI.Connections
         public static string GetProducts => $"{BaseUrl}/Search";
 
     }
+    public static class UserEndpoints
+    {
+        private const string BaseUrl = "http://10.0.2.2:5000/api/MyProducts";
+        private const string BaseUrl2 = "http://10.0.2.2:5000/api/MyProduct";
+        public static string GetMyProducts(string username) => $"{BaseUrl}/Search?username={Uri.EscapeDataString(username)}";
+        public static string DeleteProduct(int idproduct) => $"{BaseUrl2}/Delete/{idproduct}";
+
+    }
     public static class GRPCEndpoints
     {
 
