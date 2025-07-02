@@ -31,7 +31,7 @@ sqlcmd -S localhost,1433 -U SA -P StrongP@ssw0rd!
 # Copia el script SQL de creación de base de datos
 docker cp ./Database.sql sqlserver:/tmp/Database.sql
 # Copia los archivos de la base de datos
-docker cp "C:\Archivos\Example Files\TrendyClothes\." sqlserver:/var/opt/mssql/data
+docker cp "./Frontend/Example Files/." sqlserver:/var/opt/mssql/data
 # Ejecutar el script SQL desde el host
-sqlcmd -S localhost,1433 -U sa -P StrongP@ssw0rd! -i "C:\Archivos\Projects Programs\Páginas web\TrendyClothes\Database.sql"
+sqlcmd -S localhost,1433 -U sa -P StrongP@ssw0rd! -i "./Database.sql"
 ```
