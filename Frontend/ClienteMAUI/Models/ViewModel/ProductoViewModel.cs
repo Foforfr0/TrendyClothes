@@ -4,6 +4,7 @@ namespace ClienteMAUI.Models.ViewModel
 {
     public class ProductoViewModel
     {
+        public int Id { get; set; }
         public string? Nombre { get; set; }
         public decimal Precio { get; set; }
         public int CantidadVendidos { get; set; }
@@ -15,6 +16,7 @@ namespace ClienteMAUI.Models.ViewModel
 
         public ProductoViewModel(int id, string nombre, decimal precio, int cantidadVendidos, ImageSource? imageSource, bool esPropio)
         {
+            Id = id;
             Nombre = nombre;
             Precio = precio;
             CantidadVendidos = cantidadVendidos;
