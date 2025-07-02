@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductSellerService.DAO;
 using ProductSellerService.Models;
 using ProductSellerService.Services.Interfaces;
 
@@ -15,7 +14,7 @@ namespace ProductSellerService.Controllers {
             _deleteProductService = deleteProductService;
         }
 
-        [HttpDelete]
+        [HttpDelete ("Delete")]
         public async Task<IActionResult> DeleteProductAsync ([FromQuery] int id) {
             try {
                 if (id <= 0)
