@@ -4,17 +4,19 @@ using ClienteMAUI.Connections;
 using ClienteMAUI.Models.DTO.Pruducts;
 using ClienteMAUI.Models.ViewModel;
 using ClienteMAUI.Session;
+using ClienteMAUI.Views;
+using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using ClienteMAUI.Views;
 
 
 public partial class MainMenuPage : ContentPage
 {
     private readonly HttpClient _httpClient = new();
-
+    private List<CategoryDTO> categoriesList = new();
+    private List<TypeDTO> typesList = new();
 
     public MainMenuPage()
 	{
@@ -31,9 +33,30 @@ public partial class MainMenuPage : ContentPage
         Console.WriteLine($"[UserSession] Username: {UserSession.Instance.Username}");
 
         _ = CargarCategoriasAsync();
+        _ = CargarTiposAsync();
         _ = CargarProductosAsync();
     }
-    
+
+    private async Task CargarTiposAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync(ProductEndpoints.GetTypes);
+            if (!response.IsSuccessStatusCode) return;
+
+            var json = await response.Content.ReadAsStringAsync();
+            var typesResponse = JsonSerializer.Deserialize<ResponseWrapper<List<TypeDTO>>>(json);
+            if (typesResponse?.Body != null)
+            {
+                typesList = typesResponse.Body; 
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"Error al cargar tipos:\n{ex.Message}", "OK");
+        }
+    }
+
 
 
     private async void OnCrearProductoClicked(object sender, EventArgs e)
@@ -86,10 +109,63 @@ public partial class MainMenuPage : ContentPage
     }
 
 
-    private void OnModificarProductoClicked(object sender, EventArgs e)
+    private async void OnModificarProductoClicked(object sender, EventArgs e)
     {
+        if (sender is Button btn && btn.BindingContext is ProductoViewModel producto)
+        {
+            try
+            {
+                var token = UserSession.Instance.JwtToken;
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    await DisplayAlert("Error", "Sesión inválida", "OK");
+                    return;
+                }
 
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var url = ProductEndpoints.GetProductDetails(producto.Id);
+                var response = await _httpClient.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    await DisplayAlert("Error", "No se pudo obtener el producto", "OK");
+                    return;
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                // Deserializa el DTO
+                var dtoResponse = JsonSerializer.Deserialize<ResponseWrapper<ProductDTO>>(json);
+                if (dtoResponse?.Body == null)
+                {
+                    await DisplayAlert("Error", "Producto no válido", "OK");
+                    return;
+                }
+
+                // Mapea los strings "category" y "type" a sus respectivos IDs
+                using var jsonDoc = JsonDocument.Parse(json);
+                var root = jsonDoc.RootElement.GetProperty("body");
+
+                string categoryName = root.GetProperty("category").GetString() ?? "";
+                string typeName = root.GetProperty("type").GetString() ?? "";
+
+                dtoResponse.Body.CategoryId = categoriesList.FirstOrDefault(c => c.Category == categoryName)?.Id ?? 0;
+                dtoResponse.Body.TypeId = typesList.FirstOrDefault(t => t.Type == typeName)?.Id ?? 0;
+
+                // Navega con el DTO completo
+                await Navigation.PushAsync(new ProductFormPage(dtoResponse.Body));
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Excepción", ex.Message, "OK");
+            }
+        }
     }
+
+
+
     private async Task CargarCategoriasAsync()
     {
         try

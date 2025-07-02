@@ -1,8 +1,11 @@
+using ClienteMAUI.Connections;
 using ClienteMAUI.Models.DTO.Pruducts;
 using ClienteMAUI.Session;
 using Microsoft.Maui.Controls;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using ClienteMAUI.Connections;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ClienteMAUI.Views;
 
@@ -82,35 +85,54 @@ public partial class ProductFormPage : ContentPage
             _product.StatusId = selectedStatus.Id;
             _product.UsernameSeller = Preferences.Get("username", "anonimo");
 
+            var token = UserSession.Instance.JwtToken;
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                await DisplayAlert("Error", "Sesión no válida. No se encontró el token.", "OK");
+                return;
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
             HttpResponseMessage response;
 
             if (_product.Id == null)
             {
+                var jsonDebug = JsonSerializer.Serialize(_product);
+                Console.WriteLine($"[DEBUG] JSON enviado: {jsonDebug}");
                 // CREAR
                 response = await _httpClient.PostAsJsonAsync(UserEndpoints.CreateProduct, _product);
             }
             else
             {
                 // EDITAR
-                response = await _httpClient.PutAsJsonAsync(UserEndpoints.UpdateProduct((int)_product.Id), _product);
+                response = await _httpClient.PutAsJsonAsync(UserEndpoints.UpdateProduct, _product);
 
             }
 
             if (response.IsSuccessStatusCode)
                 await DisplayAlert("Éxito", "Producto guardado correctamente", "OK");
             else
-                await DisplayAlert("Error", "No se pudo guardar el producto", "OK");
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                await DisplayAlert("Error", $"No se pudo guardar el producto:\n{error}", "OK");
+            }
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ocurrió un error: " + ex.Message, "OK");
         }
     }
+
 }
 
 // Clase genérica para manejar la respuesta JSON del backend
 public class ResponseWrapper<T>
 {
+    [JsonPropertyName("message")]
     public string Message { get; set; } = string.Empty;
-    public T Body { get; set; }
+
+    [JsonPropertyName("body")]
+    public T? Body { get; set; }  
 }
