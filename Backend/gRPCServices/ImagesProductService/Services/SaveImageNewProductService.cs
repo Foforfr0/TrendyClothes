@@ -34,7 +34,7 @@ namespace ImagesProductService.Services {
 
             try {
                 byte[] imageBytes = Convert.FromBase64String (request.ImageBase64);
-                bool saved = await _saveImageDAO.SaveNewImage (request.ProductId, imageBytes);
+                bool saved = await _saveImageDAO.SaveNewImage (request.ProductId, imageBytes, request.MimeType);
 
                 if (!saved) {
                     return new SaveNewImageReply {

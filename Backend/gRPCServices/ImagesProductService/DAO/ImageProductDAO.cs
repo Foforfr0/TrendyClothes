@@ -1,63 +1,69 @@
 ﻿using ImagesProductService.DTO;
 using ImagesProductService.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ImagesProductService.DAO {
     public class ImageProductDAO {
         private readonly TrendyClothesDBContext _context;
+        private readonly ILogger<ImageProductDAO> _logger;
 
-        public ImageProductDAO (TrendyClothesDBContext context) {
+        public ImageProductDAO (TrendyClothesDBContext context, ILogger<ImageProductDAO> logger) {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<OneImageDTO?> GetOneImage (int idProduct) {
-            OneImageDTO? image = await _context.PhotosProducts
+            return await _context.PhotosProducts
                 .Where (p => p.ProductId == idProduct)
                 .Select (p => new OneImageDTO {
                     image = p.Photo,
                     mime = p.Mime
                 })
                 .FirstOrDefaultAsync ();
-
-            return image;
         }
 
         public async Task<bool> SaveOneImage (int idProduct, byte[] photo) {
             try {
-                PhotosProduct? image = await _context.PhotosProducts
-                    .Where (image => image.ProductId == idProduct)
-                    .FirstOrDefaultAsync ();
+                var existingImage = await _context.PhotosProducts
+                    .FirstOrDefaultAsync (p => p.ProductId == idProduct);
 
-                if (image != null) {
-                    image.Photo = photo;
+                if (existingImage != null) {
+                    existingImage.Photo = photo;
                     await _context.SaveChangesAsync ();
-                    return false;
-                } else {
-                    return true;
+                    return true; // operación exitosa
                 }
 
-            } catch {
-                return true;
+                _logger.LogWarning ("No se encontró imagen existente para el producto con ID {ProductId}", idProduct);
+                return false;
+            } catch (Exception ex) {
+                _logger.LogError (ex, "Error al actualizar imagen para el producto con ID {ProductId}", idProduct);
+                return false;
             }
         }
 
-        public async Task<bool> SaveNewImage (int idProduct, byte[] photo) {
+        public async Task<bool> SaveNewImage (int idProduct, byte[] photo, string mime) {
             try {
-                PhotosProduct? pp = await _context.PhotosProducts
-                    .Where (image => image.ProductId == idProduct)
-                    .FirstOrDefaultAsync ();
+                var exists = await _context.PhotosProducts
+                    .AnyAsync (p => p.ProductId == idProduct);
 
-                if (pp != null) {
-                    pp.Photo = photo;
-                    await _context.PhotosProducts.AddAsync (pp);
-                    await _context.SaveChangesAsync ();
-                    return false;
-                } else {
-                    return true;
+                if (exists) {
+                    _logger.LogWarning ("Ya existe una imagen para el producto con ID {ProductId}", idProduct);
+                    return false; // o puedes decidir sobrescribir si así lo deseas
                 }
 
-            } catch {
+                var newImage = new PhotosProduct {
+                    ProductId = idProduct,
+                    Photo = photo,
+                    Mime = mime
+                };
+
+                await _context.PhotosProducts.AddAsync (newImage);
+                await _context.SaveChangesAsync ();
                 return true;
+            } catch (Exception ex) {
+                _logger.LogError (ex, "Error al guardar nueva imagen para el producto con ID {ProductId}", idProduct);
+                return false;
             }
         }
     }
