@@ -109,14 +109,6 @@ namespace WpfApp.Pages.User.Auth {
             PasswordUtilities.HidePassword (TbPassword, PbPassword);
         }
 
-        private void BtnSignUp_Click (object sender, RoutedEventArgs e) {
-            var signUpWindow = new SignUpWindow ();
-            signUpWindow.Show ();
-
-            Application.Current.MainWindow = signUpWindow;
-            this.Close ();
-        }
-
         private void BtnSignUp_Click(object sender, RoutedEventArgs e)
         {
             var signUpWindow = new SignUpWindow();

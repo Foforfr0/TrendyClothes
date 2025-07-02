@@ -1,9 +1,10 @@
+using ClienteMAUI.Connections;
 using ClienteMAUI.Models.DTO.Auth;
+using ClienteMAUI.Session;
 using Microsoft.Maui.Controls;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using ClienteMAUI.Connections;
 
 namespace ClienteMAUI.Views
 {
@@ -117,17 +118,22 @@ namespace ClienteMAUI.Views
                 if (response.IsSuccessStatusCode)
                 {
                     var resultJson = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(resultJson);
                     var result = JsonSerializer.Deserialize<TwoFactorResponseDTO>(resultJson);
 
-                    // Aquí tengo que regresar a agregar los del JWT XD
-                    Preferences.Set("jwtToken", result.JwtToken);
+                    if (result != null)
+                    {
+                        // Guardar en preferencias para persistencia
+                        Preferences.Set("jwtToken", result.JwtToken);
+                        Preferences.Set("username", dto.Username);
+
+                        // Guardar en singleton para uso en runtime
+                        UserSession.Instance.SetUser(dto.Username, result.JwtToken);
+                    }
 
                     await Navigation.PushAsync(new MainMenuPage());
                 }
-                else
-                {
-                    ShowError("Código incorrecto o expirado.");
-                }
+
             }
             catch (Exception ex)
             {

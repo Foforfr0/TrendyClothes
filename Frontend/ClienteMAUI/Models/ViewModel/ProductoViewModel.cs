@@ -9,16 +9,17 @@ namespace ClienteMAUI.Models.ViewModel
         public int CantidadVendidos { get; set; }
         public ImageSource? ImageSource { get; set; }
 
-        // Constructor vacío para binding
+        public bool EsPropio { get; set; }
+
         public ProductoViewModel() { }
 
-        // Constructor con parámetros
-        public ProductoViewModel(string nombre, decimal precio, int cantidadVendidos, ImageSource? imageSource)
+        public ProductoViewModel(int id, string nombre, decimal precio, int cantidadVendidos, ImageSource? imageSource, bool esPropio)
         {
             Nombre = nombre;
             Precio = precio;
             CantidadVendidos = cantidadVendidos;
             ImageSource = imageSource;
+            EsPropio = esPropio;
         }
 
         public override string ToString()

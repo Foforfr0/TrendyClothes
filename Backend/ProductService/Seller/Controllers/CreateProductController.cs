@@ -13,7 +13,6 @@ namespace ProductSellerService.Controllers {
 
         public CreateProductController (ICreateProductService createProductService) {
             _createProductService = createProductService;
-            _logger = logger;
         }
 
         [HttpPost]
