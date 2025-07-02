@@ -251,4 +251,6 @@ INSERT INTO StatusesAuction (Status) VALUES
 ('Cancelado');
 
 
-SELECT * FROM Users
+SELECT * FROM Users;
+
+SELECT * FROM Products LEFT JOIN PhotosProduct ON Products.Id = PhotosProduct.ProductId;
