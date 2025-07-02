@@ -21,8 +21,10 @@ namespace ClienteMAUI.Connections
         private const string BaseUrl = "http://10.0.2.2:5000/api/Product";
 
         public static string GetCategories => $"{BaseUrl}/Tags/Categories";
-
+        public static string GetTypes => $"{BaseUrl}/Tags/Types";
+        public static string GetStatuses => $"{BaseUrl}/Tags/Statusses";
         public static string GetProducts => $"{BaseUrl}/Search";
+        public static string GetProductDetails(int id) => $"{BaseUrl}/Details?id={id}";
 
     }
     public static class UserEndpoints
@@ -31,6 +33,9 @@ namespace ClienteMAUI.Connections
         private const string BaseUrl2 = "http://10.0.2.2:5000/api/MyProduct";
         public static string GetMyProducts(string username) => $"{BaseUrl}/Search?username={Uri.EscapeDataString(username)}";
         public static string DeleteProduct(int idproduct) => $"{BaseUrl2}/Delete?id={idproduct}";
+
+        public static string CreateProduct => $"{BaseUrl2}";
+        public static string UpdateProduct => $"{BaseUrl2}/Edit";
 
     }
 

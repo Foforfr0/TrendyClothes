@@ -22,10 +22,8 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     if (!name || !price || !discount || !description || !stockAvailable || !categoryId || !typeId || !statusId) return;
 
     try {
-        const saveImage = await sendImageMime();
-        if (!saveImage) return;
-        const response = await fetch(window.config.PutProductData, {
-            method: 'PUT',
+        const response = await fetch(window.config.PostProductData, {
+            method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
@@ -38,8 +36,9 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
 
         switch (response.status) {
             case 200:
-                utils.showToast(data.message, 'success');
                 window.data.idProduct = data.productId;
+                await sendImageMime();
+                utils.showToast(data.message, 'success');
                 window.location.replace(`/Product/Seller/ViewDetails?id=${data.productId}`);
                 break;
             case 400:
@@ -64,16 +63,20 @@ function getAntiForgeryToken() {
 async function sendImageMime() {
     const imageBase64Input = document.getElementById('imageBase64Input');
     const mimeInput = document.getElementById('mimeInput');
+    const submitBtn = document.getElementById('submitForm');
+
+    if (!submitBtn) {
+        console.error('submitBtn no encontrado.');
+        return;
+    }
 
     if (!imageBase64Input.value || !mimeInput.value) {
         utils.showToast('Por favor selecciona una imagen primero.', 'danger');
         return;
     }
 
-    // Mostrar loading
-    const submitBtn = document.getElementById('submitForm');
+    const originalBtnHTML = submitBtn.innerHTML;
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
     try {
         const response = await fetch('/Product/Seller/RegistrationProduct?handler=SendImage', {
             method: 'POST',
@@ -89,30 +92,25 @@ async function sendImageMime() {
             })
         });
 
-        console.log(response);
-
-        let result = await response.json();
+        const result = await response.json();
 
         if (response.ok && result.success) {
             utils.showToast(`Imagen guardada exitosamente`, 'success');
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
-            return true;
         } else {
             console.error('Server error:', result);
             utils.showToast(result.message || 'Error al guardar la imagen', 'danger');
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
-            return false;
         }
+
     } catch (error) {
         console.error('Error:', error);
         utils.showToast('Error de conexión al guardar la imagen', 'danger');
+    } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
-        return false;
+        submitBtn.innerHTML = originalBtnHTML;
     }
 }
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     // Referencias a elementos del DOM
