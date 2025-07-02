@@ -1,7 +1,10 @@
 namespace ClienteMAUI.Views;
 
 using ClienteMAUI.Connections;
+using ClienteMAUI.Models.DTO.Pruducts;
 using ClienteMAUI.Models.ViewModel;
+using ClienteMAUI.Session;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -14,8 +17,19 @@ public partial class MainMenuPage : ContentPage
     public MainMenuPage()
 	{
 		InitializeComponent();
-        _httpClient = new HttpClient();
+        var savedUsername = Preferences.Get("username", null);
+        var savedJwt = Preferences.Get("jwtToken", null);
+
+        if (!string.IsNullOrWhiteSpace(savedUsername) && !string.IsNullOrWhiteSpace(savedJwt))
+        {
+            UserSession.Instance.SetUser(savedUsername, savedJwt);
+        }
+        Console.WriteLine($"[MainMenu] Username: {savedUsername}");
+        Console.WriteLine($"[MainMenu] JWT: {savedJwt}");
+        Console.WriteLine($"[UserSession] Username: {UserSession.Instance.Username}");
+
         _ = CargarCategoriasAsync();
+        _ = CargarProductosAsync();
     }
     
 
@@ -25,10 +39,50 @@ public partial class MainMenuPage : ContentPage
 
     }
 
-    private void OnEliminarProductoClicked(object sender, EventArgs e)
+    private async void OnEliminarProductoClicked(object sender, EventArgs e)
     {
+        if (sender is Button btn && btn.BindingContext is ProductoViewModel producto)
+        {
+            bool confirm = await DisplayAlert("Confirmar", $"¿Eliminar el producto '{producto.Nombre}'?", "Sí", "No");
+            if (!confirm) return;
 
+            try
+            {
+                var token = UserSession.Instance.JwtToken;
+
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    await DisplayAlert("Error", "Sesión no válida. No hay token disponible.", "OK");
+                    return;
+                }
+
+                // Establecer el JWT en la cabecera
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", token);
+
+                var url = UserEndpoints.DeleteProduct(producto.Id);
+                var request = new HttpRequestMessage(HttpMethod.Patch, url);
+                var response = await _httpClient.SendAsync(request);
+
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await DisplayAlert("Éxito", "Producto eliminado correctamente", "OK");
+                    await FiltrarPorCategoria("Mis productos");
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    await DisplayAlert("Error", $"No se pudo eliminar el producto: {error}", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Excepción", ex.Message, "OK");
+            }
+        }
     }
+
 
     private void OnModificarProductoClicked(object sender, EventArgs e)
     {
@@ -44,27 +98,23 @@ public partial class MainMenuPage : ContentPage
             {
                 var json = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine("JSON COMPLETO RECIBIDO:");
-                Console.WriteLine(json);
-
+            
                 var categoriaResponse = JsonSerializer.Deserialize<CategoriaResponse>(json);
 
                 if (categoriaResponse?.Body != null)
                 {
-                    Console.WriteLine($"Se recibieron {categoriaResponse?.Body?.Count} categorías");
-
+                
                     var categorias = categoriaResponse.Body;
 
                     CategoryButtonsLayout.Children.Clear();
-
-                    CategoryButtonsLayout.Children.Add(CrearBotonCategoria("Todos", 0));
-                    CategoryButtonsLayout.Children.Add(CrearBotonCategoria("Mis productos", -1));
+                    CategoryButtonsLayout.Children.Add(CrearBotonCategoria("Todos"));
+                    CategoryButtonsLayout.Children.Add(CrearBotonCategoria("Mis productos"));
 
                     foreach (var cat in categorias)
                     {
-                        Console.WriteLine($"CATEGORIA -> Id: {cat.Id}, Nombre: {cat.Category}");
-                        CategoryButtonsLayout.Children.Add(CrearBotonCategoria(cat.Category, cat.Id));
+                        CategoryButtonsLayout.Children.Add(CrearBotonCategoria(cat.Category));
                     }
+
                 }
             }
         }
@@ -74,7 +124,46 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
-    private Button CrearBotonCategoria(string texto, int categoriaId)
+    private async Task CargarProductosAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync(ProductEndpoints.GetProducts);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                await DisplayAlert("Error", "No se pudo obtener la lista de productos", "OK");
+                return;
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var productosResponse = JsonSerializer.Deserialize<ProductoListResponse>(json);
+
+            if (productosResponse?.Body == null)
+            {
+                await DisplayAlert("Error", "Respuesta inválida del servidor", "OK");
+                return;
+            }
+
+            var productos = productosResponse.Body.Select(p => new ProductoViewModel
+            {
+                Nombre = p.Name,
+                Precio = p.Price,
+                CantidadVendidos = p.NumberSold,
+                ImageSource = null, //imagen vendrá después por gRPC
+                EsPropio = false
+            }).ToList();
+
+            ProductsCollection.ItemsSource = productos;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Excepción", ex.Message, "OK");
+        }
+    }
+
+
+    private Button CrearBotonCategoria(string texto)
     {
         return new Button
         {
@@ -84,14 +173,83 @@ public partial class MainMenuPage : ContentPage
             BackgroundColor = Colors.LightGray,
             TextColor = Colors.Black,
             CornerRadius = 12,
-            Command = new Command(async () => await FiltrarPorCategoria(categoriaId))
+            Command = new Command(async () => await FiltrarPorCategoria(texto))
         };
     }
 
-    private async Task FiltrarPorCategoria(int categoriaId)
+
+    private async Task FiltrarPorCategoria(string nombreCategoria)
     {
-        await DisplayAlert("Categoría seleccionada", $"ID categoría: {categoriaId}", "OK");
+        try
+        {
+            string url;
+
+            if (nombreCategoria.Equals("Todos", StringComparison.OrdinalIgnoreCase))
+            {
+                // Mostrar todos los productos
+                url = ProductEndpoints.GetProducts;
+            }
+            else if (nombreCategoria.Equals("Mis productos", StringComparison.OrdinalIgnoreCase))
+            {
+                // Verificar si hay sesión
+                var username = UserSession.Instance.Username;
+                var token = UserSession.Instance.JwtToken;
+
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(token))
+                {
+                    await DisplayAlert("Error", "No se ha iniciado sesión correctamente.", "OK");
+                    return;
+                }
+
+                // Establecer token en headers
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                // Endpoint para mis productos
+                url = UserEndpoints.GetMyProducts(username);
+            }
+            else
+            {
+                // Filtro por categoría
+                url = $"{ProductEndpoints.GetProducts}?query={Uri.EscapeDataString(nombreCategoria)}";
+            }
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                await DisplayAlert("Error", "No se pudo obtener la lista de productos", "OK");
+                return;
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var productosResponse = JsonSerializer.Deserialize<ProductoListResponse>(json);
+
+            if (productosResponse?.Body == null)
+            {
+                await DisplayAlert("Error", "Respuesta inválida del servidor", "OK");
+                return;
+            }
+
+            var productos = productosResponse.Body.Select(p => new ProductoViewModel
+            {
+                Id = p.Id,
+                Nombre = p.Name,
+                Precio = p.Price,
+                CantidadVendidos = p.NumberSold,
+                ImageSource = null,
+                EsPropio = nombreCategoria.Equals("Mis productos", StringComparison.OrdinalIgnoreCase)
+            }).ToList();
+
+            ProductsCollection.ItemsSource = productos;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Excepción", ex.Message, "OK");
+        }
     }
+
+
 
     public class CategoriaResponse
     {

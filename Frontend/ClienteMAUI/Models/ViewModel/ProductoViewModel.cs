@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
-using System;
+﻿using Microsoft.Maui.Controls;
 
 namespace ClienteMAUI.Models.ViewModel
 {
@@ -12,32 +6,27 @@ namespace ClienteMAUI.Models.ViewModel
     {
         public int Id { get; set; }
         public string? Nombre { get; set; }
-        public string? Descripcion { get; set; }
-        public string? Categoria { get; set; }
         public decimal Precio { get; set; }
-        public int Stock { get; set; }
+        public int CantidadVendidos { get; set; }
         public ImageSource? ImageSource { get; set; }
-        public bool IsOwnedByUser { get; set; }
 
-        // Constructor vacío para binding
+        public bool EsPropio { get; set; }
+
         public ProductoViewModel() { }
 
-        // Constructor con parámetros
-        public ProductoViewModel(int id, string nombre, string descripcion, decimal precio, int stock, string categoria, ImageSource imageSource, bool isOwnedByUser)
+        public ProductoViewModel(int id, string nombre, decimal precio, int cantidadVendidos, ImageSource? imageSource, bool esPropio)
         {
             Id = id;
             Nombre = nombre;
-            Descripcion = descripcion;
             Precio = precio;
-            Stock = stock;
-            Categoria = categoria;
+            CantidadVendidos = cantidadVendidos;
             ImageSource = imageSource;
-            IsOwnedByUser = isOwnedByUser;
+            EsPropio = esPropio;
         }
 
         public override string ToString()
         {
-            return $"{Nombre} - {Descripcion} - Precio: {Precio:C} - Stock: {Stock}";
+            return $"{Nombre} - Precio: {Precio:C} - Vendidos: {CantidadVendidos}";
         }
     }
 }
