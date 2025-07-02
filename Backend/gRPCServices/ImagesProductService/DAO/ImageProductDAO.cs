@@ -40,5 +40,25 @@ namespace ImagesProductService.DAO {
                 return true;
             }
         }
+
+        public async Task<bool> SaveNewImage (int idProduct, byte[] photo) {
+            try {
+                PhotosProduct? pp = await _context.PhotosProducts
+                    .Where (image => image.ProductId == idProduct)
+                    .FirstOrDefaultAsync ();
+
+                if (pp != null) {
+                    pp.Photo = photo;
+                    await _context.PhotosProducts.AddAsync (pp);
+                    await _context.SaveChangesAsync ();
+                    return false;
+                } else {
+                    return true;
+                }
+
+            } catch {
+                return true;
+            }
+        }
     }
 }
