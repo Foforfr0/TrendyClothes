@@ -18,6 +18,7 @@ namespace WpfApp.Utilities
         public static readonly int MAX_LENGTH_CITY = 16;
         public static readonly int MAX_LENGTH_ZIPCODE = 5;
         public static readonly int MAX_LENGTH_USERNAME = 16;
+        public static readonly int MIN_LENGTH_PASSWORD = 6;
         public static readonly int MAX_LENGTH_PASSWORD = 24;
         public static readonly int MAX_LENGTH_DESCRIPTION = 128;
         public static readonly int MAX_LENGTH_MONETARY_VALUE = 9;
