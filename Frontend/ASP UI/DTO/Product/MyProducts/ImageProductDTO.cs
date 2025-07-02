@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace WebPage.DTO.Product.MyProducts {
+﻿namespace WebPage.DTO.Product.MyProducts {
     public class ImageProductDTO {
         public int? IdProduct {
             get; set;
