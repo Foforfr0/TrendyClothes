@@ -10,8 +10,10 @@ Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, util
 ```bash
 # Construye las imágenes sin iniciarlas
 docker compose up --build --no-start
-# Elimina el volumen (En caso de fallo)
-docker compose down -v
+# Elimina el volumen (En caso de en SQL o tokenantiforgery)
+	docker compose down -v
+# Detener contenedores en ejecución
+docker compose stop
 # Inicia los contenedores ya construidos
 docker compose start
 ```
@@ -28,7 +30,7 @@ sqlcmd -S localhost,1433 -U SA -P StrongP@ssw0rd!
 ```bash
 # Copia el script SQL de creación de base de datos
 docker cp ./Database.sql sqlserver:/tmp/Database.sql
-# Copia los archivos de la base de datos (si aplica)
+# Copia los archivos de la base de datos
 docker cp "C:\Archivos\Example Files\TrendyClothes\." sqlserver:/var/opt/mssql/data
 # Ejecutar el script SQL desde el host
 sqlcmd -S localhost,1433 -U sa -P StrongP@ssw0rd! -i "C:\Archivos\Projects Programs\Páginas web\TrendyClothes\Database.sql"
