@@ -26,7 +26,7 @@ namespace WebPage.Auth {
             }
         }
 
-        public static string? GetNameJWT (string jwt) => GetClaimFromJwt (jwt, "Name");
+        public static string? GetNameJWT (string jwt) => GetClaimFromJwt (jwt, "name");
         public static string? GetRoleJWT (string jwt) => GetClaimFromJwt (jwt, "role");
         public static string? GetSidJWT (string jwt) => GetClaimFromJwt (jwt, "sid");
 

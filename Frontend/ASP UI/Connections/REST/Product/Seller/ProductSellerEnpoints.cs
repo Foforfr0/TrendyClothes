@@ -9,7 +9,13 @@
         public string GetDetailsProduct {
             get; set;
         }
+        public string PostNewProduct {
+            get; set;
+        }
         public string PutDetailsProduct {
+            get; set;
+        }
+        public string DeleteProduct {
             get; set;
         }
     }

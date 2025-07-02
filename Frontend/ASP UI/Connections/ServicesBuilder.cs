@@ -104,9 +104,21 @@ namespace WebPage.Connections {
             }
         }
 
+        public string SellerPostProductUrl {
+            get {
+                return Combine (_config.REST.Product.Seller.BaseUrl, _config.REST.Product.Seller.PostNewProduct);
+            }
+        }
+
         public string SellerPutProductDetailsUrl {
             get {
                 return Combine (_config.REST.Product.Seller.BaseUrl, _config.REST.Product.Seller.PutDetailsProduct);
+            }
+        }
+
+        public string SellerDeleteProductUrl {
+            get {
+                return Combine (_config.REST.Product.Seller.BaseUrl, _config.REST.Product.Seller.DeleteProduct);
             }
         }
 

@@ -7,6 +7,8 @@ namespace ProductSellerService.Config {
             services.AddScoped<EditProductDAO> ();
             services.AddScoped<CreateProductDAO> ();
             services.AddScoped<DeleteProductDAO> ();
+
+            services.AddScoped<ConsultUserDAO> ();
         }
     }
 }

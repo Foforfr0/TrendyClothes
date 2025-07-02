@@ -2,25 +2,22 @@
 using ProductSellerService.Models;
 using ProductSellerService.Services.Interfaces;
 
-namespace ProductSellerService.Services.Implements
-{
-    public class CreateProductService : ICreateProductService
-    {
+namespace ProductSellerService.Services.Implements {
+    public class CreateProductService : ICreateProductService {
         private readonly CreateProductDAO _createProductDAO;
 
-        public CreateProductService(CreateProductDAO createProductDAO)
-        {
+        public CreateProductService (CreateProductDAO createProductDAO) {
             _createProductDAO = createProductDAO;
         }
 
-        public async Task<MessageResponse<bool>> PostProductAsync(CreateProductDTO createProductDTO)
-        {
-            MessageResponse<bool> response = await _createProductDAO.PostProductAsync(createProductDTO);
+        public async Task<MessageResponse<int>> PostProductAsync (NewProductDTO newProduct) {
+            MessageResponse<int> response = await _createProductDAO.PostProductAsync (newProduct);
 
             if (response.IsError)
-                return MessageResponse<bool>.Failure(response.Message);
-
-            return MessageResponse<bool>.Success(response.Message, true);
+                return MessageResponse<int>.Failure (response.Message);
+            if (response.DataRetrieved <= 0)
+                return MessageResponse<int>.Success (response.Message, 0);
+            return MessageResponse<int>.Success (response.Message, response.DataRetrieved);
         }
     }
 }
