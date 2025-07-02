@@ -13,6 +13,8 @@ namespace ProductSellerService.DAO {
         public async Task<MessageResponse<bool>> PutProductAsync (EditProductDTO editProductDTO) {
             try {
                 Entities.Product? currentProduct = await _context.Products.FindAsync (editProductDTO.Id);
+                if (currentProduct == null)
+                    return MessageResponse<bool>.Success ($"No se logró obtener el producto por editar.", default);
 
                 currentProduct.Name = editProductDTO.Name;
                 currentProduct.Price = editProductDTO.Price;
@@ -52,7 +54,7 @@ namespace ProductSellerService.DAO {
                 } while (SaveFailed);
 
                 return MessageResponse<bool>.Success ($"Datos de producto actualizados.", true);
-        } catch (Exception ex) {
+            } catch (Exception ex) {
                 return MessageResponse<bool>.Failure ($"Error interno del servidor: {ex.Message}");
             }
         }

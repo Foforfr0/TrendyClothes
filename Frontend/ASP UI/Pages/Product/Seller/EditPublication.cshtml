@@ -13,6 +13,9 @@
                 <h1 class="col text-start">@ViewData["Title"]</h1>
                 <div class="col-auto text-end align-content-center m-auto">
                     <div class="row align-content-center">
+                        <button type="button" id="deleteProduct" onclick="" class="col-auto btn btn-primary bg-success border-0 p-2 m-1 text-white">
+                            <i class="bi bi-trash-fill"></i> Eliminar producto
+                        </button>
                         <button type="submit" id="submitForm" class="col-auto btn btn-primary bg-success border-0 p-2 m-1 text-white">
                             <i class="bi bi-bookmark-check fs-5 fw-bold"></i>
                         </button>
@@ -117,7 +120,8 @@
             idProduct: @Model.id
         };
         window.config = {
-            PutProductData: '@UrlBuilder.SellerPutProductDetailsUrl'
+            PutProductData: '@UrlBuilder.SellerPutProductDetailsUrl',
+            DeleteProductData: '@UrlBuilder.SellerDeleteProductUrl',
         };
     </script>
     <script type="module" src="~/js/Product/EditProduct.js"></script>

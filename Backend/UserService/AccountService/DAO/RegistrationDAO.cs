@@ -26,7 +26,7 @@ namespace AccountService.DAO {
                 newUser.Password = newUserDTO.Password;
                 newUser.RoleId = 2;
 
-                _context.Users.Add (newUser);
+                await _context.Users.AddAsync (newUser);
                 await _context.SaveChangesAsync ();
 
                 return MessageResponse<bool>.Success ("Usuario registrado correctamente.", true);

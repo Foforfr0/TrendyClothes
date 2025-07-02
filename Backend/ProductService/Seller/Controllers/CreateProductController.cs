@@ -4,46 +4,39 @@ using ProductSellerService.DAO;
 using ProductSellerService.Models;
 using ProductSellerService.Services.Interfaces;
 
-namespace ProductSellerService.Controllers
-{
+namespace ProductSellerService.Controllers {
     [ApiController]
     [Authorize]
-    [Route("api/MyProduct")]
-    public class CreateProductController : Controller
-    {
+    [Route ("api/MyProduct")]
+    public class CreateProductController : Controller {
         private readonly ICreateProductService _createProductService;
-        private readonly ILogger<CreateProductController> _logger;
-        public CreateProductController(ICreateProductService createProductService, ILogger<CreateProductController> logger)
-        {
+
+        public CreateProductController (ICreateProductService createProductService) {
             _createProductService = createProductService;
             _logger = logger;
         }
-        
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDTO request)
-        {
-            try
-            {
+
+        [HttpPost]
+        public async Task<IActionResult> PostProduct ([FromBody] NewProductDTO newProduct) {
+            try {
                 if (!ModelState.IsValid)
-                {
-                    _logger.LogWarning("Invalid product data: {Errors}", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-                    return BadRequest("Datos del producto inválidos.");
-                }
-
-                MessageResponse<bool> response = await _createProductService.PostProductAsync(request);
-
+                    return BadRequest (new {
+                        message = $"Los datos del nuevo producto son inválidos."
+                    });
+                newProduct.UsernameSeller = User.Identity?.Name ?? string.Empty;
+                MessageResponse<int> response = await _createProductService.PostProductAsync (newProduct);
                 if (response.IsError)
-                    return HttpResponses.InternalServerError(response.Message);
-
-                return Ok(new
-                {
-                    response.Message
+                    return HttpResponses.InternalServerError (response.Message);
+                if (response.DataRetrieved<=0)
+                    return Conflict (new {
+                        response.Message
+                    });
+                return Ok (new {
+                    response.Message,
+                    productId = response.DataRetrieved
                 });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning("Invalid product data: {Errors}", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-                return HttpResponses.InternalServerError(ex.ToString());
+            } catch (Exception ex) {
+                return HttpResponses.InternalServerError (ex.Message);
             }
         }
     }

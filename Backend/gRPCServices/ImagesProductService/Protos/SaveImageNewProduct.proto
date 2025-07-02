@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "SaveImageNewProduct";
+
+package saveimagenewproduct;
+
+service SaveNewImageService {
+  rpc SaveNewImage (SaveNewImageRequest) returns (SaveNewImageReply);
+}
+
+// Mensaje para guardar imagen
+message SaveNewImageRequest {
+  int32 product_id = 1;
+  string image_base64 = 2;
+  string mime_type = 3;
+}
+
+message SaveNewImageReply {
+  bool success = 1;
+  string message = 2;
+}

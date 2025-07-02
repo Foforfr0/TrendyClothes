@@ -3,47 +3,12 @@
 async function confirmCancel() {
     const response = await utils.showConfirmationToast('¿Estás seguro de que deseas cancelar los cambios?\nSe perderán todos los datos no guardados.')
     if (response) {
-        window.location.replace(`/Product/Seller/ViewDetails?id=${window.data.idProduct}`);
+        window.location.replace(`/Product/Seller/ConsultMyProducts`);
     }
 }
 window.confirmCancel = confirmCancel;
 
-document.getElementById('cancelButton').addEventListener('click', async function (event) {
-    const response = await utils.showConfirmationToast('¿Estás seguro de que deseas ELIMINAR los cambios?\nSe perderán todos los datos del producto.')
-    if (response) {
-        try {
-            const response = await fetch(window.config.DeleteProductData, {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: window.data.idProduct })
-            });
-            if (!response) return;
-            const data = await response.json();
-
-            switch (response.status) {
-                case 204:
-                    utils.showToast('Producto elminado.', 'success');
-                    window.location.replace(`Product/Seller/ConsultMyProducts`);
-                    break;
-                case 404:
-                case 409:
-                    utils.showToast("Falló al elminar producto", 'warning');
-                    break;
-                case 500:
-                    utils.showToast('Error interno del servidor.', 'danger');
-                    break;
-            }
-        } catch (error) {
-            utils.showToast('Error al conectarse con el servidor.', 'danger');
-            console.error('Error modificando producto: ', error);
-        }
-    }
-});
-
-document.getElementById('modificationForm').addEventListener('submit', async function (event) {
+document.getElementById('registrationForm').addEventListener('submit', async function (event) {
     event.preventDefault();
     const name = utils.getValueDOMElementNullOrEmpty('InputName');
     const price = utils.getValueDOMElementNullOrEmpty('InputPrice');
@@ -65,7 +30,7 @@ document.getElementById('modificationForm').addEventListener('submit', async fun
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: window.data.idProduct, name, price, discount, description, stockAvailable, categoryId, typeId, statusId })
+            body: JSON.stringify({name, price, discount, description, stockAvailable, categoryId, typeId, statusId})
         });
 
         if (!response) return;
@@ -74,7 +39,8 @@ document.getElementById('modificationForm').addEventListener('submit', async fun
         switch (response.status) {
             case 200:
                 utils.showToast(data.message, 'success');
-                window.location.replace(`/Product/Seller/ViewDetails?id=${window.data.idProduct}`);
+                window.data.idProduct = data.productId;
+                window.location.replace(`/Product/Seller/ViewDetails?id=${data.productId}`);
                 break;
             case 400:
             case 404:
@@ -109,7 +75,7 @@ async function sendImageMime() {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
     try {
-        const response = await fetch('/Product/Seller/EditPublication?handler=SendImage', {
+        const response = await fetch('/Product/Seller/RegistrationProduct?handler=SendImage', {
             method: 'POST',
             credentials: 'include',
             headers: {
