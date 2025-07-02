@@ -61,7 +61,7 @@ public partial class MainMenuPage : ContentPage
                     new AuthenticationHeaderValue("Bearer", token);
 
                 var url = UserEndpoints.DeleteProduct(producto.Id);
-                var request = new HttpRequestMessage(HttpMethod.Patch, url);
+                var request = new HttpRequestMessage(HttpMethod.Delete, url);
                 var response = await _httpClient.SendAsync(request);
 
 
