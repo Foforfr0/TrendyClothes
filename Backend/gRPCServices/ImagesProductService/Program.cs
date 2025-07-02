@@ -56,5 +56,6 @@ app.MapGet ("/", () =>
 // === Mapear Servicios gRPC ===
 app.MapGrpcService<GetImageServiceImpl> ();
 app.MapGrpcService<SaveImageServiceImpl> ();
+app.MapGrpcService<SaveNewImageServiceImpl> ();
 
 app.Run ();
