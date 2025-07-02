@@ -31,14 +31,6 @@ namespace ProductSellerService.Models {
             get; set;
         }
 
-        public string UsernameSeller {
-            get; set;
-        }
-
-        public int SellerId {
-            get; set;
-        }
-
         [Required (ErrorMessage = "Debe seleccionar una categoría.")]
         [Range (1, 11, ErrorMessage = "La categoría seleccionada no es válida.")]
         public required int CategoryId {
@@ -54,6 +46,14 @@ namespace ProductSellerService.Models {
         [Required (ErrorMessage = "Debe seleccionar un estado.")]
         [Range (1, 2, ErrorMessage = "El estado seleccionado no es válido.")]
         public required int StatusId {
+            get; set;
+        }
+
+        public string? UsernameSeller {
+            get; set;
+        }
+
+        public int SellerId {
             get; set;
         }
     }

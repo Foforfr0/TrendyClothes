@@ -22,10 +22,8 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     if (!name || !price || !discount || !description || !stockAvailable || !categoryId || !typeId || !statusId) return;
 
     try {
-        const saveImage = await sendImageMime();
-        if (!saveImage) return;
-        const response = await fetch(window.config.PutProductData, {
-            method: 'PUT',
+        const response = await fetch(window.config.PostProductData, {
+            method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
@@ -38,8 +36,9 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
 
         switch (response.status) {
             case 200:
+                window.data.productId
+                await sendImageMime();
                 utils.showToast(data.message, 'success');
-                window.data.idProduct = data.productId;
                 window.location.replace(`/Product/Seller/ViewDetails?id=${data.productId}`);
                 break;
             case 400:
@@ -61,7 +60,7 @@ function getAntiForgeryToken() {
     return input ? input.value : '';
 }
 
-async function sendImageMime() {
+async function sendImageMime(productId) {
     const imageBase64Input = document.getElementById('imageBase64Input');
     const mimeInput = document.getElementById('mimeInput');
 
@@ -83,7 +82,7 @@ async function sendImageMime() {
                 'RequestVerificationToken': getAntiForgeryToken(),
             },
             body: JSON.stringify({
-                idProduct: window.data.idProduct,
+                idProduct: productId,
                 imageBase64: imageBase64Input.value,
                 mimeImage: mimeInput.value
             })
