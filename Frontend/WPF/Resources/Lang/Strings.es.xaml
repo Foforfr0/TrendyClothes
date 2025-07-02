@@ -73,6 +73,7 @@
     <sys:String x:Key="Login_Header">Iniciar sesion</sys:String>
     <sys:String x:Key="Login_Desc">Ingresa tu nombre de usuario y contraseña para acceder</sys:String>
     <sys:String x:Key="Login_2FCode">Codigo enviado:</sys:String>
+    <sys:String x:Key="Login_2FCodeD">Se ha enviado el codigo a tu correo.</sys:String>
     <sys:String x:Key="Login_SendCode">Enviar codigo</sys:String>
     <sys:String x:Key="Login_ValidateCode">Validar codigo</sys:String>
     <sys:String x:Key="Login_TbUsername">Nombre de usuario:</sys:String>
@@ -83,6 +84,10 @@
     <sys:String x:Key="Login_DialogDSignOut">¿Estás seguro de que deseas cerrar la sesión actual? La próxima vez que desees ingresar al sistema, deberás autenticarte nuevamente.</sys:String>
     <sys:String x:Key="Login_DialogTSignedOut">Sesión cerrada</sys:String>
     <sys:String x:Key="Login_DialogDSignedOut">La sesión fue cerrada exitosamente.</sys:String>
+    <sys:String x:Key="Login_DialogTFailed">Error en inicio de sesion</sys:String>
+    <sys:String x:Key="Login_DialogDFailed">Credenciales incorrectas, por favor intenta de nuevo</sys:String>
+    <sys:String x:Key="Login_DialogTEmailRequired">Sin correo</sys:String>
+    <sys:String x:Key="Login_DialogDEmailRequired">Debes ingresar tu correo para recibir el codigo</sys:String>
 
     <!--Registro de usuario-->
     <sys:String x:Key="RegUser_Header">Crea tu cuenta</sys:String>
