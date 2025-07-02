@@ -8,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ClienteMAUI.Views;
+
 
 public partial class MainMenuPage : ContentPage
 {
@@ -34,9 +36,9 @@ public partial class MainMenuPage : ContentPage
     
 
 
-    private void OnCrearProductoClicked(object sender, EventArgs e)
+    private async void OnCrearProductoClicked(object sender, EventArgs e)
     {
-
+        await Navigation.PushAsync(new ProductFormPage());
     }
 
     private async void OnEliminarProductoClicked(object sender, EventArgs e)
