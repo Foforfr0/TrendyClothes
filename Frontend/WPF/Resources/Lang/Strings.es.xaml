@@ -31,6 +31,7 @@
     <sys:String x:Key="Glb_UserProfile">Perfil de usuario</sys:String>
     <sys:String x:Key="Glb_UserData">Datos personales</sys:String>
     <sys:String x:Key="Glb_Email">Correo electronico</sys:String>
+    <sys:String x:Key="Glb_Phone">Numero de telefono:</sys:String>
     <sys:String x:Key="Glb_Username">Nombre de usuario</sys:String>
     <sys:String x:Key="Glb_FullName">Nombre completo</sys:String>
     <sys:String x:Key="Glb_UserRole">Tipo de usuario</sys:String>
@@ -73,6 +74,7 @@
     <sys:String x:Key="Login_Header">Iniciar sesion</sys:String>
     <sys:String x:Key="Login_Desc">Ingresa tu nombre de usuario y contraseña para acceder</sys:String>
     <sys:String x:Key="Login_2FCode">Codigo enviado:</sys:String>
+    <sys:String x:Key="Login_2FCodeD">Se ha enviado el codigo a tu correo.</sys:String>
     <sys:String x:Key="Login_SendCode">Enviar codigo</sys:String>
     <sys:String x:Key="Login_ValidateCode">Validar codigo</sys:String>
     <sys:String x:Key="Login_TbUsername">Nombre de usuario:</sys:String>
@@ -83,19 +85,26 @@
     <sys:String x:Key="Login_DialogDSignOut">¿Estás seguro de que deseas cerrar la sesión actual? La próxima vez que desees ingresar al sistema, deberás autenticarte nuevamente.</sys:String>
     <sys:String x:Key="Login_DialogTSignedOut">Sesión cerrada</sys:String>
     <sys:String x:Key="Login_DialogDSignedOut">La sesión fue cerrada exitosamente.</sys:String>
+    <sys:String x:Key="Login_DialogTFailed">Error en inicio de sesion</sys:String>
+    <sys:String x:Key="Login_DialogDFailed">Credenciales incorrectas, por favor intenta de nuevo</sys:String>
+    <sys:String x:Key="Login_DialogTEmailRequired">Sin correo</sys:String>
+    <sys:String x:Key="Login_DialogDEmailRequired">Debes ingresar tu correo para recibir el codigo</sys:String>
 
     <!--Registro de usuario-->
     <sys:String x:Key="RegUser_Header">Crea tu cuenta</sys:String>
     <sys:String x:Key="RegUser_Desc">Ingresa los datos para tu cuenta</sys:String>
     <sys:String x:Key="RegUser_UserData">Datos de la cuenta</sys:String>
     <sys:String x:Key="RegUser_FirstName">Nombre(s)</sys:String>
-    <sys:String x:Key="RegUser_LastName">Apellido(s)</sys:String>
+    <sys:String x:Key="RegUser_MiddleName">Apellido Paterno</sys:String>
+    <sys:String x:Key="RegUser_LastName">Apellido materno</sys:String>
     <sys:String x:Key="RegUser_AccountData">Credenciales</sys:String>
     <sys:String x:Key="RegUser_Password">Crea tu contraseña</sys:String>
     <sys:String x:Key="RegUser_RepeatPassword">Confirma tu contraseña</sys:String>
     <sys:String x:Key="RegUser_BtnRegister">Crear cuenta</sys:String>
     <sys:String x:Key="RegUser_DialogTSuccess">Registro exitoso</sys:String>
     <sys:String x:Key="RegUser_DialogDSucsess">Se ha registrado tu cuenta, ahora podras iniciar sesion en la plataforma</sys:String>
+    <sys:String x:Key="RegUser_DialogTFailed">Error al registrarse</sys:String>
+    <sys:String x:Key="RegUser_DialogDFailed">Ocurrio un error al registrar tus datos</sys:String>
     <sys:String x:Key="RegUser_TInvalidPassword">Contraseña invalida</sys:String>
     <sys:String x:Key="RegUser_DInvalidPassword">La contraseña es muy corta, debe tener entre 8 y 16 caracteres</sys:String>
     <sys:String x:Key="RegUser_TInvalidEmail">Correo invalido</sys:String>

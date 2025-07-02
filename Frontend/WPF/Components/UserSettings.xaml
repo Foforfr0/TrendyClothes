@@ -34,13 +34,13 @@
                         Visibility="Visible"/>
                 <Button Style="{DynamicResource SettingButtonStyle}"
                         Content="{DynamicResource Glb_SignUp}"
-                        Click="SignUp_Click" Visibility="Collapsed"/>
+                        Click="SignUp_Click" Visibility="Visible"/>
                 <Button Style="{DynamicResource SignOutButtonStyle}"
                         Content="{DynamicResource Glb_SignOut}"
                         Click="SignOut_Click" Visibility="Collapsed"/>
                 <Button Style="{DynamicResource SignOutButtonStyle}"
                         Content="{DynamicResource Login_Header}"
-                        Click="Login_Click" Visibility="Visible"/>
+                        Click="Login_Click" Visibility="Collapsed"/>
             </StackPanel>
         </Grid>
     </Border>

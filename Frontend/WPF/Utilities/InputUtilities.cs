@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace WpfApp.Utilities
 {
@@ -92,24 +93,56 @@ namespace WpfApp.Utilities
                 textBox.SelectionStart = textBox.Text.Length;
             };
         }
+        public static bool IsValidNameFormat(string name)
+        {
+            // Starts with uppercase, then only letters
+            string pattern = @"^[A-Z][a-zA-Z]*$";
+            return Regex.IsMatch(name, pattern);
+        }
 
-        public static void ValidatePasswordInput(PasswordBox passwordBox, string pattern, int maxLength)
+        public static bool IsValidPasswordFormat(string password)
+        {
+            // At least one uppercase, one lowercase, one digit, one special character, 6+ characters
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,}$";
+            return Regex.IsMatch(password, pattern);
+        }
+
+        public static bool IsValidPassword(string password, int minLength = 8, int maxLength = 20)
+        {
+            if (password.Length < minLength || password.Length > maxLength)
+                return false;
+
+            bool hasUpper = password.Any(char.IsUpper);
+            bool hasLower = password.Any(char.IsLower);
+            bool hasDigit = password.Any(char.IsDigit);
+            bool hasSpecial = password.Any(ch => !char.IsLetterOrDigit(ch));
+
+            return hasUpper && hasLower && hasDigit && hasSpecial;
+        }
+
+        public static void ValidatePasswordInput(PasswordBox passwordBox, int minLength = 8, int maxLength = 20)
         {
             passwordBox.PasswordChanged += (s, e) =>
             {
                 string input = passwordBox.Password;
-                string cleaned = Regex.Replace(input, pattern, "");
 
-                if (cleaned.Length > maxLength)
-                    cleaned = cleaned.Substring(0, maxLength);
+                // Only validate when user types more than X characters
+                if (input.Length < minLength)
+                    return;
 
-                if (input != cleaned)
+                if (!IsValidPassword(input, minLength, maxLength))
                 {
-                    passwordBox.Password = cleaned;
                     Animations.ShakePasswordBox(passwordBox);
+                    passwordBox.BorderBrush = Brushes.Red; // Optional visual cue
+                }
+                else
+                {
+                    passwordBox.ClearValue(Control.BorderBrushProperty); // Reset to default
                 }
             };
         }
+
+
 
         public static void ConvertToUpperCase(TextBox textBox)
         {

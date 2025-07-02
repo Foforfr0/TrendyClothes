@@ -37,31 +37,15 @@
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.4*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
-                            VerticalAlignment="Top" Margin="0, 10" Grid.Column="0">
-                    <Image Name="UserProfilePic" HorizontalAlignment="Center"
-                           Width="120" Height="160">
-                        <Image.Clip>
-                            <EllipseGeometry RadiusX="90" RadiusY="90" Center="90,90"/>
-                        </Image.Clip>
-                    </Image>
-
-                    <Button x:Name="BtnSelectImage" Content="{DynamicResource Glb_BtnSelectImage}"
-                            Style="{DynamicResource PrimaryButtonNoIconStyle}"
-                            Click="BtnSelectImage_Click" Margin="0, 5, 0, 6"/>
-                    <Button x:Name="BtnDeleteImage" Content="{DynamicResource Glb_BtnDeleteImage}"
-                            Style="{DynamicResource DangerButtonStyle}" IsEnabled="False"
-                            Click="BtnDeleteImage_Click"/>
-                </StackPanel>
-                <Grid Grid.Column="1">
+                
+                <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="0.25*"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
@@ -81,6 +65,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
@@ -105,6 +90,23 @@
                                      Style="{DynamicResource TextBoxStyle}"
                                      Margin="0,0,10,0"
                                      TextChanged="RequiredFields_TextChanged"/>
+                            <TextBox x:Name="TbMiddleName" Grid.Row="1" Grid.Column="1"
+                                     Tag="{DynamicResource RegUser_MiddleName}"
+                                     Style="{DynamicResource TextBoxStyle}"
+                                     TextChanged="RequiredFields_TextChanged"/>
+                            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="+52" Style="{DynamicResource SubtitleLabelStyle}"
+                                           Margin="0, 15, 0, 0"/>
+                                <TextBox x:Name="TbPhoneNumber" Margin="5, 0"
+                                         Style="{DynamicResource TextBoxStyle}"
+                                         Tag="{DynamicResource Glb_Phone}"
+                                         TextChanged="RequiredFields_TextChanged"/>
+                            </StackPanel>
+                            <TextBox Grid.Row="2" Margin="0, 10, 0, 10"
+                                     Style="{DynamicResource TextBoxStyle}"
+                                     Tag="{DynamicResource Glb_Username}"
+                                     TextChanged="RequiredFields_TextChanged"
+                                     x:Name="TbUsername"/>
                         </Grid>
                     </StackPanel>
 
@@ -122,12 +124,12 @@
                                          Tag="{DynamicResource RegUser_Password}"
                                          Style="{DynamicResource PasswordBoxStyle}"
                                          Margin="5"
-                                         PasswordChanged="Password_TextChanged"/>
+                                         PasswordChanged="PasswordField_PasswordChanged"/>
                                 <TextBox x:Name="TbAccountPassword" Grid.Column="0"
                                         Tag="{DynamicResource RegUser_Password}"
                                         Style="{DynamicResource ShowPasswordStyle}"
                                         Margin="5" Visibility="Collapsed"
-                                        TextChanged="Password_TextChanged"/>
+                                        TextChanged="PasswordField_TextChanged"/>
                                 <CheckBox x:Name="ChbShowPassword" Margin="10, 5, 0, 0"
                                       Content="{DynamicResource Glb_ShowPassword}"
                                       Style="{DynamicResource CheckBoxStyle}"
@@ -141,12 +143,12 @@
                                          Tag="{DynamicResource RegUser_RepeatPassword}"
                                          Style="{DynamicResource PasswordBoxStyle}"
                                          Margin="5"
-                                         PasswordChanged="Password_TextChanged"/>
+                                         PasswordChanged="ConfirmPasswordField_PasswordChanged"/>
                                 <TextBox x:Name="TbConfirmPassword" Grid.Column="0"
                                          Tag="{DynamicResource RegUser_RepeatPassword}"
                                          Style="{DynamicResource ShowPasswordStyle}"
                                          Margin="5" Visibility="Collapsed"
-                                         TextChanged="Password_TextChanged"/>
+                                         TextChanged="ConfirmPasswordField_TextChanged"/>
                                 <CheckBox x:Name="ChbShowConfirmPassword" Margin="10, 5, 0, 0"
                                           Content="{DynamicResource Glb_ShowPassword}"
                                           Style="{DynamicResource CheckBoxStyle}"
