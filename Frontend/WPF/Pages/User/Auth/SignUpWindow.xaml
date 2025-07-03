@@ -85,12 +85,12 @@
                                      Margin="10,0,0,10"
                                      TextChanged="RequiredFields_TextChanged"/>
                             <TextBox x:Name="TbEmailAddress"
-                                     Grid.Column="0" Grid.Row="1"
+                                     Grid.Column="1" Grid.Row="1"
                                      Tag="{DynamicResource Glb_Email}"
                                      Style="{DynamicResource TextBoxStyle}"
-                                     Margin="0,0,10,0"
+                                     Margin="10,0,10,0"
                                      TextChanged="RequiredFields_TextChanged"/>
-                            <TextBox x:Name="TbMiddleName" Grid.Row="1" Grid.Column="1"
+                            <TextBox x:Name="TbMiddleName" Grid.Row="1" Grid.Column="0"
                                      Tag="{DynamicResource RegUser_MiddleName}"
                                      Style="{DynamicResource TextBoxStyle}"
                                      TextChanged="RequiredFields_TextChanged"/>

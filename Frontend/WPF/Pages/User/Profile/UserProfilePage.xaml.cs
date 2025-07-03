@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using WebPage.Connections;
 using WpfApp.Components;
+using WpfApp.DTO;
+using WpfApp.DTO.User.Profile;
 using WpfApp.Pages.Auction;
 using WpfApp.Pages.Dialogs;
 using WpfApp.Pages.Product;
+using WpfApp.Session;
 using WpfApp.Utilities;
 
 namespace WpfApp.Pages.User.Profile
@@ -25,20 +18,54 @@ namespace WpfApp.Pages.User.Profile
         public UserProfilePage()
         {
             InitializeComponent();
-            LoadMockItemCards();
+            LoadUserProfile();
         }
 
-        //TODO: Load user products 
-        private void LoadMockItemCards()
+        private async void LoadUserProfile()
         {
-            for (int i = 0; i < 10; i++)
+            try
             {
-                var card = new ItemCard2()
+                string? username = UserSession.Instance.Username;
+                string? token = UserSession.Instance.JwtToken;
+
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(token))
                 {
-                    isSelectable = true
-                };
-                card.CardSelected += Card_Selected;
-                ItemsFeed.Items.Add(card);
+                    MessageDialog.Show("GlbDialogT_SessionError", "GlbDialogD_SessionError",
+                        AlertType.ERROR);
+                    return;
+                }
+
+                string url = ProfileEndpoints.GetPersonalData(username!);
+                var response = await HttpClientHelper.GetAsync(url, token);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageDialog.Show("GlbDialogT_SessionError", "GlbDialogD_SessionError",
+                        AlertType.ERROR);
+                    return;
+                }
+
+                var content = await response.Content.ReadFromJsonAsync<ApiResponse<PersonalInformationDTO>>();
+
+                if (content?.body == null)
+                {
+                    MessageDialog.Show("GlbDialogT_SessionError", "GlbDialogD_SessionError",
+                        AlertType.ERROR);
+                    return;
+                }
+
+                TbFullName.Text = content.body.FullName ?? "N/A";
+                TbUsername.Text = content.body.Username ?? "N/A";
+                TbEmail.Text = content.body.Email ?? "N/A";
+                string areaCode = content.body.AreaCode ?? "";
+                string phone = content.body.PhoneNumber ?? "";
+
+                TbPhone.Text = $"+{areaCode} {phone}".Trim();
+                TbUserRole.Text = content.body.Role ?? "N/A";
+            }
+            catch (Exception ex)
+            {
+                MessageDialog.Show("GlbDialogT_NoConnection", $"GlbDialogD_NoConnection {ex.Message}", AlertType.ERROR);
             }
         }
 

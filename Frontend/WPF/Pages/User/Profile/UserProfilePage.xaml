@@ -23,10 +23,18 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center"
-                                VerticalAlignment="Top" Margin="10, 20">
-                        <Image Name="UserProfilePic" HorizontalAlignment="Center"
-                               Width="120" Height="160"/>
+                    <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left"
+                                VerticalAlignment="Top" Margin="10, 10">
+                        <TextBlock Text="Datos personales:" Style="{DynamicResource HeaderLabelStyle}"/>
+                        <TextBlock x:Name="TbFullName" Style="{DynamicResource DescriptionLabelStyle}"
+                                   Margin="0, 20"/>
+                        <TextBlock x:Name="TbUsername" Style="{DynamicResource DescriptionLabelStyle}"
+                                   Margin="0, 5"/>
+                        <TextBlock x:Name="TbEmail" Style="{DynamicResource DescriptionLabelStyle}"
+                                   Margin="0, 5"/>
+                        <TextBlock x:Name="TbPhone" Style="{DynamicResource DescriptionLabelStyle}"
+                                   Margin="0, 5"/>
+                        <TextBlock x:Name="TbUserRole" Style="{DynamicResource DescriptionLabelStyle}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10, 0"
