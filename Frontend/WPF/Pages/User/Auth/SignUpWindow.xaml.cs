@@ -123,7 +123,9 @@ namespace WpfApp.Pages.User.Auth
         }
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            
+            var loginWindow = new SignInWindow();
+            loginWindow.Show();
+            this.Close();
         }
 
         private async void BtnRegisterUser_Click(object sender, RoutedEventArgs e)

@@ -67,8 +67,8 @@
     <sys:String x:Key="GlbDialogD_EmailDuplicate">La dirección de correo ingresada ya se encuentra en uso. Por favor, ingresa una diferente e inténtalo nuevamente.</sys:String>
     <sys:String x:Key="GlbDialogT_EmailFormat">Correo Electrónico inválido</sys:String>
     <sys:String x:Key="GlbDialogD_EmailFormat">El correo electrónico ingresado no es válido. Asegúrate dse que tenga el formato correcto (ejemplo@dominio.com) e inténtalo nuevamente.</sys:String>
-    <sys:String x:Key="GlbDialogT_UnkownImageError">Error desconocido</sys:String>
-    <sys:String x:Key="GlbDialogD_UnkownImageError">Ocurrió un error inesperado al procesar la imagen seleccionada. Por favor, verifica el archivo y vuelve a intentarlo.</sys:String>
+    <sys:String x:Key="GlbDialogT_SessionError">Error desconocido</sys:String>
+    <sys:String x:Key="GlbDialogD_SessionError">Ocurrió un error inesperado al obtener tus datos de sesion.</sys:String>
 
     <!--Inicio de sesion-->
     <sys:String x:Key="Login_Header">Iniciar sesion</sys:String>

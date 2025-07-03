@@ -12,6 +12,13 @@
         public static string ValidateTwoFactorCode => $"{BaseUrl}/Login/ValidateTwoFactorCode";
         public static string RegisterUser => $"{BaseUrl}/Registration";
     }
+
+    public static class ProfileEndpoints
+    {
+        private const string BaseUrl = "http://localhost:5000/api/User";
+
+        public static string GetPersonalData(string username) => $"{BaseUrl}/ViewProfile/GetPersonalData?username={username}";
+    }
 }
 
 
