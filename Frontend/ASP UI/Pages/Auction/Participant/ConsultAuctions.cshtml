@@ -1,4 +1,26 @@
 ﻿@page
+@using WebPage.DTO.Auction
 @model WebPage.Pages.Auction.Participant.ConsultAuctionsModel
 @{
+    ViewData["Title"] = "Subastas Activas";
 }
+
+<div class="container mt-4">
+    <div class="row">
+        <h2 class="text-start">Subastas activas</h2>
+    </div>
+
+    @if (Model.Auctions?.Count > 0)
+    {
+        <div class="row" id="auctionsContainer">
+            @foreach (AuctionsListDTO auction in Model.Auctions)
+            {
+                @await Html.PartialAsync("ConsultAuctionsPartial", auction)
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center mt-5">No hay subastas activas en este momento.</p>
+    }
+</div>

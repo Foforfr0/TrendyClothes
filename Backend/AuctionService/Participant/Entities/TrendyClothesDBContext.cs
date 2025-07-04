@@ -17,7 +17,7 @@ public partial class TrendyClothesDBContext : DbContext
 
     public virtual DbSet<Address> Addresses { get; set; }
 
-    public virtual DbSet<AuctionsProduct> AuctionsProducts { get; set; }
+    public DbSet<AuctionsProduct> AuctionsProducts { get; set; }
 
     public virtual DbSet<BidsAuction> BidsAuctions { get; set; }
 
