@@ -19,8 +19,6 @@ public partial class AuctionsProduct
 
     public DateTime DateEnd { get; set; }
 
-    public int NumberProducts { get; set; }
-
     public string Description { get; set; } = null!;
 
     public int SellerId { get; set; }

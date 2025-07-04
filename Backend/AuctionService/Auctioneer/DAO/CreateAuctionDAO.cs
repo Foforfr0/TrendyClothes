@@ -26,7 +26,6 @@ namespace AuctionAuctioneerService.DAO {
                 newAuction.LastPrice = createAuctionDTO.FirstPrice;
                 newAuction.DateStart = createAuctionDTO.DateStart;
                 newAuction.DateEnd = createAuctionDTO.DateEnd;
-                newAuction.NumberProducts = createAuctionDTO.NumberProducts;
                 newAuction.SellerId = idUser;
                 newAuction.ProductId = createAuctionDTO.ProductId;
                 newAuction.StatusId = 1;
