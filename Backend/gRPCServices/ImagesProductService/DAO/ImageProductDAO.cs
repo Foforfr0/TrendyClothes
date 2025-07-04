@@ -34,7 +34,7 @@ namespace ImagesProductService.DAO {
                     return true; // operación exitosa
                 }
 
-                _logger.LogWarning ("No se encontró imagen existente para el producto con ID {ProductId}", idProduct);
+                _logger.LogWarning ($"No se encontró imagen existente para el producto con ID {idProduct}", idProduct);
                 return false;
             } catch (Exception ex) {
                 _logger.LogError (ex, "Error al actualizar imagen para el producto con ID {ProductId}", idProduct);
