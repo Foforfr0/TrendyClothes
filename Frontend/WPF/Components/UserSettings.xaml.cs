@@ -4,9 +4,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using WpfApp.Pages;
 using WpfApp.Pages.Dialogs;
+using WpfApp.Pages.Home;
 using WpfApp.Pages.User.Auth;
 using WpfApp.Pages.User.Profile;
 using WpfApp.Services.User.Auth;
+using WpfApp.Session;
 using WpfApp.Utilities;
 
 namespace WpfApp.Components
@@ -16,7 +18,18 @@ namespace WpfApp.Components
         public UserSettings()
         {
             InitializeComponent();
-            //LoadUsername();
+            UpdateUserUI();
+        }
+
+        private void UpdateUserUI()
+        {
+            bool isLoggedIn = UserSession.Instance.IsLoggedIn;
+
+            BtnProfile.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+            BtnSignOut.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+
+            BtnSignIn.Visibility = !isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+            BtnSignUp.Visibility = !isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public static void Show(FrameworkElement triggerButton)
@@ -91,12 +104,16 @@ namespace WpfApp.Components
 
         private void LogOut()
         {
-            //TODO not a void
+            MessageDialog.ShowConfirm("Login_DialogTSignOut", "Login_DialogDSignOut",
+                onConfirm: () => {
+                    UserSession.Instance.Clear();
+                    UpdateUserUI(); 
+                });
         }
 
         private void SignOut_Click(object sender, RoutedEventArgs e)
         {
-            //MessageDialog.ShowConfirm();
+            LogOut();
         }
 
         private void GoToProfile_Click(object sender, RoutedEventArgs e)

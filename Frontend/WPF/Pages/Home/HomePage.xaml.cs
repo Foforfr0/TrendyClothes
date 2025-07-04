@@ -1,39 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using WebPage.Connections;
 using WpfApp.Components;
+using WpfApp.DTO.Products;
+using WpfApp.Pages.Dialogs;
+using WpfApp.Utilities;
 
 namespace WpfApp.Pages.Home
 {
-    /// <summary>
-    /// Lógica de interacción para HomePage.xaml
-    /// </summary>
     public partial class HomePage : Page
     {
         public HomePage()
         {
             InitializeComponent();
-            LoadMockItemCards();
+            LoadCategoryCards();
         }
 
-        private void LoadMockItemCards()
+        public async void LoadCategoryCards()
         {
-            for (int i = 0; i < 10; i++)
+            try
             {
-                var card = new ItemCard2(); // Or pass a view model or data as needed
-                ItemFeed.Items.Add(card);
+                var response = await HttpClientHelper.GetAsync(ProductEndpoints.GetCategories);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageDialog.Show("Error", "No se pudieron cargar las categorías", AlertType.ERROR);
+                    return;
+                }
+
+                var result = await response.Content.ReadFromJsonAsync<CategoryResponse>();
+
+                if (result?.Body is null || result.Body.Count == 0)
+                {
+                    MessageDialog.Show("Info", "No hay categorías disponibles", AlertType.WARNING);
+                    return;
+                }
+
+                // Map categories to cards
+                var categoryCards = result.Body.Select(cat =>
+                {
+                    var card = new CategorieCard2();
+                    card.BtnCategory.Content = cat.Category;
+                    return card;
+                }).ToList();
+
+                ItemFeed.ItemsSource = categoryCards;
             }
+            catch (Exception ex)
+            {
+                MessageDialog.Show("Excepción", ex.Message, AlertType.ERROR);
+            }
+        }
+
+        public class CategoryResponse
+        {
+            [JsonPropertyName("message")]
+            public string Message { get; set; } = "";
+
+            [JsonPropertyName("body")]
+            public List<CategoryDTO> Body { get; set; } = new();
+        }
+
+        private void CardSelected(object sender, EventArgs e)
+        {
+
         }
     }
 }
