@@ -17,6 +17,7 @@ namespace WpfApp.Pages.User.Profile
 {
     public partial class UserProfilePage : Page
     {
+        private ProductoAPIModel? _selectedProduct;
         public UserProfilePage()
         {
             InitializeComponent();
@@ -127,9 +128,10 @@ namespace WpfApp.Pages.User.Profile
 
         private void Card_Selected(object sender, EventArgs e)
         {
-            var selectedCard = sender as ItemCard2;
-            if (selectedCard != null)
+            if (sender is ItemCard2 selectedCard && selectedCard.DataContext is ProductoAPIModel product)
             {
+                _selectedProduct = product;
+
                 BtnDeletePost.Visibility = Visibility.Visible;
                 BtnEditPost.Visibility = Visibility.Visible;
             }
@@ -162,12 +164,47 @@ namespace WpfApp.Pages.User.Profile
             NavigationManager.Instance.NavigateToPage("EditItem_Header", new RegisterProductPage());
         }
 
-        private void BtnDeletePost_Click(object sender, RoutedEventArgs e)
+        private async void BtnDeletePost_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: call method to delete and reload page
+            if (_selectedProduct == null)
+            {
+                MessageDialog.Show("Error", "No se ha seleccionado ningún producto.", AlertType.ERROR);
+                return;
+            }
+
             MessageDialog.ShowConfirm(
-                "EditItem_DialogTDelete", "EditItem_DialogDDelete",
-                onConfirm: () => { NavigationManager.Instance.NavigateToPage("Items_Header", new UserProfilePage()); });
+                "EditItem_DialogTDelete",
+                "EditItem_DialogDDelete",
+                onConfirm: async () =>
+                {
+                    try
+                    {
+                        string url = ProductEndpoints.DeleteProduct(_selectedProduct.Id);
+                        string? token = UserSession.Instance.JwtToken;
+
+                        if (string.IsNullOrWhiteSpace(token))
+                        {
+                            MessageDialog.Show("Error", "No hay sesión activa.", AlertType.ERROR);
+                            return;
+                        }
+
+                        var response = await HttpClientHelper.DeleteAsync(url, token);
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            MessageDialog.Show("Error", "No se pudo eliminar el producto.", AlertType.ERROR);
+                            return;
+                        }
+
+                        // Success: Reload or navigate
+                        NavigationManager.Instance.NavigateToPage("Items_Header", new UserProfilePage());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageDialog.Show("Error", $"Error inesperado: {ex.Message}", AlertType.ERROR);
+                    }
+                });
         }
     }
 }
