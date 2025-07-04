@@ -1,4 +1,6 @@
-﻿namespace AuctionParticipantService.Models {
+﻿using AuctionParticipantService.Models.Consult;
+
+namespace AuctionParticipantService.Models {
     public class MessageResponse<T> {
         public bool IsError {
             get; set;
@@ -23,5 +25,10 @@
 
         public static MessageResponse<T> Failure (string message) =>
             new MessageResponse<T> (true, message, default);
+
+        internal static MessageResponse<List<AuctionFullDTO>> Error(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

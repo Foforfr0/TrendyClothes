@@ -94,10 +94,5 @@ namespace AuctionParticipantService.Services.Implements
             };
             return MessageResponse<AuctionDetailsDTO>.Success(response.Message, auction);
         }
-
-        public async Task<MessageResponse<List<AuctionFullDTO>>> GetActiveAuctionsAsync()
-        {
-            return await _auctionsDAO.GetActiveAuctionsAsync();
-        }
     }
 }

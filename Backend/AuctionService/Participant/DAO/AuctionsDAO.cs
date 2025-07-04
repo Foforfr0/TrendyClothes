@@ -8,7 +8,7 @@ namespace AuctionParticipantService.DAO
     public class AuctionsDAO
     {
         private readonly TrendyClothesDBContext _context;
-        private ILogger<AuctionsDAO> _logger;
+        private readonly ILogger<AuctionsDAO> _logger;
 
         public AuctionsDAO(TrendyClothesDBContext context, ILogger<AuctionsDAO> logger)
         {
@@ -20,17 +20,15 @@ namespace AuctionParticipantService.DAO
         {
             try
             {
-                var activeStatus = await _context.StatusesAuctions
-                    .Where(s => s.Status == "Activo")
-                    .Select(s => s.Id)
-                    .FirstOrDefaultAsync();
-
+                // Recuperar todas las subastas cuyo StatusId sea 1 (Activo)
                 var auctions = await _context.AuctionsProducts
-                    .Include(a => a.Status)
-                    .Include(a => a.Product)
-                    .Include(a => a.Seller)
-                    .Where(a => a.StatusId == activeStatus)
+                    .Where(a => a.StatusId == 1)
                     .ToListAsync();
+
+                if (auctions == null || !auctions.Any())
+                {
+                    return MessageResponse<List<AuctionFullDTO>>.Success("No hay subastas activas disponibles.", new());
+                }
 
                 var result = auctions.Select(a => new AuctionFullDTO
                 {
@@ -44,19 +42,16 @@ namespace AuctionParticipantService.DAO
                     Description = a.Description,
                     ProductId = a.ProductId,
                     StatusId = a.StatusId,
-                    SellerId = a.SellerId,
-                    StatusName = a.Status.Status,
-                    SellerName = $"{a.Seller.FirstName} {a.Seller.LastName}"
+                    SellerId = a.SellerId
                 }).ToList();
 
-                return MessageResponse<List<AuctionFullDTO>>.Success(result);
+                return MessageResponse<List<AuctionFullDTO>>.Success("Subastas activas recuperadas correctamente.", result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener subastas activas completas.");
-                return MessageResponse<List<AuctionFullDTO>>.Error("Error al obtener subastas activas.");
+                _logger.LogError(ex, "Error al obtener subastas activas.");
+                return MessageResponse<List<AuctionFullDTO>>.Error("Hubo un problema al obtener las subastas activas.");
             }
         }
-
     }
 }

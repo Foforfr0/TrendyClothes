@@ -1,45 +1,26 @@
 ﻿using AuctionParticipantService.Models;
-using AuctionParticipantService.DAO;
 using AuctionParticipantService.Models.Consult;
-using AuctionParticipantService.Services.Intefaces;
+using AuctionParticipantService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionParticipantService.Controllers
 {
     [ApiController]
     [Route("api/Auction/Participant/Auctions")]
-    public class AuctionsController : Controller
+    public class AuctionsController : ControllerBase
     {
-        private readonly IConsultAuctionService _consultAuctionService;
+        private readonly IAuctionParticipantService _service;
 
-        public AuctionsController(IConsultAuctionService consultAuctionService)
+        public AuctionsController(IAuctionParticipantService service)
         {
-            _consultAuctionService = consultAuctionService;
+            _service = service;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetActiveAuctions()
+        [HttpGet("Active")]
+        public async Task<ActionResult<MessageResponse<List<AuctionFullDTO>>>> GetActiveAuctions()
         {
-            try
-            {
-                MessageResponse<List<AuctionFullDTO>> response = await _consultAuctionService.GetActiveAuctionsAsync();
-
-                if (response.IsError)
-                    return HttpResponses.InternalServerError(response.Message);
-
-                if (response.DataRetrieved == null || response.DataRetrieved.Count == 0)
-                    return NotFound(new { response.Message });
-
-                return Ok(new
-                {
-                    response.Message,
-                    body = response.DataRetrieved
-                });
-            }
-            catch (Exception ex)
-            {
-                return HttpResponses.InternalServerError(ex.ToString());
-            }
+            var result = await _service.GetActiveAuctionsAsync();
+            return Ok(result);
         }
     }
 }
