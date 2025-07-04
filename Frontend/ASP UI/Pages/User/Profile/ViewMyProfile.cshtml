@@ -62,31 +62,15 @@
 <div class="text-center w-auto mx-5 mb-5">
     <h2 class="mb-2">Subastar productos</h2>
     <div class="row justify-content-evenly w-auto">
-        <button id="startAuction" type="button" class="col btn btn-secondary btn-lg p-1" style="max-width: 180px;"
-                data-bs-toggle="modal" data-bs-target="#modalSearchProduct">
+        <a class="col btn btn-secondary btn-lg p-1" style="max-width: 180px;"
+           asp-page="/Auction/Auctioneer/CreateAuction">
             Iniciar subasta
-        </button>
+        </a>
         <button id="consultAuctions" type="button" class="col btn btn-secondary btn-lg p-1" style="max-width: 180px;">
             Mis subastas
         </button>
     </div>
 </div>
-
-<!-- Modal for starting an auction -->
-<div class="modal fade" id="modalSearchProduct" tabindex="-1" aria-labelledby="modalSearchProductLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-lg"
-         style="min-height: 80dvh; max-height: 90dvh; min-width: 50dvw; max-width: 70dvw;">
-        <div class="modal-content h-100 w-100" id="modal-content">
-            <!-- Managed by: 
-                ~/js/User/ViewMyProfile
-            document.getElementById('startAuction').addEventListener('click', (event) => { -->
-        </div>
-    </div>
-</div>
-
-@section Styles {
-    <link rel="stylesheet" href="~/css/pages/ConsultProductsToAuction.css" />
-}
 
 @section Scripts {
     <script>
