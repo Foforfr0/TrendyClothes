@@ -31,38 +31,15 @@ namespace WpfApp.Pages.Auction
         {
             //TODO open messages popup
         }
-
-        public void UpdateLatestBid()
-        {
-            //TODO update the TB with the username and amount from latest bid
-        }
-
-        private void DecreaseBid_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+        
         private void IncreaseBid_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void BtnRegisterBid_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CancelBid()
-        {
-            NavigationManager.Instance.GoBack();
-        }
-
+        }       
+        
         private void BtnCancelBid_Click(object sender, RoutedEventArgs e)
         {
-            MessageDialog.ShowConfirm(
-                "Auction_DialogTUnbid",
-                "Auction_DialogDUnbid",
-                onConfirm: () => { CancelBid(); });
+            NavigationManager.Instance.GoBack();
         }
     }
 }

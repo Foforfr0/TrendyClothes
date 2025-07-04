@@ -82,14 +82,13 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBox x:Name="TbAuctionTitle" Grid.Row="0"
+                            <TextBlock x:Name="TbAuctionTitle" Grid.Row="0"
                                      Tag="{DynamicResource RegItem_ItemTitle}"
-                                     Style="{DynamicResource TextBoxStyle}" Margin="0, 5, 50, 10"
-                                     TextChanged="RequiredFields_TextChanged"/>
-                            <TextBox x:Name="TbAuctionDesc" Grid.Row="1"
+                                     Style="{DynamicResource RegularLabelStyle}" Margin="0, 5, 50, 10"/>
+                            <TextBlock x:Name="TbAuctionDesc" Grid.Row="1"
                                      Tag="{DynamicResource RegItem_Desc}"
-                                     Style="{DynamicResource TextAreaStyle}" Margin="0, 5, 50, 10"
-                                     Height="70" TextChanged="RequiredFields_TextChanged"/>
+                                     Style="{DynamicResource RegularLabelStyle}" Margin="0, 5, 50, 10"
+                                     Height="70"/>
                         </Grid>
                     </StackPanel>
 
@@ -119,11 +118,7 @@
                                     <TextBox x:Name="TbLowestBid" Tag="{DynamicResource Auction_LowestBid}"
                                              Style="{DynamicResource TextBoxStyle}"
                                              TextChanged="RequiredFields_TextChanged" Margin="15, 0"
-                                             Width="100"/>
-                                    <TextBox x:Name="TbHighestBid" Tag="{DynamicResource Auction_Highestbid}"
-                                             Style="{DynamicResource TextBoxStyle}"
-                                             TextChanged="RequiredFields_TextChanged"
-                                             Width="100"/>
+                                             Width="100"/>                                    
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
