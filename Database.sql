@@ -134,10 +134,10 @@ CREATE TABLE AuctionsProduct (
     LastPrice DECIMAL(12,2),
     DateStart DATETIME NOT NULL,
     DateEnd DATETIME NOT NULL,
-    NumberProducts INT NOT NULL,
     SellerId INT NOT NULL,
     ProductId INT NOT NULL,
     StatusId INT NOT NULL,
+    Description VARCHAR(MAX) NOT NULL,
 
     CONSTRAINT FK_AuctionProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id) ON DELETE CASCADE,
     CONSTRAINT FK_StatusAuction_Auction FOREIGN KEY (StatusId) REFERENCES StatusesAuction(Id) ON DELETE CASCADE,
