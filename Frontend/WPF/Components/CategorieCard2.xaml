@@ -9,7 +9,7 @@
     <Border Background="{StaticResource BackgroundBrush}" CornerRadius="12">
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 

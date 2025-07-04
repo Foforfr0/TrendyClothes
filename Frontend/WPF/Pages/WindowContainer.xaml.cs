@@ -9,12 +9,15 @@ using WpfApp.Utilities;
 
 namespace WpfApp.Pages {
     public partial class WindowContainer : Window {
+
         private static Frame _mainFrame = new Frame ();
+        private HomePage _homePage;
 
         public WindowContainer () {
             InitializeComponent ();
             NavigationManager.Initialize(MainFrame);
 
+            _homePage = new HomePage();
             NavigateToPage("Glb_Home", new HomePage());
             Loaded += WindowContainer_Loaded;
         }
@@ -35,7 +38,10 @@ namespace WpfApp.Pages {
 
         private void BtnCategories_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Load Categories UserControl
+            if (_mainFrame.Content is HomePage home)
+            {
+                home.LoadCategoryCards();
+            }
         }
 
         private void BtnAuctions_Click(object sender, RoutedEventArgs e)
@@ -50,7 +56,6 @@ namespace WpfApp.Pages {
 
         private void SearchBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            //TODO: Load searchResults, perhaps another page
         }
         private void PopUpOverlay_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

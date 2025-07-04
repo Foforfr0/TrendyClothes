@@ -18,14 +18,9 @@ namespace WebPage.Pages.Auction.Auctioneer {
             _grpcClient = grpcClient;
         }
 
-        [BindProperty (SupportsGet = true)]
-        public int idProduct {
-            get; set;
-        }
-
         public MyProductDetailsDTO product {
             get; set;
-        }
+        } = new MyProductDetailsDTO();
 
         [BindProperty]
         public CreateAuctionDTO newAuction {
@@ -33,22 +28,6 @@ namespace WebPage.Pages.Auction.Auctioneer {
         }
 
         public async Task OnGetAsync () {
-            product = new MyProductDetailsDTO ();
-
-            HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
-            if (!string.IsNullOrEmpty (cookies))
-                httpClient.DefaultRequestHeaders.Add ("Cookie", cookies);
-            string requestURL = $"http://apigateway/api/MyProducts/Search?id={this.idProduct}";
-            ApiResponse<MyProductDetailsDTO>? response =
-                await httpClient.GetFromJsonAsync<ApiResponse<MyProductDetailsDTO>> (requestURL);
-
-            if (response?.body != null) {
-                product = response.body;
-                GetImageReply? grpcResponse = await _grpcClient.GetImageAsync (new GetImageRequest { ProductId = this.idProduct });
-                product.imageBase64 = Convert.ToBase64String (grpcResponse.ImageData.ToByteArray ());
-                product.mimeImage = grpcResponse.ImageType;
-            }
         }
     }
 }

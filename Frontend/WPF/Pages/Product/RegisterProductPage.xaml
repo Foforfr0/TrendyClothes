@@ -95,7 +95,7 @@
                                    Style="{DynamicResource DescriptionLabelStyle}"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
 
@@ -121,21 +121,24 @@
 
                                     <StackPanel x:Name="SPSizes" Grid.Row="0" Orientation="Horizontal"
                                                 Visibility="Visible">
-                                        <Button x:Name="BtnSize1" Content="{DynamicResource Glb_Size1}"
-                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                                Margin="10, 0"/>
-                                        <Button x:Name="BtnSize2" Content="{DynamicResource Glb_Size2}"
-                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                                Margin="10, 0"/>
-                                        <Button x:Name="BtnSize3" Content="{DynamicResource Glb_Size3}"
-                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                                Margin="10, 0"/>
-                                        <Button x:Name="BtnSize4" Content="{DynamicResource Glb_Size4}"
-                                                Style="{DynamicResource SecondaryButtonNoIconStyle}"
-                                                Margin="10, 0"/>
-                                        <Button x:Name="BtnSize5" Content="{DynamicResource Glb_Size5}"
-                                                Style="{DynamicResource SecondaryButtonNoIconStyle}" 
-                                                Margin="10, 0"/>
+                                        <ComboBox x:Name="CbCategoria" IsReadOnly="True" IsEditable="True"
+                                                  StaysOpenOnEdit="True" Tag="{DynamicResource Glb_Categories}"
+                                                  DisplayMemberPath="Name" SelectedValuePath="Name"
+                                                  SelectionChanged="CbCategoria_SelectionChanged"
+                                                  Style="{DynamicResource ComboBoxStyle}"
+                                                  Margin="5, 5" Width="120"/>
+                                        <ComboBox x:Name="CbType" IsReadOnly="True" IsEditable="True"
+                                                  StaysOpenOnEdit="True" Tag="{DynamicResource Filters_Type}"
+                                                  DisplayMemberPath="Type" SelectedValuePath="Type"
+                                                  SelectionChanged="CbType_SelectionChanged"
+                                                  Style="{DynamicResource ComboBoxStyle}"
+                                                  Margin="15, 5" Width="120"/>
+                                        <ComboBox x:Name="CbCondition" IsReadOnly="True" IsEditable="True"
+                                                  StaysOpenOnEdit="True" Tag="Estado"
+                                                  DisplayMemberPath="Name" SelectedValuePath="Name"
+                                                  SelectionChanged="CbCondition_SelectionChanged"
+                                                  Style="{DynamicResource ComboBoxStyle}"
+                                                  Margin="15, 5" Width="120"/>
                                     </StackPanel>
                                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10, 15">
                                         <TextBox x:Name="TbPrice" Tag="{DynamicResource Items_Price}"

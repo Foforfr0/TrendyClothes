@@ -188,5 +188,20 @@ namespace WpfApp.Pages.Product
         {
             NavigationManager.Instance.GoBack();
         }
+
+        private void CbCategoria_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CbCondition_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

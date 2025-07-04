@@ -163,7 +163,7 @@ async function postAuction() {
     const dateEnd = utils.getValueDOMElementNullOrEmpty('InputDateEnd');
     const numberProducts = document.getElementById('InputNumberProducts').value;
 
-    if (!name || !firstPrice || !minBid || !dateStart || !dateEnd|| !numberProducts) return;
+    if (!name || !firstPrice || !minBid || !dateStart || !dateEnd || !numberProducts) return;
 
     try {
         const response = await fetch(`${window.config.PostAuction}`, {
@@ -172,7 +172,7 @@ async function postAuction() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({idProduct: window.data.idProduct, name, firstPrice, minBid, dateStart, dateEnd, numberProducts })
+            body: JSON.stringify({ idProduct: window.data.idProduct, name, firstPrice, minBid, dateStart, dateEnd, numberProducts })
         });
 
         if (!response) return;
@@ -196,3 +196,136 @@ async function postAuction() {
         console.error('Error creando subasta: ', error);
     }
 }
+
+function getAntiForgeryToken() {
+    const input = document.querySelector('input[name="__RequestVerificationToken"]');
+    return input ? input.value : '';
+}
+
+async function sendImageMime() {
+    const imageBase64Input = document.getElementById('imageBase64Input');
+    const mimeInput = document.getElementById('mimeInput');
+
+    if (!imageBase64Input.value || !mimeInput.value) {
+        utils.showToast('Por favor selecciona una imagen primero.', 'danger');
+        return;
+    }
+
+    // Mostrar loading
+    const submitBtn = document.getElementById('submitForm');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+    try {
+        const response = await fetch('/Auction/Auctioneer/CreateAuction?handler=SendImage', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': getAntiForgeryToken(),
+            },
+            body: JSON.stringify({
+                idProduct: window.data.idProduct,
+                imageBase64: imageBase64Input.value,
+                mimeImage: mimeInput.value
+            })
+        });
+
+        console.log(response);
+
+        let result = await response.json();
+
+        if (response.ok && result.success) {
+            utils.showToast(`Imagen guardada exitosamente`, 'success');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
+            return true;
+        } else {
+            console.error('Server error:', result);
+            utils.showToast(result.message || 'Error al guardar la imagen', 'danger');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
+            return false;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        utils.showToast('Error de conexión al guardar la imagen', 'danger');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
+        return false;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Referencias a elementos del DOM
+    const selectImageBtn = document.getElementById('selectImageBtn');
+    const imageInput = document.getElementById('imageInput');
+    const previewImage = document.getElementById('previewImage');
+    const submitContainer = document.getElementById('submitForm');
+    const imageBase64Input = document.getElementById('imageBase64Input');
+    const mimeInput = document.getElementById('mimeInput');
+
+    // Evento click del botón personalizado
+    selectImageBtn.addEventListener('click', function () {
+        imageInput.click();
+    });
+
+    // Evento change del input file
+    imageInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            // Validar que sea una imagen
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor selecciona un archivo de imagen válido.');
+                return;
+            }
+
+            // Validar tamaño (opcional - límite de 5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                alert('El archivo es demasiado grande. Por favor selecciona una imagen menor a 5MB.');
+                return;
+            }
+
+            // Leer el archivo como base64
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const base64Result = e.target.result;
+
+                // Extraer solo la parte base64 (sin el prefijo data:image/...;base64,)
+                const base64Data = base64Result.split(',')[1];
+
+                // Actualizar los campos ocultos
+                imageBase64Input.value = base64Data;
+                mimeInput.value = file.type;
+
+                // Mostrar la imagen
+                previewImage.src = base64Result;
+
+                // Cambiar el texto del botón
+                selectImageBtn.innerHTML = '<i class="fas fa-edit"></i> Cambiar Imagen';
+            };
+
+            reader.onerror = function () {
+                alert('Error al leer el archivo. Por favor intenta nuevamente.');
+            };
+
+            // Leer el archivo
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Cargar imagen existente al cargar la página (si existe)
+    window.addEventListener('load', function () {
+        const existingBase64 = imageBase64Input.value;
+        const existingMime = mimeInput.value;
+
+        if (existingBase64 && existingMime) {
+            previewImage.src = `data:${existingMime};base64,${existingBase64}`;
+
+            // Cambiar el texto del botón
+            selectImageBtn.innerHTML = '<i class="fas fa-edit"></i> Cambiar Imagen';
+        }
+    });
+});
