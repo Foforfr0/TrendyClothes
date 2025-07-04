@@ -31,10 +31,9 @@ namespace WpfApp.Pages.User.Profile
                 string? username = UserSession.Instance.Username;
                 string? token = UserSession.Instance.JwtToken;
 
-                if (string.IsNullOrWhiteSpace(username) ||
-                    string.IsNullOrWhiteSpace(token))
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(token))
                 {
-                    MessageDialog.Show("Error", "No hay sesion activa", AlertType.ERROR);
+                    MessageDialog.Show("Error", "No hay sesión activa.", AlertType.ERROR);
                     return;
                 }
 
@@ -43,24 +42,33 @@ namespace WpfApp.Pages.User.Profile
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    MessageDialog.Show("Error", "No se han podido cargar tus productos",
-                        AlertType.ERROR);
+                    MessageDialog.Show("Error", "No se han podido cargar tus productos", AlertType.ERROR);
                     return;
                 }
 
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var content = await response.Content.ReadFromJsonAsync<ProductListResponse>();
 
-                var productResponse = JsonSerializer.Deserialize<ProductListResponse>
-                    (jsonString, options);
-
-                if (productResponse?.Body == null || productResponse.Body.Count == 0)
+                if (content?.Body == null || content.Body.Count == 0)
                 {
-                    ItemsFeed.ItemsSource = new List<ProductoAPIModel>();
+                    MessageDialog.Show("Aviso", "No tienes productos publicados.", AlertType.WARNING);
                     return;
                 }
 
-                ItemsFeed.ItemsSource = productResponse.Body;
+                ItemsFeed.Items.Clear();
+
+                foreach (var product in content.Body)
+                {
+                    var card = new ItemCard2
+                    {
+                        isSelectable = true,
+                        DataContext = product,
+                        Margin = new Thickness(15)
+                    };
+
+                    card.CardSelected += Card_Selected;
+
+                    ItemsFeed.Items.Add(card);
+                }
             }
             catch (Exception ex)
             {

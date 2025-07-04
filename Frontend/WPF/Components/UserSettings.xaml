@@ -31,16 +31,19 @@
                         Tag="/Resources/Icons/icon-user.png"
                         Content="{DynamicResource Glb_Profile}"
                         Click="GoToProfile_Click"
-                        Visibility="Visible"/>
+                        Visibility="Collapsed" x:Name="BtnProfile"/>
                 <Button Style="{DynamicResource SettingButtonStyle}"
                         Content="{DynamicResource Glb_SignUp}"
-                        Click="SignUp_Click" Visibility="Collapsed"/>
+                        Click="SignUp_Click" Visibility="Collapsed"
+                        x:Name="BtnSignUp"/>
                 <Button Style="{DynamicResource SignOutButtonStyle}"
                         Content="{DynamicResource Glb_SignOut}"
-                        Click="SignOut_Click" Visibility="Collapsed"/>
+                        Click="SignOut_Click" Visibility="Collapsed"
+                        x:Name="BtnSignOut"/>
                 <Button Style="{DynamicResource SignOutButtonStyle}"
                         Content="{DynamicResource Login_Header}"
-                        Click="Login_Click" Visibility="Visible"/>
+                        Click="Login_Click" Visibility="Collapsed"
+                        x:Name="BtnSignIn"/>
             </StackPanel>
         </Grid>
     </Border>

@@ -83,7 +83,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <uc:ItemCard2 Margin="15"/>
+                                    <uc:ItemCard2 Margin="15" CardSelected="Card_Selected"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
