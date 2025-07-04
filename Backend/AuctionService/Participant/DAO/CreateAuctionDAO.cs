@@ -22,7 +22,6 @@ namespace AuctionParticipantService.DAO {
                 Entities.AuctionsProduct newAuction = new Entities.AuctionsProduct ();
                 newAuction.Name = createAuctionDTO.Name;
                 newAuction.FirstPrice = createAuctionDTO.FirstPrice;
-                newAuction.MinBid = createAuctionDTO.MinBid;
                 newAuction.LastPrice = createAuctionDTO.FirstPrice;
                 newAuction.DateStart = createAuctionDTO.DateStart;
                 newAuction.DateEnd = createAuctionDTO.DateEnd;
@@ -56,8 +55,6 @@ namespace AuctionParticipantService.DAO {
                     return MessageResponse<bool>.Success ("Subasta cancelada, no es posible realizar pujas.", false);
 
                 Entities.BidsAuction newBid = new Entities.BidsAuction ();
-                newBid.Bid = createBidDTO.Bid;
-                newBid.DateBid = createBidDTO.DateBid;
                 newBid.BuyerId = createBidDTO.BuyerId;
                 newBid.AuctionId = createBidDTO.AuctionId;
 

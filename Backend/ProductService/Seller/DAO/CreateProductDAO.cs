@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProductSellerService.Entities;
+﻿using ProductSellerService.Entities;
 using ProductSellerService.Models;
 
 namespace ProductSellerService.DAO {
