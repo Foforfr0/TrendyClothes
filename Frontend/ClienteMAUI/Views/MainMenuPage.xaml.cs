@@ -15,7 +15,6 @@ using System.Text.Json.Serialization;
 public partial class MainMenuPage : ContentPage
 {
     private readonly HttpClient _httpClient = new();
-    private List<CategoryDTO> categoriesList = new();
     private List<TypeDTO> typesList = new();
 
     public MainMenuPage()
@@ -56,7 +55,6 @@ public partial class MainMenuPage : ContentPage
             await DisplayAlert("Error", $"Error al cargar tipos:\n{ex.Message}", "OK");
         }
     }
-
 
 
     private async void OnCrearProductoClicked(object sender, EventArgs e)
@@ -108,7 +106,6 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
-
     private async void OnModificarProductoClicked(object sender, EventArgs e)
     {
         if (sender is Button btn && btn.BindingContext is ProductoViewModel producto)
@@ -145,9 +142,7 @@ public partial class MainMenuPage : ContentPage
                 {
                     await DisplayAlert("Error", "Producto no válido", "OK");
                     return;
-                }
-
-               
+                }               
 
                 // Navega con el DTO completo
                 await Navigation.PushAsync(new ProductFormPage(dtoResponse.Body));
@@ -158,8 +153,6 @@ public partial class MainMenuPage : ContentPage
             }
         }
     }
-
-
 
     private async Task CargarCategoriasAsync()
     {
@@ -330,6 +323,5 @@ public partial class MainMenuPage : ContentPage
         [JsonPropertyName("body")]
         public List<CategoriaViewModel> Body { get; set; } = new();
     }
-
 
 }
