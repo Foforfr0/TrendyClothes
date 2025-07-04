@@ -1,51 +1,38 @@
-using Microsoft.AspNetCore.Mvc;
+using AuctionParticipantService.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net;
-using WebPage.Connections;
-using WebPage.DTO;
+using System.Net.Http;
+using System.Text.Json;
 using WebPage.DTO.Auction;
 
-namespace WebPage.Pages.Auction.Participant
+namespace WebPage.Pages.Auction
 {
     public class ConsultAuctionsModel : PageModel
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<ConsultAuctionsModel> _logger;
-        private readonly ServicesBuilder _services;
 
-        public List<AuctionsListDTO> Auctions { get; set; } = new();
-
-        [BindProperty(SupportsGet = true)]
-        public string? query { get; set; }
-
-        public ConsultAuctionsModel(
-            IHttpClientFactory httpClientFactory,
-            ServicesBuilder services,
-            ILogger<ConsultAuctionsModel> logger)
+        public ConsultAuctionsModel(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-            _services = services;
-            _logger = logger;
         }
+
+        public List<AuctionDTO>? Auctions { get; set; }
 
         public async Task OnGetAsync()
         {
-            try
-            {
-                HttpClient client = _httpClientFactory.CreateClient();
-                string requestUrl = $"http://apigateway/api/Auction/Participant/Auctions";
-                HttpResponseMessage response = await client.GetAsync(requestUrl);
+            var client = _httpClientFactory.CreateClient("api");
+            var response = await client.GetAsync("/api/auction/active");
 
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<AuctionsListDTO>>>();
-                    if (result?.body != null)
-                        Auctions = result.body;
-                }
-            }
-            catch (Exception ex)
+            if (response.IsSuccessStatusCode)
             {
-                _logger.LogError($"Error al obtener subastas: {ex.Message}");
+                var json = await response.Content.ReadAsStringAsync();
+                Auctions = JsonSerializer.Deserialize<List<AuctionDTO>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+            }
+            else
+            {
+                Auctions = new List<AuctionDTO>();
             }
         }
     }

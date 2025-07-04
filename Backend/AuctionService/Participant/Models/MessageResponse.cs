@@ -1,4 +1,4 @@
-﻿using AuctionParticipantService.Models.Consult;
+﻿/*using AuctionParticipantService.Models.Consult;
 
 namespace AuctionParticipantService.Models {
     public class MessageResponse<T> {
@@ -49,3 +49,4 @@ namespace AuctionParticipantService.Models {
         }
     }
 }
+*/

@@ -1,24 +1,29 @@
 ﻿@page
-@using WebPage.DTO.Product.Consult;
-@model WebPage.Pages.Product.Buyer.ConsultProductsModel
+@using AuctionParticipantService.Models
+@using WebPage.DTO.Auction
+@model WebPage.Pages.Auction.ConsultAuctionsModel
+
 @{
-    ViewData["Title"] = "Resultados de búsqueda";
+    ViewData["Title"] = "Subastas Activas";
 }
 
 <div class="container w-75">
     <div class="row text-center px-auto">
-        <h2 class="text-start col-12 px-auto">Búsqueda de productos</h2>
-        <h4 class="text-start my-3 col-12">Resultados para: "@Model.query"</h4>
+        <h2 class="text-start col-12 px-auto">Subastas disponibles</h2>
     </div>
 </div>
 
-@if (Model.Products?.Count > 0) {
-    <div class="row" id="productsContainer">
-        @foreach (ProductsDTO product in Model.Products) {
-            @await Html.PartialAsync("ConsultProductsPartial", product).ConfigureAwait(false);
+@if (Model.Auctions?.Count > 0)
+{
+    <div class="row" id="auctionsContainer">
+        @foreach (AuctionDTO auction in Model.Auctions)
+        {
+            @await Html.PartialAsync("ConsultAuctionPartial", auction).ConfigureAwait(false)
+            ;
         }
     </div>
 }
-else {
-    <p>No se encontraron productos.</p>
+else
+{
+    <p>No hay subastas activas en este momento.</p>
 }

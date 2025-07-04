@@ -13,7 +13,7 @@
     @if (Model.Auctions?.Count > 0)
     {
         <div class="row" id="auctionsContainer">
-            @foreach (AuctionsListDTO auction in Model.Auctions)
+            @foreach (AuctionDTO auction in Model.Auctions)
             {
                 @await Html.PartialAsync("ConsultAuctionsPartial", auction)
             }

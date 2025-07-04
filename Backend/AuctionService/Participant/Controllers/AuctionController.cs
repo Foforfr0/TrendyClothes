@@ -1,5 +1,4 @@
 ﻿using AuctionParticipantService.DAO;
-using AuctionParticipantService.Models.Consult;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionParticipantService.Controllers
