@@ -15,7 +15,6 @@ using System.Text.Json.Serialization;
 public partial class MainMenuPage : ContentPage
 {
     private readonly HttpClient _httpClient = new();
-    private List<CategoryDTO> categoriesList = new();
     private List<TypeDTO> typesList = new();
 
     public MainMenuPage()
@@ -56,7 +55,6 @@ public partial class MainMenuPage : ContentPage
             await DisplayAlert("Error", $"Error al cargar tipos:\n{ex.Message}", "OK");
         }
     }
-
 
 
     private async void OnCrearProductoClicked(object sender, EventArgs e)
@@ -108,7 +106,6 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
-
     private async void OnModificarProductoClicked(object sender, EventArgs e)
     {
         if (sender is Button btn && btn.BindingContext is ProductoViewModel producto)
@@ -145,9 +142,7 @@ public partial class MainMenuPage : ContentPage
                 {
                     await DisplayAlert("Error", "Producto no válido", "OK");
                     return;
-                }
-
-               
+                }               
 
                 // Navega con el DTO completo
                 await Navigation.PushAsync(new ProductFormPage(dtoResponse.Body));
@@ -158,8 +153,6 @@ public partial class MainMenuPage : ContentPage
             }
         }
     }
-
-
 
     private async Task CargarCategoriasAsync()
     {
@@ -218,14 +211,22 @@ public partial class MainMenuPage : ContentPage
                 return;
             }
 
-            var productos = productosResponse.Body.Select(p => new ProductoViewModel
+            var productos = new List<ProductoViewModel>();
+
+            foreach (var p in productosResponse.Body)
             {
-                Nombre = p.Name,
-                Precio = p.Price,
-                CantidadVendidos = p.NumberSold,
-                ImageSource = null, //imagen vendrá después por gRPC
-                EsPropio = false
-            }).ToList();
+                var imageSource = await CargarImagenProductoAsync(p.Id);
+
+                productos.Add(new ProductoViewModel
+                {
+                    Id = p.Id,
+                    Nombre = p.Name,
+                    Precio = p.Price,
+                    CantidadVendidos = p.NumberSold,
+                    ImageSource = imageSource,
+                    EsPropio = false
+                });
+            }
 
             ProductsCollection.ItemsSource = productos;
         }
@@ -234,7 +235,6 @@ public partial class MainMenuPage : ContentPage
             await DisplayAlert("Excepción", ex.Message, "OK");
         }
     }
-
 
     private Button CrearBotonCategoria(string texto)
     {
@@ -304,15 +304,22 @@ public partial class MainMenuPage : ContentPage
                 return;
             }
 
-            var productos = productosResponse.Body.Select(p => new ProductoViewModel
+            var productos = new List<ProductoViewModel>();
+
+            foreach (var p in productosResponse.Body)
             {
-                Id = p.Id,
-                Nombre = p.Name,
-                Precio = p.Price,
-                CantidadVendidos = p.NumberSold,
-                ImageSource = null,
-                EsPropio = nombreCategoria.Equals("Mis productos", StringComparison.OrdinalIgnoreCase)
-            }).ToList();
+                var image = await CargarImagenProductoAsync(p.Id);
+
+                productos.Add(new ProductoViewModel
+                {
+                    Id = p.Id,
+                    Nombre = p.Name,
+                    Precio = p.Price,
+                    CantidadVendidos = p.NumberSold,
+                    ImageSource = image,
+                    EsPropio = nombreCategoria.Equals("Mis productos", StringComparison.OrdinalIgnoreCase)
+                });
+            }
 
             ProductsCollection.ItemsSource = productos;
         }
@@ -322,6 +329,7 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
+
     public class CategoriaResponse
     {
         [JsonPropertyName("message")]
@@ -329,6 +337,32 @@ public partial class MainMenuPage : ContentPage
 
         [JsonPropertyName("body")]
         public List<CategoriaViewModel> Body { get; set; } = new();
+    }
+
+    private async Task<ImageSource?> CargarImagenProductoAsync(int productId)
+    {
+        try
+        {
+            var imageUrl = ProductEndpoints.GetProductImage(productId);
+            var imageResponse = await _httpClient.GetAsync(imageUrl);
+
+            if (!imageResponse.IsSuccessStatusCode)
+                return null;
+
+            var imageJson = await imageResponse.Content.ReadAsStringAsync();
+            var imageData = JsonSerializer.Deserialize<ResponseWrapper<string>>(imageJson);
+            var base64Image = imageData?.Body;
+
+            if (string.IsNullOrWhiteSpace(base64Image))
+                return null;
+
+            byte[] imageBytes = Convert.FromBase64String(base64Image);
+            return ImageSource.FromStream(() => new MemoryStream(imageBytes));
+        }
+        catch
+        {
+            return null; 
+        }
     }
 
 
