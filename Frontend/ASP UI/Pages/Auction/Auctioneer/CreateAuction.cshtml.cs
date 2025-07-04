@@ -18,10 +18,6 @@ namespace WebPage.Pages.Auction.Auctioneer {
             _grpcClient = grpcClient;
         }
 
-        public MyProductDetailsDTO product {
-            get; set;
-        } = new MyProductDetailsDTO();
-
         [BindProperty]
         public CreateAuctionDTO newAuction {
             get; set;
