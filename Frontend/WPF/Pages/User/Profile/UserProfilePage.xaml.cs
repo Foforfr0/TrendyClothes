@@ -17,6 +17,7 @@ namespace WpfApp.Pages.User.Profile
 {
     public partial class UserProfilePage : Page
     {
+        private ProductoAPIModel? _selectedProduct;
         public UserProfilePage()
         {
             InitializeComponent();
@@ -31,10 +32,9 @@ namespace WpfApp.Pages.User.Profile
                 string? username = UserSession.Instance.Username;
                 string? token = UserSession.Instance.JwtToken;
 
-                if (string.IsNullOrWhiteSpace(username) ||
-                    string.IsNullOrWhiteSpace(token))
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(token))
                 {
-                    MessageDialog.Show("Error", "No hay sesion activa", AlertType.ERROR);
+                    MessageDialog.Show("Error", "No hay sesión activa.", AlertType.ERROR);
                     return;
                 }
 
@@ -43,24 +43,33 @@ namespace WpfApp.Pages.User.Profile
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    MessageDialog.Show("Error", "No se han podido cargar tus productos",
-                        AlertType.ERROR);
+                    MessageDialog.Show("Error", "No se han podido cargar tus productos", AlertType.ERROR);
                     return;
                 }
 
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var content = await response.Content.ReadFromJsonAsync<ProductListResponse>();
 
-                var productResponse = JsonSerializer.Deserialize<ProductListResponse>
-                    (jsonString, options);
-
-                if (productResponse?.Body == null || productResponse.Body.Count == 0)
+                if (content?.Body == null || content.Body.Count == 0)
                 {
-                    ItemsFeed.ItemsSource = new List<ProductoAPIModel>();
+                    MessageDialog.Show("Aviso", "No tienes productos publicados.", AlertType.WARNING);
                     return;
                 }
 
-                ItemsFeed.ItemsSource = productResponse.Body;
+                ItemsFeed.Items.Clear();
+
+                foreach (var product in content.Body)
+                {
+                    var card = new ItemCard2
+                    {
+                        isSelectable = true,
+                        DataContext = product,
+                        Margin = new Thickness(15)
+                    };
+
+                    card.CardSelected += Card_Selected;
+
+                    ItemsFeed.Items.Add(card);
+                }
             }
             catch (Exception ex)
             {
@@ -119,9 +128,10 @@ namespace WpfApp.Pages.User.Profile
 
         private void Card_Selected(object sender, EventArgs e)
         {
-            var selectedCard = sender as ItemCard2;
-            if (selectedCard != null)
+            if (sender is ItemCard2 selectedCard && selectedCard.DataContext is ProductoAPIModel product)
             {
+                _selectedProduct = product;
+
                 BtnDeletePost.Visibility = Visibility.Visible;
                 BtnEditPost.Visibility = Visibility.Visible;
             }
@@ -154,12 +164,47 @@ namespace WpfApp.Pages.User.Profile
             NavigationManager.Instance.NavigateToPage("EditItem_Header", new RegisterProductPage());
         }
 
-        private void BtnDeletePost_Click(object sender, RoutedEventArgs e)
+        private async void BtnDeletePost_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: call method to delete and reload page
+            if (_selectedProduct == null)
+            {
+                MessageDialog.Show("Error", "No se ha seleccionado ningún producto.", AlertType.ERROR);
+                return;
+            }
+
             MessageDialog.ShowConfirm(
-                "EditItem_DialogTDelete", "EditItem_DialogDDelete",
-                onConfirm: () => { NavigationManager.Instance.NavigateToPage("Items_Header", new UserProfilePage()); });
+                "EditItem_DialogTDelete",
+                "EditItem_DialogDDelete",
+                onConfirm: async () =>
+                {
+                    try
+                    {
+                        string url = ProductEndpoints.DeleteProduct(_selectedProduct.Id);
+                        string? token = UserSession.Instance.JwtToken;
+
+                        if (string.IsNullOrWhiteSpace(token))
+                        {
+                            MessageDialog.Show("Error", "No hay sesión activa.", AlertType.ERROR);
+                            return;
+                        }
+
+                        var response = await HttpClientHelper.DeleteAsync(url, token);
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            MessageDialog.Show("Error", "No se pudo eliminar el producto.", AlertType.ERROR);
+                            return;
+                        }
+
+                        // Success: Reload or navigate
+                        NavigationManager.Instance.NavigateToPage("Items_Header", new UserProfilePage());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageDialog.Show("Error", $"Error inesperado: {ex.Message}", AlertType.ERROR);
+                    }
+                });
         }
     }
 }

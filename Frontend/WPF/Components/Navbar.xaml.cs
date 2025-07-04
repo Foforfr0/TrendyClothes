@@ -9,6 +9,7 @@ namespace WpfApp.Components {
     public partial class Navbar : UserControl {
 
         private static Frame? _targetFrame;
+        public event Action<string>? SearchSubmitted;
 
         public Navbar () {
             InitializeComponent ();
@@ -34,8 +35,12 @@ namespace WpfApp.Components {
 
         }
 
-        private void ClickSearchProducts (object sender, RoutedEventArgs e) {
+        private void ClickSearchProducts (object sender, RoutedEventArgs e)
+        {
+            string keyword = textBox_KeyWord.Text.Trim();
 
+            if (!string.IsNullOrEmpty(keyword))
+                SearchSubmitted?.Invoke(keyword);
         }
 
         private void ClickCheckAccount (object sender, RoutedEventArgs e) {
