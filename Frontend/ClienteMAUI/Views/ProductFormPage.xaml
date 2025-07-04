@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ClienteMAUI.Views.ProductFormPage"
+             Title="Formulario de Producto">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Nombre -->
+            <Label Text="Nombre:" FontAttributes="Bold"/>
+            <Entry x:Name="txtName" Placeholder="Nombre del producto"/>
+
+            <!-- Precio -->
+            <Label Text="Precio:" FontAttributes="Bold"/>
+            <Entry x:Name="txtPrice" Placeholder="Ej. 150.00" Keyboard="Numeric"/>
+
+            <!-- Descuento -->
+            <Label Text="Descuento (%):" FontAttributes="Bold"/>
+            <Entry x:Name="txtDiscount" Placeholder="Ej. 10.00" Keyboard="Numeric"/>
+
+            <!-- Stock -->
+            <Label Text="Stock disponible:" FontAttributes="Bold"/>
+            <Entry x:Name="txtStock" Placeholder="Ej. 12" Keyboard="Numeric"/>
+
+            <!-- Categoría -->
+            <Label Text="Categoría:" FontAttributes="Bold"/>
+            <Picker x:Name="pickerCategory" Title="Selecciona una categoría"
+                    ItemDisplayBinding="{Binding Category}" />
+
+            <!-- Tipo -->
+            <Label Text="Tipo:" FontAttributes="Bold"/>
+            <Picker x:Name="pickerType" Title="Selecciona tipo"
+                    ItemDisplayBinding="{Binding Type}" />
+
+            <!-- Estado -->
+            <Label Text="Estado:" FontAttributes="Bold"/>
+            <Picker x:Name="pickerStatus" Title="Selecciona estado"
+                    ItemDisplayBinding="{Binding Status}" />
+
+            <!-- Descripción -->
+            <Label Text="Descripción:" FontAttributes="Bold"/>
+            <Editor x:Name="txtDescription"
+                    Placeholder="Escribe una descripción..."
+                    AutoSize="TextChanges"
+                    HeightRequest="100" />
+
+            <!-- Botón guardar -->
+            <Button Text="Guardar producto" Clicked="OnGuardarProductoClicked"
+                    BackgroundColor="#4CAF50" TextColor="White" CornerRadius="10"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

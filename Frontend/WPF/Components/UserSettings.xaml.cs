@@ -74,8 +74,7 @@ namespace WpfApp.Components
         private void NavigateToSignIn()
         {
             NavigationManager.Reset();
-            var loginService = App.Services?.GetRequiredService<LoginService> ();
-            var signIn = new SignInWindow(loginService);
+            var signIn = new SignInWindow(); 
             signIn.Show();
 
             Application.Current.MainWindow.Close();

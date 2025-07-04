@@ -1,6 +1,10 @@
 ﻿using Microsoft.Win32;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using WebPage.Connections;
+using WpfApp.DTO.User.Register;
 using WpfApp.Pages.Dialogs;
 using WpfApp.Utilities;
 
@@ -20,93 +24,48 @@ namespace WpfApp.Pages.User.Auth
             var validations = new (TextBox, string, int)[]
             {
                 (TbFirstName, Utilities.Constants.NAMES_PATTERN, Utilities.Constants.MAX_LENGTH_NAMES),
+                (TbMiddleName, Constants.NAMES_PATTERN, Constants.MAX_LENGTH_NAMES),
                 (TbLastName, Utilities.Constants.NAMES_PATTERN, Utilities.Constants.MAX_LENGTH_NAMES),
-                (TbAccountPassword, Utilities.Constants.ALPHANUMERIC_PATTERN, Utilities.Constants.MAX_LENGTH_PASSWORD),
-                (TbEmailAddress, Constants.EMAIL_ALLOWED_CHARS_PATTERN, Constants.MAX_LENGTH_EMAIL)
+                (TbPhoneNumber, Constants.NUMERIC_PATTERN, Constants.MAX_LENGTH_PHONENUMBER),
+                (TbEmailAddress, Constants.EMAIL_ALLOWED_CHARS_PATTERN, Constants.MAX_LENGTH_EMAIL),
+                (TbUsername, Constants.NAMES_PATTERN, Constants.MAX_LENGTH_USERNAME)
             };
 
             foreach (var (textBox, pattern, maxLength) in validations)
                 InputUtilities.ValidateInput(textBox, pattern, maxLength);
 
-            InputUtilities.ValidatePasswordInput(PbAccountPassword, Utilities.Constants.ALPHANUMERIC_PATTERN,
+            InputUtilities.ValidatePasswordInput(PbAccountPassword, Constants.MIN_LENGTH_PASSWORD,
                 Utilities.Constants.MAX_LENGTH_PASSWORD);
+            InputUtilities.ValidatePasswordInput(PbConfirmPassword, Constants.MIN_LENGTH_PASSWORD,
+                Constants.MAX_LENGTH_PASSWORD);
             InputUtilities.ConvertToLowerCase(TbEmailAddress);
         }
 
-        private void UpdateFormButtonState(Button button)
+        private string GetPassword()
         {
-            var requiredFields = new List<TextBox>
-            {
-                TbFirstName, TbLastName, TbEmailAddress, TbAccountPassword, TbConfirmPassword
-            };
+            return TbAccountPassword.Visibility == Visibility.Visible
+                ? TbAccountPassword.Text
+                : PbAccountPassword.Password;
+        }
 
-            bool allFieldsFilled = true;
-
-            foreach (var field in requiredFields)
-            {
-                if (string.IsNullOrWhiteSpace(field.Text))
-                {
-                    allFieldsFilled = false;
-                    break;
-                }
-            }
-
-            button.IsEnabled = allFieldsFilled;
+        private string GetConfirmedPassword()
+        {
+            return TbConfirmPassword.Visibility == Visibility.Visible
+                ? TbConfirmPassword.Text
+                : PbConfirmPassword.Password;
         }
 
         private void UpdateRegisterButtonState()
         {
-            var requiredFields = new List<object>
-            {
-                TbFirstName,
-                TbLastName,
-                TbEmailAddress,
-                TbAccountPassword,
-                TbConfirmPassword
-            };
-
-            bool allFieldsFilled = true;
-            foreach (TextBox field in requiredFields)
-            {
-                if (string.IsNullOrWhiteSpace(field.Text))
-                {
-                    allFieldsFilled = false;
-                    break;
-                }
-            }
+            bool allFieldsFilled = !string.IsNullOrWhiteSpace(TbFirstName.Text) &&
+                !string.IsNullOrWhiteSpace(TbMiddleName.Text) &&
+                !string.IsNullOrWhiteSpace(TbLastName.Text) &&
+                !string.IsNullOrWhiteSpace(TbEmailAddress.Text) &&
+                !string.IsNullOrWhiteSpace(TbPhoneNumber.Text) &&
+                !string.IsNullOrWhiteSpace(GetPassword()) &&
+                !string.IsNullOrWhiteSpace(GetConfirmedPassword());
 
             BtnRegisterUser.IsEnabled = allFieldsFilled;
-        }
-
-        private void SelectProfilePicture(Image targetImageControl)
-        {
-            var dialogTitle = Application.Current.Resources["RegUser_DialogSelectProfilePic"]?.ToString();
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Filter = Utilities.Constants.IMAGE_FILE_FILTER,
-                Title = dialogTitle
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                try
-                {
-                    var processedImageBytes = ImageUtilities.ProcessImageBeforeSaving(openFileDialog.FileName);
-
-                    if (!ImageUtilities.IsImageSizeValid(processedImageBytes))
-                    {
-                        MessageDialog.Show("GlbDialogT_InvalidImageSize", "GlbDialogD_InvalidImageSize", AlertType.WARNING);
-                        return;
-                    }
-
-                    UserProfilePic.Source = ImageUtilities.ConvertToImageSource(processedImageBytes);
-                    BtnDeleteImage.IsEnabled = true;
-                }
-                catch
-                {
-                    MessageDialog.Show("GlbDialogT_InvalidImageSize", "GlbDialogD_InvalidImageSize", AlertType.WARNING);
-                }
-            }
         }
 
         private void RequiredFields_TextChanged(object sender, RoutedEventArgs e)
@@ -114,23 +73,34 @@ namespace WpfApp.Pages.User.Auth
             UpdateRegisterButtonState();
         }
 
-        private void Password_TextChanged(object sender, RoutedEventArgs e)
+        private void PasswordField_TextChanged(object sender, RoutedEventArgs e)
         {
             if (sender is TextBox textBox && PbAccountPassword.Password != textBox.Text)
                 PbAccountPassword.Password = textBox.Text;
-            else if (sender is PasswordBox passwordBox && TbAccountPassword.Text != passwordBox.Password)
+            UpdateRegisterButtonState();
+        }
+
+        private void PasswordField_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox && TbAccountPassword.Text != passwordBox.Password)
                 TbAccountPassword.Text = passwordBox.Password;
+            UpdateRegisterButtonState();
         }
 
-        private void BtnSelectImage_Click(object sender, RoutedEventArgs e)
+        private void ConfirmPasswordField_TextChanged(object sender, RoutedEventArgs e)
         {
-            SelectProfilePicture(UserProfilePic);
+            if (sender is TextBox textBox && PbConfirmPassword.Password != textBox.Text)
+                PbConfirmPassword.Password = textBox.Text;
+            UpdateRegisterButtonState();
         }
 
-        private void BtnDeleteImage_Click(object sender, RoutedEventArgs e)
+        private void ConfirmPasswordField_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            BtnDeleteImage.IsEnabled = false;
+            if (sender is PasswordBox passwordBox && TbConfirmPassword.Text != passwordBox.Password)
+                TbConfirmPassword.Text = passwordBox.Password;
+            UpdateRegisterButtonState();
         }
+
 
         private void ChbShowPassword_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -153,13 +123,76 @@ namespace WpfApp.Pages.User.Auth
         }
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            
+            var loginWindow = new SignInWindow();
+            loginWindow.Show();
+            this.Close();
         }
 
-        private void BtnRegisterUser_Click(object sender, RoutedEventArgs e)
+        private async void BtnRegisterUser_Click(object sender, RoutedEventArgs e)
         {
-            MessageDialog.Show("RegUser_DialogTSuccess", "RegUser_DialogDSuccess", AlertType.SUCCESS);
+            var dto = new RegisterDTO
+            {
+                FirstName = TbFirstName.Text.Trim(),
+                MiddleName = TbMiddleName.Text.Trim(),
+                LastName = TbLastName.Text.Trim(),
+                Email = TbEmailAddress.Text.Trim(),
+                PhoneNumber = TbPhoneNumber.Text.Trim(),
+                AreaCode = "+52",
+                Username = TbUsername.Text.Trim(),
+                Password = GetPassword()
+            };
+
+            if (!InputUtilities.IsValidNameFormat(dto.FirstName))
+            {
+                MessageDialog.Show("Nombre inválido",
+                    "El nombre debe iniciar con mayúscula y solo contener letras.",
+                    AlertType.WARNING);
+                return;
+            }
+
+            if (!InputUtilities.IsValidPasswordFormat(dto.Password))
+            {
+                MessageDialog.Show("Contraseña inválida",
+                    "Debe tener una mayúscula, una minúscula, un número y un carácter especial.",
+                    AlertType.WARNING);
+                return;
+            }
+
+
+            try
+            {
+                var url = AuthEndpoints.RegisterUser;
+
+                // Optional: log serialized DTO for debugging
+                var jsonPayload = JsonSerializer.Serialize(dto);
+                Console.WriteLine($"[DEBUG] Sending RegisterDTO: {jsonPayload}");
+
+                var response = await HttpClientHelper.PostAsync(url, dto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageDialog.Show("RegUser_DialogTSuccess", "RegUser_DialogDSuccess", AlertType.SUCCESS);
+
+                    var loginWindow = new SignInWindow();
+                    loginWindow.Show();
+                    this.Close();
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+
+                    Console.WriteLine($"[DEBUG] Registration failed: {errorContent}");
+
+                    MessageDialog.Show("RegUser_DialogTFailed", $"Registro fallido:\n{errorContent}", AlertType.ERROR);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPTION] Register error: {ex}");
+                MessageDialog.Show("RegUser_DialogTFailed", $"Error de conexión: {ex.Message}", AlertType.ERROR);
+            }
         }
+
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {

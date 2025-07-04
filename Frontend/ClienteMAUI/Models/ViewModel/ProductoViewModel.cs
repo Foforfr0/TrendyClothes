@@ -16,6 +16,7 @@ namespace ClienteMAUI.Models.ViewModel
 
         public ProductoViewModel(int id, string nombre, decimal precio, int cantidadVendidos, ImageSource? imageSource, bool esPropio)
         {
+            Id = id;
             Nombre = nombre;
             Precio = precio;
             CantidadVendidos = cantidadVendidos;
