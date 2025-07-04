@@ -22,6 +22,16 @@
                     CornerRadius="10"
                     Padding="12,6" />
 
+            <!-- Sección Botón ver subastas -->
+            <Button Text="Ver subastas" 
+                    x:Name="btnVerSubastas"
+                    HorizontalOptions="Center"
+                    Clicked="OnCrearProductoClicked"
+                    BackgroundColor="#007AFF"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Padding="12,6" />
+
             <!-- Sección Lista de productos -->
             <CollectionView x:Name="ProductsCollection"
                             ItemsLayout="VerticalGrid, 2"

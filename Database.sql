@@ -130,24 +130,31 @@ CREATE TABLE AuctionsProduct (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     FirstPrice DECIMAL(12,2),
-    MinBid DECIMAL(12,2),
+    Bid DECIMAL(12,2),
     LastPrice DECIMAL(12,2),
     DateStart DATETIME NOT NULL,
     DateEnd DATETIME NOT NULL,
-    NumberProducts INT NOT NULL,
     SellerId INT NOT NULL,
     ProductId INT NOT NULL,
     StatusId INT NOT NULL,
+    Description VARCHAR(MAX) NOT NULL,
 
     CONSTRAINT FK_AuctionProduct_Product FOREIGN KEY (ProductId) REFERENCES Products(Id) ON DELETE CASCADE,
     CONSTRAINT FK_StatusAuction_Auction FOREIGN KEY (StatusId) REFERENCES StatusesAuction(Id) ON DELETE CASCADE,
     CONSTRAINT FK_BuyerProduct_Product FOREIGN KEY (SellerId) REFERENCES Users(Id) ON DELETE CASCADE,
 );
 
+CREATE TABLE PhotosAuction (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Photo VARBINARY(MAX) NOT NULL,
+    AuctionId INT NOT NULL,
+    Mime VARCHAR(25) NOT NULL
+
+    CONSTRAINT FK_PhotoAuction_Auction FOREIGN KEY (AuctionId) REFERENCES AuctionsProduct(Id) ON DELETE CASCADE
+);
+
 CREATE TABLE BidsAuction (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    Bid DECIMAL(12,2) NOT NULL,
-    DateBid DATETIME NOT NULL,
     BuyerId INT NOT NULL,
     AuctionId INT NOT NULL,
 

@@ -41,13 +41,23 @@ public partial class ProductFormPage : ContentPage
             pickerStatus.ItemsSource = statusResponse?.Body ?? new();
             pickerStatus.ItemDisplayBinding = new Binding("Status");
 
-            // Si estamos editando, seleccionamos los valores actuales
+           
+                // Si estamos editando, seleccionamos los valores actuales
             if (_product.Id != null)
             {
-                pickerCategory.SelectedItem = ((List<CategoryDTO>)pickerCategory.ItemsSource).FirstOrDefault(c => c.Id == _product.CategoryId);
-                pickerType.SelectedItem = ((List<TypeDTO>)pickerType.ItemsSource).FirstOrDefault(t => t.Id == _product.TypeId);
-                pickerStatus.SelectedItem = ((List<StatusDTO>)pickerStatus.ItemsSource).FirstOrDefault(s => s.Id == _product.StatusId);
+                pickerCategory.SelectedItem = ((List<CategoryDTO>)pickerCategory.ItemsSource)
+                    .FirstOrDefault(c => c.Category.Equals(_product.CategoryName, StringComparison.OrdinalIgnoreCase));
+
+                pickerType.SelectedItem = ((List<TypeDTO>)pickerType.ItemsSource)
+                    .FirstOrDefault(t => t.Type.Equals(_product.TypeName, StringComparison.OrdinalIgnoreCase));
+
+                pickerStatus.SelectedItem = ((List<StatusDTO>)pickerStatus.ItemsSource)
+                    .FirstOrDefault(s => s.Id == _product.StatusId);
+
+                CargarDatosFormulario(); 
             }
+
+            
         }
         catch (Exception ex)
         {
@@ -65,6 +75,8 @@ public partial class ProductFormPage : ContentPage
         txtDiscount.Text = _product.Discount.ToString();
         txtStock.Text = _product.StockAvailable.ToString();
         txtDescription.Text = _product.Description;
+        
+
     }
 
     private async void OnGuardarProductoClicked(object sender, EventArgs e)

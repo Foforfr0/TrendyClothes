@@ -138,21 +138,16 @@ public partial class MainMenuPage : ContentPage
 
                 // Deserializa el DTO
                 var dtoResponse = JsonSerializer.Deserialize<ResponseWrapper<ProductDTO>>(json);
+
+                
+
                 if (dtoResponse?.Body == null)
                 {
                     await DisplayAlert("Error", "Producto no válido", "OK");
                     return;
                 }
 
-                // Mapea los strings "category" y "type" a sus respectivos IDs
-                using var jsonDoc = JsonDocument.Parse(json);
-                var root = jsonDoc.RootElement.GetProperty("body");
-
-                string categoryName = root.GetProperty("category").GetString() ?? "";
-                string typeName = root.GetProperty("type").GetString() ?? "";
-
-                dtoResponse.Body.CategoryId = categoriesList.FirstOrDefault(c => c.Category == categoryName)?.Id ?? 0;
-                dtoResponse.Body.TypeId = typesList.FirstOrDefault(t => t.Type == typeName)?.Id ?? 0;
+               
 
                 // Navega con el DTO completo
                 await Navigation.PushAsync(new ProductFormPage(dtoResponse.Body));
