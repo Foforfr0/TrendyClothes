@@ -31,6 +31,11 @@ namespace ClienteMAUI.Models.DTO.Pruducts
         [JsonPropertyName("typeId")]
         public int TypeId { get; set; }
 
+        [JsonPropertyName("category")]
+        public string? CategoryName { get; set; }
+
+        [JsonPropertyName("type")]
+        public string? TypeName { get; set; }
 
         [JsonPropertyName("statusId")]
         public int StatusId { get; set; }
