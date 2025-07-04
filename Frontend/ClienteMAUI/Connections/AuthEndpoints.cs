@@ -25,6 +25,7 @@ namespace ClienteMAUI.Connections
         public static string GetStatuses => $"{BaseUrl}/Tags/Statusses";
         public static string GetProducts => $"{BaseUrl}/Search";
         public static string GetProductDetails(int id) => $"{BaseUrl}/Details?id={id}";
+        public static string GetProductImage(int id) => $"{BaseUrl}/Image?productId={id}";
 
     }
     public static class UserEndpoints
