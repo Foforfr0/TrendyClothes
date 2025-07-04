@@ -16,51 +16,47 @@ namespace AuctionParticipantService.DAO
             _logger = logger;
         }
 
-        public async Task<MessageResponse<List<AuctionsListDTO>>> GetActiveAuctionsAsync()
+        public async Task<MessageResponse<List<AuctionFullDTO>>> GetActiveAuctionsFullAsync()
         {
             try
             {
+                var activeStatus = await _context.StatusesAuctions
+                    .Where(s => s.Status == "Activo")
+                    .Select(s => s.Id)
+                    .FirstOrDefaultAsync();
+
                 var auctions = await _context.AuctionsProducts
-                    .Include(a => a.Product)
                     .Include(a => a.Status)
-                    .Where(a => a.StatusId == 1)
+                    .Include(a => a.Product)
+                    .Include(a => a.Seller)
+                    .Where(a => a.StatusId == activeStatus)
                     .ToListAsync();
 
-                var result = new List<AuctionsListDTO>();
-                _logger.LogInformation($"Subastas encontradas: {auctions.Count}");
-
-                foreach (var auction in auctions)
+                var result = auctions.Select(a => new AuctionFullDTO
                 {
-                    var photo = await _context.PhotosProducts
-                        .Where(p => p.ProductId == auction.ProductId)
-                        .Select(p => new { p.Photo, p.Mime })
-                        .FirstOrDefaultAsync();
+                    Id = a.Id,
+                    Name = a.Name,
+                    FirstPrice = a.FirstPrice,
+                    Bid = a.Bid,
+                    LastPrice = a.LastPrice > 0 ? a.LastPrice : a.FirstPrice,
+                    DateStart = a.DateStart,
+                    DateEnd = a.DateEnd,
+                    Description = a.Description,
+                    ProductId = a.ProductId,
+                    StatusId = a.StatusId,
+                    SellerId = a.SellerId,
+                    StatusName = a.Status.Status,
+                    SellerName = $"{a.Seller.FirstName} {a.Seller.LastName}"
+                }).ToList();
 
-                    string base64Image = "";
-                    string mime = "image/jpeg";
-
-                    if (photo != null)
-                    {
-                        base64Image = Convert.ToBase64String(photo.Photo);
-                        mime = photo.Mime ?? mime;
-                    }
-
-                    result.Add(new AuctionsListDTO
-                    {
-                        Id = auction.Id,
-                        ProductName = auction.Name,
-                        LastPrice = auction.LastPrice ?? auction.FirstPrice ?? 0,
-                        ImageBase64 = base64Image,
-                        MimeImage = mime
-                    });
-                }
-
-                return MessageResponse<List<AuctionsListDTO>>.Success("Subastas activas obtenidas correctamente.", result);
+                return MessageResponse<List<AuctionFullDTO>>.Success(result);
             }
             catch (Exception ex)
             {
-                return MessageResponse<List<AuctionsListDTO>>.Failure($"Error al consultar subastas activas: {ex.Message}");
+                _logger.LogError(ex, "Error al obtener subastas activas completas.");
+                return MessageResponse<List<AuctionFullDTO>>.Error("Error al obtener subastas activas.");
             }
         }
+
     }
 }

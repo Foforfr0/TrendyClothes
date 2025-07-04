@@ -8,11 +8,11 @@ namespace AuctionParticipantService.Controllers
 {
     [ApiController]
     [Route("api/Auction/Participant/Auctions")]
-    public class ViewAuctionsController : Controller
+    public class AuctionsController : Controller
     {
         private readonly IConsultAuctionService _consultAuctionService;
 
-        public ViewAuctionsController(IConsultAuctionService consultAuctionService)
+        public AuctionsController(IConsultAuctionService consultAuctionService)
         {
             _consultAuctionService = consultAuctionService;
         }
@@ -22,7 +22,7 @@ namespace AuctionParticipantService.Controllers
         {
             try
             {
-                MessageResponse<List<AuctionsListDTO>> response = await _consultAuctionService.GetActiveAuctionsAsync();
+                MessageResponse<List<AuctionFullDTO>> response = await _consultAuctionService.GetActiveAuctionsAsync();
 
                 if (response.IsError)
                     return HttpResponses.InternalServerError(response.Message);
