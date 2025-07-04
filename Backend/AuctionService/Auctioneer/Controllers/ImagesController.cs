@@ -1,23 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ProductService.Models;
-using ProductService.Services.Interfaces;
+﻿using AuctionAuctioneerService.Models;
+using AuctionAuctioneerService.Services.Intefaces;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ProductService.Controllers {
+namespace AuctionAuctioneerService.Controllers {
     [ApiController]
-    [Route ("api/Product")]
+    [Route ("api/Auction")]
     public class ImagesController : Controller {
         private readonly IConsultImagesService _consultImagesService;
-        private readonly ILogger<TagsController> _logger;
 
-        public ImagesController (IConsultImagesService consultImagesService, ILogger<TagsController> logger) {
+        public ImagesController (IConsultImagesService consultImagesService) {
             _consultImagesService = consultImagesService;
-            _logger = logger;
         }
 
         [HttpGet ("Image")]
-        public async Task<IActionResult> GetCategories ([FromQuery] int productId) {
+        public async Task<IActionResult> GetCategories ([FromQuery] int auctionId) {
             try {
-                MessageResponse<byte[]> response = await _consultImagesService.GetImageProductId (productId);
+                MessageResponse<byte[]> response = await _consultImagesService.GetImageAuctionId(auctionId);
 
                 if (response.IsError)
                     return HttpResponses.InternalServerError (response.Message);

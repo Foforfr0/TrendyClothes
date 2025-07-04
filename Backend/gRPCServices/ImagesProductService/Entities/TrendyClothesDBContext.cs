@@ -23,6 +23,8 @@ public partial class TrendyClothesDBContext : DbContext
 
     public virtual DbSet<CategoriesProduct> CategoriesProducts { get; set; }
 
+    public virtual DbSet<PhotosAuction> PhotosAuctions { get; set; }
+
     public virtual DbSet<PhotosProduct> PhotosProducts { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
@@ -61,7 +63,7 @@ public partial class TrendyClothesDBContext : DbContext
     {
         modelBuilder.Entity<Address>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Addresse__3214EC07B6481E6A");
+            entity.HasKey(e => e.Id).HasName("PK__Addresse__3214EC078B5B79FB");
 
             entity.Property(e => e.City)
                 .HasMaxLength(50)
@@ -91,44 +93,41 @@ public partial class TrendyClothesDBContext : DbContext
 
         modelBuilder.Entity<AuctionsProduct>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Auctions__3214EC077E107138");
+            entity.HasKey(e => e.Id).HasName("PK__Auctions__3214EC0793CB34D2");
 
             entity.ToTable("AuctionsProduct");
 
+            entity.Property(e => e.Bid).HasColumnType("decimal(12, 2)");
             entity.Property(e => e.DateEnd).HasColumnType("datetime");
             entity.Property(e => e.DateStart).HasColumnType("datetime");
+            entity.Property(e => e.Description).IsUnicode(false);
             entity.Property(e => e.FirstPrice).HasColumnType("decimal(12, 2)");
             entity.Property(e => e.LastPrice).HasColumnType("decimal(12, 2)");
-            entity.Property(e => e.MinBid).HasColumnType("decimal(12, 2)");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Product).WithMany(p => p.AuctionsProducts)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AuctionProduct_Product");
 
             entity.HasOne(d => d.Seller).WithMany(p => p.AuctionsProducts)
                 .HasForeignKey(d => d.SellerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_BuyerProduct_Product");
 
             entity.HasOne(d => d.Status).WithMany(p => p.AuctionsProducts)
                 .HasForeignKey(d => d.StatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_StatusAuction_Auction");
         });
 
         modelBuilder.Entity<BidsAuction>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BidsAuct__3214EC0742F4DF15");
+            entity.HasKey(e => e.Id).HasName("PK__BidsAuct__3214EC07335A82EB");
 
             entity.ToTable("BidsAuction");
 
-            entity.Property(e => e.Bid).HasColumnType("decimal(12, 2)");
-            entity.Property(e => e.DateBid).HasColumnType("datetime");
-
             entity.HasOne(d => d.Auction).WithMany(p => p.BidsAuctions)
                 .HasForeignKey(d => d.AuctionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_BidAuction_Auction");
 
             entity.HasOne(d => d.Buyer).WithMany(p => p.BidsAuctions)
@@ -139,20 +138,35 @@ public partial class TrendyClothesDBContext : DbContext
 
         modelBuilder.Entity<CategoriesProduct>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC0716203EBF");
+            entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC0754414143");
 
             entity.ToTable("CategoriesProduct");
 
-            entity.HasIndex(e => e.Category, "UQ__Categori__4BB73C326ECFB211").IsUnique();
+            entity.HasIndex(e => e.Category, "UQ__Categori__4BB73C32A277097D").IsUnique();
 
             entity.Property(e => e.Category)
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
 
+        modelBuilder.Entity<PhotosAuction>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PhotosAu__3214EC0714EFA67F");
+
+            entity.ToTable("PhotosAuction");
+
+            entity.Property(e => e.Mime)
+                .HasMaxLength(25)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Auction).WithMany(p => p.PhotosAuctions)
+                .HasForeignKey(d => d.AuctionId)
+                .HasConstraintName("FK_PhotoAuction_Auction");
+        });
+
         modelBuilder.Entity<PhotosProduct>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PhotosPr__3214EC07F23F3623");
+            entity.HasKey(e => e.Id).HasName("PK__PhotosPr__3214EC07693D1544");
 
             entity.ToTable("PhotosProduct");
 
@@ -162,16 +176,15 @@ public partial class TrendyClothesDBContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.PhotosProducts)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PhotoProduct_Product");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Products__3214EC0756AE48CE");
+            entity.HasKey(e => e.Id).HasName("PK__Products__3214EC07D2E338A2");
 
             entity.Property(e => e.AverageStars).HasColumnType("decimal(2, 1)");
-            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Description).IsUnicode(false);
             entity.Property(e => e.Discount).HasColumnType("decimal(12, 2)");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
@@ -201,7 +214,7 @@ public partial class TrendyClothesDBContext : DbContext
 
         modelBuilder.Entity<QAProduct>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__QAProduc__3214EC07E301C118");
+            entity.HasKey(e => e.Id).HasName("PK__QAProduc__3214EC07FD239451");
 
             entity.ToTable("QAProduct");
 
@@ -210,22 +223,20 @@ public partial class TrendyClothesDBContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.QAProducts)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_QAProduct_Product");
 
             entity.HasOne(d => d.User).WithMany(p => p.QAProducts)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserQA_Product");
         });
 
         modelBuilder.Entity<RolesUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__RolesUse__3214EC073C40AB75");
+            entity.HasKey(e => e.Id).HasName("PK__RolesUse__3214EC07012539A6");
 
             entity.ToTable("RolesUser");
 
-            entity.HasIndex(e => e.Role, "UQ__RolesUse__DA15413EA0CBB4A0").IsUnique();
+            entity.HasIndex(e => e.Role, "UQ__RolesUse__DA15413E87608737").IsUnique();
 
             entity.Property(e => e.Role)
                 .HasMaxLength(25)
@@ -234,11 +245,11 @@ public partial class TrendyClothesDBContext : DbContext
 
         modelBuilder.Entity<StatusesAuction>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Statuses__3214EC07AD2AEF97");
+            entity.HasKey(e => e.Id).HasName("PK__Statuses__3214EC07220DB3A8");
 
             entity.ToTable("StatusesAuction");
 
-            entity.HasIndex(e => e.Status, "UQ__Statuses__3A15923FD8C94E8D").IsUnique();
+            entity.HasIndex(e => e.Status, "UQ__Statuses__3A15923F5E3CF7C6").IsUnique();
 
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
@@ -247,11 +258,11 @@ public partial class TrendyClothesDBContext : DbContext
 
         modelBuilder.Entity<StatusesProduct>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Statuses__3214EC077C4D26F4");
+            entity.HasKey(e => e.Id).HasName("PK__Statuses__3214EC07B4F43AD9");
 
             entity.ToTable("StatusesProduct");
 
-            entity.HasIndex(e => e.Status, "UQ__Statuses__3A15923F18C7946E").IsUnique();
+            entity.HasIndex(e => e.Status, "UQ__Statuses__3A15923F236C4341").IsUnique();
 
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
@@ -260,11 +271,11 @@ public partial class TrendyClothesDBContext : DbContext
 
         modelBuilder.Entity<TypesProduct>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TypesPro__3214EC076D1C8895");
+            entity.HasKey(e => e.Id).HasName("PK__TypesPro__3214EC07294655B9");
 
             entity.ToTable("TypesProduct");
 
-            entity.HasIndex(e => e.Type, "UQ__TypesPro__F9B8A48B73801A43").IsUnique();
+            entity.HasIndex(e => e.Type, "UQ__TypesPro__F9B8A48B61D07D1D").IsUnique();
 
             entity.Property(e => e.Type)
                 .HasMaxLength(20)
@@ -273,11 +284,11 @@ public partial class TrendyClothesDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07D565CE11");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07C87BD5DE");
 
-            entity.HasIndex(e => e.Username, "UQ__Users__536C85E44494855D").IsUnique();
+            entity.HasIndex(e => e.Username, "UQ__Users__536C85E4ADB885AA").IsUnique();
 
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D1053449DE54C0").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__A9D105347752EC6E").IsUnique();
 
             entity.Property(e => e.AreaCode)
                 .HasMaxLength(5)
@@ -311,7 +322,7 @@ public partial class TrendyClothesDBContext : DbContext
 
         modelBuilder.Entity<User_Address>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User_Add__3214EC07C0E23DF6");
+            entity.HasKey(e => e.Id).HasName("PK__User_Add__3214EC07BB87A7A5");
 
             entity.ToTable("User_Address");
 
