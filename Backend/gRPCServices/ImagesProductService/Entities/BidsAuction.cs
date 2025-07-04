@@ -7,10 +7,6 @@ public partial class BidsAuction
 {
     public int Id { get; set; }
 
-    public decimal Bid { get; set; }
-
-    public DateTime DateBid { get; set; }
-
     public int BuyerId { get; set; }
 
     public int AuctionId { get; set; }

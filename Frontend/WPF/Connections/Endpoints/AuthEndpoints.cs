@@ -19,6 +19,13 @@
 
         public static string GetPersonalData(string username) => $"{BaseUrl}/ViewProfile/GetPersonalData?username={username}";
     }
+
+    public static class ProductEndpoints
+    {
+        private const string BaseUrl = "http://localhost:5000/api/MyProducts";
+
+        public static string GetMyProducts(string username) => $"{BaseUrl}/Search?username={Uri.EscapeDataString(username)}";
+    }
 }
 
 

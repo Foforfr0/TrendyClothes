@@ -12,7 +12,7 @@
         public required decimal Discount {
             get; set;
         }
-        public required int NumberSold {
+        public int? NumberSold {
             get; set;
         }
         public required decimal AverageStars {

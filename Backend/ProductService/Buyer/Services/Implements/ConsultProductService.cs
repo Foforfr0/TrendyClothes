@@ -30,7 +30,7 @@ namespace ProductBuyerService.Services.Implements {
                     Name = prod.Name,
                     Price = prod.Price,
                     Discount = prod.Discount ?? 0,
-                    NumberSold = prod.NumberSold,
+                    NumberSold = prod.NumberSold ?? 0,
                     AverageStars = prod.AverageStars ?? 0,
                     StockAvailable = prod.StockAvailable
                 }).ToList ();

@@ -7,6 +7,7 @@ namespace AuctionAuctioneerService.Config {
             services.AddScoped<IConsultAuctionService, ConsultAuctionService> ();
             services.AddScoped<ICreateAuctionService, CreateAuctionService> ();
             services.AddScoped<IUpdateAuctionService, UpdateAuctionService> ();
+            services.AddScoped<IConsultImagesService, ConsultImagesService> ();
         }
     }
 }

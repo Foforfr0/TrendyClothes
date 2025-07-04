@@ -1,9 +1,11 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using WebPage.Connections;
 using WpfApp.Components;
 using WpfApp.DTO;
+using WpfApp.DTO.Products;
 using WpfApp.DTO.User.Profile;
 using WpfApp.Pages.Auction;
 using WpfApp.Pages.Dialogs;
@@ -19,6 +21,52 @@ namespace WpfApp.Pages.User.Profile
         {
             InitializeComponent();
             LoadUserProfile();
+            LoadUserProducts();
+        }
+
+        private async void LoadUserProducts()
+        {
+            try
+            {
+                string? username = UserSession.Instance.Username;
+                string? token = UserSession.Instance.JwtToken;
+
+                if (string.IsNullOrWhiteSpace(username) ||
+                    string.IsNullOrWhiteSpace(token))
+                {
+                    MessageDialog.Show("Error", "No hay sesion activa", AlertType.ERROR);
+                    return;
+                }
+
+                string url = ProductEndpoints.GetMyProducts(username);
+                var response = await HttpClientHelper.GetAsync(url, token);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageDialog.Show("Error", "No se han podido cargar tus productos",
+                        AlertType.ERROR);
+                    return;
+                }
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+                var productResponse = JsonSerializer.Deserialize<ProductListResponse>
+                    (jsonString, options);
+
+                if (productResponse?.Body == null || productResponse.Body.Count == 0)
+                {
+                    ItemsFeed.ItemsSource = new List<ProductoAPIModel>();
+                    return;
+                }
+
+                ItemsFeed.ItemsSource = productResponse.Body;
+            }
+            catch (Exception ex)
+            {
+                MessageDialog.Show("GlbDialogT_NoConnection", $"GlbDialogD_NoConnection: {ex.Message}",
+                    AlertType.ERROR);
+            }
         }
 
         private async void LoadUserProfile()

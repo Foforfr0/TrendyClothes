@@ -13,7 +13,7 @@ public partial class Product
 
     public decimal? Discount { get; set; }
 
-    public int NumberSold { get; set; }
+    public int? NumberSold { get; set; }
 
     public decimal? AverageStars { get; set; }
 

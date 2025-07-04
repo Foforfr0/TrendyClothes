@@ -27,7 +27,7 @@
                                 VerticalAlignment="Top" Margin="10, 10">
                         <TextBlock Text="Datos personales:" Style="{DynamicResource HeaderLabelStyle}"/>
                         <TextBlock x:Name="TbFullName" Style="{DynamicResource DescriptionLabelStyle}"
-                                   Margin="0, 20"/>
+                                   Margin="0, 20, 0, 5"/>
                         <TextBlock x:Name="TbUsername" Style="{DynamicResource DescriptionLabelStyle}"
                                    Margin="0, 5"/>
                         <TextBlock x:Name="TbEmail" Style="{DynamicResource DescriptionLabelStyle}"
