@@ -26,9 +26,26 @@ namespace AuctionParticipantService.Models {
         public static MessageResponse<T> Failure (string message) =>
             new MessageResponse<T> (true, message, default);
 
-        internal static MessageResponse<List<AuctionFullDTO>> Error(string v)
+        internal class Success : MessageResponse<List<AuctionDTO>>
         {
-            throw new NotImplementedException();
+            private string v;
+            private List<AuctionDTO> auctions;
+
+            public Success(string v, List<AuctionDTO> auctions)
+            {
+                this.v = v;
+                this.auctions = auctions;
+            }
+        }
+
+        internal class Failure : MessageResponse<List<AuctionDTO>>
+        {
+            private string v;
+
+            public Failure(string v)
+            {
+                this.v = v;
+            }
         }
     }
 }

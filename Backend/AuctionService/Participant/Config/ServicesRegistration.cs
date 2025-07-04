@@ -1,12 +1,10 @@
-﻿using AuctionParticipantService.Services.Implements;
-using AuctionParticipantService.Services.Intefaces;
+﻿using AuctionParticipantService.DAO;
+
 
 namespace AuctionParticipantService.Config {
     public static class ServicesRegistration {
         public static void AddAplicationServices (this IServiceCollection services) {
-            services.AddScoped<IConsultAuctionService, ConsultAuctionService> ();
-            services.AddScoped<ICreateAuctionService, CreateAuctionService> ();
-            services.AddScoped<IUpdateAuctionService, UpdateAuctionService> ();
+            services.AddScoped<IAuctionService, AuctionService> ();
         }
     }
 }
