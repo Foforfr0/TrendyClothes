@@ -29,8 +29,6 @@ public partial class Product
 
     public int StatusId { get; set; }
 
-    public virtual ICollection<AuctionsProduct> AuctionsProducts { get; set; } = new List<AuctionsProduct>();
-
     public virtual CategoriesProduct Category { get; set; } = null!;
 
     public virtual ICollection<PhotosProduct> PhotosProducts { get; set; } = new List<PhotosProduct>();

@@ -6,7 +6,7 @@ using ProfileService.Services.Intefaces;
 namespace ProfileService.Controllers {
     [ApiController]
     [Authorize]
-    [Route ("api/User/[controller]")]
+    [Route ("api/User/ViewProfile")]
     public class ViewProfileController : Controller {
         private readonly IConsultProfileService _profileService;
 

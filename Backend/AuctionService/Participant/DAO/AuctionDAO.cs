@@ -1,8 +1,6 @@
 ﻿using AuctionParticipantService.Entities;
 using AuctionParticipantService.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace AuctionParticipantService.DAO
 {
@@ -11,95 +9,123 @@ namespace AuctionParticipantService.DAO
         private readonly TrendyClothesDBContext _context;
         private readonly ILogger<AuctionDAO> _logger;
 
-
         public AuctionDAO(TrendyClothesDBContext context, ILogger<AuctionDAO> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-
-        public async Task<List<AuctionDTO>> GetActiveAuctionsAsync()
+        public async Task<MessageResponse<List<AuctionDTO>>> GetActiveAuctionsWithPhotoAsync()
         {
             try
             {
-                return await _context.AuctionsProducts
-                    .Where(a => a.StatusId == 1)
-                    .Select(a => new AuctionDTO
-                    {
-                        Id = a.Id,
-                        Name = a.Name,
-                        FirstPrice = a.FirstPrice,
-                        Bid = a.Bid,
-                        LastPrice = a.LastPrice,
-                        DateStart = a.DateStart,
-                        DateEnd = a.DateEnd,
-                        Description = a.Description,
-                        SellerId = a.SellerId,
-                        ProductId = a.ProductId,
-                        StatusId = a.StatusId
-                    })
-                    .ToListAsync();
+                var results = await (from auction in _context.AuctionsProducts
+                                     join photo in _context.PhotosAuctions
+                                     on auction.Id equals photo.AuctionId
+                                     where auction.StatusId == 1
+                                     select new AuctionDTO
+                                     {
+                                         Id = auction.Id,
+                                         Name = auction.Name,
+                                         FirstPrice = auction.FirstPrice,
+                                         Bid = auction.Bid,
+                                         LastPrice = auction.LastPrice,
+                                         DateStart = auction.DateStart,
+                                         DateEnd = auction.DateEnd,
+                                         SellerId = auction.SellerId,
+                                         ProductId = auction.ProductId,
+                                         StatusId = auction.StatusId,
+                                         Description = auction.Description,
+                                         Photo = photo.Photo,
+                                         Mime = photo.Mime
+                                     })
+                                     .ToListAsync();
+
+                return new MessageResponse<List<AuctionDTO>>(true, "Subastas activas con foto recuperadas", results);
             }
             catch (Exception ex)
             {
-                return new List<AuctionDTO>(); // o null si prefieres
+                _logger.LogError(ex, "Error al recuperar subastas activas con foto.");
+                return new MessageResponse<List<AuctionDTO>>(false, "Error al recuperar datos", null);
             }
         }
 
-        public async Task<AuctionDTO?> GetAuctionByIdAsync(int auctionId)
+        public async Task<MessageResponse<AuctionDTO>> GetAuctionByIdAsync(int id)
         {
             try
             {
-                return await _context.AuctionsProducts
-                    .Where(a => a.Id == auctionId)
-                    .Select(a => new AuctionDTO
-                    {
-                        Id = a.Id,
-                        Name = a.Name,
-                        FirstPrice = a.FirstPrice,
-                        Bid = a.Bid,
-                        LastPrice = a.LastPrice,
-                        DateStart = a.DateStart,
-                        DateEnd = a.DateEnd,
-                        Description = a.Description,
-                        SellerId = a.SellerId,
-                        ProductId = a.ProductId,
-                        StatusId = a.StatusId
-                    })
-                    .FirstOrDefaultAsync();
+                var auction = await (from a in _context.AuctionsProducts
+                                     join p in _context.PhotosAuctions on a.Id equals p.AuctionId
+                                     where a.Id == id
+                                     select new AuctionDTO
+                                     {
+                                         Id = a.Id,
+                                         Name = a.Name,
+                                         FirstPrice = a.FirstPrice,
+                                         Bid = a.Bid,
+                                         LastPrice = a.LastPrice,
+                                         DateStart = a.DateStart,
+                                         DateEnd = a.DateEnd,
+                                         SellerId = a.SellerId,
+                                         ProductId = a.ProductId,
+                                         StatusId = a.StatusId,
+                                         Description = a.Description,
+                                         Photo = p.Photo,
+                                         Mime = p.Mime
+                                     }).FirstOrDefaultAsync();
+
+                if (auction == null)
+                    return new MessageResponse<AuctionDTO>(false, "No se encontró la subasta", null);
+
+                return new MessageResponse<AuctionDTO>(true, "Subasta recuperada con éxito", auction);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error al obtener la subasta con ID {auctionId}");
-                return null;
+                _logger.LogError(ex, "Error al recuperar subasta por ID.");
+                return new MessageResponse<AuctionDTO>(false, "Error del servidor", null);
             }
         }
 
-        public async Task<bool> UpdateLastPriceAsync(int auctionId, decimal newLastPrice)
+        public async Task<MessageResponse<bool>> IncreaseLastPriceAsync(int auctionId)
         {
             try
             {
                 var auction = await _context.AuctionsProducts.FindAsync(auctionId);
-
                 if (auction == null)
-                {
-                    _logger.LogWarning("No se encontró la subasta con ID: {AuctionId}", auctionId);
-                    return false;
-                }
+                    return new MessageResponse<bool>(false, "Subasta no encontrada", false);
 
-                auction.LastPrice = newLastPrice;
+                auction.LastPrice += auction.Bid;
                 await _context.SaveChangesAsync();
-                return true;
+
+                return new MessageResponse<bool>(true, "Puja realizada con éxito", true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar el último precio de la subasta con ID: {AuctionId}", auctionId);
-                return false;
+                _logger.LogError(ex, "Error al incrementar el precio de la subasta.");
+                return new MessageResponse<bool>(false, "Error al actualizar el precio", false);
             }
         }
+        public async Task<MessageResponse<bool>> RegisterBidAsync(BidDTO bid)
+        {
+            try
+            {
+                var newBid = new BidsAuction
+                {
+                    AuctionId = bid.AuctionId,
+                    BuyerId = bid.BuyerId
+                };
 
+                await _context.BidsAuctions.AddAsync(newBid);
+                await _context.SaveChangesAsync();
 
+                return new MessageResponse<bool>(true, "Puja registrada correctamente", true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al registrar la puja.");
+                return new MessageResponse<bool>(false, "Error al registrar la puja", false);
+            }
+        }
 
     }
 }

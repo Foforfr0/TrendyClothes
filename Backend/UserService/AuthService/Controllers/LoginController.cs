@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace AuthService.Controllers {
     [ApiController]
-    [Route ("api/User/[controller]")]
+    [Route ("api/User/Login")]
     public class LoginController : ControllerBase {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly ILogger<LoginController> _logger;

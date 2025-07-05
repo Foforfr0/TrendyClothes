@@ -15,23 +15,17 @@
         <div class="row g-4">
             <!-- Product Details -->
             <div class="col-lg-5" >
-                <div class="product-card w-100">
-                    <div class="product-image-container w-100">
-                        @if (Model.product?.imageBase64 == null || Model.product.imageBase64.Length <= 0) {
+                <div class="w-100">
                             <img id="previewImage" class="product-image w-100" src="https://placehold.co/600x400/FFFFFF/000000/png?text=Product" alt="Producto" />
-                        } else {
-                            <img id="previewImage" class="product-image w-100" alt="Producto" src="data:@Model.product.mimeImage;base64,@Model.product.imageBase64" />
-                        }
-                        <span class="text-danger"></span>
-                        <div class="container text-center mt-3">
+                        <span class="text-danger" asp-for="@Model.newAuction.Name"></span>
+                        <div class="text-center mt-3">
                             <input type="file" id="imageInput" accept="image/*" style="display: none;" />
                             <button type="button" id="selectImageBtn" class="btn btn-primary">
                                 <i class="fas fa-upload"></i> Seleccionar Imagen
                             </button>
-                            <input type="hidden" asp-for="@Model.product.imageBase64" id="imageBase64Input" />
-                            <input type="hidden" asp-for="@Model.product.mimeImage" id="mimeInput" />
+                            <input type="hidden" asp-for="@Model.newAuction.imageBase64" id="imageBase64Input" />
+                            <input type="hidden" asp-for="@Model.newAuction.mimeImage" id="mimeInput" />
                         </div>
-                    </div>
                 </div>
             </div>
 

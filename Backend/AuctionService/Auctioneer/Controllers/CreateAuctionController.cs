@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuctionAuctioneerService.Controllers {
     [ApiController]
     [Authorize]
-    [Route ("api/Auction/Auctioneer/[controller]")]
+    [Route ("api/Auction/Auctioneer/CreateAuction")]
     public class CreateAuctionController : Controller {
         private readonly ICreateAuctionService _createAuctionService;
 
@@ -22,7 +22,13 @@ namespace AuctionAuctioneerService.Controllers {
                     return BadRequest (new {
                         message = $"Los datos de la nueva subasta son inválidos."
                     });
-                MessageResponse<bool> response = await _createAuctionService.CreateAuctionAsync (createAuctionDTO, User.Identity.Name);
+                if (string.IsNullOrEmpty(User.Identity?.Name)) 
+                    return BadRequest (new {
+                        message = $"No se logró obtener el username del usaurio."
+                    });
+
+                createAuctionDTO.SellerUsername = User.Identity.Name;
+                MessageResponse<bool> response = await _createAuctionService.CreateAuctionAsync (createAuctionDTO);
                 if (response.IsError)
                     return HttpResponses.InternalServerError (response.Message);
                 if (!response.DataRetrieved)

@@ -11,8 +11,8 @@ namespace AuctionAuctioneerService.Services.Implements {
             _createAuctionDAO = createAuctionDAO;
         }
 
-        public async Task<MessageResponse<bool>> CreateAuctionAsync (CreateAuctionDTO createAuctionDTO, string username) {
-            MessageResponse<bool> response = await _createAuctionDAO.PostAuctionAsync (createAuctionDTO, username);
+        public async Task<MessageResponse<bool>> CreateAuctionAsync (CreateAuctionDTO createAuctionDTO) {
+            MessageResponse<bool> response = await _createAuctionDAO.PostAuctionAsync (createAuctionDTO);
 
             if (response.IsError)
                 return MessageResponse<bool>.Failure (response.Message);

@@ -1,75 +1,117 @@
 ﻿using AuctionParticipantService.DAO;
+using AuctionParticipantService.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionParticipantService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Auctions/[controller]")]
     public class AuctionController : ControllerBase
     {
-        private readonly AuctionDAO _dao;
-        private readonly ILogger<AuctionController> _logger;
+        private readonly AuctionDAO _auctionsDAO;
 
-        public AuctionController(AuctionDAO dao, ILogger<AuctionController> logger)
+        public AuctionController(AuctionDAO auctionsDAO)
         {
-            _dao = dao;
-            _logger = logger;
+            _auctionsDAO = auctionsDAO;
         }
 
-        // GET: api/auction/active
-        [HttpGet("active")]
-        public async Task<IActionResult> GetActiveAuctions()
+        [HttpGet]
+        public async Task<IActionResult> GetActiveAuctionsWithPhoto()
         {
-            try
+            var response = await _auctionsDAO.GetActiveAuctionsWithPhotoAsync();
+
+            if (response.DataRetrieved == null || response.DataRetrieved.Count == 0)
             {
-                var auctions = await _dao.GetActiveAuctionsAsync();
-                return Ok(auctions);
+                return NotFound(new { error = true, message = "No se encontraron subastas activas con foto.", body = new List<AuctionDTO>() });
             }
-            catch (Exception ex)
+
+            return Ok(new
             {
-                _logger.LogError(ex, "Error en GetActiveAuctions");
-                return StatusCode(500, "Error interno del servidor");
-            }
+                error = false,
+                message = response.Message,
+                body = response.DataRetrieved
+            });
         }
 
-        // PUT: api/auction/{id}/lastprice
-        [HttpPut("{id}/lastprice")]
-        public async Task<IActionResult> UpdateLastPrice(int id, [FromBody] decimal newLastPrice)
-        {
-            try
-            {
-                var result = await _dao.UpdateLastPriceAsync(id, newLastPrice);
-                if (!result)
-                    return NotFound($"No se encontró la subasta con ID {id}");
-
-                return Ok("Último precio actualizado correctamente");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error en UpdateLastPrice para subasta ID {id}");
-                return StatusCode(500, "Error interno del servidor");
-            }
-        }
-
-        // GET: api/auction/{id}
-        [HttpGet("{id}")]
+        [HttpGet("ById/{id}")]
         public async Task<IActionResult> GetAuctionById(int id)
         {
-            try
-            {
-                var auction = await _dao.GetAuctionByIdAsync(id);
+            var result = await _auctionsDAO.GetAuctionByIdAsync(id);
 
-                if (auction == null)
-                    return NotFound($"No se encontró la subasta con ID {id}");
-
-                return Ok(auction);
-            }
-            catch (Exception ex)
+            if (result.DataRetrieved == null)
             {
-                _logger.LogError(ex, $"Error en GetAuctionById para subasta ID {id}");
-                return StatusCode(500, "Error interno del servidor");
+                return NotFound(new
+                {
+                    error = true,
+                    message = result.Message,
+                    body = (object?)null
+                });
             }
+
+            return Ok(new
+            {
+                error = false,
+                message = result.Message,
+                body = result.DataRetrieved
+            });
+        }
+
+        [HttpPut("IncreaseBid/{auctionId}")]
+        public async Task<IActionResult> IncreaseLastPrice(int auctionId)
+        {
+            var result = await _auctionsDAO.IncreaseLastPriceAsync(auctionId);
+
+            if (!result.DataRetrieved)
+            {
+                return BadRequest(new
+                {
+                    error = true,
+                    message = result.Message,
+                    body = false
+                });
+            }
+
+            return Ok(new
+            {
+                error = false,
+                message = result.Message,
+                body = true
+            });
+        }
+
+        [HttpPost("RegisterBid")]
+        public async Task<IActionResult> RegisterBid([FromBody] BidDTO bid)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    error = true,
+                    message = "Datos de puja inválidos.",
+                    body = false
+                });
+            }
+
+            var result = await _auctionsDAO.RegisterBidAsync(bid);
+
+            if (!result.DataRetrieved)
+            {
+                return BadRequest(new
+                {
+                    error = true,
+                    message = result.Message,
+                    body = false
+                });
+            }
+
+            return Ok(new
+            {
+                error = false,
+                message = result.Message,
+                body = true
+            });
         }
 
     }
+
 }

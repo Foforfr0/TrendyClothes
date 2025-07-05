@@ -1,109 +1,59 @@
-﻿using AuctionParticipantService.Entities;
-using AuctionParticipantService.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using AuctionParticipantService.Models;
+using AuctionParticipantService.Services.Intefaces;
+using AuctionParticipantService.DAO;
 
-namespace AuctionParticipantService.DAO
+namespace AuctionParticipantService.Services.Implements
 {
     public class AuctionService : IAuctionService
     {
-        private readonly TrendyClothesDBContext _context;
-        private readonly ILogger<AuctionService> _logger;
+        private readonly AuctionDAO _auctionDAO;
 
-        public AuctionService(TrendyClothesDBContext context, ILogger<AuctionService> logger)
+        public AuctionService(AuctionDAO auctionDAO)
         {
-            _context = context;
-            _logger = logger;
+            _auctionDAO = auctionDAO;
         }
 
-        public async Task<List<AuctionDTO>> GetActiveAuctionsAsync()
+        public async Task<MessageResponse<List<AuctionDTO>>> GetActiveAuctionsWithPhotoAsync()
         {
-            try
-            {
-                return await _context.AuctionsProducts
-                    .Where(a => a.StatusId == 1)
-                    .Select(a => new AuctionDTO
-                    {
-                        Id = a.Id,
-                        Name = a.Name,
-                        FirstPrice = a.FirstPrice,
-                        Bid = a.Bid,
-                        LastPrice = a.LastPrice,
-                        DateStart = a.DateStart,
-                        DateEnd = a.DateEnd,
-                        Description = a.Description,
-                        SellerId = a.SellerId,
-                        ProductId = a.ProductId,
-                        StatusId = a.StatusId
-                    })
-                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener las subastas activas.");
-                return new List<AuctionDTO>();
-            }
+            MessageResponse<List<AuctionDTO>> response = await _auctionDAO.GetActiveAuctionsWithPhotoAsync();
+
+            if (response.IsError)
+                return MessageResponse<List<AuctionDTO>>.Failure(response.Message);
+
+            if (response.DataRetrieved == null || response.DataRetrieved.Count == 0)
+                return MessageResponse<List<AuctionDTO>>.Success("No hay subastas activas con fotos.", default);
+
+            return MessageResponse<List<AuctionDTO>>.Success(response.Message, response.DataRetrieved);
         }
 
-        public async Task<bool> UpdateLastPriceAsync(int auctionId, decimal newLastPrice)
+        public async Task<MessageResponse<AuctionDTO>> GetAuctionByIdAsync(int id)
         {
-            try
-            {
-                var auction = await _context.AuctionsProducts.FindAsync(auctionId);
+            MessageResponse<AuctionDTO> response = await _auctionDAO.GetAuctionByIdAsync(id);
 
-                if (auction == null)
-                {
-                    _logger.LogWarning("No se encontró la subasta con ID: {AuctionId}", auctionId);
-                    return false;
-                }
+            if (response.IsError || response.DataRetrieved == null)
+                return MessageResponse<AuctionDTO>.Failure(response.Message);
 
-                auction.LastPrice = newLastPrice;
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error al actualizar el último precio de la subasta con ID: {auctionId}");
-                return false;
-            }
+            return MessageResponse<AuctionDTO>.Success(response.Message, response.DataRetrieved);
         }
 
-        public async Task<AuctionDTO?> GetAuctionByIdAsync(int auctionId)
+        public async Task<MessageResponse<bool>> IncreaseLastPriceAsync(int auctionId)
         {
-            try
-            {
-                return await _context.AuctionsProducts
-                    .Where(a => a.Id == auctionId)
-                    .Select(a => new AuctionDTO
-                    {
-                        Id = a.Id,
-                        Name = a.Name,
-                        FirstPrice = a.FirstPrice,
-                        Bid = a.Bid,
-                        LastPrice = a.LastPrice,
-                        DateStart = a.DateStart,
-                        DateEnd = a.DateEnd,
-                        Description = a.Description,
-                        SellerId = a.SellerId,
-                        ProductId = a.ProductId,
-                        StatusId = a.StatusId
-                    })
-                    .FirstOrDefaultAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error al obtener la subasta con ID {auctionId}");
-                return null;
-            }
+            MessageResponse<bool> response = await _auctionDAO.IncreaseLastPriceAsync(auctionId);
+
+            if (response.IsError)
+                return MessageResponse<bool>.Failure(response.Message);
+
+            return MessageResponse<bool>.Success(response.Message, true);
         }
 
-        Task<List<AuctionDTO>> IAuctionService.GetActiveAuctionsAsync()
+        public async Task<MessageResponse<bool>> RegisterBidAsync(BidDTO bid)
         {
-            throw new NotImplementedException();
-        }
+            MessageResponse<bool> response = await _auctionDAO.RegisterBidAsync(bid);
 
-        Task<AuctionDTO?> IAuctionService.GetAuctionByIdAsync(int auctionId)
-        {
-            throw new NotImplementedException();
+            if (response.IsError)
+                return MessageResponse<bool>.Failure(response.Message);
+
+            return MessageResponse<bool>.Success(response.Message, true);
         }
     }
 }

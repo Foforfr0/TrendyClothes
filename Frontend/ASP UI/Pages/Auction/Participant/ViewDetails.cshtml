@@ -1,0 +1,46 @@
+﻿@page "{id:int}"
+@model WebPage.Pages.Auctions.ViewDetailsModel
+@{
+    ViewData["Title"] = "Detalles de la Subasta";
+}
+
+<div class="container mt-5">
+    @if (Model.Auction != null)
+    {
+        <h2>@Model.Auction.Name</h2>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                @if (Model.Auction.Photo != null && Model.Auction.Photo.Length > 0)
+                {
+                    var base64 = Convert.ToBase64String(Model.Auction.Photo);
+                    <img src="data:@Model.Auction.Mime;base64,@base64" class="img-fluid" alt="Imagen del producto" />
+                }
+                else
+                {
+                    <img src="https://placehold.co/600x400?text=Sin+imagen" class="img-fluid" alt="Imagen no disponible" />
+                }
+           
+
+            </div>
+            <div class="col-md-6">
+                <p><strong>Descripción:</strong> @Model.Auction.Description</p>
+                <p><strong>Precio inicial:</strong> $@Model.Auction.FirstPrice</p>
+                <p><strong>Puja mínima:</strong> $@Model.Auction.Bid</p>
+                <p><strong>Última puja:</strong> $@Model.Auction.LastPrice</p>
+                <p><strong>Fecha de inicio:</strong> @Model.Auction.DateStart.ToString("dd/MM/yyyy HH:mm")</p>
+                <p><strong>Fecha de fin:</strong> @Model.Auction.DateEnd.ToString("dd/MM/yyyy HH:mm")</p>
+
+                <form method="post">
+                    <input type="hidden" asp-for="Auction.Id" />
+                    <button type="submit" class="btn btn-primary">Pujar</button>
+                    <a asp-page="/Auction/Participant/ConsultAuctions" class="btn btn-secondary ms-2">Volver</a>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">No se encontró la subasta.</div>
+    }
+</div>
