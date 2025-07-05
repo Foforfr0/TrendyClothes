@@ -105,21 +105,6 @@ function showAddresses(addresses) {
     }
 }
 
-document.getElementById('startAuction').addEventListener('click', (event) => {
-    fetch(`/Product/Seller/ConsultProductsToCreateAuction`, {
-        method: 'GET',
-        credentials: 'include'
-    })
-        .then(res => res.text())
-        .then(html => {
-            document.getElementById('modal-content').innerHTML = html;
-        })
-        .catch(err => {
-            console.error('Error loading partial:', err);
-            utils.showToast("Error al cargar el formulario", "danger");
-        });
-});
-
 // Replace the existing modal initialization code with this:
 $('#modalSearchProduct').on('shown.bs.modal', function () {
     // Clear any previous content to avoid duplicates
@@ -149,10 +134,4 @@ $('#modalSearchProduct').on('shown.bs.modal', function () {
             console.error('Error loading partial:', err);
             utils.showToast("Error al cargar el formulario", "danger");
         });
-});
-
-// Remove the existing startAuction event listener and replace with this:
-document.getElementById('startAuction').addEventListener('click', (event) => {
-    const modal = new bootstrap.Modal(document.getElementById('modalSearchProduct'));
-    modal.show();
 });
