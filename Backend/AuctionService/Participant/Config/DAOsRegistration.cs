@@ -7,6 +7,7 @@ namespace AuctionParticipantService.Config {
             services.AddScoped<ConsultUserDAO> ();
             services.AddScoped<CreateAuctionDAO> ();
             services.AddScoped<UpdateAuctionDAO> ();
+            services.AddScoped<AuctionDAO>();
         }
     }
 }

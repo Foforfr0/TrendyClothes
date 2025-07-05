@@ -1,4 +1,27 @@
 ﻿@page
-@model WebPage.Pages.Auction.Participant.ConsultAuctionsModel
+@using AuctionParticipantService.Models
+@model WebPage.Pages.Auctions.ConsultAuctionsModel
 @{
+    ViewData["Title"] = "Subastas activas";
+}
+
+<div class="container w-75">
+    <div class="row text-center px-auto">
+        <h2 class="text-start col-12 px-auto">Subastas activas</h2>
+    </div>
+</div>
+
+@if (Model.Auctions?.Count > 0)
+{
+    <div class="row" id="auctionsContainer">
+        @foreach (AuctionDTO auction in Model.Auctions)
+        {
+            @await Html.PartialAsync("ConsultAuctionsPartial", auction).ConfigureAwait(false)
+            ;
+        }
+    </div>
+}
+else
+{
+    <p>No hay subastas activas disponibles en este momento.</p>
 }
