@@ -1,4 +1,34 @@
-﻿@page
-@model WebPage.Pages.Auction.Participant.ConsultAuctionsPartialModel
-@{
-}
+﻿@model AuctionParticipantService.Models.AuctionDTO
+
+<div class="container w-75 my-1 border border-1 border-light-subtle" style="max-height: 130px;">
+    <div class="row mb-1 h-100 p-1">
+        <div class="col-4 h-100 object-fit-contain">
+            @if (Model.Photo == null || Model.Photo.Length == 0)
+            {
+                <img src="https://placehold.co/600x400/FFFFFF/000000/png?text=Auction" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Subasta" />
+            }
+            else
+            {
+                <img src="data:@Model.Mime;base64,@Convert.ToBase64String(Model.Photo)" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Subasta" />
+            }
+        </div>
+        <div class="col-8 h-100">
+            <div class="row">
+                <div class="col text-start">
+                    <h5 class="card-title">@Model.Name</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-start">
+                    <p class="card-text fw-bold">$@Model.LastPrice</p>
+                </div>
+                <div class="col text-start text-muted">
+                    <p class="card-text">Termina: @Model.DateEnd.ToString("dd MMM yyyy")</p>
+                </div>
+                <div class="col-auto ms-auto">
+                    <a class="btn btn-warning" asp-page="/Auction/Participant/ViewDetails" asp-route-id="@Model.Id">Pujar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

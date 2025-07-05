@@ -20,7 +20,7 @@ builder.Services.AddSingleton<ServicesBuilder> ();
 builder.Services.AddHttpClient ();
 builder.Services.AddRazorPages ()
     .AddJsonOptions (options => {
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
 builder.Services.AddSingleton (new HttpClient ());
 Auth.ConfigureAuth (builder.Services, builder);
