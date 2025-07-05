@@ -20,11 +20,6 @@ namespace AuctionParticipantService.Controllers
         {
             var response = await _auctionsDAO.GetActiveAuctionsWithPhotoAsync();
 
-            if (response.IsError)
-            {
-                return HttpResponses.InternalServerError(response.Message);
-            }
-
             if (response.DataRetrieved == null || response.DataRetrieved.Count == 0)
             {
                 return NotFound(new { error = true, message = "No se encontraron subastas activas con foto.", body = new List<AuctionDTO>() });
