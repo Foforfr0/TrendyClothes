@@ -1,6 +1,37 @@
-@AuthService_HostAddress = http://localhost:5000
+### ApiGateway
+@baseUrl = http://localhost:5000
 
-GET {{AuthService_HostAddress}}/weatherforecast/
+### POST
+POST {{baseUrl}}/api/User/Login
+Accept: application/json
+{
+  "username": "Ejemplo de nombre de usuario.",
+  "password": "Ejemplo de contraseña."
+}
+
+### GET
+GET {{baseUrl}}/api/User/Login/ValidateEmailUser?username=foforfr&email=foforfr007@gmail.com
 Accept: application/json
 
-###
+### PATCH
+PATCH {{baseUrl}}/api/User/Login/CreateTwoFactorCode
+Accept: application/json
+{
+  "username": "Ejemplo de nombre de usuario.",
+  "email": "Ejemplo de correo."
+}
+
+### POST
+POST {{baseUrl}}/api/User/Login/ValidateTwoFactorCode
+Accept: application/json
+{
+  "username": "Ejemplo de nombre de usuario.",
+  "twoFactorCode": "123456."
+}
+
+### PATCH
+PATCH {{baseUrl}}/api/User/Login/DeleteTwoFactorCode
+Accept: application/json
+{
+  "username": "Ejemplo de nombre de usuario.",
+}
