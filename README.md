@@ -3,9 +3,6 @@
 Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, utilizando ASP.NET y SQL Server.
 
 ---
-
-## 🐳 Docker
-
 ### Por realizar...
 - Subasta / Subastador
 	- Consultar mis subastas
@@ -17,6 +14,7 @@ Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, util
 	- Ver detalles de subasta
 	- Realizar puja
 
+## 🐳 Docker
 ### 🔧 Inicialización de contenedores
 ```bash
 # Construye las imágenes sin iniciarlas

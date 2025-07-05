@@ -1,6 +1,23 @@
-@AuctionAuctioneerService_HostAddress = http://localhost:5145
+###ApiGateway
+@baseUrl = http://localhost:5000
 
-GET {{AuctionAuctioneerService_HostAddress}}/weatherforecast/
+### GET
+GET {{baseUrl}}/api/Auction/Auctioneer/MyAuctions?username=foforfr
 Accept: application/json
 
-###
+### GET
+GET {{baseUrl}}/api/Auction/Auctioneer/ViewMyAuctionDetails?id=1
+Accept: application/json
+
+### POST
+POST {{baseUrl}}/api/Auction/Auctioneer/CreateAuction
+Accept: application/json
+{
+  "name": "Ejemplo de nombre de subasta.",
+  "firstPrice": 100,
+  "bid": 10,
+  "dateStart": "",
+  "dateEnd": "",
+  "description": "",
+  "statusId": 1
+}
