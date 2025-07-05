@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccountService.Controllers {
     [ApiController]
-    [Route ("api/User/[controller]")]
+    [Route ("api/User/Registration")]
     public class RegistrationController : Controller {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IRegistrationAccountService _registrationService;

@@ -35,3 +35,7 @@ Accept: application/json
 {
   "username": "Ejemplo de nombre de usuario.",
 }
+
+### POST
+POST {{baseUrl}}/api/User/Logout
+Accept: application/json

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AccountService.Controllers {
     [ApiController]
     [Authorize]
-    [Route ("api/User/[controller]")]
+    [Route ("api/User/DeleteAccount")]
     public class DeleteAccount : Controller {
         private readonly IDeleteAccountService _deleteAccountService;
 

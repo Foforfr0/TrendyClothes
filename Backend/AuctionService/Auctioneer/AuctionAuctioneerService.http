@@ -2,11 +2,11 @@
 @baseUrl = http://localhost:5000
 
 ### GET
-GET {{baseUrl}}/api/Auction/Auctioneer/MyAuctions?username=foforfr
+GET {{baseUrl}}/api/Auction/Auctioneer/ConsultMyAuctions/MyAuctions?username=foforfr
 Accept: application/json
 
 ### GET
-GET {{baseUrl}}/api/Auction/Auctioneer/ViewMyAuctionDetails?id=1
+GET {{baseUrl}}/api/Auction/Auctioneer/ConsultMyAuctions/ViewMyAuctionDetails?id=1
 Accept: application/json
 
 ### POST
@@ -20,4 +20,15 @@ Accept: application/json
   "dateEnd": "",
   "description": "",
   "statusId": 1
+}
+
+### GET
+GET {{baseUrl}}/api/Auction/Image?auctionId=1
+Accept: application/json
+
+### PATCH
+PATCH {{baseUrl}}api/Auction/Auctioneer/UpdateAuction
+{
+  "id": 1,
+  "statusId": 2,
 }

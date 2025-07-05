@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuctionAuctioneerService.Controllers {
     [ApiController]
     [Authorize]
-    [Route ("api/Auction/Auctioneer/[controller]")]
+    [Route ("api/Auction/Auctioneer/CreateAuction")]
     public class CreateAuctionController : Controller {
         private readonly ICreateAuctionService _createAuctionService;
 

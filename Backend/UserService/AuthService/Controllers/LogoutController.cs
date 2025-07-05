@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuthService.Controllers {
     [ApiController]
     [Authorize]
-    [Route ("api/User/[controller]")]
+    [Route ("api/User/Logout")]
     public class LogoutController : ControllerBase {
         private readonly IHttpContextAccessor _contextAccesor;
 
