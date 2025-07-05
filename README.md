@@ -17,15 +17,15 @@ Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, util
 ### Casos de uso
 | # |Caso de uso                            |Estado de API|Estado de WebApp|Estado de AndroidApp|Estado de WpfApp|
 |:-:|:--------------------------------------|:-----------:|:--------------:|:------------------:|:--------------:|
-|01 |Registrarse                            |      ✔️     |        ✔️       |         ✔️         |       ✔️       |
-|02 |Iniciar sesión                         |      ✔️     |        ✔️       |         ✔️         |       ✔️       |
-|03 |Registrar productos                    |      ✔️     |        ✔️       |         ✔️         |       ✔️       |
-|04 |Buscar productos                       |      ✔️     |        ✔️       |         ✔️         |       ✔️       |
-|05 |Editar publicación                     |      ✔️     |        ✔️       |         ✔️         |       ✔️       |
-|06 |Eliminar publicación                   |      ✔️     |        ✔️       |         ✔️         |       ✔️       |
-|07 |Realizar subasta                       |      ✔️     |       ❌       |         ❌         |       ❌      |
-|08 |Eliminar subasta                       |      ❌     |       ❌       |         ❌        |       ❌      |
-|09 |Gestionar reportes de usuarios         |      ❌     |       ❌       |         ❌        |       ❌      |
+|01 |Registrarse                            |	✔️	|	✔️	|	✔️	|	✔️	|
+|02 |Iniciar sesión                         |	✔️	|	✔️	|	✔️	|	✔️	|
+|03 |Registrar productos                    |	✔️	|	✔️	|	✔️	|	✔️	|
+|04 |Buscar productos                       |	✔️	|	✔️	|	✔️	|	✔️	|
+|05 |Editar publicación                     |	✔️	|	✔️	|	✔️	|	✔️	|
+|06 |Eliminar publicación                   |	✔️	|	✔️	|	✔️	|	✔️	|
+|07 |Realizar subasta                       |	✔️	|	❌	|	❌	|	❌	|
+|08 |Eliminar subasta                       |	❌	|	❌	|	❌	|	❌	|
+|09 |Gestionar reportes de usuarios         |	❌	|	❌	|	❌	|	❌	|
 
 
 ## 🐳 Docker
