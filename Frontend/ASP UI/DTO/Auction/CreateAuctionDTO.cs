@@ -1,26 +1,50 @@
-﻿namespace WebPage.DTO.Auction {
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebPage.DTO.Auction {
     public class CreateAuctionDTO {
-        public string Name {
+        [Required (AllowEmptyStrings = false, ErrorMessage = "El nombre es requerido.")]
+        [Length (20, 100, ErrorMessage = "El nombre debe contener entre 20 y 100 caracteres.")]
+        public string? Name {
             get; set;
         }
-        public decimal FirstPrice {
+
+        [Range (0.00, double.MaxValue, ErrorMessage = "El precio inicial debe ser un valor positivo.")]
+        public decimal? FirstPrice {
             get; set;
         }
-        public decimal Bid {
+
+        [Required (ErrorMessage = "El valor de la puja es requerido.")]
+        [Range (0.01, double.MaxValue, ErrorMessage = "El incremento de puja debe ser mayor a 0.")]
+        public decimal? Bid {
             get; set;
         }
-        public DateTime DateStart {
+
+        [Required (ErrorMessage = "La fecha de inicio es obligatoria.")]
+        public DateTime? DateStart {
             get; set;
         }
-        public DateTime DateEnd {
+
+        [Required (ErrorMessage = "La fecha de finalización es obligatoria.")]
+        public DateTime? DateEnd {
             get; set;
         }
-        public string Description {
+
+        [Required (AllowEmptyStrings = false, ErrorMessage = "La descripción es obligatoria.")]
+        [Length (20, 200, ErrorMessage = "La descripción debe contener entre 20 y 200 caracteres.")]
+        public string? Description {
             get; set;
         }
-        public string SellerUsername {
+
+        [Required (ErrorMessage = "Debe seleccionar una status de la subasta.")]
+        [Range (1, 3, ErrorMessage = "El status seleccionada no es válida.")]
+        public int? StatusId {
             get; set;
         }
+
+        public string? SellerUsername {
+            get; set;
+        }
+
         public string? imageBase64 {
             get; set;
         }

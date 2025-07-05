@@ -2,9 +2,7 @@ using GetImageProduct;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebPage.Connections;
-using WebPage.DTO;
 using WebPage.DTO.Auction;
-using WebPage.DTO.Product.MyProducts;
 
 namespace WebPage.Pages.Auction.Auctioneer {
     public class CreateAuctionModel : PageModel {
@@ -21,7 +19,7 @@ namespace WebPage.Pages.Auction.Auctioneer {
         [BindProperty]
         public CreateAuctionDTO newAuction {
             get; set;
-        }
+        } = new CreateAuctionDTO ();
 
         public async Task OnGetAsync () {
         }

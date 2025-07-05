@@ -1,4 +1,6 @@
-﻿function configureInputs() {
+﻿import * as utils from './js/site.js';
+
+function configureInputs() {
     const inputFirstPrice = document.getElementById('InputFirstPrice');
     const inputMinBid = document.getElementById('InputBid');
 
@@ -65,13 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const submitBtn = document.getElementById('submitBtn');
         const originalText = submitBtn.innerHTML;
-
-        // Mostrar loading
         submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Creando...';
         submitBtn.disabled = true;
 
-        // Simular procesamiento
-        const result = await postAuction(); // Asegúrate de que postAuction() sea una función que devuelva una promesa
+        const result = await postAuction();
 
         // Restaurar botón después de un momento
         setTimeout(() => {
@@ -150,6 +149,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 async function postAuction() {
+    
+
     const name = utils.getValueDOMElementNullOrEmpty('InputName');
     const firstPrice = utils.getValueDOMElementNullOrEmpty('InputFirstPrice');
     const minBid = utils.getValueDOMElementNullOrEmpty('InputMinBid');
@@ -157,7 +158,10 @@ async function postAuction() {
     const dateEnd = utils.getValueDOMElementNullOrEmpty('InputDateEnd');
     const numberProducts = document.getElementById('InputNumberProducts').value;
 
-    if (!name || !firstPrice || !minBid || !dateStart || !dateEnd || !numberProducts) return;
+    if (!name || !firstPrice || !minBid || !dateStart || !dateEnd || !numberProducts) {
+
+        return;
+    }
 
     try {
         const response = await fetch(`${window.config.PostAuction}`, {
