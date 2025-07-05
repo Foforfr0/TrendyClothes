@@ -26,5 +26,34 @@ namespace AuctionParticipantService.Services.Implements
             return MessageResponse<List<AuctionDTO>>.Success(response.Message, response.DataRetrieved);
         }
 
+        public async Task<MessageResponse<AuctionDTO>> GetAuctionByIdAsync(int id)
+        {
+            MessageResponse<AuctionDTO> response = await _auctionDAO.GetAuctionByIdAsync(id);
+
+            if (response.IsError || response.DataRetrieved == null)
+                return MessageResponse<AuctionDTO>.Failure(response.Message);
+
+            return MessageResponse<AuctionDTO>.Success(response.Message, response.DataRetrieved);
+        }
+
+        public async Task<MessageResponse<bool>> IncreaseLastPriceAsync(int auctionId)
+        {
+            MessageResponse<bool> response = await _auctionDAO.IncreaseLastPriceAsync(auctionId);
+
+            if (response.IsError)
+                return MessageResponse<bool>.Failure(response.Message);
+
+            return MessageResponse<bool>.Success(response.Message, true);
+        }
+
+        public async Task<MessageResponse<bool>> RegisterBidAsync(BidDTO bid)
+        {
+            MessageResponse<bool> response = await _auctionDAO.RegisterBidAsync(bid);
+
+            if (response.IsError)
+                return MessageResponse<bool>.Failure(response.Message);
+
+            return MessageResponse<bool>.Success(response.Message, true);
+        }
     }
 }

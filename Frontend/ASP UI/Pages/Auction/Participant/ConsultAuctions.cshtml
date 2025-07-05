@@ -2,26 +2,45 @@
 @using AuctionParticipantService.Models
 @model WebPage.Pages.Auctions.ConsultAuctionsModel
 @{
-    ViewData["Title"] = "Subastas activas";
+    ViewData["Title"] = "Subastas Activas";
 }
 
-<div class="container w-75">
-    <div class="row text-center px-auto">
-        <h2 class="text-start col-12 px-auto">Subastas activas</h2>
-    </div>
+<div class="container mt-4">
+    <h2>Subastas Activas</h2>
+
+    @if (Model.Auctions?.Count > 0)
+    {
+        <div class="row">
+            @foreach (var auction in Model.Auctions)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        @if (auction.Photo != null && auction.Photo.Length > 0)
+                        {
+                            var base64 = Convert.ToBase64String(auction.Photo);
+                            <img class="card-img-top" src="data:@auction.Mime;base64,@base64" alt="Subasta">
+                        }
+                        else
+                        {
+                            <img class="card-img-top" src="https://placehold.co/600x400?text=Sin+imagen" alt="Subasta">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@auction.Name</h5>
+                            <p class="card-text">Precio inicial: $@auction.FirstPrice</p>
+                            <p class="card-text">Última puja: $@auction.LastPrice</p>
+                            <p class="card-text">Puja mínima: $@auction.Bid</p>
+                            <p class="card-text"><strong>Termina:</strong> @auction.DateEnd.ToString("dd/MM/yyyy HH:mm")</p>
+                            <div class="mt-auto">
+                                <a asp-page="/Auction/Participant/ViewDetails" asp-route-id="@auction.Id" class="btn btn-success w-100">Pujar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">No hay subastas activas disponibles.</div>
+    }
 </div>
-
-@if (Model.Auctions?.Count > 0)
-{
-    <div class="row" id="auctionsContainer">
-        @foreach (AuctionDTO auction in Model.Auctions)
-        {
-            @await Html.PartialAsync("ConsultAuctionsPartial", auction).ConfigureAwait(false)
-            ;
-        }
-    </div>
-}
-else
-{
-    <p>No hay subastas activas disponibles en este momento.</p>
-}

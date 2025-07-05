@@ -4,6 +4,9 @@ namespace AuctionParticipantService.Services.Intefaces
 {
     public interface IAuctionService
     {
-        public Task<MessageResponse<List<AuctionDTO>>> GetActiveAuctionsWithPhotoAsync();
+        Task<MessageResponse<List<AuctionDTO>>> GetActiveAuctionsWithPhotoAsync();
+        Task<MessageResponse<AuctionDTO>> GetAuctionByIdAsync(int id);
+        Task<MessageResponse<bool>> IncreaseLastPriceAsync(int auctionId);
+        Task<MessageResponse<bool>> RegisterBidAsync(BidDTO bid);
     }
 }

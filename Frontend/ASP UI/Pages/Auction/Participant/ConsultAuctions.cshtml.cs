@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
-using WebPage.Connections;
+using System.Net.Http.Json;
 using AuctionParticipantService.Models;
 using WebPage.DTO;
+using System.Text.Json;
 
 namespace WebPage.Pages.Auctions
 {
@@ -11,30 +11,45 @@ namespace WebPage.Pages.Auctions
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<ConsultAuctionsModel> _logger;
-        private readonly ServicesBuilder _services;
 
         public List<AuctionDTO> Auctions { get; set; } = new();
 
-        public ConsultAuctionsModel(IHttpClientFactory httpClientFactory, ServicesBuilder services, ILogger<ConsultAuctionsModel> logger)
+        public ConsultAuctionsModel(IHttpClientFactory httpClientFactory, ILogger<ConsultAuctionsModel> logger)
         {
             _httpClientFactory = httpClientFactory;
-            _services = services;
             _logger = logger;
         }
 
         public async Task OnGetAsync()
         {
-            HttpClient httpClient = _httpClientFactory.CreateClient();
-            string requestURL = "http://apigateway/api/Auctions/Auction";
-            _logger.LogInformation("ConsultAuctionsModel.OnGetAsync: " + requestURL);
-
-            HttpResponseMessage response = await httpClient.GetAsync(requestURL);
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                var data = await response.Content.ReadFromJsonAsync<List<AuctionDTO>>();
-                if (data != null && data.Count > 0)
-                    Auctions = data;
+                var client = _httpClientFactory.CreateClient();
+                var response = await client.GetAsync("http://apigateway/api/Auctions/Auction");
+
+                string json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("JSON devuelto por API: " + json);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<ApiResponse<List<AuctionDTO>>>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    if (result?.body != null)
+                        Auctions = result.body;
+                }
+                else
+                {
+                    Console.WriteLine("Status Code: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al consumir la API: " + ex.Message);
             }
         }
+
     }
 }

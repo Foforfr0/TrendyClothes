@@ -49,5 +49,83 @@ namespace AuctionParticipantService.DAO
                 return new MessageResponse<List<AuctionDTO>>(false, "Error al recuperar datos", null);
             }
         }
+
+        public async Task<MessageResponse<AuctionDTO>> GetAuctionByIdAsync(int id)
+        {
+            try
+            {
+                var auction = await (from a in _context.AuctionsProducts
+                                     join p in _context.PhotosAuctions on a.Id equals p.AuctionId
+                                     where a.Id == id
+                                     select new AuctionDTO
+                                     {
+                                         Id = a.Id,
+                                         Name = a.Name,
+                                         FirstPrice = a.FirstPrice,
+                                         Bid = a.Bid,
+                                         LastPrice = a.LastPrice,
+                                         DateStart = a.DateStart,
+                                         DateEnd = a.DateEnd,
+                                         SellerId = a.SellerId,
+                                         ProductId = a.ProductId,
+                                         StatusId = a.StatusId,
+                                         Description = a.Description,
+                                         Photo = p.Photo,
+                                         Mime = p.Mime
+                                     }).FirstOrDefaultAsync();
+
+                if (auction == null)
+                    return new MessageResponse<AuctionDTO>(false, "No se encontró la subasta", null);
+
+                return new MessageResponse<AuctionDTO>(true, "Subasta recuperada con éxito", auction);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al recuperar subasta por ID.");
+                return new MessageResponse<AuctionDTO>(false, "Error del servidor", null);
+            }
+        }
+
+        public async Task<MessageResponse<bool>> IncreaseLastPriceAsync(int auctionId)
+        {
+            try
+            {
+                var auction = await _context.AuctionsProducts.FindAsync(auctionId);
+                if (auction == null)
+                    return new MessageResponse<bool>(false, "Subasta no encontrada", false);
+
+                auction.LastPrice += auction.Bid;
+                await _context.SaveChangesAsync();
+
+                return new MessageResponse<bool>(true, "Puja realizada con éxito", true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al incrementar el precio de la subasta.");
+                return new MessageResponse<bool>(false, "Error al actualizar el precio", false);
+            }
+        }
+        public async Task<MessageResponse<bool>> RegisterBidAsync(BidDTO bid)
+        {
+            try
+            {
+                var newBid = new BidsAuction
+                {
+                    AuctionId = bid.AuctionId,
+                    BuyerId = bid.BuyerId
+                };
+
+                await _context.BidsAuctions.AddAsync(newBid);
+                await _context.SaveChangesAsync();
+
+                return new MessageResponse<bool>(true, "Puja registrada correctamente", true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al registrar la puja.");
+                return new MessageResponse<bool>(false, "Error al registrar la puja", false);
+            }
+        }
+
     }
 }
