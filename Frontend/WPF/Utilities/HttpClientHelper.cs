@@ -48,12 +48,15 @@ namespace WpfApp.Utilities
 
         public static async Task<HttpResponseMessage> DeleteAsync(string url, string? token = null)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Delete, url);
+            using var client = new HttpClient();
 
-            AddAuthorizationHeader(request, token);
+            if (!string.IsNullOrWhiteSpace(token))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            return await _client.SendAsync(request);
+            var request = new HttpRequestMessage(HttpMethod.Delete, url);
+            return await client.SendAsync(request);
         }
+
 
         private static void AddAuthorizationHeader(HttpRequestMessage request, string? token)
         {
