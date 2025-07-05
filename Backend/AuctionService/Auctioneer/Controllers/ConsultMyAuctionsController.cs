@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuctionAuctioneerService.Controllers {
     [ApiController]
     [Authorize]
-    [Route ("api/Auction/Auctioneer/[controller]")]
-    public class ConsultMyAuctionController : Controller {
+    [Route ("api/Auction/Auctioneer/ConsultMyAuctions")]
+    public class ConsultMyAuctionsController : Controller {
         private readonly IConsultAuctionService _consultAuctionService;
 
-        public ConsultMyAuctionController (IConsultAuctionService consultAuctionService) {
+        public ConsultMyAuctionsController (IConsultAuctionService consultAuctionService) {
             _consultAuctionService = consultAuctionService;
         }
 

@@ -1,6 +1,10 @@
-@ProfileService_HostAddress = http://localhost:5170
+### ApiGateway
+@baseUrl = http://localhost:5000
 
-GET {{ProfileService_HostAddress}}/weatherforecast/
+### GET
+GET {{baseUrl}}/api/User/ViewProfile/GetPersonalData?username=foforfr
 Accept: application/json
 
-###
+### GET
+GET {{baseUrl}}/api/User/ViewProfile/GetAddresses?username=foforfr
+Accept: application/json

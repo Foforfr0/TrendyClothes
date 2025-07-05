@@ -3,9 +3,18 @@
 Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, utilizando ASP.NET y SQL Server.
 
 ---
+### Por realizar...
+- Subasta / Subastador
+	- Consultar mis subastas
+	- Consultar detalles de subasta en tiempo real
+	- Crear subasta
+	- Cambiar estado de subasta (Cancaler, pausar/activar)
+- Subasta / Partipante
+	- Consultar subastas (solo activas o pausadas)
+	- Ver detalles de subasta
+	- Realizar puja
 
 ## 🐳 Docker
-
 ### 🔧 Inicialización de contenedores
 ```bash
 # Construye las imágenes sin iniciarlas

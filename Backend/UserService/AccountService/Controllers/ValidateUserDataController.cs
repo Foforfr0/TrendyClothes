@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccountService.Controllers {
     [ApiController]
-    [Route ("api/User/[controller]")]
+    [Route ("api/User/ValidateUserData")]
     public class ValidateUserDataController : ControllerBase {
         private readonly IValidateDataService _validateDataService;
 

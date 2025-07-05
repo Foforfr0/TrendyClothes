@@ -1,7 +1,6 @@
 ﻿function configureInputs() {
     const inputFirstPrice = document.getElementById('InputFirstPrice');
-    const inputMinBid = document.getElementById('InputMinBid');
-    const inputNumberProducts = document.getElementById('InputNumberProducts');
+    const inputMinBid = document.getElementById('InputBid');
 
     // Evitar negativos en FirstPrice
     inputFirstPrice.addEventListener('input', function () {
@@ -15,11 +14,6 @@
         if (parseFloat(this.value) < 0) {
             this.value = '';
         }
-    });
-
-    // Solo números enteros en NumberProducts
-    inputNumberProducts.addEventListener('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, '');
     });
 }
 
@@ -66,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Manejar envío del formulario
-    document.getElementById('auctionForm').addEventListener('submit', function (e) {
+    document.getElementById('auctionForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const submitBtn = document.getElementById('submitBtn');
@@ -77,18 +71,18 @@ document.addEventListener('DOMContentLoaded', function () {
         submitBtn.disabled = true;
 
         // Simular procesamiento
-        setTimeout(() => {
-            // Restaurar botón después de un momento
-            setTimeout(() => {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
+        const result = await postAuction(); // Asegúrate de que postAuction() sea una función que devuelva una promesa
 
-                // Ocultar alerta
-                setTimeout(() => {
-                    alert.classList.add('d-none');
-                }, 3000);
-            }, 1000);
-        }, await postAuction());
+        // Restaurar botón después de un momento
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+
+            // Ocultar alerta
+            setTimeout(() => {
+                alert.classList.add('d-none');
+            }, 3000);
+        }, 1000);
     });
 
     // Manejar cancelación

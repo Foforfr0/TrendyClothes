@@ -11,7 +11,7 @@ public partial class AuctionsProduct
 
     public decimal? FirstPrice { get; set; }
 
-    public decimal? Bid { get; set; }
+    public decimal Bid { get; set; }
 
     public decimal? LastPrice { get; set; }
 
@@ -21,17 +21,13 @@ public partial class AuctionsProduct
 
     public string Description { get; set; } = null!;
 
-    public int SellerId { get; set; }
-
-    public int ProductId { get; set; }
-
     public int StatusId { get; set; }
+
+    public int SellerId { get; set; }
 
     public virtual ICollection<BidsAuction> BidsAuctions { get; set; } = new List<BidsAuction>();
 
     public virtual ICollection<PhotosAuction> PhotosAuctions { get; set; } = new List<PhotosAuction>();
-
-    public virtual Product Product { get; set; } = null!;
 
     public virtual User Seller { get; set; } = null!;
 
