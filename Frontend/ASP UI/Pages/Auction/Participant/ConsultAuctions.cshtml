@@ -7,6 +7,14 @@
 
 <div class="container mt-4">
     <h2>Subastas Activas</h2>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
 
     @if (Model.Auctions?.Count > 0)
     {

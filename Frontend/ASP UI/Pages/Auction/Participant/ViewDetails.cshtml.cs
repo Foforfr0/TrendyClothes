@@ -98,7 +98,7 @@ namespace WebPage.Pages.Auctions
                 if (!registerResponse.IsSuccessStatusCode)
                     return StatusCode(500, "Error al registrar la puja.");
 
-                TempData["SuccessMessage"] = "¡Puja registrada con éxito!";
+                TempData["SuccessMessage"] = "Puja registrada con exito...";
                 return RedirectToPage("/Auction/Participant/ConsultAuctions");
             }
             catch (Exception ex)
