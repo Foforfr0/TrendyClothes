@@ -49,18 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Validar precio inicial vs puja mínima
-    const firstPriceInput = document.getElementById('InputFirstPrice');
-    const minBidInput = document.getElementById('InputMinBid');
-
-    firstPriceInput.addEventListener('input', function () {
-        const firstPrice = parseFloat(this.value);
-        if (firstPrice && firstPrice > 0) {
-            const suggestedMinBid = Math.max(100, Math.floor(firstPrice * 0.05));
-            minBidInput.placeholder = suggestedMinBid.toString();
-        }
-    });
-
     // Manejar envío del formulario
     document.getElementById('auctionForm').addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -76,11 +64,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
-
-            // Ocultar alerta
-            setTimeout(() => {
-                alert.classList.add('d-none');
-            }, 3000);
         }, 1000);
     });
 
@@ -93,8 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 async function postAuction() {
-    
-
     const name = utils.getValueDOMElementNullOrEmpty('InputName');
     const firstPrice = utils.getValueDOMElementNullOrEmpty('InputFirstPrice');
     const bid = utils.getValueDOMElementNullOrEmpty('InputBid');
@@ -102,9 +83,8 @@ async function postAuction() {
     const dateEnd = utils.getValueDOMElementNullOrEmpty('InputDateEnd');
     const description = utils.getValueDOMElementNullOrEmpty('InputDescription');
     const statusId = document.getElementById('InputStatus').value;
-    const imageBase64 = document.getValueDOMElementNullOrEmpty('imageBase64Input');
-    const mimeImage = document.getValueDOMElementNullOrEmpty('mimeInput');
-
+    const imageBase64 = utils.getValueDOMElementNullOrEmpty('imageBase64Input');
+    const mimeImage = utils.getValueDOMElementNullOrEmpty('mimeInput');
 
     if (!name || !firstPrice || !bid || !dateStart || !dateEnd || !description || !statusId || !imageBase64 || !mimeImage) return;
 

@@ -259,3 +259,5 @@ INSERT INTO StatusesAuction (Status) VALUES
 SELECT * FROM Users;
 
 SELECT * FROM Products LEFT JOIN PhotosProduct ON Products.Id = PhotosProduct.ProductId;
+
+SELECT * FROM A
