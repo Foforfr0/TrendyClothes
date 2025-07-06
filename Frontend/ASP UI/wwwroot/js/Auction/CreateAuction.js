@@ -109,7 +109,7 @@ async function postAuction() {
                 break;
             case 400:
             case 404:
-                utils.showToast(data.message, 'warning');
+                utils.showToast('Error en el envío de los datos.', 'warning');
                 break;
             case 500:
                 utils.showToast('Error interno del servidor.', 'danger');
