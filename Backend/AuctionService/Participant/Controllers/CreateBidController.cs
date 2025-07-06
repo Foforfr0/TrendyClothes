@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuctionParticipantService.Controllers {
     [ApiController]
     [Authorize]
-    [Route ("api/Auction/Participant/[controller]")]
+    [Route ("api/Auction/Participant/CreateBid")]
     public class CreateBidController : Controller {
         private readonly CreateAuctionDAO _createAuctionDAO;
 
