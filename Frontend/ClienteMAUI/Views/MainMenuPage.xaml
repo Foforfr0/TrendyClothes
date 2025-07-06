@@ -12,25 +12,25 @@
                 <HorizontalStackLayout x:Name="CategoryButtonsLayout" Spacing="10"></HorizontalStackLayout>
             </ScrollView>
 
-            <!-- Sección Botón crear producto -->
-            <Button Text="Crear producto" 
-                    x:Name="btnCrearProducto"
-                    HorizontalOptions="Center"
-                    Clicked="OnCrearProductoClicked"
-                    BackgroundColor="#007AFF"
-                    TextColor="White"
-                    CornerRadius="10"
-                    Padding="12,6" />
 
-            <!-- Sección Botón ver subastas -->
-            <Button Text="Ver subastas" 
-                    x:Name="btnVerSubastas"
-                    HorizontalOptions="Center"
-                    Clicked="OnCrearProductoClicked"
-                    BackgroundColor="#007AFF"
-                    TextColor="White"
-                    CornerRadius="10"
-                    Padding="12,6" />
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                <Button Text="Crear producto" 
+                x:Name="btnCrearProducto"
+                Clicked="OnCrearProductoClicked"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                CornerRadius="10"
+                Padding="12,6" />
+
+                <Button Text="Ver subastas" 
+                x:Name="btnVerSubastas"
+                Clicked="OnVerSubastasClicked"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                CornerRadius="10"
+                Padding="12,6" />
+            </HorizontalStackLayout>
+
 
             <!-- Sección Lista de productos -->
             <CollectionView x:Name="ProductsCollection"

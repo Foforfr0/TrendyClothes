@@ -365,5 +365,8 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
+    private void OnVerSubastasClicked(object sender, EventArgs e)
+    {
 
+    }
 }
