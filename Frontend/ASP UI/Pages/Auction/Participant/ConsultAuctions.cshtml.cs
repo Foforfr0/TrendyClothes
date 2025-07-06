@@ -25,10 +25,20 @@ namespace WebPage.Pages.Auctions
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var response = await client.GetAsync("http://apigateway/api/Auctions/Auction");
 
+                var updateResponse = await client.PutAsync("http://apigateway/api/Auctions/Auction/UpdateExpiredAuctions", null);
+
+                string updateJson = await updateResponse.Content.ReadAsStringAsync();
+                Console.WriteLine("PUT UpdateExpiredAuctions JSON: " + updateJson);
+
+                if (!updateResponse.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("No se pudo actualizar subastas vencidas. Status: " + updateResponse.StatusCode);
+                }
+
+                var response = await client.GetAsync("http://apigateway/api/Auctions/Auction");
                 string json = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("JSON devuelto por API: " + json);
+                Console.WriteLine("GET Auctions JSON: " + json);
 
                 if (response.IsSuccessStatusCode)
                 {

@@ -127,5 +127,34 @@ namespace AuctionParticipantService.DAO
             }
         }
 
+        public async Task<MessageResponse<bool>> UpdateExpiredAuctionsAsync()
+        {
+            try
+            {
+                var now = DateTime.UtcNow;
+
+                var expiredAuctions = await _context.AuctionsProducts
+                    .Where(a => a.DateEnd < now)
+                    .ToListAsync();
+
+                if (expiredAuctions.Count == 0)
+                    return MessageResponse<bool>.Success("No hay subastas vencidas.", false);
+
+                foreach (var auction in expiredAuctions)
+                {
+                    auction.StatusId = 2;
+                }
+
+                await _context.SaveChangesAsync();
+                return MessageResponse<bool>.Success("Subastas vencidas actualizadas.", true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error actualizando subastas vencidas");
+                return MessageResponse<bool>.Failure("Error actualizando subastas vencidas.");
+            }
+        }
+
+
     }
 }
