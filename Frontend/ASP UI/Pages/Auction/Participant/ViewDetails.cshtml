@@ -5,6 +5,23 @@
 }
 
 <div class="container mt-5">
+
+    @* Mensajes de alerta *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    else if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     @if (Model.Auction != null)
     {
         <h2>@Model.Auction.Name</h2>
@@ -20,8 +37,6 @@
                 {
                     <img src="https://placehold.co/600x400?text=Sin+imagen" class="img-fluid" alt="Imagen no disponible" />
                 }
-           
-
             </div>
             <div class="col-md-6">
                 <p><strong>Descripción:</strong> @Model.Auction.Description</p>
@@ -33,9 +48,11 @@
 
                 <form method="post">
                     <input type="hidden" asp-for="Auction.Id" />
+                    <input type="hidden" name="ShownLastPrice" value="@Model.Auction.LastPrice" />
                     <button type="submit" class="btn btn-primary">Pujar</button>
                     <a asp-page="/Auction/Participant/ConsultAuctions" class="btn btn-secondary ms-2">Volver</a>
                 </form>
+
             </div>
         </div>
     }

@@ -55,5 +55,16 @@ namespace AuctionParticipantService.Services.Implements
 
             return MessageResponse<bool>.Success(response.Message, true);
         }
+
+        public async Task<MessageResponse<bool>> UpdateExpiredAuctionsAsync()
+        {
+            var result = await _auctionDAO.UpdateExpiredAuctionsAsync();
+
+            if (result.IsError)
+                return MessageResponse<bool>.Failure(result.Message);
+
+            return MessageResponse<bool>.Success(result.Message, result.DataRetrieved);
+        }
+
     }
 }

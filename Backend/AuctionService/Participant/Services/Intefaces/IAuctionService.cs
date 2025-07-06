@@ -8,5 +8,7 @@ namespace AuctionParticipantService.Services.Intefaces
         Task<MessageResponse<AuctionDTO>> GetAuctionByIdAsync(int id);
         Task<MessageResponse<bool>> IncreaseLastPriceAsync(int auctionId);
         Task<MessageResponse<bool>> RegisterBidAsync(BidDTO bid);
+        Task<MessageResponse<bool>> UpdateExpiredAuctionsAsync();
+
     }
 }

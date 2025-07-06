@@ -112,6 +112,30 @@ namespace AuctionParticipantService.Controllers
             });
         }
 
+        [HttpPut("UpdateExpiredAuctions")]
+        public async Task<IActionResult> UpdateExpiredAuctions()
+        {
+            var result = await _auctionsDAO.UpdateExpiredAuctionsAsync();
+
+            if (!result.DataRetrieved)
+            {
+                return Ok(new
+                {
+                    error = false,
+                    message = result.Message,
+                    body = false
+                });
+            }
+
+            return Ok(new
+            {
+                error = false,
+                message = result.Message,
+                body = true
+            });
+        }
+
+
     }
 
 }

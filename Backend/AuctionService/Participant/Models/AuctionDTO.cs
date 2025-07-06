@@ -10,7 +10,6 @@
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
         public int SellerId { get; set; }
-        public int ProductId { get; set; }
         public int StatusId { get; set; }
         public string Description { get; set; } = string.Empty;
         public byte[] Photo { get; set; } = Array.Empty<byte>();
