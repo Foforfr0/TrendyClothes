@@ -1,6 +1,46 @@
-@AuctionParticipantService_HostAddress = http://localhost:5277
+### ApiGateway
+@baseUrl = http://localhost:5000
 
-GET {{AuctionParticipantService_HostAddress}}/weatherforecast/
+### GET
+GET {{baseUrl}}/api/Auction/Participant/ConsultAuctions/Search?query=example
 Accept: application/json
 
-###
+### GET
+GET {{baseUrl}}/api/Auction/Participant/ConsultAuctions/ViewDetails?id=1
+Accept: application/json
+
+### POST
+POST {{baseUrl}}/api/Auction/Participant/CreateBid
+Accept: application/json
+{
+  "bid": 100.00,
+  "dateBid": "2023-10-01T12:00:00Z",
+  "buyerId": 1,
+  "auctionId": 1
+}
+
+### GET
+GET {{baseUrl}}/api/Auctions/Auction
+Accept: application/json
+
+### GET
+GET {{baseUrl}}/api/Auctions/Auction/ById/1
+Accept: application/json
+
+### PUT
+PUT {{baseUrl}}/api/Auctions/Auction/IncreaseBid/1
+Accept: application/json
+{
+  "auctionId": 1
+}
+
+### POST
+POST {{baseUrl}}/api/Auctions/Auction/RegisterBid
+Accept: application/json
+{
+  "auctionId": 1
+}
+
+### PUT
+PUT {{baseUrl}}/api/Auctions/Auction/UpdateAuction
+Accept: application/json
