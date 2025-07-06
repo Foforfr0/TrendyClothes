@@ -12,7 +12,7 @@ namespace AuctionAuctioneerService.Controllers {
             _consultImagesService = consultImagesService;
         }
 
-        [HttpGet ("Image")]
+        [HttpGet ("ImageBase64")]
         public async Task<IActionResult> GetCategories ([FromQuery] int auctionId) {
             try {
                 MessageResponse<byte[]> response = await _consultImagesService.GetImageAuctionId(auctionId);

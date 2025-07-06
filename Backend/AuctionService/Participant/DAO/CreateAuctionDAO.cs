@@ -26,7 +26,6 @@ namespace AuctionParticipantService.DAO {
                 newAuction.DateStart = createAuctionDTO.DateStart;
                 newAuction.DateEnd = createAuctionDTO.DateEnd;
                 newAuction.SellerId = idUser;
-                newAuction.ProductId = createAuctionDTO.ProductId;
                 newAuction.StatusId = 1;
 
                 _context.AuctionsProducts.Add (newAuction);
