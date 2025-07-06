@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionParticipantService.Controllers {
     [ApiController]
-    [Route ("api/Auction/Participant/[controller]")]
+    [Route ("api/Auction/Participant/ConsultAuctions")]
     public class ConsultAuctionController : Controller {
         private readonly IConsultAuctionService _consultAuctionsService;
 

@@ -30,7 +30,7 @@ namespace AuctionAuctioneerService.DAO {
                 newAuction.StatusId = createAuctionDTO.StatusId ?? 1;
                 newAuction.PhotosAuctions = new List<PhotosAuction> {
                     new PhotosAuction {
-                        Photo = createAuctionDTO.Image ?? Array.Empty<byte> (),
+                        Photo = Convert.FromBase64String(createAuctionDTO.ImageBase64),
                         Mime = createAuctionDTO.MimeImage
                     }
                 };

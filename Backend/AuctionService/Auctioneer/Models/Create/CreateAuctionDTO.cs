@@ -47,7 +47,7 @@ namespace AuctionAuctioneerService.Models.Create {
 
         [Required (ErrorMessage = "La imagen es requerida.")]
         [MinLength (1, ErrorMessage = "La imágen es inválida.")]
-        public byte[]? Image {
+        public string? ImageBase64 {
             get; set;
         }
 
