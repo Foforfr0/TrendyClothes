@@ -1,8 +1,8 @@
-﻿using WebPage.Connections.REST.Auction.Auctioneer;
-using WebPage.Connections.REST.Auction.Participant;
-
-namespace WebPage.Connections.REST.Auction {
+﻿namespace WebPage.Connections.REST.Auction {
     public class AuctionConfig {
+        public AuctionEndpoints Auction {
+            get; set;
+        }
         public AuctioneerConfig Auctioneer {
             get; set;
         }

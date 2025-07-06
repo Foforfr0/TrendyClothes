@@ -1,4 +1,4 @@
-﻿namespace WebPage.Connections.REST.User.Auth {
+﻿namespace WebPage.Connections.REST.User {
     public class UserAuthConfig {
         public string BaseUrl {
             get; set;

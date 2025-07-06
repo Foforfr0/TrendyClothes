@@ -25,8 +25,6 @@ Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, util
 |06 |Eliminar publicación                   |	✔️	|	✔️	|	✔️	|	✔️	|
 |07 |Realizar subasta                       |	✔️	|	❌	|	❌	|	❌	|
 |08 |Eliminar subasta                       |	❌	|	❌	|	❌	|	❌	|
-|09 |Gestionar reportes de usuarios         |	❌	|	❌	|	❌	|	❌	|
-
 
 ## 🐳 Docker
 ### 🔧 Inicialización de contenedores

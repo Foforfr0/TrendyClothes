@@ -26,6 +26,10 @@ Accept: application/json
 GET {{baseUrl}}/api/Auction/Image?auctionId=1
 Accept: application/json
 
+### GET
+GET {{baseUrl}}/api/Auction/Statuses
+Accept: application/json
+
 ### PATCH
 PATCH {{baseUrl}}api/Auction/Auctioneer/UpdateAuction
 {

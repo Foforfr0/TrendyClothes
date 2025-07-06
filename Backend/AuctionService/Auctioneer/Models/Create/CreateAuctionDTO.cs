@@ -44,5 +44,17 @@ namespace AuctionAuctioneerService.Models.Create {
         public string? SellerUsername {
             get; set;
         }
+
+        [Required (ErrorMessage = "La imagen es requerida.")]
+        [MinLength (1, ErrorMessage = "La imágen es inválida.")]
+        public byte[]? Image {
+            get; set;
+        }
+
+        [Required (AllowEmptyStrings = false, ErrorMessage = "El tipo de imagen es requerido.")]
+        [MaxLength (25, ErrorMessage = "El tipo de imagen no puede exceder los 25 caracteres.")]
+        public string? MimeImage {
+            get; set;
+        }
     }
 }

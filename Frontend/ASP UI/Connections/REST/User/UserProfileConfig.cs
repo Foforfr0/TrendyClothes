@@ -1,4 +1,4 @@
-﻿namespace WebPage.Connections.REST.User.Profile {
+﻿namespace WebPage.Connections.REST.User {
     public class UserProfileConfig {
         public string BaseUrl {
             get; set;

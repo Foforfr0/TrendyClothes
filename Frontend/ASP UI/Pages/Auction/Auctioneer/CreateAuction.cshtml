@@ -23,6 +23,8 @@
                             <button type="button" id="selectImageBtn" class="btn btn-primary">
                                 <i class="fas fa-upload"></i> Seleccionar Imagen
                             </button>
+                            <span class="text-danger" asp-validation-for="@Model.newAuction.imageBase64"></span>
+                            <span class="text-danger" asp-validation-for="@Model.newAuction.mimeImage"></span>
                             <input type="hidden" asp-for="@Model.newAuction.imageBase64" id="imageBase64Input" />
                             <input type="hidden" asp-for="@Model.newAuction.mimeImage" id="mimeInput" />
                         </div>
@@ -37,7 +39,7 @@
                     <form method="post" id="auctionForm">
                         <div class="row mb-1">
                             <div class="col">
-                                <label class="form-label">
+                                <label class="form-label" asp-for="@Model.newAuction.Name">
                                     <i class="bi bi-tag me-1"></i>Nombre del producto
                                 </label>
                                 <div class="input-icon">
@@ -46,14 +48,14 @@
                                            placeholder="Ej: MacBook Pro 16 - Subasta Especial"
                                            autocomplete="off" asp-for="@Model.newAuction.Name" />
                                 </div>
-                                <span class="text-danger small"></span>
+                                <span class="text-danger" asp-validation-for="@Model.newAuction.Name"></span>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label">
-                                    <i class="bi bi-currency-dollar me-1"></i>Precio Inicial
+                                <label class="form-label" asp-for="@Model.newAuction.FirstPrice">
+                                    <i class="bi bi-currency-dollar me-1"></i>Precio inicial
                                 </label>
                                 <div class="input-icon">
                                     <i class="bi bi-cash icon"></i>
@@ -61,11 +63,11 @@
                                            placeholder="25000" step="0.01" min="0"
                                            autocomplete="off" asp-for="@Model.newAuction.FirstPrice" />
                                 </div>
-                                <span class="text-danger small"></span>
+                                <span class="text-danger" asp-validation-for="@Model.newAuction.FirstPrice"></span>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">
+                                <label class="form-label" asp-for="@Model.newAuction.Bid">
                                     <i class="bi bi-arrow-up-circle me-1"></i>Puja establecida
                                 </label>
                                 <div class="input-icon">
@@ -74,13 +76,13 @@
                                            placeholder="500" step="0.01" min="0"
                                            autocomplete="off" asp-for="@Model.newAuction.Bid"/>
                                 </div>
-                                <span class="text-danger small"></span>
+                                <span class="text-danger" asp-validation-for="@Model.newAuction.Bid"></span>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label">
+                                <label class="form-label" asp-for="@Model.newAuction.DateStart">
                                     <i class="bi bi-calendar-event me-1"></i>Fecha de Inicio
                                 </label>
                                 <div class="input-icon">
@@ -88,11 +90,11 @@
                                     <input id="InputDateStart" class="form-control" type="datetime-local"
                                            autocomplete="off" asp-for="@Model.newAuction.DateStart" />
                                 </div>
-                                <span class="text-danger small"></span>
+                                <span class="text-danger" asp-validation-for="@Model.newAuction.DateStart"></span>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">
+                                <label class="form-label" asp-for="@Model.newAuction.DateEnd">
                                     <i class="bi bi-calendar-x me-1"></i>Fecha de Fin
                                 </label>
                                 <div class="input-icon">
@@ -100,13 +102,13 @@
                                     <input id="InputDateEnd" class="form-control" type="datetime-local"
                                            autocomplete="off" asp-for="@Model.newAuction.DateEnd" />
                                 </div>
-                                <span class="text-danger small"></span>
+                                <span class="text-danger" asp-validation-for="@Model.newAuction.DateEnd"></span>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label">
+                                <label class="form-label" asp-for="@Model.newAuction.SellerUsername">
                                     <i class="bi bi-person me-1"></i>Vendedor
                                 </label>
                                 <div class="input-icon">
@@ -115,22 +117,36 @@
                                            placeholder="Nombre del vendedor" readonly
                                            value="@(User.Identity?.Name ?? "Juan Pérez")" autocomplete="off" />
                                 </div>
-                                <span class="text-danger small"></span>
+                                <span class="text-danger" asp-validation-for="@Model.newAuction.SellerUsername"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" asp-for="@Model.newAuction.StatusId">
+                                    <i class="bi bi-slash-circle"></i>Status
+                                </label>
+                                <div class="input-icon">
+                                    <i class="bi bi-calendar-check icon"></i>
+                                    <select id="InputStatus" asp-for="newAuction.StatusId" class="form-select my-1 mx-2 p-1"
+                                            asp-items="Model.statusSelectList">
+                                        <option value="">-- Seleccione --</option>
+                                    </select>
+                                </div>
+                                <span class="text-danger" asp-validation-for="@Model.newAuction.StatusId"></span>
                             </div>
                         </div>
 
                         <div class="form-row col-12">
                             <div class="form-group">
-                                <label class="form-label">
+                                <label class="form-label" asp-for="@Model.newAuction.Description">
                                     <i class="bi bi-justify"></i>Descripción
                                 </label>
                                 <div class="input-icon">
                                     <i class="bi bi-person-circle icon"></i>
                                     <textarea id="InputDescription" class="form-control" type="text"
-                                           placeholder="Descripción del producto y subasta" autocomplete="off"></textarea>
+                                           placeholder="Descripción del producto y subasta" autocomplete="off" asp-for="@Model.newAuction.Description"></textarea>
                                            <span class="text-muted small">Máximo 500 caracteres</span>
                                 </div>
-                                <span class="text-danger small"></span>
+                                <span class="text-danger" asp-validation-for="@Model.newAuction.Description"></span>
                             </div>
                         </div>
 
@@ -165,5 +181,6 @@
             PostAuction: '@UrlBuilder.AuctioneerPostAuctionUrl'
         };
     </script>
-    <script src="~/js/Auction/CreateAuction.js"></script>
+    <script type="module" src="~/js/Auction/CreateAuction.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }

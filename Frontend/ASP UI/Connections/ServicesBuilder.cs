@@ -154,7 +154,26 @@ namespace WebPage.Connections {
             }
         }
 
+        public string ProductGetProductImageUrl {
+            get {
+                return Combine (_config.REST.Product.Product.BaseUrl, _config.REST.Product.Product.GetImage);
+            }
+        }
+
         // -------- AUCTION --------
+        // ------------- Auction -----------
+        public string AuctionGetStatusesUrl {
+            get {
+                return Combine (_config.REST.Auction.Auction.BaseUrl, _config.REST.Auction.Auction.GetStatuses);
+            }
+        }
+
+        public string AuctionGetImageUrl {
+            get {
+                return Combine (_config.REST.Auction.Auction.BaseUrl, _config.REST.Auction.Auction.GetImage);
+            }
+        }
+
         // ------------- Auctioneer --------
         public string AuctioneerGetAuctionsUrl {
             get {
