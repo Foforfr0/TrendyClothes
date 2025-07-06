@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionParticipantService.Controllers {
     [ApiController]
-    [Authorize]
     [Route ("api/Auctions/Auction")]
     public class AuctionController : ControllerBase {
         private readonly AuctionDAO _auctionsDAO;
@@ -71,18 +70,14 @@ namespace AuctionParticipantService.Controllers {
 
         [HttpPost ("RegisterBid")]
         public async Task<IActionResult> RegisterBid ([FromBody] BidDTO bid) {
-            if (bid.AuctionId <= 0) {
+            if (!ModelState.IsValid) {
                 return BadRequest (new {
                     error = true,
-                    message = "ID de subasta inválido.",
+                    message = "Datos de puja inválidos.", 
                     body = false
                 });
             }
-
-            bid.BuyerUsername = User.Identity?.Name;
-
             var result = await _auctionsDAO.RegisterBidAsync (bid);
-
             if (!result.DataRetrieved) {
                 return BadRequest (new {
                     error = true,
@@ -90,7 +85,6 @@ namespace AuctionParticipantService.Controllers {
                     body = false
                 });
             }
-
             return Ok (new {
                 error = false,
                 message = result.Message,

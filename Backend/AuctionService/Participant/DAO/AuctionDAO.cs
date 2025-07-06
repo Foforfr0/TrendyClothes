@@ -88,24 +88,15 @@ namespace AuctionParticipantService.DAO {
         }
         public async Task<MessageResponse<bool>> RegisterBidAsync (BidDTO bid) {
             try {
-                int userId = await _context.Users
-                    .Where (u => u.Username == bid.BuyerUsername)
-                    .Select(u => u.Id)
-                    .FirstOrDefaultAsync ();
+                var newBid = new BidsAuction {
+                    AuctionId = bid.AuctionId,
+                    BuyerId = bid.BuyerId
+                };
 
-                if (userId <= 0) {
-                    return new MessageResponse<bool> (true, "Error al buscar al usuario que realiza puja.", default);
-                } else {
-                    BidsAuction? newBid = new BidsAuction {
-                        AuctionId = bid.AuctionId,
-                        BuyerId = userId
-                    };
+                await _context.BidsAuctions.AddAsync (newBid);
+                await _context.SaveChangesAsync ();
 
-                    await _context.BidsAuctions.AddAsync (newBid);
-                    await _context.SaveChangesAsync ();
-
-                    return new MessageResponse<bool> (true, "Puja registrada correctamente", true);
-                }
+                return new MessageResponse<bool> (true, "Puja registrada correctamente", true);
             } catch (Exception ex) {
                 _logger.LogError (ex, "Error al registrar la puja.");
                 return new MessageResponse<bool> (false, "Error al registrar la puja", false);
