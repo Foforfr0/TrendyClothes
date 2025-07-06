@@ -13,7 +13,6 @@ namespace AuctionParticipantService.DAO {
         public async Task<MessageResponse<List<Entities.AuctionsProduct>>> GetAuctionsAsync () {
             try {
                 List<Entities.AuctionsProduct> response = await _context.AuctionsProducts
-                    .Include (p => p.Product)
                     .Include (p => p.Seller)
                     .Include (p => p.BidsAuctions)
                     .ToListAsync ();
@@ -27,14 +26,10 @@ namespace AuctionParticipantService.DAO {
         public async Task<MessageResponse<List<Entities.AuctionsProduct>>> GetAuctionsAsync (string query) {
             try {
                 List<Entities.AuctionsProduct> response = await _context.AuctionsProducts
-                    .Include (p => p.Product)
                     .Include (p => p.Seller)
                     .Include (p => p.BidsAuctions)
                     .Where (p =>
                         query.Contains (p.Name) ||
-                        query.Contains (p.Product.Name) ||
-                        query.Contains (p.Product.Type.Type) ||
-                        query.Contains (p.Product.Category.Category) ||
                         query.Contains (p.FirstPrice.ToString () ?? "0") ||
                         query.Contains (p.Seller.Username))
                     .ToListAsync ();
@@ -48,7 +43,6 @@ namespace AuctionParticipantService.DAO {
         public async Task<MessageResponse<List<Entities.AuctionsProduct>>> GetAuctionsUserAsync (string username) {
             try {
                 List<Entities.AuctionsProduct> response = await _context.AuctionsProducts
-                    .Include (p => p.Product)
                     .Include (p => p.Seller)
                     .Include (p => p.BidsAuctions)
                     .Where (p => p.Seller.Username.Equals(username))
@@ -63,7 +57,6 @@ namespace AuctionParticipantService.DAO {
         public async Task<MessageResponse<Entities.AuctionsProduct>> GetAuctionAsync (int id) {
             try {
                 Entities.AuctionsProduct? response = await _context.AuctionsProducts
-                    .Include (p => p.Product)
                     .Include (p => p.Seller)
                     .Include (p => p.BidsAuctions)
                     .Where (p => p.Id == id)
