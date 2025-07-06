@@ -126,9 +126,10 @@
                                 </label>
                                 <div class="input-icon">
                                     <i class="bi bi-calendar-check icon me-1"></i>
-                                    <select id="InputStatus" asp-for="newAuction.StatusId" class="form-select my-1 mx-2 p-1"
-                                            asp-items="Model.statusSelectList">
+                                    <select id="InputStatus" asp-for="newAuction.StatusId" class="form-select my-1 mx-2 p-1">
                                         <option value="">-- Seleccione --</option>
+                                        <option value="1">Activo</option>
+                                        <option value="2">Pausado</option>
                                     </select>
                                 </div>
                                 <span class="text-danger" asp-validation-for="@Model.newAuction.StatusId"></span>
