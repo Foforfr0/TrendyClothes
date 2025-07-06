@@ -38,7 +38,7 @@ namespace WebPage.Pages.Auctions
 
                 var response = await client.GetAsync("http://apigateway/api/Auctions/Auction");
                 string json = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("GET Auctions JSON: " + json);
+                Console.WriteLine("GET Auctions JSON from http://apigateway/api/Auctions/Auction: " + json);
 
                 if (response.IsSuccessStatusCode)
                 {
