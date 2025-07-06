@@ -222,7 +222,7 @@ public partial class MainMenuPage : ContentPage
                     Id = p.Id,
                     Nombre = p.Name,
                     Precio = p.Price,
-                    CantidadVendidos = p.NumberSold,
+                    CantidadVendidos = p.NumberSold ?? 0,
                     ImageSource = imageSource,
                     EsPropio = false
                 });
@@ -315,7 +315,7 @@ public partial class MainMenuPage : ContentPage
                     Id = p.Id,
                     Nombre = p.Name,
                     Precio = p.Price,
-                    CantidadVendidos = p.NumberSold,
+                    CantidadVendidos = p.NumberSold ?? 0,
                     ImageSource = image,
                     EsPropio = nombreCategoria.Equals("Mis productos", StringComparison.OrdinalIgnoreCase)
                 });
@@ -365,8 +365,8 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
-    private void OnVerSubastasClicked(object sender, EventArgs e)
+    private async void OnVerSubastasClicked(object sender, EventArgs e)
     {
-
+        await Navigation.PushAsync(new AuctionsMenuPage());
     }
 }

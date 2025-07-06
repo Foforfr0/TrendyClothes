@@ -32,7 +32,7 @@ namespace ClienteMAUI.Models.DTO.Pruducts
         public decimal discount { get; set; }
 
         [JsonPropertyName("numberSold")]
-        public int NumberSold { get; set; }
+        public int? NumberSold { get; set; }
 
         [JsonPropertyName("averageStars")]
         public float AverageStars { get; set; }
