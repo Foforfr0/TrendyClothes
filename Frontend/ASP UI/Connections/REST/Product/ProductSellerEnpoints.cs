@@ -1,4 +1,4 @@
-﻿namespace WebPage.Connections.REST.Product.Seller {
+﻿namespace WebPage.Connections.REST.Product {
     public class ProductSellerEndpoints {
         public string BaseUrl {
             get; set;

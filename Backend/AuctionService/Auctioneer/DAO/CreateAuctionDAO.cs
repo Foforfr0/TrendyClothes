@@ -25,8 +25,15 @@ namespace AuctionAuctioneerService.DAO {
                 newAuction.LastPrice = createAuctionDTO.FirstPrice;
                 newAuction.DateStart = createAuctionDTO.DateStart ?? DateTime.Now;
                 newAuction.DateEnd = createAuctionDTO.DateEnd ?? DateTime.Now.AddDays (1);
+                newAuction.Description = createAuctionDTO.Description ?? "Sin descripción.";
                 newAuction.SellerId = idUser;
                 newAuction.StatusId = createAuctionDTO.StatusId ?? 1;
+                newAuction.PhotosAuctions = new List<PhotosAuction> {
+                    new PhotosAuction {
+                        Photo = createAuctionDTO.Image ?? Array.Empty<byte> (),
+                        Mime = createAuctionDTO.MimeImage
+                    }
+                };
 
                 _context.AuctionsProducts.Add (newAuction);
                 await _context.SaveChangesAsync ();

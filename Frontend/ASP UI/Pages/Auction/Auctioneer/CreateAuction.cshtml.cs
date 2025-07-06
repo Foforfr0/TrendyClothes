@@ -1,7 +1,9 @@
 using GetImageProduct;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebPage.Connections;
+using WebPage.DTO;
 using WebPage.DTO.Auction;
 
 namespace WebPage.Pages.Auction.Auctioneer {
@@ -21,7 +23,25 @@ namespace WebPage.Pages.Auction.Auctioneer {
             get; set;
         } = new CreateAuctionDTO ();
 
+        public List<StatusAuctionDTO>? statuses;
+        public SelectList? statusSelectList;
+
         public async Task OnGetAsync () {
+            await InitializeStatussesList ();
+        }
+
+        public async Task InitializeStatussesList () {
+            statuses = new List<StatusAuctionDTO> ();
+
+            HttpClient? httpClient = _httpClientFactory.CreateClient ();
+            string requestURL = "http://apigateway/api/Auction/Statuses";
+            ApiResponse<List<StatusAuctionDTO>>? response =
+                await httpClient.GetFromJsonAsync<ApiResponse<List<StatusAuctionDTO>>> (requestURL);
+
+            if (response?.body != null) {
+                statuses = response.body;
+                statusSelectList = new SelectList (statuses, "Id", "Status");
+            }
         }
     }
 }

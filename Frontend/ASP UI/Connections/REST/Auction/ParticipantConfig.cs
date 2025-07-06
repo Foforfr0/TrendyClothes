@@ -1,9 +1,6 @@
-﻿namespace WebPage.Connections.REST.Auction.Auctioneer {
-    public class AuctioneerConfig {
+﻿namespace WebPage.Connections.REST.Auction {
+    public class ParticipantConfig {
         public string BaseUrl {
-            get; set;
-        }
-        public string PostAuction {
             get; set;
         }
         public string GetAuctions {
@@ -12,7 +9,7 @@
         public string GetDetailsAuction {
             get; set;
         }
-        public string PatchAuction {
+        public string PostBid {
             get; set;
         }
     }

@@ -213,7 +213,7 @@ INSERT INTO Products (Name, Price, Discount, NumberSold, AverageStars, Descripti
 ('Ropa interior',       100.99, 0, 2,  3.0,     'Ropa interior 3.',         18, 2, 4, 1, 1);
 
 -- PhotosProduct (solo insert de ejemplo sin foto real, usa NULL o CONVERT si deseas agregar imágenes reales)
-INSERT INTO PhotosProduct (Photo, ProductId, Mime) VALUES /*
+INSERT INTO PhotosProduct (Photo, ProductId, Mime) VALUES 
 ((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 1.jpg', SINGLE_BLOB) AS Photo), 1, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 2.jpg', SINGLE_BLOB) AS Photo), 2, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 3.jpg', SINGLE_BLOB) AS Photo), 3, 'image/jpg'),
@@ -227,7 +227,7 @@ INSERT INTO PhotosProduct (Photo, ProductId, Mime) VALUES /*
 ((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 1.jpg', SINGLE_BLOB) AS Photo), 11, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 2.jpg', SINGLE_BLOB) AS Photo), 12, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 3.jpg', SINGLE_BLOB) AS Photo), 13, 'image/jpg');
-*/
+/*
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 1.jpg', SINGLE_BLOB) AS Photo), 1, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 2.jpg', SINGLE_BLOB) AS Photo), 2, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 3.jpg', SINGLE_BLOB) AS Photo), 3, 'image/jpg'),
@@ -241,7 +241,7 @@ INSERT INTO PhotosProduct (Photo, ProductId, Mime) VALUES /*
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 1.jpg', SINGLE_BLOB) AS Photo), 11, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 2.jpg', SINGLE_BLOB) AS Photo), 12, 'image/jpg'),
 ((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 3.jpg', SINGLE_BLOB) AS Photo), 13, 'image/jpg');
-
+*/
 
 -- QAProduct
 INSERT INTO QAProduct (Stars, Description, Date, ProductId, UserId) VALUES 

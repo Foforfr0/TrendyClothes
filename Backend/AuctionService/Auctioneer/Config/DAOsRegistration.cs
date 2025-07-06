@@ -8,6 +8,7 @@ namespace AuctionAuctioneerService.Config {
             services.AddScoped<CreateAuctionDAO> ();
             services.AddScoped<UpdateAuctionDAO> ();
             services.AddScoped<ConsultImagesDAO> ();
+            services.AddScoped<ConsultTagsDAO> ();
         }
     }
 }

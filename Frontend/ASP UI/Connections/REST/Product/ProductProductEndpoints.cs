@@ -1,4 +1,4 @@
-﻿namespace WebPage.Connections.REST.Product.Product {
+﻿namespace WebPage.Connections.REST.Product {
     public class ProductProductEndpoints {
         public string BaseUrl {
             get; set;
@@ -10,6 +10,9 @@
             get; set;
         }
         public string GetStatusses {
+            get; set;
+        }
+        public string GetImage {
             get; set;
         }
     }

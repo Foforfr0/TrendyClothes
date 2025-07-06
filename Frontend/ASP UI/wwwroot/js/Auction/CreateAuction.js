@@ -1,4 +1,4 @@
-﻿import * as utils from './js/site.js';
+﻿import * as utils from '/js/site.js';
 
 function configureInputs() {
     const inputFirstPrice = document.getElementById('InputFirstPrice');
@@ -90,62 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
             window.history.back();
         }
     });
-
-    // Agregar efectos de hover a los inputs
-    const inputs = document.querySelectorAll('.form-control');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function () {
-            this.parentElement.classList.add('focused');
-        });
-
-        input.addEventListener('blur', function () {
-            this.parentElement.classList.remove('focused');
-        });
-    });
-
-    // Validación en tiempo real
-    const requiredInputs = ['InputName', 'InputFirstPrice', 'InputMinBid', 'InputDateStart', 'InputDateEnd', 'InputNumberProducts'];
-
-    requiredInputs.forEach(inputId => {
-        const input = document.getElementById(inputId);
-        if (input) {
-            input.addEventListener('blur', validateInput);
-            input.addEventListener('input', clearValidationError);
-        }
-    });
-
-    function validateInput(e) {
-        const input = e.target;
-        const errorSpan = input.parentElement.nextElementSibling;
-
-        if (!input.value.trim()) {
-            showError(input, errorSpan, 'Este campo es obligatorio');
-        } else {
-            clearError(input, errorSpan);
-        }
-    }
-
-    function clearValidationError(e) {
-        const input = e.target;
-        const errorSpan = input.parentElement.nextElementSibling;
-        clearError(input, errorSpan);
-    }
-
-    function showError(input, errorSpan, message) {
-        input.classList.add('is-invalid');
-        input.style.borderColor = 'var(--danger-color)';
-        if (errorSpan) {
-            errorSpan.textContent = message;
-        }
-    }
-
-    function clearError(input, errorSpan) {
-        input.classList.remove('is-invalid');
-        input.style.borderColor = '';
-        if (errorSpan) {
-            errorSpan.textContent = '';
-        }
-    }
 });
 
 async function postAuction() {
@@ -153,24 +97,26 @@ async function postAuction() {
 
     const name = utils.getValueDOMElementNullOrEmpty('InputName');
     const firstPrice = utils.getValueDOMElementNullOrEmpty('InputFirstPrice');
-    const minBid = utils.getValueDOMElementNullOrEmpty('InputMinBid');
+    const bid = utils.getValueDOMElementNullOrEmpty('InputBid');
     const dateStart = utils.getValueDOMElementNullOrEmpty('InputDateStart');
     const dateEnd = utils.getValueDOMElementNullOrEmpty('InputDateEnd');
-    const numberProducts = document.getElementById('InputNumberProducts').value;
+    const description = utils.getValueDOMElementNullOrEmpty('InputDescription');
+    const statusId = document.getElementById('InputStatus').value;
+    const imageBase64 = document.getValueDOMElementNullOrEmpty('imageBase64Input');
+    const mimeImage = document.getValueDOMElementNullOrEmpty('mimeInput');
 
-    if (!name || !firstPrice || !minBid || !dateStart || !dateEnd || !numberProducts) {
 
-        return;
-    }
+    if (!name || !firstPrice || !bid || !dateStart || !dateEnd || !description || !statusId || !imageBase64 || !mimeImage) return;
 
     try {
         const response = await fetch(`${window.config.PostAuction}`, {
             method: 'POST',
             credentials: 'include',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': getAntiForgeryToken(),
             },
-            body: JSON.stringify({ idProduct: window.data.idProduct, name, firstPrice, minBid, dateStart, dateEnd, numberProducts })
+            body: JSON.stringify({ name, firstPrice, bid, dateStart, dateEnd, description, statusId, imageBase64, mimeImage})
         });
 
         if (!response) return;
@@ -179,7 +125,7 @@ async function postAuction() {
         switch (response.status) {
             case 200:
                 utils.showToast(data.message, 'success');
-                window.location.replace(``);
+                window.location.replace(`/User/Profile/ViewMyProfile`);
                 break;
             case 400:
             case 404:
@@ -198,59 +144,6 @@ async function postAuction() {
 function getAntiForgeryToken() {
     const input = document.querySelector('input[name="__RequestVerificationToken"]');
     return input ? input.value : '';
-}
-
-async function sendImageMime() {
-    const imageBase64Input = document.getElementById('imageBase64Input');
-    const mimeInput = document.getElementById('mimeInput');
-
-    if (!imageBase64Input.value || !mimeInput.value) {
-        utils.showToast('Por favor selecciona una imagen primero.', 'danger');
-        return;
-    }
-
-    // Mostrar loading
-    const submitBtn = document.getElementById('submitForm');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
-    try {
-        const response = await fetch('/Auction/Auctioneer/CreateAuction?handler=SendImage', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'RequestVerificationToken': getAntiForgeryToken(),
-            },
-            body: JSON.stringify({
-                idProduct: window.data.idProduct,
-                imageBase64: imageBase64Input.value,
-                mimeImage: mimeInput.value
-            })
-        });
-
-        console.log(response);
-
-        let result = await response.json();
-
-        if (response.ok && result.success) {
-            utils.showToast(`Imagen guardada exitosamente`, 'success');
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
-            return true;
-        } else {
-            console.error('Server error:', result);
-            utils.showToast(result.message || 'Error al guardar la imagen', 'danger');
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
-            return false;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        utils.showToast('Error de conexión al guardar la imagen', 'danger');
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="bi bi-bookmark-check fs-5 fw-bold"></i>';
-        return false;
-    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
