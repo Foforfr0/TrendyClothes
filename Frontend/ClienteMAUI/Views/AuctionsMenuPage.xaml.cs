@@ -156,9 +156,9 @@ public partial class AuctionsMenuPage : ContentPage
     
 
 
-    private void OnMisSubastasClicked(object sender, EventArgs e)
+    private async void OnMisSubastasClicked(object sender, EventArgs e)
     {
-
+        await Navigation.PushAsync(new MyAuctionsMenuPage());
     }
 
     private async void OnCrearSubastaClicked(object sender, EventArgs e)
