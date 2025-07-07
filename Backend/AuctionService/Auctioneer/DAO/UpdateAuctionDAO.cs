@@ -54,7 +54,7 @@ namespace AuctionAuctioneerService.DAO {
         public async Task<MessageResponse<bool>> UpdateStatusAuctionAsync (UpdateStatusDTO updateAuctionDTO) {
             try {
                 Entities.AuctionsProduct? currentAuction = await _context.AuctionsProducts
-                   .Where (auction => auction.Id == updateAuctionDTO.Id)
+                   .Where (auction => auction.Id == updateAuctionDTO.AuctionId)
                    .FirstOrDefaultAsync ();
 
                 if (currentAuction == null)

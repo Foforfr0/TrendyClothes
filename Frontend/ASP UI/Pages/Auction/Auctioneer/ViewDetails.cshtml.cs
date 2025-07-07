@@ -39,5 +39,52 @@ namespace WebPage.Pages.Auction.Auctioneer {
                 auction = response.body;
             }
         }
+
+        public async Task<IActionResult> OnPostChangeStatusAsync (int AuctionId, int StatusId) {
+            try {
+                var httpClient = _httpClientFactory.CreateClient ();
+                string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
+
+                if (!string.IsNullOrEmpty (cookies))
+                    httpClient.DefaultRequestHeaders.Add ("Cookie", cookies);
+
+                string requestURL = $"http://apigateway{_services.REST.Auction.Auctioneer.PatchAuction}";
+
+                var requestBody = new {
+                    AuctionId = AuctionId,
+                    StatusId = StatusId
+                };
+
+                var response = await httpClient.PatchAsJsonAsync (requestURL, requestBody);
+
+                if (!response.IsSuccessStatusCode) {
+                    // Manejo de error
+                    // Puedes usar TempData o ViewData para mostrar un mensaje en la UI
+                    TempData["StatusChangeError"] = "No se pudo actualizar el estado de la subasta.";
+                    return RedirectToPage ("./Details", new {
+                        id = AuctionId
+                    });
+                }
+
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse<bool>> ();
+
+                if (result == null || !result.body) {
+                    TempData["StatusChangeError"] = result?.message ?? "Ocurrió un error desconocido.";
+                    return RedirectToPage ("/Auction/Auctioneer/ViewDetails", new {
+                        id = AuctionId
+                    });
+                }
+
+                TempData["StatusChangeSuccess"] = "Estado de la subasta actualizado correctamente.";
+                return RedirectToPage ("/Auction/Auctioneer/ViewDetails", new {
+                    id = AuctionId
+                });
+            } catch (Exception ex) {
+                TempData["StatusChangeError"] = $"Error inesperado: {ex.Message}";
+                return RedirectToPage ("/Auction/Auctioneer/ViewDetails", new {
+                    id = AuctionId
+                });
+            }
+        }
     }
 }

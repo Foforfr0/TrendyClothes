@@ -16,10 +16,48 @@
         <div class="col-8 text-start d-block align-content-top border-start">
             <div class="row">
                 <h2 class="align-content-start truncate-two-lines text-start col">@Model.auction.Name</h2>
-                <a class="col-auto text-end btn text-white py-0 px-1 align-content-center" style="background-color: aquamarine">
-                    <i class="bi bi-gear">&ensp;Cambiar estado</i>
-                </a>
+                @if (Model.auction.StatusId != 3 && Model.auction.StatusId != 4) {
+                    <button type="button"
+                            class="col-auto text-end btn text-white py-0 px-1 align-content-center"
+                            style="background-color: aquamarine"
+                            data-bs-toggle="modal"
+                            data-bs-target="#changeStatusModal">
+                        <i class="bi bi-gear">&ensp;Cambiar estado</i>
+                    </button>
+                } else {
+                    <span class="col-auto badge bg-secondary align-self-center">Cancelado</span>
+                }
             </div>
+            <form method="post" asp-page-handler="ChangeStatus">
+                <div class="modal fade" id="changeStatusModal" tabindex="-1" aria-labelledby="changeStatusModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Cambiar estado de la subasta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="AuctionId" value="@Model.auction.Id" />
+
+                                <label for="newStatusSelect">Nuevo estado:</label>
+                                <select id="newStatusSelect" name="StatusId" class="form-select">
+                                    @if (Model.auction.Status.ToLower () == "activo") {
+                                        <option value="2">Pausado</option>
+                                        <option value="3">Cancelado</option>
+                                    } else if (Model.auction.Status.ToLower () == "pausado") {
+                                        <option value="1">Activo</option>
+                                        <option value="3">Cancelado</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Confirmar cambio</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="row mt-2 ms-2">
                 <div class="col">
                     <div class="row">
