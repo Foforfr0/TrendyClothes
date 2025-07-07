@@ -3,7 +3,7 @@
 namespace WebPage.DTO.Auction {
     public class CreateAuctionDTO {
         [Required (AllowEmptyStrings = false, ErrorMessage = "El nombre es requerido.")]
-        [Length (20, 100, ErrorMessage = "El nombre debe contener entre 20 y 100 caracteres.")]
+        [MaxLength (100, ErrorMessage = "El nombre debe contener máxumo 100 caracteres.")]
         public string? Name {
             get; set;
         }
