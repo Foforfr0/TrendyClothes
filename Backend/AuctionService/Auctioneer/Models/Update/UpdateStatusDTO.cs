@@ -4,7 +4,7 @@ namespace AuctionAuctioneerService.Models.Update {
     public class UpdateStatusDTO {
         [Required (ErrorMessage = "El ID de la subasta es requerido.")]
         [Range (1, int.MaxValue, ErrorMessage = "El ID de la subasta debe ser un número entero positivo.")]
-        public required int Id {
+        public int? AuctionId {
             get; set;
         }
         [Required (ErrorMessage = "El ID del nuevo status es requerido..")]

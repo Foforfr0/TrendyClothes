@@ -52,17 +52,17 @@ namespace AuctionAuctioneerService.Services.Implements {
                 Name = response.DataRetrieved.Name,
                 FirstPrice = response.DataRetrieved.FirstPrice ?? 0,
                 Bid = response.DataRetrieved.Bid,
-                BidsCount = response.DataRetrieved.BidsAuctions.Count,
+                BidsCount = response.DataRetrieved.BidsAuctions?.Count ?? 0,
                 LastPrice = response.DataRetrieved.LastPrice ?? 0,
                 DateStart = response.DataRetrieved.DateStart,
                 DateEnd = response.DataRetrieved.DateEnd,
                 StatusId = response.DataRetrieved.StatusId,
-                Status = response.DataRetrieved.Status.Status,
-                Description = response.DataRetrieved.Description,
-                ImageBase64 = response.DataRetrieved.PhotosAuctions.FirstOrDefault ()?.Photo != null
-                    ? Convert.ToBase64String (response.DataRetrieved.PhotosAuctions.FirstOrDefault ().Photo)
+                Status = response.DataRetrieved.Status?.Status ?? "Desconocido",
+                Description = response.DataRetrieved.Description ?? "Sin descripción.",
+                ImageBase64 = response.DataRetrieved.PhotosAuctions?.FirstOrDefault ()?.Photo != null
+                    ? Convert.ToBase64String (response.DataRetrieved.PhotosAuctions.First ().Photo)
                     : string.Empty,
-                MimeImage = response.DataRetrieved.PhotosAuctions.FirstOrDefault ()?.Mime ?? string.Empty
+                MimeImage = response.DataRetrieved.PhotosAuctions?.FirstOrDefault ()?.Mime ?? string.Empty
             };
             return MessageResponse<AuctionDetailsDTO>.Success (response.Message, auction);
         }

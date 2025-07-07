@@ -60,8 +60,6 @@
                     <ul class="dropdown-menu">
                         @if(User.Identity != null && User.Identity.IsAuthenticated){
                             <li><a class="dropdown-item" asp-page="/User/Profile/ViewMyProfile">Ver perfil</a></li>
-                            <li><a class="dropdown-item" asp-page="">Lista de deseos</a></li>
-                            <li><a class="dropdown-item" asp-page="">Favoritos</a></li>
                             <li><a class="dropdown-item" asp-page="/Product/Seller/ConsultMyProducts" asp-route-username="@User.Identity.Name">Mis productos</a></li>
                             <form method="post" asp-page="/User/Auth/Login" asp-page-handler="Logout" id="logoutForm" class="d-inline">
                                 <li><a href="javascript:void(0);" class="dropdown-item" onclick="document.getElementById('logoutForm').submit();">Cerrar sesión</a></li>
