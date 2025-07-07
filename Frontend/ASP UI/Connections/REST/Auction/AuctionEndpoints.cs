@@ -9,5 +9,11 @@
         public string GetImage {
             get; set;
         }
+        public string GetAuctions {
+            get; set;
+        }
+        public string UpdateExpiredAuctions {
+            get; set;
+        }
     }
 }

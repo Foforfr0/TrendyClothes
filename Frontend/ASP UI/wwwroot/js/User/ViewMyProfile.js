@@ -30,7 +30,7 @@ async function retrievePersonalData() {
                 break;
             case 400:
             case 404:
-                utils.showToast(data.message, 'warning');
+                utils.showToast('Fallo al proporcionar datos del usuario.', 'warning');
                 break;
             case 500:
                 utils.showToast('Error interno del servidor.', 'danger');
@@ -72,7 +72,7 @@ async function retrieveAddresses() {
                 break;
             case 400:
             case 404:
-                utils.showToast(data.message, 'warning');
+                utils.showToast("Fallo al proporcionar datos del usuario.", 'warning');
                 break;
             case 500:
                 utils.showToast('Error interno del servidor.', 'danger');

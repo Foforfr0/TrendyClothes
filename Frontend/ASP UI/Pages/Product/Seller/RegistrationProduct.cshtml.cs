@@ -7,12 +7,13 @@ using WebPage.Connections;
 using WebPage.DTO;
 using WebPage.DTO.Product.Consult;
 using WebPage.DTO.Product.MyProducts;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.Product.Seller {
     public class RegistrationProductModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<EditPublicationModel> _logger;
-        private readonly ServicesBuilder _services;
+        private readonly ServicesConfig _services;
         private readonly SaveNewImageService.SaveNewImageServiceClient _grpcSaveNewImage;
 
         [BindProperty]
@@ -27,11 +28,11 @@ namespace WebPage.Pages.Product.Seller {
         public List<StatussesDTO>? statusses;
         public SelectList? statusSelectList;
 
-        public RegistrationProductModel (IHttpClientFactory httpClientFactory, ServicesBuilder services,
+        public RegistrationProductModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> services,
                                     SaveNewImageService.SaveNewImageServiceClient grpcClientSaveNewImage,
                                     ILogger<EditPublicationModel> logger) {
             _httpClientFactory = httpClientFactory;
-            _services = services;
+            _services = services.Value;
             _grpcSaveNewImage = grpcClientSaveNewImage;
             _logger = logger;
         }
@@ -97,7 +98,7 @@ namespace WebPage.Pages.Product.Seller {
             categories = new List<CategoriesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = "http://apigateway/api/Product/Tags/Categories";
+            string requestURL = $"http://apigateway{_services.REST.Product.Product.GetCategories}";
             ApiResponse<List<CategoriesDTO>>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<List<CategoriesDTO>>> (requestURL);
 
@@ -111,7 +112,7 @@ namespace WebPage.Pages.Product.Seller {
             types = new List<TypesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = "http://apigateway/api/Product/Tags/Types";
+            string requestURL = $"http://apigateway{_services.REST.Product.Product.GetTypes}";
             ApiResponse<List<TypesDTO>>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<List<TypesDTO>>> (requestURL);
 
@@ -125,7 +126,7 @@ namespace WebPage.Pages.Product.Seller {
             statusses = new List<StatussesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = "http://apigateway/api/Product/Tags/Statusses";
+            string requestURL = $"http://apigateway{_services.REST.Product.Product.GetStatusses}";
             ApiResponse<List<StatussesDTO>>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<List<StatussesDTO>>> (requestURL);
 

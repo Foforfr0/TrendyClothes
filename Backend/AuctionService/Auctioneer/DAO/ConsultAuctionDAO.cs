@@ -45,6 +45,8 @@ namespace AuctionAuctioneerService.DAO {
                 List<Entities.AuctionsProduct> response = await _context.AuctionsProducts
                     .Include (p => p.Seller)
                     .Include (p => p.BidsAuctions)
+                    .Include (p => p.Status)
+                    .Include (p => p.PhotosAuctions)
                     .Where (p => p.Seller.Username.Equals (username))
                     .ToListAsync ();
 

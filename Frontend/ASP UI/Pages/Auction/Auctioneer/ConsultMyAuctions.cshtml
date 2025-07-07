@@ -1,0 +1,32 @@
+﻿@page
+@using WebPage.DTO.Auction
+@model WebPage.Pages.Auction.Auctioneer.ConsultMyAuctionsModel
+@{
+    ViewData["Title"] = "Mis subastas";
+}
+
+<div class="container w-75">
+    <div class="row text-center px-auto">
+        <div class="row">
+            <h2 class="text-start col-11 px-auto">Subastas publicadas</h2>
+            <a class="col-1 text-end py-auto btn btn-primary text-white w-auto p-1" asp-page="/Auction/Auctioneer/CreateAuction">
+                Iniciar subasta
+            </a>
+        </div>
+    </div>
+</div>
+
+@if (Model.Auctions?.Count > 0) {
+    <div class="row" id="auctionsContainer">
+        @foreach (MyAuctionsDTO auction in Model.Auctions) {
+            @await Html.PartialAsync("ConsultMyAuctionsPartial", auction).ConfigureAwait(false);
+        }
+    </div>
+}
+else {
+    <p>No se encontraron subastas.</p>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/Auction.css" />
+}

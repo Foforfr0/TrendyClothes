@@ -8,11 +8,12 @@ using System.Security.Claims;
 using System.Text.Json;
 using WebPage.Connections;
 using WebPage.DTO.User.Auth;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.User.Auth {
     public class LoginModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ServicesBuilder _services;
+        private readonly ServicesConfig _services;
         private readonly ILogger<LoginModel> _logger;
 
         [BindProperty]
@@ -28,9 +29,9 @@ namespace WebPage.Pages.User.Auth {
             get; set;
         }
 
-        public LoginModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, ILogger<LoginModel> logger) {
+        public LoginModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> services, ILogger<LoginModel> logger) {
             _httpClientFactory = httpClientFactory;
-            _services = services;
+            _services = services.Value;
             _logger = logger;
         }
 
@@ -48,7 +49,7 @@ namespace WebPage.Pages.User.Auth {
                     return Page ();
                 }
                 HttpClient httpClient = _httpClientFactory.CreateClient ();
-                string requestURL = "http://apigateway/api/User/Login/ValidateTwoFactorCode";
+                string requestURL = $"http://apigateway{_services.REST.User.Auth.Login.ValidateTwoFactorCode}";
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync (requestURL, new {
                     username, twoFactorCode
                 });

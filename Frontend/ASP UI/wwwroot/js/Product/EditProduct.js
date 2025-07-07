@@ -79,7 +79,7 @@ document.getElementById('modificationForm').addEventListener('submit', async fun
                 break;
             case 400:
             case 404:
-                utils.showToast(data.message, 'warning');
+                utils.showToast('Fallo al guardar la imagen.', 'warning');
                 break;
             case 500:
                 utils.showToast('Error interno del servidor.', 'danger');

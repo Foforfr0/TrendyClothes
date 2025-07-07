@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebPage.Connections;
 using WebPage.DTO;
 using WebPage.DTO.Product.MyProducts;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.Product.Seller {
     public class ViewDetailsModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ServicesBuilder _services;
+        private readonly ServicesConfig _services;
         private readonly GetImageService.GetImageServiceClient _grpcClient;
 
         [BindProperty (SupportsGet = true)]
@@ -21,9 +22,9 @@ namespace WebPage.Pages.Product.Seller {
         }
 
 
-        public ViewDetailsModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient) {
+        public ViewDetailsModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> services, GetImageService.GetImageServiceClient grpcClient) {
             _httpClientFactory = httpClientFactory;
-            _services = services;
+            _services = services.Value;
             _grpcClient = grpcClient;
         }
 
@@ -34,7 +35,7 @@ namespace WebPage.Pages.Product.Seller {
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
             if (!string.IsNullOrEmpty (cookies))
                 httpClient.DefaultRequestHeaders.Add ("Cookie", cookies);
-            string requestURL = $"http://apigateway/api/MyProducts/Details?id={id}";
+            string requestURL = $"http://apigateway{_services.REST.Product.Seller.GetDetailsProduct}?id={id}";
             ApiResponse<MyProductDetailsDTO>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<MyProductDetailsDTO>> (requestURL);
 

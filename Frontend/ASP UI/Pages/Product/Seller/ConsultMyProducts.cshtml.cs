@@ -5,12 +5,13 @@ using System.Net;
 using WebPage.Connections;
 using WebPage.DTO;
 using WebPage.DTO.Product.MyProducts;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.Product.Seller {
     public class ConsultMyProductsModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<ConsultMyProductsModel> _logger;
-        private readonly ServicesBuilder _services;
+        private readonly ServicesConfig _services;
         private readonly GetImageService.GetImageServiceClient _grpcClient;
 
         [BindProperty (SupportsGet = true)]
@@ -22,15 +23,15 @@ namespace WebPage.Pages.Product.Seller {
             get; set;
         }
 
-        public ConsultMyProductsModel (IHttpClientFactory httpClientFactory, ILogger<ConsultMyProductsModel> logger, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient) {
+        public ConsultMyProductsModel (IHttpClientFactory httpClientFactory, ILogger<ConsultMyProductsModel> logger, IOptions<ServicesConfig> services, GetImageService.GetImageServiceClient grpcClient) {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
-            _services = services;
+            _services = services.Value;
             _grpcClient = grpcClient;
         }
 
         public async Task OnGetAsync () {
-            string requestURL = $"http://apigateway/api/MyProducts/Search?username={username}";
+            string requestURL = $"http://apigateway{_services.REST.Product.Seller.GetProducts}?username={User.Identity?.Name??""}";
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
 
             _logger.LogInformation ("ConsultProductsModel.OnGetAsync: " + requestURL);
@@ -51,6 +52,11 @@ namespace WebPage.Pages.Product.Seller {
 
             if (statusCode == HttpStatusCode.OK)
                 responseData = await response.Content.ReadFromJsonAsync<ApiResponse<List<MyProductsDTO>>> ();
+
+            if(responseData == null || responseData.body == null) {
+                _logger.LogError ("ConsultProductsModel.OnGetAsync: responseData is null");
+                return;
+            }
 
             if (responseData?.body != null)
                 Products = new List<MyProductsDTO> ();

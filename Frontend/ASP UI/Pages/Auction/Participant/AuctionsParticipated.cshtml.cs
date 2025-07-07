@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebPage.Pages.Auction.Auctioneer
+namespace WebPage.Pages.Auction.Participant
 {
-    public class ConsultAuctionsModel : PageModel
+    public class AuctionsParticipatedModel : PageModel
     {
         public void OnGet()
         {

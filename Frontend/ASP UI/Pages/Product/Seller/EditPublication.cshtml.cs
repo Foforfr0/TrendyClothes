@@ -10,12 +10,13 @@ using WebPage.Connections;
 using WebPage.DTO;
 using WebPage.DTO.Product.Consult;
 using WebPage.DTO.Product.MyProducts;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.Product.Seller {
     public class EditPublicationModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<EditPublicationModel> _logger;
-        private readonly ServicesBuilder _services;
+        private readonly ServicesConfig _services;
         private readonly GetImageService.GetImageServiceClient _grpcClientGetImage;
         private readonly SaveImageService.SaveImageServiceClient _grpcClientSaveImage;
 
@@ -33,11 +34,11 @@ namespace WebPage.Pages.Product.Seller {
         public SelectList typeSelectList;
         public List<StatussesDTO> statusses;
         public SelectList statusSelectList;
-        public EditPublicationModel (IHttpClientFactory httpClientFactory, ServicesBuilder services,
+        public EditPublicationModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> services,
                                     GetImageService.GetImageServiceClient grpcClientGetImage, SaveImageService.SaveImageServiceClient grpcClientSaveImage,
                                     ILogger<EditPublicationModel> logger) {
             _httpClientFactory = httpClientFactory;
-            _services = services;
+            _services = services.Value;
             _grpcClientGetImage = grpcClientGetImage;
             _grpcClientSaveImage = grpcClientSaveImage;
             _logger = logger;
@@ -65,7 +66,7 @@ namespace WebPage.Pages.Product.Seller {
             HttpResponseMessage httpResponse;
             try {
 
-                httpResponse = await httpClient.GetAsync ($"http://apigateway/api/MyProducts/Details?id={id}");
+                httpResponse = await httpClient.GetAsync ($"http://apigateway{_services.REST.Product.Seller.GetDetailsProduct}?id={id}");
             } catch (Exception ex) {
                 _logger.LogError (ex, "Error al conectar con el servicio externo: {Url}");
                 return StatusCode (500, new {
@@ -74,7 +75,6 @@ namespace WebPage.Pages.Product.Seller {
             }
 
             if (!httpResponse.IsSuccessStatusCode) {
-                _logger.LogError ("Error en GET {Url}: {StatusCode}", _services.SellerGetProductDetailsUrl, httpResponse.StatusCode);
                 return httpResponse.StatusCode switch {
                     HttpStatusCode.BadRequest => BadRequest (new { message = "Campos enviados inválidos." }),
                     HttpStatusCode.NotFound => NotFound (new { message = "Registro no encontrado." }),
@@ -175,7 +175,7 @@ namespace WebPage.Pages.Product.Seller {
             categories = new List<CategoriesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = "http://apigateway/api/Product/Tags/Categories";
+            string requestURL = $"http://apigateway{_services.REST.Product.Product.GetCategories}";
             ApiResponse<List<CategoriesDTO>>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<List<CategoriesDTO>>> (requestURL);
 
@@ -189,7 +189,7 @@ namespace WebPage.Pages.Product.Seller {
             types = new List<TypesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = "http://apigateway/api/Product/Tags/Types";
+            string requestURL = $"http://apigateway{_services.REST.Product.Product.GetTypes}";
             ApiResponse<List<TypesDTO>>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<List<TypesDTO>>> (requestURL);
 
@@ -203,7 +203,7 @@ namespace WebPage.Pages.Product.Seller {
             statusses = new List<StatussesDTO> ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = "http://apigateway/api/Product/Tags/Statusses";
+            string requestURL = $"http://apigateway{_services.REST.Product.Product.GetStatusses}";
             ApiResponse<List<StatussesDTO>>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<List<StatussesDTO>>> (requestURL);
 
