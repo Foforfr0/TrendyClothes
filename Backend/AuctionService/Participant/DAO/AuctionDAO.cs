@@ -126,6 +126,28 @@ namespace AuctionParticipantService.DAO {
             }
         }
 
+        public async Task<MessageResponse<int>> GetBuyerIdByUsernameAsync(string username)
+{
+    try
+    {
+        var user = await _context.Users
+            .Where(u => u.Username == username)
+            .Select(u => u.Id)
+            .FirstOrDefaultAsync();
+
+        if (user == 0)
+            return new MessageResponse<int>(false, "No se encontró un usuario con ese username", 0);
+
+        return new MessageResponse<int>(true, "ID del usuario recuperado", user);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al obtener el ID del usuario por username.");
+        return new MessageResponse<int>(false, "Error al buscar usuario", 0);
+    }
+}
+
+
 
     }
 }
