@@ -1,3 +1,4 @@
+using ClienteMAUI.Connections;
 using ClienteMAUI.Models.DTO.Auctions;
 using ClienteMAUI.Session;
 using System.Text.Json;
@@ -68,7 +69,7 @@ public partial class AuctionFormPage : ContentPage
         httpClient.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.Instance.JwtToken);
 
-        var response = await httpClient.PostAsync("http://10.0.2.2:5000/api/Auction/Auctioneer/CreateAuction", content);
+        var response = await httpClient.PostAsync(AuctionEndpoints.CreateAuction, content);
 
         if (response.IsSuccessStatusCode)
         {
@@ -119,9 +120,9 @@ public partial class AuctionFormPage : ContentPage
             return false;
         }
 
-        if (editorDescription.Text.Length < 20 || editorDescription.Text.Length > 200)
+        if (editorDescription.Text.Length < 10 || editorDescription.Text.Length > 500)
         {
-            mensajeError = "La descripción debe tener entre 20 y 200 caracteres.";
+            mensajeError = "La descripción debe tener entre 10 y 500 caracteres.";
             return false;
         }
 
