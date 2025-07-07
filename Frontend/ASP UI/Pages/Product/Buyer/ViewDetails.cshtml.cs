@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebPage.Connections;
 using WebPage.DTO;
 using WebPage.DTO.Product.Consult;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.Product.Buyer {
     public class ViewDetailsModel : PageModel {
@@ -11,9 +12,9 @@ namespace WebPage.Pages.Product.Buyer {
         private readonly ServicesConfig _services;
         private readonly GetImageService.GetImageServiceClient _grpcClient;
 
-        public ViewDetailsModel (IHttpClientFactory httpClientFactory, ServicesConfig services, GetImageService.GetImageServiceClient grpcClient) {
+        public ViewDetailsModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> services, GetImageService.GetImageServiceClient grpcClient) {
             _httpClientFactory = httpClientFactory;
-            _services = services;
+            _services = services.Value;
             _grpcClient = grpcClient;
         }
 
@@ -30,7 +31,7 @@ namespace WebPage.Pages.Product.Buyer {
             product = new ProductDetailsDTO ();
 
             HttpClient? httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = $"http://apigateway/{_services.REST.Product.Buyer.GetDetailsProduct}?Id={id}";
+            string requestURL = $"http://apigateway{_services.REST.Product.Buyer.GetDetailsProduct}?Id={id}";
             ApiResponse<ProductDetailsDTO>? response =
                 await httpClient.GetFromJsonAsync<ApiResponse<ProductDetailsDTO>> (requestURL);
 

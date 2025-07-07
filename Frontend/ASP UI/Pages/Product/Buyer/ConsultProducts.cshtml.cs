@@ -5,6 +5,7 @@ using System.Net;
 using WebPage.Connections;
 using WebPage.DTO;
 using WebPage.DTO.Product.Consult;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.Product.Buyer {
     public class ConsultProductsModel : PageModel {
@@ -22,9 +23,9 @@ namespace WebPage.Pages.Product.Buyer {
             get; set;
         }
 
-        public ConsultProductsModel (IHttpClientFactory httpClientFactory, ServicesConfig services, GetImageService.GetImageServiceClient grpcClient, ILogger<ConsultProductsModel> logger) {
+        public ConsultProductsModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> services, GetImageService.GetImageServiceClient grpcClient, ILogger<ConsultProductsModel> logger) {
             _httpClientFactory = httpClientFactory;
-            _services = services;
+            _services = services.Value;
             _grpcClient = grpcClient;
             _logger = logger;
         }
@@ -36,7 +37,7 @@ namespace WebPage.Pages.Product.Buyer {
             }
 
             HttpClient httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = $"http://apigateway/{_services.REST.Product.Buyer.GetProducts}?query={query}";
+            string requestURL = $"http://apigateway{_services.REST.Product.Buyer.GetProducts}?query={query}";
             _logger.LogInformation ("ConsultProductsModel.OnGetAsync: " + requestURL);
             HttpResponseMessage response = await httpClient.GetAsync (requestURL);
 

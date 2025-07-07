@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
 using WebPage.Connections;
 using WebPage.DTO;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.Auctions {
     public class ConsultAuctionsModel : PageModel {
@@ -12,9 +13,9 @@ namespace WebPage.Pages.Auctions {
 
         public List<AuctionDTO> Auctions { get; set; } = new ();
 
-        public ConsultAuctionsModel (IHttpClientFactory httpClientFactory, ServicesConfig services, ILogger<ConsultAuctionsModel> logger) {
+        public ConsultAuctionsModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> services, ILogger<ConsultAuctionsModel> logger) {
             _httpClientFactory = httpClientFactory;
-            _services = services;
+            _services = services.Value;
             _logger = logger;
         }
 
@@ -22,7 +23,7 @@ namespace WebPage.Pages.Auctions {
             try {
                 var client = _httpClientFactory.CreateClient ();
 
-                var updateResponse = await client.PutAsync ($"http://apigateway/{_services.REST.Auction.Auction.UpdateExpiredAuctions}", null);
+                var updateResponse = await client.PutAsync ($"http://apigateway{_services.REST.Auction.Auction.UpdateExpiredAuctions}", null);
 
                 string updateJson = await updateResponse.Content.ReadAsStringAsync ();
                 Console.WriteLine ("PUT UpdateExpiredAuctions JSON: " + updateJson);
@@ -31,9 +32,9 @@ namespace WebPage.Pages.Auctions {
                     Console.WriteLine ("No se pudo actualizar subastas vencidas. Status: " + updateResponse.StatusCode);
                 }
 
-                var response = await client.GetAsync ($"http://apigateway/{_services.REST.Auction.Auction.GetAuctions}");
+                var response = await client.GetAsync ($"http://apigateway{_services.REST.Auction.Auction.GetAuctions}");
                 string json = await response.Content.ReadAsStringAsync ();
-                Console.WriteLine ($"GET Auctions JSON from http://apigateway/{_services.REST.Auction.Auction.GetAuctions}: " + json);
+                Console.WriteLine ($"GET Auctions JSON from http://apigateway{_services.REST.Auction.Auction.GetAuctions}: " + json);
 
                 if (response.IsSuccessStatusCode) {
                     var result = JsonSerializer.Deserialize<ApiResponse<List<AuctionDTO>>> (json, new JsonSerializerOptions {

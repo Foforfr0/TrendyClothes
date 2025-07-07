@@ -38,7 +38,7 @@ document.getElementById('signInForm'), addEventListener('submit', async function
                     return true;
                 case 400:
                 case 409:
-                    utils.showToast(data.message, 'warning');
+                    utils.showToast('Fallo al proporcionar datos del usuario.', 'warning');
                     return true;
                 case 500:
                     utils.showToast('Error validando existencia nombre de usuario.', 'danger');

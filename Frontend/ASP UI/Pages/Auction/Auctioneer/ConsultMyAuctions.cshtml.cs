@@ -3,6 +3,7 @@ using System.Net;
 using WebPage.Connections;
 using WebPage.DTO;
 using WebPage.DTO.Auction;
+using Microsoft.Extensions.Options;
 
 namespace WebPage.Pages.Auction.Auctioneer {
     public class ConsultMyAuctionsModel : PageModel {
@@ -13,13 +14,13 @@ namespace WebPage.Pages.Auction.Auctioneer {
             get; set;
         }
 
-        public ConsultMyAuctionsModel (IHttpClientFactory httpClientFactory, ServicesConfig servicesBuilder) {
+        public ConsultMyAuctionsModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> servicesBuilder) {
             _httpClientFactory = httpClientFactory;
-            _services = servicesBuilder;
+            _services = servicesBuilder.Value;
         }
 
         public async Task OnGetAsync () {
-            string requestUrl = $"http://apigateway/{_services.REST.Auction.Auctioneer.GetAuctions}";
+            string requestUrl = $"http://apigateway{_services.REST.Auction.Auctioneer.GetAuctions}?username={User.Identity?.Name??""}";
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
 
             HttpClient httpClient = _httpClientFactory.CreateClient ();
@@ -39,6 +40,10 @@ namespace WebPage.Pages.Auction.Auctioneer {
 
             if (statusCode == HttpStatusCode.OK)
                 responseData = await response.Content.ReadFromJsonAsync<ApiResponse<List<MyAuctionsDTO>>> ();
+
+            if (responseData == null || responseData.body == null) {
+                return;
+            }
 
             if (responseData?.body != null)
                 Auctions = new List<MyAuctionsDTO> ();

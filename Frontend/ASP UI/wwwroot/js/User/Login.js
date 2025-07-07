@@ -34,7 +34,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
                 break;
             case 400:
             case 401:
-                utils.showToast(data.message, 'warning');
+                utils.showToast('Fallo al proporcionar datos del usuario.', 'warning');
                 break;
             case 500:
                 utils.showToast('Error interno del servidor.', 'danger');
@@ -106,7 +106,7 @@ document.getElementById('emailForm').addEventListener('submit', async function (
                 break;
             case 400:
             case 404:
-                utils.showToast(data.message, 'warning');
+                utils.showToast('Fallo al proporcionar datos del usuario.', 'warning');
                 break;
             case 500:
                 utils.showToast('Error interno del servidor.', 'danger');
@@ -140,7 +140,7 @@ async function CreateTwoFactorCode(username, email) {
                 break;
             case 400:
             case 404:
-                utils.showToast(data.message, 'warning');
+                utils.showToast('Fallo al proporcionar datos del usuario.', 'warning');
                 break;
             case 500:
                 utils.showToast('Error interno del servidor.', 'danger');

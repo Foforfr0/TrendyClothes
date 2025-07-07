@@ -3,6 +3,7 @@ using AuctionAuctioneerService.Models.Consult;
 using AuctionAuctioneerService.Services.Intefaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace AuctionAuctioneerService.Controllers {
     [ApiController]
@@ -16,9 +17,8 @@ namespace AuctionAuctioneerService.Controllers {
         }
 
         [HttpGet ("MyAuctions")]
-        public async Task<IActionResult> MyAuctions () {
+        public async Task<IActionResult> MyAuctions ([FromQuery] string username) {
             try {
-                string username = User.Identity?.Name;
                 if (string.IsNullOrEmpty (username))
                     return BadRequest ("No se logró obtener el nombre de usuario.");
 
