@@ -48,13 +48,15 @@ namespace AuctionParticipantService.Services.Implements
 
         public async Task<MessageResponse<bool>> RegisterBidAsync(BidDTO bid)
         {
-            MessageResponse<bool> response = await _auctionDAO.RegisterBidAsync(bid);
+            var result = await _auctionDAO.RegisterBidAsync(bid);
 
-            if (response.IsError)
-                return MessageResponse<bool>.Failure(response.Message);
+            if (result.IsError)
+                return MessageResponse<bool>.Failure(result.Message);
 
-            return MessageResponse<bool>.Success(response.Message, true);
+            return MessageResponse<bool>.Success(result.Message, result.DataRetrieved);
         }
+
+
 
         public async Task<MessageResponse<bool>> UpdateExpiredAuctionsAsync()
         {

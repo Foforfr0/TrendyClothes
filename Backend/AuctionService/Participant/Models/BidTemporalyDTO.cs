@@ -1,11 +1,11 @@
 ﻿
 namespace AuctionParticipantService.Models
 {
-    public class BidDTO
+    public class BidTemporalyDTO
     {
         public int Id { get; set; }
         public int AuctionId { get; set; }
-        public int username { get; set; }
+        public string username { get; set; }
 
 
     }

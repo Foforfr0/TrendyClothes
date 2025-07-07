@@ -68,29 +68,59 @@ namespace AuctionParticipantService.Controllers {
             });
         }
 
-        [HttpPost ("RegisterBid")]
-        public async Task<IActionResult> RegisterBid ([FromBody] BidDTO bid) {
-            if (!ModelState.IsValid) {
-                return BadRequest (new {
+        [HttpPost("RegisterBid")]
+        public async Task<IActionResult> RegisterBid([FromBody] BidTemporalyDTO bid)
+        {
+            if (string.IsNullOrEmpty(bid.username))
+            {
+                return BadRequest(new
+                {
                     error = true,
-                    message = "Datos de puja inválidos.", 
+                    message = "El username es obligatorio.",
                     body = false
                 });
             }
-            var result = await _auctionsDAO.RegisterBidAsync (bid);
-            if (!result.DataRetrieved) {
-                return BadRequest (new {
+
+            var userIdResult = await _auctionsDAO.GetBuyerIdByUsernameAsync(bid.username);
+
+            if (userIdResult == null)
+            {
+                return BadRequest(new
+                {
                     error = true,
-                    message = result.Message,
+                    message = userIdResult?.Message ?? "Error al obtener el ID del usuario.",
                     body = false
                 });
             }
-            return Ok (new {
+
+
+            var finalBid = new BidDTO
+            {
+                AuctionId = bid.AuctionId,
+                BuyerId = userIdResult.DataRetrieved
+            };
+
+            var registerResult = await _auctionsDAO.RegisterBidAsync(finalBid);
+
+            if (!registerResult.DataRetrieved)
+            {
+                return StatusCode(500, new
+                {
+                    error = true,
+                    message = registerResult.Message,
+                    body = false
+                });
+            }
+
+            return Ok(new
+            {
                 error = false,
-                message = result.Message,
+                message = registerResult.Message,
                 body = true
             });
         }
+
+
 
         [HttpPut ("UpdateExpiredAuctions")]
         public async Task<IActionResult> UpdateExpiredAuctions () {
