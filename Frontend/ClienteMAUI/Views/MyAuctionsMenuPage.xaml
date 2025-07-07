@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ClienteMAUI.Views.MyAuctionsMenuPage"
+             Title="Mis Subastas">
+
+    <ContentPage.Content>
+        <CollectionView x:Name="AuctionsCollectionView"
+                        ItemsSource="{Binding Auctions}"
+                        Margin="10"
+                        SelectionMode="None">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Stroke="Gray"
+                    StrokeThickness="1"
+                    Margin="0,0,0,15"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="10">
+
+                        <VerticalStackLayout Spacing="5">
+                            <Image Source="{Binding ImageSource}" HeightRequest="150" />
+                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="18"/>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Fecha de inicio: " />
+                                        <Span Text="{Binding DateStartText}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Fecha de termino: " />
+                                        <Span Text="{Binding DateEndText}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Precio original: " />
+                                        <Span Text="{Binding FirstPriceText}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Precio actual: " />
+                                        <Span Text="{Binding LastPriceText}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Estado: " />
+                                        <Span Text="{Binding Status}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Pujas: " />
+                                        <Span Text="{Binding BidsCount}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Button Text="Eliminar"
+                BackgroundColor="Red"
+                TextColor="White"
+                Clicked="OnEliminarSubastaClicked"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>
