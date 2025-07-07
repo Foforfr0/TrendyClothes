@@ -45,7 +45,7 @@ namespace AuctionParticipantService.DAO {
                 List<Entities.AuctionsProduct> response = await _context.AuctionsProducts
                     .Include (p => p.Seller)
                     .Include (p => p.BidsAuctions)
-                    .Where (p => p.Seller.Username.Equals(username))
+                    .Where (p => p.Seller.Username.Equals (username))
                     .ToListAsync ();
 
                 return MessageResponse<List<Entities.AuctionsProduct>>.Success ("", response);
@@ -65,6 +65,21 @@ namespace AuctionParticipantService.DAO {
                 return MessageResponse<Entities.AuctionsProduct>.Success ("", response);
             } catch (Exception ex) {
                 return MessageResponse<Entities.AuctionsProduct>.Failure ($"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        public async Task<MessageResponse<List<Entities.AuctionsProduct>>> GetAuctionsParticipated (string username) {
+            try {
+                List<Entities.AuctionsProduct> response = await _context.BidsAuctions
+                    .Include (b => b.Auction)
+                    .Include (b => b.Buyer)
+                    .Where (p => p.Buyer.Username.Equals (username))
+                    .Select (p => p.Auction)
+                    .ToListAsync ();
+
+                return MessageResponse<List<Entities.AuctionsProduct>>.Success ("", response);
+            } catch (Exception ex) {
+                return MessageResponse<List<Entities.AuctionsProduct>>.Failure ($"Error interno del servidor: {ex.Message}");
             }
         }
     }

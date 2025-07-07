@@ -2,6 +2,7 @@
 using AuctionParticipantService.Models;
 using AuctionParticipantService.Models.Consult;
 using AuctionParticipantService.Services.Intefaces;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AuctionParticipantService.Services.Implements {
     public class ConsultAuctionService : IConsultAuctionService {
@@ -82,6 +83,30 @@ namespace AuctionParticipantService.Services.Implements {
                 CurrentPrice = response.DataRetrieved.LastPrice ?? 0
             };
             return MessageResponse<AuctionDetailsDTO>.Success (response.Message, auction);
+        }
+
+        public async Task<MessageResponse<List<AuctionsDTO>>> GetAuctionsParticipatedByUserAsync (string username) {
+            MessageResponse<List<Entities.AuctionsProduct>> response = await _auctionDAO.GetAuctionsAsync ();
+
+            if (response.IsError)
+                return MessageResponse<List<AuctionsDTO>>.Failure (response.Message);
+            if (response.DataRetrieved == null)
+                return MessageResponse<List<AuctionsDTO>>.Success (response.Message, default);
+            if (response.DataRetrieved.Count <= 0)
+                return MessageResponse<List<AuctionsDTO>>.Success ("Ninguna subasta correspende con la consulta deseada.", default);
+
+            List<AuctionsDTO> auctions = response.DataRetrieved
+                .Select (auct => new AuctionsDTO {
+                    Id = auct.Id,
+                    Name = auct.Name,
+                    StartingPrice = auct.FirstPrice ?? 0,
+                    StartDate = auct.DateStart,
+                    EndDate = auct.DateEnd,
+                    SellerUsername = auct.Seller.Username,
+                    BidsCount = auct.BidsAuctions.Count,
+                    CurrentPrice = auct.LastPrice ?? 0
+                }).ToList ();
+            return MessageResponse<List<AuctionsDTO>>.Success (response.Message, auctions);
         }
     }
 }
