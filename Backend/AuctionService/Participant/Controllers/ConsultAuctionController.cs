@@ -56,5 +56,28 @@ namespace AuctionParticipantService.Controllers {
                 return HttpResponses.InternalServerError (ex.ToString ());
             }
         }
+
+        [HttpGet ("Participated")]
+        public async Task<IActionResult> MyAuctions ([FromQuery] string username) {
+            try {
+                if (string.IsNullOrEmpty (username))
+                    return BadRequest ("No se logró obtener el nombre de usuario.");
+
+                MessageResponse<List<AuctionsDTO>> response = await _consultAuctionsService.GetAuctionsParticipatedByUserAsync (username);
+
+                if (response.IsError)
+                    return HttpResponses.InternalServerError (response.Message);
+                if (response.DataRetrieved == null)
+                    return NotFound (new {
+                        response.Message
+                    });
+                return Ok (new {
+                    response.Message,
+                    body = response.DataRetrieved
+                });
+            } catch (Exception ex) {
+                return HttpResponses.InternalServerError (ex.ToString ());
+            }
+        }
     }
 }
