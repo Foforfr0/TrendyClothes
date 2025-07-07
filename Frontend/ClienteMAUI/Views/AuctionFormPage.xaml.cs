@@ -70,7 +70,8 @@ public partial class AuctionFormPage : ContentPage
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.Instance.JwtToken);
 
         var response = await httpClient.PostAsync(AuctionEndpoints.CreateAuction, content);
-
+        var errorJson = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"[API Error]: {errorJson}");
         if (response.IsSuccessStatusCode)
         {
             await DisplayAlert("Éxito", "Subasta creada correctamente", "OK");
