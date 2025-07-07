@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ClienteMAUI.Views.AuctionFormPage"
+             Title="AuctionFormPage">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Crear Subasta" FontSize="24" HorizontalOptions="Center" />
+
+            <!-- Imagen -->
+            <Image x:Name="imgPreview" HeightRequest="200" Aspect="AspectFill" />
+            <Button Text="Seleccionar Imagen" Clicked="OnSelectImageClicked" />
+
+            <!-- Nombre -->
+            <Entry x:Name="entryName" Placeholder="Nombre del producto" />
+
+            <!-- Precio inicial -->
+            <Entry x:Name="entryFirstPrice" Keyboard="Numeric" Placeholder="Precio inicial" />
+
+            <!-- Puja -->
+            <Entry x:Name="entryBid" Keyboard="Numeric" Placeholder="Puja mínima" />
+
+            <!-- Fecha de inicio -->
+            <DatePicker x:Name="dateStartPicker" />
+            <TimePicker x:Name="timeStartPicker" />
+
+            <!-- Fecha de fin -->
+            <DatePicker x:Name="dateEndPicker" />
+            <TimePicker x:Name="timeEndPicker" />
+
+            <!-- Estado -->
+            <Picker x:Name="pickerStatus" Title="Seleccionar estado">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Activo</x:String>
+                        <x:String>Pausado</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <!-- Descripción -->
+            <Editor x:Name="editorDescription" Placeholder="Descripción" AutoSize="TextChanges" HeightRequest="100" />
+
+            <Button Text="Crear Subasta" Clicked="OnCreateAuctionClicked" BackgroundColor="Green" TextColor="White" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -40,6 +40,13 @@ namespace ClienteMAUI.Connections
 
     }
 
+    public static class AuctionEndpoints
+    {
+        private const string BaseUrl = "http://10.0.2.2:5000/api/Auctions";
+        public static string GetAuctions => $"{BaseUrl}/Auction";
+
+    }
+
     public static class GRPCEndpoints
     {
 

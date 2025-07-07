@@ -11,6 +11,23 @@
                    FontSize="24"
                    FontAttributes="Bold"
                    HorizontalOptions="Center" />
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                <Button Text="Mis subastas" 
+                x:Name="btnCrearProducto"
+                Clicked="OnMisSubastasClicked"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                CornerRadius="10"
+                Padding="12,6" />   
+
+                <Button Text="Crear subasta" 
+                x:Name="btnVerSubastas"
+                Clicked="OnCrearSubastaClicked"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                CornerRadius="10"
+                Padding="12,6" />       
+            </HorizontalStackLayout>
 
             <!-- Lista de subastas -->
             <CollectionView x:Name="AuctionsCollection"
