@@ -61,6 +61,8 @@ namespace AuctionAuctioneerService.DAO {
                 Entities.AuctionsProduct? response = await _context.AuctionsProducts
                     .Include (p => p.Seller)
                     .Include (p => p.BidsAuctions)
+                    .Include (p => p.Status)
+                    .Include (p => p.PhotosAuctions)
                     .Where (p => p.Id == id)
                     .FirstOrDefaultAsync ();
 
