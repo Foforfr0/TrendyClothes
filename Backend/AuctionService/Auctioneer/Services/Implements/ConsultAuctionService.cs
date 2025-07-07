@@ -28,13 +28,13 @@ namespace AuctionAuctioneerService.Services.Implements {
                     FirstPrice = prod.FirstPrice ?? 0,
                     DateStart = prod.DateStart,
                     DateEnd = prod.DateEnd,
-                    BidsCount = prod.BidsAuctions.Count,
+                    BidsCount = prod.BidsAuctions?.Count ?? 0, // Protegido
                     LastPrice = prod.LastPrice ?? 0,
-                    Status = prod.Status.Status,
-                    ImageBase64 = prod.PhotosAuctions.FirstOrDefault ()?.Photo != null
-                        ? Convert.ToBase64String (prod.PhotosAuctions.FirstOrDefault ().Photo)
+                    Status = prod.Status?.Status ?? "Desconocido", // Protegido
+                    ImageBase64 = prod.PhotosAuctions?.FirstOrDefault ()?.Photo != null
+                        ? Convert.ToBase64String (prod.PhotosAuctions.First ().Photo)
                         : string.Empty,
-                    MimeImage = prod.PhotosAuctions.FirstOrDefault ()?.Mime ?? string.Empty
+                    MimeImage = prod.PhotosAuctions?.FirstOrDefault ()?.Mime ?? string.Empty
                 }).ToList ();
             return MessageResponse<List<MyAuctionsDTO>>.Success (response.Message, auctions);
         }

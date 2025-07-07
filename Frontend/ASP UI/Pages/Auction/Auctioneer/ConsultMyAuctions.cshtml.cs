@@ -9,18 +9,21 @@ namespace WebPage.Pages.Auction.Auctioneer {
     public class ConsultMyAuctionsModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ServicesConfig _services;
+        private readonly ILogger<ConsultMyAuctionsModel> _logger;
 
         public List<MyAuctionsDTO> Auctions {
             get; set;
         }
 
-        public ConsultMyAuctionsModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> servicesBuilder) {
+        public ConsultMyAuctionsModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> servicesBuilder, ILogger<ConsultMyAuctionsModel> logger) {
             _httpClientFactory = httpClientFactory;
             _services = servicesBuilder.Value;
+            _logger = logger;
         }
 
         public async Task OnGetAsync () {
             string requestUrl = $"http://apigateway{_services.REST.Auction.Auctioneer.GetAuctions}?username={User.Identity?.Name??""}";
+            _logger.LogInformation ("ConsultMyAuctionsModel.OnGetAsync: " + requestUrl);
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
 
             HttpClient httpClient = _httpClientFactory.CreateClient ();
