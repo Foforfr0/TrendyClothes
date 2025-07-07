@@ -19,7 +19,7 @@ namespace WebPage.Pages.Auctions
         public AuctionDTO? Auction { get; set; }
 
         [BindProperty]
-        public decimal ShownLastPrice { get; set; }  // Para verificar el último precio que vio el usuario
+        public decimal ShownLastPrice { get; set; }
 
         public ViewDetailsModel(IHttpClientFactory httpClientFactory, ILogger<ViewDetailsModel> logger)
         {
@@ -74,7 +74,6 @@ namespace WebPage.Pages.Auctions
             {
                 var client = _httpClientFactory.CreateClient();
 
-                // Volver a obtener la subasta para verificar si el precio ha cambiado
                 var getResponse = await client.GetAsync($"http://apigateway/api/Auctions/Auction/ById/{Id}");
                 string getJson = await getResponse.Content.ReadAsStringAsync();
                 Console.WriteLine("GET JSON (POST): " + getJson);
@@ -96,14 +95,20 @@ namespace WebPage.Pages.Auctions
                     return RedirectToPage("/Auction/Participant/ViewDetails", new { id = Id });
                 }
 
-                // Verificación: ¿el usuario está pujando con un precio que ya fue superado?
                 if ((currentAuction.LastPrice ?? 0m) != ShownLastPrice)
                 {
                     TempData["ErrorMessage"] = "La puja ha cambiado desde la última vez. Por favor actualiza para ver el nuevo precio.";
                     return RedirectToPage("/Auction/Participant/ViewDetails", new { id = Id });
                 }
 
-                // 1. Incrementar el precio
+                string? username = HttpContext.User.Identity?.Name;
+
+                if (string.IsNullOrEmpty(username))
+                {
+                    TempData["ErrorMessage"] = "Sesión no válida. Inicia sesión para pujar.";
+                    return RedirectToPage("/User/Auth/Login");
+                }
+
                 var increaseResponse = await client.PutAsync(
                     $"http://apigateway/api/Auctions/Auction/IncreaseBid/{Id}", null
                 );
@@ -114,8 +119,9 @@ namespace WebPage.Pages.Auctions
                     return RedirectToPage("/Auction/Participant/ViewDetails", new { id = Id });
                 }
 
-                // 2. Registrar la puja
-                var bidPayload = new { AuctionId = Id, BuyerId = 1 };
+               
+
+                var bidPayload = new { AuctionId = Id, Username = username };
                 var bidContent = new StringContent(JsonSerializer.Serialize(bidPayload), Encoding.UTF8, "application/json");
 
                 var registerResponse = await client.PostAsync("http://apigateway/api/Auctions/Auction/RegisterBid", bidContent);
