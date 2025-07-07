@@ -1,5 +1,5 @@
-﻿namespace AuctionAuctioneerService.Models.Consult {
-    public class AuctionDetailsDTO {
+﻿namespace WebPage.DTO.Auction {
+    public class MyAuctionsDTO {
         public required int Id {
             get; set;
         }
@@ -9,28 +9,19 @@
         public required decimal FirstPrice {
             get; set;
         }
-        public required decimal Bid {
-            get; set;
-        }
-        public required int BidsCount {
-            get; set;
-        }
-        public required decimal LastPrice {
-            get; set;
-        }
         public required DateTime DateStart {
             get; set;
         }
         public required DateTime DateEnd {
             get; set;
         }
-        public required int StatusId {
+        public int? BidsCount {
+            get; set;
+        }
+        public required decimal LastPrice {
             get; set;
         }
         public required string Status {
-            get; set;
-        }
-        public required string Description {
             get; set;
         }
         public required string ImageBase64 {

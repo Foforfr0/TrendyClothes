@@ -16,14 +16,13 @@ namespace AuctionAuctioneerService.Controllers {
         }
 
         [HttpGet ("MyAuctions")]
-        public async Task<IActionResult> MyAuctions (string? username) {
+        public async Task<IActionResult> MyAuctions () {
             try {
+                string username = User.Identity?.Name;
                 if (string.IsNullOrEmpty (username))
-                    username = User.Identity?.Name;
-                if (string.IsNullOrEmpty (username))
-                    return BadRequest ("No se logró leer el nombre de usuario.");
+                    return BadRequest ("No se logró obtener el nombre de usuario.");
 
-                MessageResponse<List<AuctionsDTO>> response = await _consultAuctionService.GetAuctionsByUserAsync (username);
+                MessageResponse<List<MyAuctionsDTO>> response = await _consultAuctionService.GetAuctionsByUserAsync (username);
 
                 if (response.IsError)
                     return HttpResponses.InternalServerError (response.Message);

@@ -1,0 +1,48 @@
+﻿@model WebPage.DTO.Auction.MyAuctionsDTO
+@{
+}
+
+<div class="container w-75 my-1 border border-1 border-light-subtle" style="max-height: 100px;">
+    <div class="row mb-1 h-100 p-1">
+        <div class="col-4 h-100 object-fit-contain">
+            @if (Model.ImageBase64 == null || Model.ImageBase64.Length <= 0) {
+                <img src="https://placehold.co/600x400/FFFFFF/000000/png?text=Product" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" />
+            } else {
+                <img src="data:@Model.MimeImage;base64,@Model.ImageBase64" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" />
+            }
+        </div>
+        <div class="col-8 h-100">
+            <div class="row">
+                <div class="col text-start">
+                    <h5 class="card-title">@Model.Name</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-start">
+                    <p class="card-text">$@Model.FirstPrice precio inicial</p>
+                </div>
+                <div class="col text-start">
+                    <p class="card-text">@Model.BidsCount pujas realizadas</p>
+                </div>
+                <div class="col text-start">
+                    <p class="card-text fw-bold">$@Model.LastPrice precio final</p>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-auto text-start">
+                    @Model.DateStart fecha de inicio
+                </div>
+                <div class="col-auto text-start">
+                    @Model.DateStart fecha de fin
+                </div>
+                <div class="col-auto text-start">
+                    Estado @Model.Status
+                </div>
+                <div class="col-auto ms-auto">
+                    <a class="btn btn-primary" style="width: 81px; height: 38px;"
+                       asp-page="/Auction/Auctioneer/ViewDetails" asp-route-id="@Model.Id">Detalles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

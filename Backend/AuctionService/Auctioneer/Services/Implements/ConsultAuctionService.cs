@@ -11,28 +11,32 @@ namespace AuctionAuctioneerService.Services.Implements {
             _auctionDAO = auctionDAO;
         }
 
-        public async Task<MessageResponse<List<AuctionsDTO>>> GetAuctionsByUserAsync (string username) {
+        public async Task<MessageResponse<List<MyAuctionsDTO>>> GetAuctionsByUserAsync (string username) {
             MessageResponse<List<Entities.AuctionsProduct>> response = await _auctionDAO.GetAuctionsUserAsync (username);
 
             if (response.IsError)
-                return MessageResponse<List<AuctionsDTO>>.Failure (response.Message);
+                return MessageResponse<List<MyAuctionsDTO>>.Failure (response.Message);
             if (response.DataRetrieved == null)
-                return MessageResponse<List<AuctionsDTO>>.Success (response.Message, default);
+                return MessageResponse<List<MyAuctionsDTO>>.Success (response.Message, default);
             if (response.DataRetrieved.Count <= 0)
-                return MessageResponse<List<AuctionsDTO>>.Success ("No se ha registrado una subasta todavía.", default);
+                return MessageResponse<List<MyAuctionsDTO>>.Success ("No se ha registrado una subasta todavía.", default);
 
-            List<AuctionsDTO> auctions = response.DataRetrieved
-                .Select (prod => new AuctionsDTO {
+            List<MyAuctionsDTO> auctions = response.DataRetrieved
+                .Select (prod => new MyAuctionsDTO {
                     Id = prod.Id,
                     Name = prod.Name,
-                    StartingPrice = prod.FirstPrice ?? 0,
-                    StartDate = prod.DateStart,
-                    EndDate = prod.DateEnd,
-                    SellerUsername = prod.Seller.Username,
+                    FirstPrice = prod.FirstPrice ?? 0,
+                    DateStart = prod.DateStart,
+                    DateEnd = prod.DateEnd,
                     BidsCount = prod.BidsAuctions.Count,
-                    CurrentPrice = prod.LastPrice ?? 0
+                    LastPrice = prod.LastPrice ?? 0,
+                    Status = prod.Status.Status,
+                    ImageBase64 = prod.PhotosAuctions.FirstOrDefault ()?.Photo != null
+                        ? Convert.ToBase64String (prod.PhotosAuctions.FirstOrDefault ().Photo)
+                        : string.Empty,
+                    MimeImage = prod.PhotosAuctions.FirstOrDefault ()?.Mime ?? string.Empty
                 }).ToList ();
-            return MessageResponse<List<AuctionsDTO>>.Success (response.Message, auctions);
+            return MessageResponse<List<MyAuctionsDTO>>.Success (response.Message, auctions);
         }
 
         public async Task<MessageResponse<AuctionDetailsDTO>> GetAuctionAsync (int id) {
@@ -46,12 +50,19 @@ namespace AuctionAuctioneerService.Services.Implements {
             AuctionDetailsDTO auction = new AuctionDetailsDTO {
                 Id = response.DataRetrieved.Id,
                 Name = response.DataRetrieved.Name,
-                StartingPrice = response.DataRetrieved.FirstPrice ?? 0,
-                StartDate = response.DataRetrieved.DateStart,
-                EndDate = response.DataRetrieved.DateEnd,
-                SellerUsername = response.DataRetrieved.Seller.Username,
+                FirstPrice = response.DataRetrieved.FirstPrice ?? 0,
+                Bid = response.DataRetrieved.Bid,
                 BidsCount = response.DataRetrieved.BidsAuctions.Count,
-                CurrentPrice = response.DataRetrieved.LastPrice ?? 0
+                LastPrice = response.DataRetrieved.LastPrice ?? 0,
+                DateStart = response.DataRetrieved.DateStart,
+                DateEnd = response.DataRetrieved.DateEnd,
+                StatusId = response.DataRetrieved.StatusId,
+                Status = response.DataRetrieved.Status.Status,
+                Description = response.DataRetrieved.Description,
+                ImageBase64 = response.DataRetrieved.PhotosAuctions.FirstOrDefault ()?.Photo != null
+                    ? Convert.ToBase64String (response.DataRetrieved.PhotosAuctions.FirstOrDefault ().Photo)
+                    : string.Empty,
+                MimeImage = response.DataRetrieved.PhotosAuctions.FirstOrDefault ()?.Mime ?? string.Empty
             };
             return MessageResponse<AuctionDetailsDTO>.Success (response.Message, auction);
         }

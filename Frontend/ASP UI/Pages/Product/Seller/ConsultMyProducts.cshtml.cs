@@ -10,7 +10,7 @@ namespace WebPage.Pages.Product.Seller {
     public class ConsultMyProductsModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<ConsultMyProductsModel> _logger;
-        private readonly ServicesBuilder _services;
+        private readonly ServicesConfig _services;
         private readonly GetImageService.GetImageServiceClient _grpcClient;
 
         [BindProperty (SupportsGet = true)]
@@ -22,7 +22,7 @@ namespace WebPage.Pages.Product.Seller {
             get; set;
         }
 
-        public ConsultMyProductsModel (IHttpClientFactory httpClientFactory, ILogger<ConsultMyProductsModel> logger, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient) {
+        public ConsultMyProductsModel (IHttpClientFactory httpClientFactory, ILogger<ConsultMyProductsModel> logger, ServicesConfig services, GetImageService.GetImageServiceClient grpcClient) {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
             _services = services;
@@ -30,7 +30,7 @@ namespace WebPage.Pages.Product.Seller {
         }
 
         public async Task OnGetAsync () {
-            string requestURL = $"http://apigateway/api/MyProducts/Search?username={username}";
+            string requestURL = $"http://apigateway/{_services.REST.Product.Seller.GetProducts}";
             string cookies = HttpContext.Request.Headers["Cookie"].ToString ();
 
             _logger.LogInformation ("ConsultProductsModel.OnGetAsync: " + requestURL);

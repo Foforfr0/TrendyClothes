@@ -1,4 +1,67 @@
 ﻿@page
 @model WebPage.Pages.Auction.Auctioneer.ViewDetailsModel
 @{
+    ViewData["Title"] = "Detalles de subasta.";
 }
+
+<div class="container h-100">
+    <div class="row h-100">
+        <div class="col-4 d-block align-items-center justify-content-center">
+            @if (Model.auction.ImageBase64 == null || Model.auction.MimeImage.Length <= 0) {
+                <img src="https://placehold.co/600x400/FFFFFF/000000/png?text=Product" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" />
+            } else {
+                <img class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" src="data:@Model.auction.MimeImage;base64,@Model.auction.ImageBase64" />
+            }
+        </div>
+        <div class="col-8 text-start d-block align-content-top border-start">
+            <div class="row">
+                <h2 class="align-content-start truncate-two-lines text-start col">@Model.auction.Name</h2>
+                <a class="col-auto text-end btn text-white py-0 px-1 align-content-center" style="background-color: aquamarine">
+                    <i class="bi bi-gear">&ensp;Cambiar estado</i>
+                </a>
+            </div>
+            <div class="row mt-2 ms-2">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-auto p-0 fw-bold">Precio inicial:&nbsp;</div>
+                        <div class="col-auto p-0">$@Model.auction.FirstPrice</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto p-0 fw-bold">Valor de puja establecida:&nbsp;</div>
+                        <div class="col p-0">$@Model.auction.Bid</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto p-0 fw-bold">Pujas realizadas:&nbsp;</div>
+                        <div class="col p-0">@Model.auction.BidsCount</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto p-0 fw-bold">Fecha de inicio:&nbsp;</div>
+                        <div class="col p-0">@Model.auction.DateStart</div>&nbsp;-&nbsp;
+                        <div class="col-auto p-0 fw-bold">Fecha de fin:&nbsp;</div>
+                        <div class="col p-0">@Model.auction.DateEnd</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto p-0 fw-bold">Ganancia:&nbsp;</div>
+                        <div class="col p-0">@(((Model.auction.LastPrice*100)/Model.auction.FirstPrice)-100)%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="container row align-content-center justify-content-center align-items-center">
+                <div class="col-auto fw-bold">Estado:&nbsp;</div>
+                @if (Model.auction.StatusId == 1) {
+                    <a class="col-auto btn btn-success border-success p-1 mx-auto">@Model.auction.Status</a>
+                } else if (Model.auction.StatusId == 2) {
+                    <a class="col-auto btn btn-secondary border-secondary p-1 mx-auto">@Model.auction.Status</a>
+                } else if (Model.auction.StatusId == 3) {
+                    <a class="col-auto btn btn-danger border-danger p-1 mx-auto">@Model.auction.Status</a>
+                } else if (Model.auction.StatusId == 4) {
+                    <a class="col-auto btn btn-info border-info p-1 mx-auto">@Model.auction.Status</a>
+                }
+            </div>
+            <div class="container text-start mt-2">
+                <h3>Descripción</h3>
+                <div>@Model.auction.Description</div>
+            </div>
+        </div>
+    </div>
+</div>

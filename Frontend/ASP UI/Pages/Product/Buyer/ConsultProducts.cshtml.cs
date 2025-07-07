@@ -10,7 +10,7 @@ namespace WebPage.Pages.Product.Buyer {
     public class ConsultProductsModel : PageModel {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<ConsultProductsModel> _logger;
-        private readonly ServicesBuilder _services;
+        private readonly ServicesConfig _services;
         private readonly GetImageService.GetImageServiceClient _grpcClient;
 
         [BindProperty (SupportsGet = true)]
@@ -22,7 +22,7 @@ namespace WebPage.Pages.Product.Buyer {
             get; set;
         }
 
-        public ConsultProductsModel (IHttpClientFactory httpClientFactory, ServicesBuilder services, GetImageService.GetImageServiceClient grpcClient, ILogger<ConsultProductsModel> logger) {
+        public ConsultProductsModel (IHttpClientFactory httpClientFactory, ServicesConfig services, GetImageService.GetImageServiceClient grpcClient, ILogger<ConsultProductsModel> logger) {
             _httpClientFactory = httpClientFactory;
             _services = services;
             _grpcClient = grpcClient;
@@ -36,7 +36,7 @@ namespace WebPage.Pages.Product.Buyer {
             }
 
             HttpClient httpClient = _httpClientFactory.CreateClient ();
-            string requestURL = $"http://apigateway/api/Product/Search?query={query}";
+            string requestURL = $"http://apigateway/{_services.REST.Product.Buyer.GetProducts}?query={query}";
             _logger.LogInformation ("ConsultProductsModel.OnGetAsync: " + requestURL);
             HttpResponseMessage response = await httpClient.GetAsync (requestURL);
 

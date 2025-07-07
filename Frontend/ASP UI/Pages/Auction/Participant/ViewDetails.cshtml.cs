@@ -5,12 +5,14 @@ using AuctionParticipantService.Models;
 using WebPage.DTO;
 using System.Text;
 using System.Text.Json;
+using WebPage.Connections;
 
 namespace WebPage.Pages.Auctions
 {
     public class ViewDetailsModel : PageModel
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ServicesConfig _services;
         private readonly ILogger<ViewDetailsModel> _logger;
 
         [BindProperty(SupportsGet = true)]
@@ -21,9 +23,10 @@ namespace WebPage.Pages.Auctions
         [BindProperty]
         public decimal ShownLastPrice { get; set; }
 
-        public ViewDetailsModel(IHttpClientFactory httpClientFactory, ILogger<ViewDetailsModel> logger)
+        public ViewDetailsModel(IHttpClientFactory httpClientFactory, ServicesConfig services, ILogger<ViewDetailsModel> logger)
         {
             _httpClientFactory = httpClientFactory;
+            _services = services;
             _logger = logger;
         }
 
@@ -32,7 +35,7 @@ namespace WebPage.Pages.Auctions
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var response = await client.GetAsync($"http://apigateway/api/Auctions/Auction/ById/{Id}");
+                var response = await client.GetAsync($"http://apigateway/{_services.REST.Auction.Auction.GetAuctions}/ById/{Id}");
 
                 string json = await response.Content.ReadAsStringAsync();
                 Console.WriteLine("GET JSON: " + json);
@@ -74,7 +77,8 @@ namespace WebPage.Pages.Auctions
             {
                 var client = _httpClientFactory.CreateClient();
 
-                var getResponse = await client.GetAsync($"http://apigateway/api/Auctions/Auction/ById/{Id}");
+                // Volver a obtener la subasta para verificar si el precio ha cambiado
+                var getResponse = await client.GetAsync($"http://apigateway/{_services.REST.Auction.Auction.GetAuctions}/ById/{Id}");
                 string getJson = await getResponse.Content.ReadAsStringAsync();
                 Console.WriteLine("GET JSON (POST): " + getJson);
 
@@ -110,7 +114,7 @@ namespace WebPage.Pages.Auctions
                 }
 
                 var increaseResponse = await client.PutAsync(
-                    $"http://apigateway/api/Auctions/Auction/IncreaseBid/{Id}", null
+                    $"http://apigateway/{_services.REST.Auction.Auction.GetAuctions}/IncreaseBid/{Id}", null
                 );
 
                 if (!increaseResponse.IsSuccessStatusCode)
@@ -124,7 +128,7 @@ namespace WebPage.Pages.Auctions
                 var bidPayload = new { AuctionId = Id, Username = username };
                 var bidContent = new StringContent(JsonSerializer.Serialize(bidPayload), Encoding.UTF8, "application/json");
 
-                var registerResponse = await client.PostAsync("http://apigateway/api/Auctions/Auction/RegisterBid", bidContent);
+                var registerResponse = await client.PostAsync($"http://apigateway/{_services.REST.Auction.Auction.GetAuctions}/RegisterBid", bidContent);
 
                 if (!registerResponse.IsSuccessStatusCode)
                 {

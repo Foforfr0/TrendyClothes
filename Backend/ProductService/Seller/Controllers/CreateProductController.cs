@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductSellerService.DAO;
 using ProductSellerService.Models;
 using ProductSellerService.Services.Interfaces;
 
@@ -22,11 +21,15 @@ namespace ProductSellerService.Controllers {
                     return BadRequest (new {
                         message = $"Los datos del nuevo producto son inválidos."
                     });
+                if (string.IsNullOrEmpty (User.Identity?.Name ?? ""))
+                    return BadRequest (new {
+                        message = $"No se pudo recuperar el nombre de usuario."
+                    });
                 newProduct.UsernameSeller = User.Identity?.Name ?? string.Empty;
                 MessageResponse<int> response = await _createProductService.PostProductAsync (newProduct);
                 if (response.IsError)
                     return HttpResponses.InternalServerError (response.Message);
-                if (response.DataRetrieved<=0)
+                if (response.DataRetrieved <= 0)
                     return Conflict (new {
                         response.Message
                     });
