@@ -1,9 +1,11 @@
 namespace ClienteMAUI.Views;
 
+using ClienteMAUI.Connections;
 using ClienteMAUI.Models.DTO.Auctions;
 using ClienteMAUI.Session;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 
@@ -33,7 +35,7 @@ public partial class MyAuctionsMenuPage : ContentPage
             }
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var url = $"http://10.0.2.2:5000/api/Auction/Auctioneer/ConsultMyAuctions/MyAuctions?username={Uri.EscapeDataString(username)}";
+            var url = AuctionEndpoints.GetMyAuctions(username);
 
             var response = await _httpClient.GetAsync(url);
             if (!response.IsSuccessStatusCode)
@@ -69,8 +71,41 @@ public partial class MyAuctionsMenuPage : ContentPage
     {
         if (sender is Button button && button.BindingContext is MyAuctionsDTO auction)
         {
-            await DisplayAlert("Eliminar", $"Eliminar subasta con ID: {auction.Id}", "OK");
-            // Aquí se conectará el endpoint de eliminación luego
+            bool confirm = await DisplayAlert("Confirmar", $"¿Deseas eliminar la subasta '{auction.Name}'?", "Sí", "No");
+            if (!confirm) return;
+
+            var token = UserSession.Instance.JwtToken;
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                await DisplayAlert("Error", "Token inválido.", "OK");
+                return;
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var payload = new UpdateAuctionDTO
+            {
+                AuctionId = auction.Id,
+                StatusId = 2
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Patch, AuctionEndpoints.UpdateAuction)
+            {
+                Content = JsonContent.Create(payload)
+            };
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Auctions.Remove(auction);
+                await DisplayAlert("Éxito", "Subasta eliminada correctamente.", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Error", "No se pudo eliminar la subasta.", "OK");
+            }
         }
     }
+
 }
