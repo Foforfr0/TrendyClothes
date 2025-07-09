@@ -254,7 +254,8 @@ INSERT INTO StatusesAuction (Status) VALUES
 ('Activo'),
 ('Pausado'),
 ('Cancelado'),
-('Finalizado');
+('Finalizado'),
+('Pagado');
 
 
 SELECT * FROM Users;
