@@ -85,18 +85,21 @@ namespace AuctionParticipantService.Services.Implements {
             return MessageResponse<AuctionDetailsDTO>.Success (response.Message, auction);
         }
 
-        public async Task<MessageResponse<List<AuctionsDTO>>> GetAuctionsParticipatedByUserAsync (string username) {
-            MessageResponse<List<Entities.AuctionsProduct>> response = await _auctionDAO.GetAuctionsAsync ();
+        public async Task<MessageResponse<List<AuctionsDTO>>> GetAuctionsParticipatedByUserAsync(string username)
+        {
+            MessageResponse<List<Entities.AuctionsProduct>> response = await _auctionDAO.GetAuctionsParticipated(username);
+
 
             if (response.IsError)
-                return MessageResponse<List<AuctionsDTO>>.Failure (response.Message);
-            if (response.DataRetrieved == null)
-                return MessageResponse<List<AuctionsDTO>>.Success (response.Message, default);
-            if (response.DataRetrieved.Count <= 0)
-                return MessageResponse<List<AuctionsDTO>>.Success ("Ninguna subasta correspende con la consulta deseada.", default);
+                return MessageResponse<List<AuctionsDTO>>.Failure(response.Message);
 
+            if (response.DataRetrieved == null || response.DataRetrieved.Count <= 0)
+                return MessageResponse<List<AuctionsDTO>>.Success("No has participado en ninguna subasta.", default);
+
+            // Mapear a DTO
             List<AuctionsDTO> auctions = response.DataRetrieved
-                .Select (auct => new AuctionsDTO {
+                .Select(auct => new AuctionsDTO
+                {
                     Id = auct.Id,
                     Name = auct.Name,
                     StartingPrice = auct.FirstPrice ?? 0,
@@ -105,8 +108,12 @@ namespace AuctionParticipantService.Services.Implements {
                     SellerUsername = auct.Seller.Username,
                     BidsCount = auct.BidsAuctions.Count,
                     CurrentPrice = auct.LastPrice ?? 0
-                }).ToList ();
-            return MessageResponse<List<AuctionsDTO>>.Success (response.Message, auctions);
+                })
+                .ToList();
+
+            return MessageResponse<List<AuctionsDTO>>.Success(response.Message, auctions);
         }
+
+
     }
 }

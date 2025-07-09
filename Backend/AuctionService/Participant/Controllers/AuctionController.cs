@@ -120,8 +120,6 @@ namespace AuctionParticipantService.Controllers {
             });
         }
 
-
-
         [HttpPut ("UpdateExpiredAuctions")]
         public async Task<IActionResult> UpdateExpiredAuctions () {
             var result = await _auctionsDAO.UpdateExpiredAuctionsAsync ();
@@ -138,6 +136,50 @@ namespace AuctionParticipantService.Controllers {
                 error = false,
                 message = result.Message,
                 body = true
+            });
+        }
+
+        public async Task<IActionResult> GetWonAuctionsWithPhoto([FromQuery] string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return BadRequest(new
+                {
+                    error = true,
+                    message = "El username es obligatorio.",
+                    body = new List<AuctionDTO>()
+                });
+            }
+
+            var userIdResult = await _auctionsDAO.GetBuyerIdByUsernameAsync(username);
+
+            if (userIdResult == null || userIdResult.DataRetrieved == 0)
+            {
+                return BadRequest(new
+                {
+                    error = true,
+                    message = userIdResult?.Message ?? "Error al obtener Id de usuario.",
+                    body = new List<AuctionDTO>()
+                });
+            }
+
+            var response = await _auctionsDAO.GetWonAuctionsByBuyerAsync(userIdResult.DataRetrieved);
+
+            if (response.DataRetrieved == null || response.DataRetrieved.Count == 0)
+            {
+                return NotFound(new
+                {
+                    error = true,
+                    message = "No se encontraron subastas ganadas por el usuario.",
+                    body = new List<AuctionDTO>()
+                });
+            }
+
+            return Ok(new
+            {
+                error = false,
+                message = response.Message,
+                body = response.DataRetrieved
             });
         }
 

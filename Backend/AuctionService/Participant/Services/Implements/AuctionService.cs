@@ -55,9 +55,6 @@ namespace AuctionParticipantService.Services.Implements
 
             return MessageResponse<bool>.Success(result.Message, result.DataRetrieved);
         }
-
-
-
         public async Task<MessageResponse<bool>> UpdateExpiredAuctionsAsync()
         {
             var result = await _auctionDAO.UpdateExpiredAuctionsAsync();
@@ -66,6 +63,24 @@ namespace AuctionParticipantService.Services.Implements
                 return MessageResponse<bool>.Failure(result.Message);
 
             return MessageResponse<bool>.Success(result.Message, result.DataRetrieved);
+        }
+
+        public async Task<MessageResponse<List<AuctionDTO>>> GetWonAuctionsByUsernameAsync(string username)
+        {
+            var userIdResult = await _auctionDAO.GetBuyerIdByUsernameAsync(username);
+
+            if (userIdResult.IsError)
+                return MessageResponse<List<AuctionDTO>>.Failure(userIdResult.Message ?? "Error al obtener ID del usuario");
+
+            var response = await _auctionDAO.GetWonAuctionsByBuyerAsync(userIdResult.DataRetrieved);
+
+            if (response.IsError)
+                return MessageResponse<List<AuctionDTO>>.Failure(response.Message);
+
+            if (response.DataRetrieved == null || response.DataRetrieved.Count == 0)
+                return MessageResponse<List<AuctionDTO>>.Success("No hay subastas ganadas por este usuario.", default);
+
+            return MessageResponse<List<AuctionDTO>>.Success(response.Message, response.DataRetrieved);
         }
 
     }
