@@ -151,14 +151,13 @@ namespace AuctionParticipantService.DAO {
         {
             try
             {
-                // Subastas terminadas (StatusId == 4)
                 var wonAuctions = await (
                     from auction in _context.AuctionsProducts
                     where auction.StatusId == 4
                     let lastBid = (
                         from bid in _context.BidsAuctions
                         where bid.AuctionId == auction.Id
-                        orderby bid.Id descending  // Última puja registrada
+                        orderby bid.Id descending
                         select bid
                     ).FirstOrDefault()
                     where lastBid != null && lastBid.BuyerId == buyerId
@@ -179,18 +178,18 @@ namespace AuctionParticipantService.DAO {
                         Description = auction.Description,
                         Photo = photo.Photo,
                         Mime = photo.Mime
-                    }
-                ).ToListAsync();
+                    }).ToListAsync();
 
-                return new MessageResponse<List<AuctionDTO>>(true, "Subastas ganadas recuperadas correctamente", wonAuctions);
+                return new MessageResponse<List<AuctionDTO>>(true, "Subastas ganadas recuperadas", wonAuctions);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al recuperar subastas ganadas.");
                 return new MessageResponse<List<AuctionDTO>>(false, "Error al recuperar datos", null);
             }
-
         }
 
-        }
+
+
     }
+}

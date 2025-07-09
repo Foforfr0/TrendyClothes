@@ -66,19 +66,22 @@ namespace AuctionParticipantService.Services.Implements
             return MessageResponse<bool>.Success(result.Message, result.DataRetrieved);
         }
 
-        public async Task<MessageResponse<List<AuctionDTO>>> GetWonAuctionsByBuyerAsync(string username)
+        public async Task<MessageResponse<List<AuctionDTO>>> GetWonAuctionsByUsernameAsync(string username)
         {
             var userIdResult = await _auctionDAO.GetBuyerIdByUsernameAsync(username);
 
-            if (userIdResult == null || userIdResult.IsError)
-                return MessageResponse<List<AuctionDTO>>.Failure(userIdResult?.Message ?? "Error al obtener el ID del usuario");
+            if (userIdResult.IsError)
+                return MessageResponse<List<AuctionDTO>>.Failure(userIdResult.Message ?? "Error al obtener ID del usuario");
 
-            var result = await _auctionDAO.GetWonAuctionsByBuyerAsync(userIdResult.DataRetrieved);
+            var response = await _auctionDAO.GetWonAuctionsByBuyerAsync(userIdResult.DataRetrieved);
 
-            if (result.IsError)
-                return MessageResponse<List<AuctionDTO>>.Failure(result.Message);
+            if (response.IsError)
+                return MessageResponse<List<AuctionDTO>>.Failure(response.Message);
 
-            return MessageResponse<List<AuctionDTO>>.Success(result.Message, result.DataRetrieved);
+            if (response.DataRetrieved == null || response.DataRetrieved.Count == 0)
+                return MessageResponse<List<AuctionDTO>>.Success("No hay subastas ganadas por este usuario.", default);
+
+            return MessageResponse<List<AuctionDTO>>.Success(response.Message, response.DataRetrieved);
         }
     }
 }

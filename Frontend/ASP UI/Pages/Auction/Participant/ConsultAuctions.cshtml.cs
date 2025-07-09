@@ -45,12 +45,12 @@ namespace WebPage.Pages.Auctions
                         Auctions = result.body;
                 }
 
-                string? username = HttpContext.User.Identity?.Name;
+                var username = HttpContext.User.Identity?.Name;
                 if (!string.IsNullOrWhiteSpace(username))
                 {
-                    var requestBody = new StringContent(JsonSerializer.Serialize(username), Encoding.UTF8, "application/json");
+                    var wonUrl = $"http://apigateway{_services.REST.Auction.Auction.WonWithPhoto}?username={Uri.EscapeDataString(username)}";
 
-                    var wonResponse = await client.GetAsync($"http://apigateway{_services.REST.Auction.Auction.GetWonAuctions}?username={Uri.EscapeDataString(username)}");
+                    var wonResponse = await client.GetAsync(wonUrl);
 
                     if (wonResponse.IsSuccessStatusCode)
                     {

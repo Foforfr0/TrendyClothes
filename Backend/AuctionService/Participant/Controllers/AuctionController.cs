@@ -141,8 +141,8 @@ namespace AuctionParticipantService.Controllers {
             });
         }
 
-        [HttpGet("WonAuctions")]
-        public async Task<IActionResult> GetWonAuctions([FromQuery] string username)
+        [HttpGet("WonWithPhoto")]
+        public async Task<IActionResult> GetWonAuctionsWithPhoto([FromQuery] string username)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -150,41 +150,43 @@ namespace AuctionParticipantService.Controllers {
                 {
                     error = true,
                     message = "El username es obligatorio.",
-                    body = (object?)null
+                    body = new List<AuctionDTO>()
                 });
             }
 
-            var buyerIdResult = await _auctionsDAO.GetBuyerIdByUsernameAsync(username);
+            var userIdResult = await _auctionsDAO.GetBuyerIdByUsernameAsync(username);
 
-            if (buyerIdResult == null || buyerIdResult.IsError || buyerIdResult.DataRetrieved <= 0)
+            if (userIdResult == null || userIdResult.DataRetrieved == 0)
             {
                 return BadRequest(new
                 {
                     error = true,
-                    message = buyerIdResult?.Message ?? "No se pudo obtener el ID del usuario.",
-                    body = (object?)null
+                    message = userIdResult?.Message ?? "Error al obtener el ID del usuario.",
+                    body = new List<AuctionDTO>()
                 });
             }
 
-            var wonAuctionsResult = await _auctionsDAO.GetWonAuctionsByBuyerAsync(buyerIdResult.DataRetrieved);
+            var response = await _auctionsDAO.GetWonAuctionsByBuyerAsync(userIdResult.DataRetrieved);
 
-            if (wonAuctionsResult == null || wonAuctionsResult.IsError)
+            if (response.DataRetrieved == null || response.DataRetrieved.Count == 0)
             {
-                return StatusCode(500, new
+                return NotFound(new
                 {
                     error = true,
-                    message = wonAuctionsResult?.Message ?? "Error al recuperar subastas ganadas.",
-                    body = (object?)null
+                    message = "No se encontraron subastas ganadas por este usuario.",
+                    body = new List<AuctionDTO>()
                 });
             }
 
             return Ok(new
             {
                 error = false,
-                message = wonAuctionsResult.Message,
-                body = wonAuctionsResult.DataRetrieved
+                message = response.Message,
+                body = response.DataRetrieved
             });
         }
+
+
 
 
 

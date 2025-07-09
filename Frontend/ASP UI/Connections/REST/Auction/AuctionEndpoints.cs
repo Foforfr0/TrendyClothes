@@ -15,7 +15,7 @@
         public string UpdateExpiredAuctions {
             get; set;
         }
-        public string GetWonAuctions
+        public string WonWithPhoto
         {
             get; set;
         }
