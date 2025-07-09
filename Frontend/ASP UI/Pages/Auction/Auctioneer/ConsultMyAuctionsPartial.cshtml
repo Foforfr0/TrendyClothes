@@ -1,48 +1,68 @@
 ﻿@model WebPage.DTO.Auction.MyAuctionsDTO
-@{
-}
 
-<div class="container w-75 my-1 border border-1 border-light-subtle" style="max-height: 100px;">
-    <div class="row mb-1 h-100 p-1">
-        <div class="col-4 h-100 object-fit-contain">
-            @if (Model.ImageBase64 == null || Model.ImageBase64.Length <= 0) {
-                <img src="https://placehold.co/600x400/FFFFFF/000000/png?text=Product" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" />
-            } else {
-                <img src="data:@Model.MimeImage;base64,@Model.ImageBase64" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Producto" />
+<style>
+    .auction-rectangle {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .auction-flex {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+        .auction-flex img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+    .auction-info {
+        text-align: left;
+        flex: 1;
+    }
+
+        .auction-info h5 {
+            margin: 0 0 5px;
+        }
+
+        .auction-info p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .auction-info .btn {
+            margin-top: 8px;
+        }
+</style>
+
+<div class="auction-rectangle">
+    <div class="auction-flex">
+        <div>
+            @if (!string.IsNullOrEmpty(Model.ImageBase64) && !string.IsNullOrEmpty(Model.MimeImage))
+            {
+                <img src="data:@Model.MimeImage;base64,@Model.ImageBase64" alt="Producto" />
+            }
+            else
+            {
+                <img src="https://placehold.co/150x150?text=Sin+imagen" alt="Sin imagen" />
             }
         </div>
-        <div class="col-8 h-100">
-            <div class="row">
-                <div class="col text-start">
-                    <h5 class="card-title">@Model.Name</h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-start">
-                    <p class="card-text">$@Model.FirstPrice precio inicial</p>
-                </div>
-                <div class="col text-start">
-                    <p class="card-text">@Model.BidsCount pujas realizadas</p>
-                </div>
-                <div class="col text-start">
-                    <p class="card-text fw-bold">$@Model.LastPrice precio final</p>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-auto text-start">
-                    @Model.DateStart fecha de inicio
-                </div>
-                <div class="col-auto text-start">
-                    @Model.DateStart fecha de fin
-                </div>
-                <div class="col-auto text-start">
-                    Estado @Model.Status
-                </div>
-                <div class="col-auto ms-auto">
-                    <a class="btn btn-primary" style="width: 81px; height: 38px;"
-                       asp-page="/Auction/Auctioneer/ViewDetails" asp-route-id="@Model.Id">Detalles</a>
-                </div>
-            </div>
+        <div class="auction-info">
+            <h5><strong>@Model.Name</strong></h5>
+            <p>$@Model.FirstPrice precio inicial</p>
+            <p>@Model.BidsCount pujas realizadas</p>
+            <p><strong>$@Model.LastPrice</strong> precio final</p>
+            <p>@Model.DateStart.ToString("dd/MM/yyyy HH:mm") fecha de inicio</p>
+            <p>@Model.DateEnd.ToString("dd/MM/yyyy HH:mm") fecha de fin</p>
+            <p>Estado: <strong>@Model.Status</strong></p>
+            <a href="/Auction/Auctioneer/ViewDetails?id=@Model.Id" class="btn btn-primary btn-sm">Detalles</a>
         </div>
     </div>
 </div>

@@ -141,6 +141,52 @@ namespace AuctionParticipantService.Controllers {
             });
         }
 
+        [HttpGet("WonAuctions")]
+        public async Task<IActionResult> GetWonAuctions([FromQuery] string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return BadRequest(new
+                {
+                    error = true,
+                    message = "El username es obligatorio.",
+                    body = (object?)null
+                });
+            }
+
+            var buyerIdResult = await _auctionsDAO.GetBuyerIdByUsernameAsync(username);
+
+            if (buyerIdResult == null || buyerIdResult.IsError || buyerIdResult.DataRetrieved <= 0)
+            {
+                return BadRequest(new
+                {
+                    error = true,
+                    message = buyerIdResult?.Message ?? "No se pudo obtener el ID del usuario.",
+                    body = (object?)null
+                });
+            }
+
+            var wonAuctionsResult = await _auctionsDAO.GetWonAuctionsByBuyerAsync(buyerIdResult.DataRetrieved);
+
+            if (wonAuctionsResult == null || wonAuctionsResult.IsError)
+            {
+                return StatusCode(500, new
+                {
+                    error = true,
+                    message = wonAuctionsResult?.Message ?? "Error al recuperar subastas ganadas.",
+                    body = (object?)null
+                });
+            }
+
+            return Ok(new
+            {
+                error = false,
+                message = wonAuctionsResult.Message,
+                body = wonAuctionsResult.DataRetrieved
+            });
+        }
+
+
 
     }
 

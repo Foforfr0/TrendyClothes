@@ -78,7 +78,6 @@ namespace WebPage.Pages.Auctions
             {
                 var client = _httpClientFactory.CreateClient();
 
-                // Volver a obtener la subasta para verificar si el precio ha cambiado
                 var getResponse = await client.GetAsync($"http://apigateway{_services.REST.Auction.Auction.GetAuctions}/ById/{Id}");
                 string getJson = await getResponse.Content.ReadAsStringAsync();
                 Console.WriteLine("GET JSON (POST): " + getJson);

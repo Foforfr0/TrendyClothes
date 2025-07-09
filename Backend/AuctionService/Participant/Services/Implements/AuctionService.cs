@@ -56,8 +56,6 @@ namespace AuctionParticipantService.Services.Implements
             return MessageResponse<bool>.Success(result.Message, result.DataRetrieved);
         }
 
-
-
         public async Task<MessageResponse<bool>> UpdateExpiredAuctionsAsync()
         {
             var result = await _auctionDAO.UpdateExpiredAuctionsAsync();
@@ -68,5 +66,19 @@ namespace AuctionParticipantService.Services.Implements
             return MessageResponse<bool>.Success(result.Message, result.DataRetrieved);
         }
 
+        public async Task<MessageResponse<List<AuctionDTO>>> GetWonAuctionsByBuyerAsync(string username)
+        {
+            var userIdResult = await _auctionDAO.GetBuyerIdByUsernameAsync(username);
+
+            if (userIdResult == null || userIdResult.IsError)
+                return MessageResponse<List<AuctionDTO>>.Failure(userIdResult?.Message ?? "Error al obtener el ID del usuario");
+
+            var result = await _auctionDAO.GetWonAuctionsByBuyerAsync(userIdResult.DataRetrieved);
+
+            if (result.IsError)
+                return MessageResponse<List<AuctionDTO>>.Failure(result.Message);
+
+            return MessageResponse<List<AuctionDTO>>.Success(result.Message, result.DataRetrieved);
+        }
     }
 }

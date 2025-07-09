@@ -127,27 +127,70 @@ namespace AuctionParticipantService.DAO {
         }
 
         public async Task<MessageResponse<int>> GetBuyerIdByUsernameAsync(string username)
-{
-    try
-    {
-        var user = await _context.Users
-            .Where(u => u.Username == username)
-            .Select(u => u.Id)
-            .FirstOrDefaultAsync();
+        {
+            try
+            {
+                var user = await _context.Users
+                    .Where(u => u.Username == username)
+                    .Select(u => u.Id)
+                    .FirstOrDefaultAsync();
 
-        if (user == 0)
-            return new MessageResponse<int>(false, "No se encontró un usuario con ese username", 0);
+                if (user == 0)
+                    return new MessageResponse<int>(false, "No se encontró un usuario con ese username", 0);
 
-        return new MessageResponse<int>(true, "ID del usuario recuperado", user);
+                return new MessageResponse<int>(true, "ID del usuario recuperado", user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener el ID del usuario por username.");
+                return new MessageResponse<int>(false, "Error al buscar usuario", 0);
+            }
+        }
+
+        public async Task<MessageResponse<List<AuctionDTO>>> GetWonAuctionsByBuyerAsync(int buyerId)
+        {
+            try
+            {
+                // Subastas terminadas (StatusId == 4)
+                var wonAuctions = await (
+                    from auction in _context.AuctionsProducts
+                    where auction.StatusId == 4
+                    let lastBid = (
+                        from bid in _context.BidsAuctions
+                        where bid.AuctionId == auction.Id
+                        orderby bid.Id descending  // Última puja registrada
+                        select bid
+                    ).FirstOrDefault()
+                    where lastBid != null && lastBid.BuyerId == buyerId
+                    join photo in _context.PhotosAuctions
+                        on auction.Id equals photo.AuctionId into photoJoin
+                    from photo in photoJoin.DefaultIfEmpty()
+                    select new AuctionDTO
+                    {
+                        Id = auction.Id,
+                        Name = auction.Name,
+                        FirstPrice = auction.FirstPrice,
+                        Bid = auction.Bid,
+                        LastPrice = auction.LastPrice,
+                        DateStart = auction.DateStart,
+                        DateEnd = auction.DateEnd,
+                        SellerId = auction.SellerId,
+                        StatusId = auction.StatusId,
+                        Description = auction.Description,
+                        Photo = photo.Photo,
+                        Mime = photo.Mime
+                    }
+                ).ToListAsync();
+
+                return new MessageResponse<List<AuctionDTO>>(true, "Subastas ganadas recuperadas correctamente", wonAuctions);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al recuperar subastas ganadas.");
+                return new MessageResponse<List<AuctionDTO>>(false, "Error al recuperar datos", null);
+            }
+
+        }
+
+        }
     }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error al obtener el ID del usuario por username.");
-        return new MessageResponse<int>(false, "Error al buscar usuario", 0);
-    }
-}
-
-
-
-    }
-}

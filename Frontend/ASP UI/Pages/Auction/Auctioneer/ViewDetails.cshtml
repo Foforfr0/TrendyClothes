@@ -16,7 +16,7 @@
         <div class="col-8 text-start d-block align-content-top border-start">
             <div class="row">
                 <h2 class="align-content-start truncate-two-lines text-start col">@Model.auction.Name</h2>
-                @if (Model.auction.StatusId != 3 && Model.auction.StatusId != 4) {
+                @if (Model.auction.StatusId != 3) {
                     <button type="button"
                             class="col-auto text-end btn text-white py-0 px-1 align-content-center"
                             style="background-color: aquamarine"
@@ -44,9 +44,16 @@
                                     @if (Model.auction.Status.ToLower () == "activo") {
                                         <option value="2">Pausado</option>
                                         <option value="3">Cancelado</option>
+                                        <option value="4">Finalizado</option>
                                     } else if (Model.auction.Status.ToLower () == "pausado") {
                                         <option value="1">Activo</option>
                                         <option value="3">Cancelado</option>
+                                        <option value="4">Finalizado</option>
+                                    } else if (Model.auction.Status.ToLower() == "finalizado"){
+                                        <option value="1">Activo</option>
+                                        <option value="2">Pausado</option>
+                                        <option value="3">Cancelado</option>
+
                                     }
                                 </select>
                             </div>
@@ -79,8 +86,8 @@
                         <div class="col p-0">@Model.auction.DateEnd</div>
                     </div>
                     <div class="row">
-                        <div class="col-auto p-0 fw-bold">Ganancia:&nbsp;</div>
-                        <div class="col p-0">@(((Model.auction.LastPrice*100)/Model.auction.FirstPrice)-100)%</div>
+                        <div class="col-auto p-0 fw-bold">Ganancia: $&nbsp;</div>
+                        <div class="col p-0">@(Model.auction.LastPrice-Model.auction.FirstPrice)</div>
                     </div>
                 </div>
             </div>
@@ -93,6 +100,8 @@
                 } else if (Model.auction.StatusId == 3) {
                     <a class="col-auto btn btn-danger border-danger p-1 mx-auto">@Model.auction.Status</a>
                 } else if (Model.auction.StatusId == 4) {
+                    <a class="col-auto btn btn-info border-info p-1 mx-auto">@Model.auction.Status</a>
+                } else if (Model.auction.StatusId == 5){
                     <a class="col-auto btn btn-info border-info p-1 mx-auto">@Model.auction.Status</a>
                 }
             </div>

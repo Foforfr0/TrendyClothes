@@ -61,7 +61,7 @@ namespace WebPage.Pages.Auction.Auctioneer {
                     // Manejo de error
                     // Puedes usar TempData o ViewData para mostrar un mensaje en la UI
                     TempData["StatusChangeError"] = "No se pudo actualizar el estado de la subasta.";
-                    return RedirectToPage ("./Details", new {
+                    return RedirectToPage ("./ViewDetails", new {
                         id = AuctionId
                     });
                 }
