@@ -70,10 +70,15 @@
                                 </Label.FormattedText>
                             </Label>
 
+                            <Button Text="Finalizar"
+                            BackgroundColor="Green"
+                            TextColor="White"
+                            Clicked="OnFinalizarSubastaClicked"/>
+
                             <Button Text="Eliminar"
-                BackgroundColor="Red"
-                TextColor="White"
-                Clicked="OnEliminarSubastaClicked"/>
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            Clicked="OnEliminarSubastaClicked"/>
                         </VerticalStackLayout>
                     </Border>
                 </DataTemplate>

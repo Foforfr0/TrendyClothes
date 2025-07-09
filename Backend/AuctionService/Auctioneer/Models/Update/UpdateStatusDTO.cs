@@ -8,7 +8,7 @@ namespace AuctionAuctioneerService.Models.Update {
             get; set;
         }
         [Required (ErrorMessage = "El ID del nuevo status es requerido..")]
-        [Range (1, 3, ErrorMessage = "El valor del ID debe estar entre 1 y 3.")]
+        [Range (1, 5, ErrorMessage = "El valor del ID debe estar entre 1 y 5.")]
         public int? StatusId {
             get; set;
         }

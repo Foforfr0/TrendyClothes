@@ -2,7 +2,7 @@
 
 namespace ClienteMAUI.Models.DTO.Auctions
 {
-    internal class AuctionsListDTO
+    public class AuctionsListDTO
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }

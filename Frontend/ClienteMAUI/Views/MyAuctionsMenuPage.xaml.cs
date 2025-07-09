@@ -108,4 +108,44 @@ public partial class MyAuctionsMenuPage : ContentPage
         }
     }
 
+    private async void OnFinalizarSubastaClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.BindingContext is MyAuctionsDTO auction)
+        {
+            bool confirm = await DisplayAlert("Confirmar", $"¿Deseas finalizar la subasta '{auction.Name}' con '{auction.LastPriceText}'?", "Sí", "No");
+            if (!confirm) return;
+
+            var token = UserSession.Instance.JwtToken;
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                await DisplayAlert("Error", "Token inválido.", "OK");
+                return;
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var payload = new UpdateAuctionDTO
+            {
+                AuctionId = auction.Id,
+                StatusId = 4
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Patch, AuctionEndpoints.UpdateAuction)
+            {
+                Content = JsonContent.Create(payload)
+            };
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Auctions.Remove(auction);
+                await DisplayAlert("Éxito", $"Has finalizado la subasta con ${auction.LastPrice:N2}", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Error", "No se pudo finalizar la subasta.", "OK");
+            }
+        }
+    }
 }
