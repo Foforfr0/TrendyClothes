@@ -251,10 +251,11 @@ INSERT INTO QAProduct (Stars, Description, Date, ProductId, UserId) VALUES
 
 -- StatusesAuction
 INSERT INTO StatusesAuction (Status) VALUES 
-('Activo'),
-('Pausado'),
-('Cancelado'),
-('Finalizado');
+('Activo'), /* 1 */
+('Pausado'), /* 2 */
+('Cancelado'), /* 3 */
+('Finalizado'), /* 4 */
+('Pagado'); /* 5 */
 
 
 SELECT * FROM Users;
