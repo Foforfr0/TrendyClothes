@@ -12,9 +12,11 @@ namespace ClienteMAUI.Models.ViewModel
 
         public bool EsPropio { get; set; }
 
+        public string Estado { get; set; } = string.Empty;
+
         public ProductoViewModel() { }
 
-        public ProductoViewModel(int id, string nombre, decimal precio, int cantidadVendidos, ImageSource? imageSource, bool esPropio)
+        public ProductoViewModel(int id, string nombre, decimal precio, int cantidadVendidos, ImageSource? imageSource, bool esPropio, string estado)
         {
             Id = id;
             Nombre = nombre;
@@ -22,6 +24,7 @@ namespace ClienteMAUI.Models.ViewModel
             CantidadVendidos = cantidadVendidos;
             ImageSource = imageSource;
             EsPropio = esPropio;
+            Estado = estado;
         }
 
         public override string ToString()

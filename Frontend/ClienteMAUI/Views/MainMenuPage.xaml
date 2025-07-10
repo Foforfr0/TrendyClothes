@@ -29,6 +29,14 @@
                 TextColor="White"
                 CornerRadius="10"
                 Padding="12,6" />
+
+                <!--Abraham-->
+                <Button Text="Mi perfil"
+                        x:Name="btnPerfil"
+                        Clicked="NavigateToProfilePage"
+                        BackgroundColor="#80000000"
+                        TextColor="Black"
+                        CornerRadius="12"/>
             </HorizontalStackLayout>
 
 

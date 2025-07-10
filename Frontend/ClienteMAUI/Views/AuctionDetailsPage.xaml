@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ClienteMAUI.Views.AuctionDetailsPage"
+             Title="Detalles de la subasta">
+    <VerticalStackLayout Padding="10">
+        <!-- Auction Info -->
+        <Border Padding="10" BackgroundColor="#F8F8F8">
+            <VerticalStackLayout>
+                <Image x:Name="AuctionImage" HeightRequest="150" Aspect="AspectFill"/>
+                <Label x:Name="LbName" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Estado:" FontAttributes="Bold" />
+                <Label x:Name="LbStatus" />
+                <Label Text="Precio inicial:" FontAttributes="Bold" />
+                <Label x:Name="LbStartPrice"/>
+                <Label Text="Precio actual:" FontAttributes="Bold" />
+                <Label x:Name="LbLastPrice" />
+                <Label x:Name="LbBidIncrement" FontSize="16" />
+                <Label x:Name="LblDateStart" FontSize="14" />
+                <Label x:Name="LblDateEnd" FontSize="14" />
+            </VerticalStackLayout>
+        </Border>
+
+        <Label Text="Pujas realizadas:" FontSize="18" FontAttributes="Bold" Margin="0,20,0,10"/>
+
+        <CollectionView x:Name="BidsCollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border BackgroundColor="LightGray" Margin="5">
+                        <VerticalStackLayout Padding="5">
+                            <Label Text="{Binding Username}" FontAttributes="Bold"/>
+                            <Label Text="{Binding AmountBidded, StringFormat='Monto pujado: {0:C}'}"/>
+                            <Label Text="{Binding TotalPrice, StringFormat='Precio total: {0:C}'}"/>
+                            <Label Text="{Binding Timestamp, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+
+</ContentPage>

@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
+using System.Threading.Tasks;
 
 public partial class MainMenuPage : ContentPage
 {
@@ -368,5 +368,10 @@ public partial class MainMenuPage : ContentPage
     private async void OnVerSubastasClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new AuctionsMenuPage());
+    }
+
+    private async void NavigateToProfilePage(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new UserProfilePage());
     }
 }

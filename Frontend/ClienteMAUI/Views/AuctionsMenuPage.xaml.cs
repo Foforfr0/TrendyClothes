@@ -144,7 +144,15 @@ public partial class AuctionsMenuPage : ContentPage
                     await DisplayAlert("Error", $"No se pudo registrar la puja: {error}", "OK");
                 }
 
-                await CargarSubastasAsync(); // recarga la vista al final
+                BidHistoryStore.AddBid(auctionId, new BidHistoryEntry
+                {
+                    Username = username,
+                    AmountBidded = auctionUpdated.Bid,
+                    TotalPrice = auctionUpdated.LastPrice + auctionUpdated.Bid,
+                    Timestamp = DateTime.Now
+                });
+
+                await CargarSubastasAsync();
             }
             catch (Exception ex)
             {

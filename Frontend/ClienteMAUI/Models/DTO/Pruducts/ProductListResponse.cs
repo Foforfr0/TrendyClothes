@@ -39,6 +39,8 @@ namespace ClienteMAUI.Models.DTO.Pruducts
 
         [JsonPropertyName("stockAvailable")]
         public int StockAvailable { get; set; }
+        [JsonPropertyName("status")]
+        public string Status { get; set; } = string.Empty;
     }
 
 }

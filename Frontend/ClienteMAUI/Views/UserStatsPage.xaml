@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ClienteMAUI.Views.UserStatsPage"
+             Title="Estadisticas del perfil">
+    <VerticalStackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Text="Aqui podras ver algunas estadisticas de tu perfil"
+                   TextColor="Black" FontSize="18" HorizontalTextAlignment="Center"/>
+
+            <Border Grid.Row="1" BackgroundColor="LightGray" Padding="15"
+                    StrokeShape="RoundRectangle 15" Margin="10, 5">
+                <VerticalStackLayout>
+                    <Label Text="Subastas publicadas: "
+                   FontSize="12"
+                   FontAttributes="None"
+                   TextColor="Black"/>
+                    <Label x:Name="LbTotalAuctions" FontSize="14"
+                           FontAttributes="Bold" TextColor="Black"/>
+                    <Label Text="Pujas totales recibidas: " 
+                           FontSize="12"
+                           TextColor="DarkGreen" x:Name="LbNOAuctions"/>
+                    <Label x:Name="LbTotalBids" FontSize="14" TextColor="Black"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Grid.Row="2" BackgroundColor="LightGray" Padding="15"
+                    StrokeShape="RoundRectangle 15" Margin="10, 5">
+                <VerticalStackLayout>
+                    <Label Text="Productos publicados"
+                           FontSize="12" FontAttributes="None" TextColor="Black"/>
+                    <Label x:Name="LbTotalProducts" FontSize="14" FontAttributes="Bold"
+                           TextColor="Black"/>
+                    <Label Text="Ventas totales estimadas:" FontSize="12" TextColor="DarkGreen"
+                           x:Name="LbSales"/>
+                    <Label x:Name="LbTotalSales" FontSize="14" TextColor="Black"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
