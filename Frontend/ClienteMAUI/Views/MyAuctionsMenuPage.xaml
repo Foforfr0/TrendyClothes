@@ -5,6 +5,13 @@
              Title="Mis Subastas">
 
     <ContentPage.Content>
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <Label x:Name="lblGanancias"
+               Text="Ganancias totales: $0.00"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="DarkGreen"
+               HorizontalOptions="Center" />
         <CollectionView x:Name="AuctionsCollectionView"
                         ItemsSource="{Binding Auctions}"
                         Margin="10"
@@ -84,5 +91,6 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

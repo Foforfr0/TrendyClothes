@@ -60,12 +60,19 @@ public partial class MyAuctionsMenuPage : ContentPage
                 auction.ImageSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
                 Auctions.Add(auction);
             }
+
+            var ganancias = wrapper.Body
+                .Where(a => a.Status.Trim().ToLower().Contains("pagad"))
+                .Sum(a => a.LastPrice);
+
+            lblGanancias.Text = $"Ganancias totales: ${ganancias:N2}";
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", $"Excepción: {ex.Message}", "OK");
         }
     }
+
 
     private async void OnEliminarSubastaClicked(object sender, EventArgs e)
     {
