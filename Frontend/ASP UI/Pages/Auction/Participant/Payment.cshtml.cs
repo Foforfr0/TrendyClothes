@@ -13,12 +13,18 @@ namespace WebPage.Pages.Auctions
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ServicesConfig _services;
         private readonly ILogger<PaymentModel> _logger;
+        private readonly ServicesBuilder _servicesBuilder;
 
-        public PaymentModel(IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> services, ILogger<PaymentModel> logger)
+        public PaymentModel(
+            IHttpClientFactory httpClientFactory,
+            IOptions<ServicesConfig> services,
+            ILogger<PaymentModel> logger,
+            ServicesBuilder servicesBuilder)
         {
             _httpClientFactory = httpClientFactory;
             _services = services.Value;
             _logger = logger;
+            _servicesBuilder = servicesBuilder;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -53,23 +59,30 @@ namespace WebPage.Pages.Auctions
             try
             {
                 var client = _httpClientFactory.CreateClient();
+
                 string cookies = HttpContext.Request.Headers["Cookie"].ToString();
                 if (!string.IsNullOrEmpty(cookies))
                     client.DefaultRequestHeaders.Add("Cookie", cookies);
 
+                string patchUrl = _servicesBuilder.AuctioneerPatchAuctionUrl;
+                _logger.LogInformation("URL de PATCH usada en pago: {url}", patchUrl);
 
-                HttpClient? httpClient = _httpClientFactory.CreateClient ();
-                if (!string.IsNullOrEmpty (cookies))
-                httpClient.DefaultRequestHeaders.Add ("Cookie", cookies);
-
-                string patchUrl = $"http://apigateway/api/Auction/Auctioneer/UpdateAuction";
                 var patchBody = new
                 {
-                    AuctionId = this.AuctionId,
-                    StatusId = 5
+                    auctionId = this.AuctionId,
+                    statusId = SubastaPagadaStatusId
                 };
 
-                var patchResponse = await client.PatchAsJsonAsync(patchUrl, patchBody);
+                var jsonContent = JsonContent.Create(
+                    patchBody,
+                    options: new System.Text.Json.JsonSerializerOptions
+                    {
+                        PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+                    }
+                );
+                _logger.LogWarning(" PATCH BODY: {json}", System.Text.Json.JsonSerializer.Serialize(patchBody));
+
+                var patchResponse = await client.PatchAsync(patchUrl, jsonContent);
 
                 if (!patchResponse.IsSuccessStatusCode)
                 {
