@@ -52,35 +52,32 @@ namespace WebPage.Pages.Auctions
 
             try
             {
-                HttpClient httpClient = _httpClientFactory.CreateClient();
+                var client = _httpClientFactory.CreateClient();
                 string cookies = HttpContext.Request.Headers["Cookie"].ToString();
-
                 if (!string.IsNullOrEmpty(cookies))
-                {
-                    if (httpClient.DefaultRequestHeaders.Contains("Cookie"))
-                        httpClient.DefaultRequestHeaders.Remove("Cookie");
+                    client.DefaultRequestHeaders.Add("Cookie", cookies);
 
-                    httpClient.DefaultRequestHeaders.Add("Cookie", cookies);
-                }
+
+                HttpClient? httpClient = _httpClientFactory.CreateClient ();
+                if (!string.IsNullOrEmpty (cookies))
+                httpClient.DefaultRequestHeaders.Add ("Cookie", cookies);
 
                 string patchUrl = $"http://apigateway/api/Auction/Auctioneer/UpdateAuction";
                 var patchBody = new
                 {
                     AuctionId = this.AuctionId,
-                    StatusId = SubastaPagadaStatusId
+                    StatusId = 5
                 };
 
-                _logger.LogInformation("PATCH a: {url}", patchUrl);
+                var patchResponse = await client.PatchAsJsonAsync(patchUrl, patchBody);
 
-                HttpResponseMessage httpResponse = await httpClient.PatchAsJsonAsync(patchUrl, patchBody);
-
-                if (!httpResponse.IsSuccessStatusCode)
+                if (!patchResponse.IsSuccessStatusCode)
                 {
                     TempData["StatusChangeError"] = "No se pudo actualizar el estado.";
                     return RedirectToPage("/Auction/Participant/ConsultAuctions");
                 }
 
-                var result = await httpResponse.Content.ReadFromJsonAsync<ApiResponse<bool>>();
+                var result = await patchResponse.Content.ReadFromJsonAsync<ApiResponse<bool>>();
                 if (result == null || !result.body)
                 {
                     TempData["StatusChangeError"] = result?.message ?? "Error desconocido al actualizar estado.";

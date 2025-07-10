@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionAuctioneerService.Controllers {
     [ApiController]
-    [Authorize]
     [Route("api/Auction/Auctioneer/UpdateAuction")]
     public class UpdateAuctionController : Controller {
         private readonly IUpdateAuctionService _updateAuctionService;
@@ -15,7 +14,7 @@ namespace AuctionAuctioneerService.Controllers {
             _updateAuctionService = updateAuctionService;
         }
 
-
+        [HttpPatch]
         public async Task<IActionResult> UpdateAuction ([FromBody] UpdateStatusDTO updateAuctionDTO) {
             try {
                 if (!ModelState.IsValid)

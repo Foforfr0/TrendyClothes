@@ -186,7 +186,7 @@ namespace AuctionParticipantService.Controllers {
             });
         }
 
-        [HttpPatch("MarkAsPaid")]
+        [HttpPut("MarkAsPaid")]
         public async Task<IActionResult> MarkAuctionAsPaid([FromQuery] int auctionId)
         {
             if (auctionId <= 0)
