@@ -15,6 +15,7 @@ public partial class AuctionsMenuPage : ContentPage
     {
         InitializeComponent();
         _ = CargarSubastasAsync();
+        _ = CargarSubastasGanadasAsync();
     }
 
     private async Task CargarSubastasAsync()
@@ -52,6 +53,49 @@ public partial class AuctionsMenuPage : ContentPage
             }
 
             AuctionsCollection.ItemsSource = result.Body;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Excepción", ex.Message, "OK");
+        }
+    }
+
+    private async Task CargarSubastasGanadasAsync()
+    {
+        try
+        {
+            var username = UserSession.Instance.Username;
+            var response = await _httpClient.GetAsync(AuctionEndpoints.GetWonAuctions(username));
+            if (!response.IsSuccessStatusCode)
+            {
+                await DisplayAlert("Error", "No se pudo obtener la lista de subastas.", "OK");
+                return;
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<ResponseWrapper<List<AuctionsListDTO>>>(json);
+
+            if (result?.Body == null || result.Body.Count == 0)
+            {
+                lblNoAuctions.IsVisible = true;
+                return;
+            }
+
+            foreach (var auction in result.Body)
+            {
+                auction.FirstPriceText = $"Precio inicial: ${auction.FirstPrice}";
+                auction.LastPriceText = $"Última puja: ${auction.LastPrice}";
+                auction.BidText = $"Puja mínima: ${auction.Bid}";
+                auction.EndDateFormatted = $"Termina: {auction.DateEnd:dd/MM/yyyy HH:mm}";
+
+                if (!string.IsNullOrWhiteSpace(auction.ImageBase64))
+                {
+                    var bytes = Convert.FromBase64String(auction.ImageBase64);
+                    auction.ImageSource = ImageSource.FromStream(() => new MemoryStream(bytes));
+                }
+            }
+
+            AuctionsWonCollection.ItemsSource = result.Body;
         }
         catch (Exception ex)
         {
@@ -164,5 +208,11 @@ public partial class AuctionsMenuPage : ContentPage
     private async void OnCrearSubastaClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new AuctionFormPage());
+    }
+
+    private async void OnPagarClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new PayFormPage((AuctionsListDTO)((Button)sender).CommandParameter));
+
     }
 }

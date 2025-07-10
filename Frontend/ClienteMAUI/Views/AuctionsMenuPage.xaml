@@ -28,8 +28,43 @@
                 CornerRadius="10"
                 Padding="12,6" />       
             </HorizontalStackLayout>
+            
+            <!-- Lista de subastas ganadas -->
+            <Label Text="Subastas ganadas"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="DarkGreen"
+               HorizontalOptions="Start" /> 
+            <CollectionView x:Name="AuctionsWonCollection"
+                 ItemsLayout="VerticalGrid, 2"
+                 SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="LightGray" StrokeThickness="1" Padding="10" Margin="5" StrokeShape="RoundRectangle 10">
+                            <VerticalStackLayout>
+                                <Image Source="{Binding ImageSource}" HeightRequest="100" Aspect="AspectFill"/>
+                                <Label Text="{Binding ProductName}" FontAttributes="Bold" FontSize="16" />
+                                <Label Text="{Binding FirstPriceText}" FontSize="14" />
+                                <Label Text="{Binding LastPriceText}" FontSize="14" />
+                                <Label Text="{Binding BidText}" FontSize="14" />
+                                <Label Text="{Binding EndDateFormatted}" FontSize="12" />
+                                <Button Text="Pagar"
+                             BackgroundColor="Green"
+                             TextColor="White"
+                             Clicked="OnPagarClicked"
+                             CommandParameter="{Binding .}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
             <!-- Lista de subastas -->
+            <Label Text="Subastas activas"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="DarkBlue"
+               HorizontalOptions="Start" />
             <CollectionView x:Name="AuctionsCollection"
                             ItemsLayout="VerticalGrid, 2"
                             SelectionMode="None">

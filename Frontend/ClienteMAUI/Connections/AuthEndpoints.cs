@@ -51,6 +51,8 @@ namespace ClienteMAUI.Connections
         public static string IncreaseBid(int id) => $"{BaseUrl}/Auction/IncreaseBid/{id}";
         public static string GetMyAuctions(string username) => $"{BaseUrl2}/ConsultMyAuctions/MyAuctions?username={Uri.EscapeDataString(username)}";
         public static string UpdateAuction => $"{BaseUrl2}/UpdateAuction";
+        public static string GetWonAuctions(string username) => $"{BaseUrl}/Auction/AuctionsWon?username={Uri.EscapeDataString(username)}";
+
 
     }
 

@@ -138,8 +138,8 @@ namespace AuctionParticipantService.Controllers {
                 body = true
             });
         }
-
-        public async Task<IActionResult> GetWonAuctionsWithPhoto([FromQuery] string username)
+        [HttpGet("AuctionsWon")]
+        public async Task<IActionResult> GetWonAuctions([FromQuery] string username)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
