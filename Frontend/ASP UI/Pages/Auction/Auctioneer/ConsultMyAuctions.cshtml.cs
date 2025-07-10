@@ -14,6 +14,8 @@ namespace WebPage.Pages.Auction.Auctioneer {
         public List<MyAuctionsDTO> Auctions {
             get; set;
         }
+        public decimal profit { get; set; } = 0;
+
 
         public ConsultMyAuctionsModel (IHttpClientFactory httpClientFactory, IOptions<ServicesConfig> servicesBuilder, ILogger<ConsultMyAuctionsModel> logger) {
             _httpClientFactory = httpClientFactory;
@@ -66,6 +68,9 @@ namespace WebPage.Pages.Auction.Auctioneer {
 
                 Auctions.Add (aux);
             }
+            profit = Auctions
+                  .Where(a => a.Status == "Pagado")
+                  .Sum(a => a.LastPrice);
         }
     }
 }
