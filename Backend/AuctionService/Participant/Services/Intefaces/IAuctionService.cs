@@ -11,5 +11,6 @@ namespace AuctionParticipantService.Services.Intefaces
         Task<MessageResponse<bool>> UpdateExpiredAuctionsAsync();
         Task<MessageResponse<List<AuctionDTO>>> GetWonAuctionsByUsernameAsync(string username);
 
+        Task<MessageResponse<bool>> UpdateAuctionStatusToPaidAsync(int auctionId);
     }
 }

@@ -186,9 +186,38 @@ namespace AuctionParticipantService.Controllers {
             });
         }
 
+        [HttpPatch("MarkAsPaid")]
+        public async Task<IActionResult> MarkAuctionAsPaid([FromQuery] int auctionId)
+        {
+            if (auctionId <= 0)
+            {
+                return BadRequest(new
+                {
+                    error = true,
+                    message = "El ID de la subasta no es válido.",
+                    body = false
+                });
+            }
 
+            var result = await _auctionsDAO.UpdateAuctionStatusToPaidAsync(auctionId);
 
+            if (!result.DataRetrieved)
+            {
+                return StatusCode(500, new
+                {
+                    error = true,
+                    message = result.Message,
+                    body = false
+                });
+            }
 
+            return Ok(new
+            {
+                error = false,
+                message = result.Message,
+                body = true
+            });
+        }
 
     }
 

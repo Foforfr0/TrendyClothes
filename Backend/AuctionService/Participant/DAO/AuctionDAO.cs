@@ -189,6 +189,30 @@ namespace AuctionParticipantService.DAO {
             }
         }
 
+        public async Task<MessageResponse<bool>> UpdateAuctionStatusToPaidAsync(int auctionId)
+        {
+            try
+            {
+                var auction = await _context.AuctionsProducts.FindAsync(auctionId);
+
+                if (auction == null)
+                {
+                    return new MessageResponse<bool>(false, $"No se encontró la subasta con ID {auctionId}.", false);
+                }
+
+                auction.StatusId = 5;
+
+                _context.AuctionsProducts.Update(auction);
+                await _context.SaveChangesAsync();
+
+                return new MessageResponse<bool>(true, "Estado de la subasta actualizado a 'Pagado'.", true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar el estado de la subasta.");
+                return new MessageResponse<bool>(false, "Error al actualizar el estado.", false);
+            }
+        }
 
 
     }

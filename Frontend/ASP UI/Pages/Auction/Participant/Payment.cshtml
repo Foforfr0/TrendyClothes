@@ -1,0 +1,42 @@
+﻿@page
+@model WebPage.Pages.Auctions.PaymentModel
+@{
+    ViewData["Title"] = "Pago";
+}
+
+<div class="container mt-5">
+    <h2>Pago</h2>
+
+    <form method="post" class="mt-4">
+        <div class="mb-3">
+            <label class="form-label">Número de tarjeta</label>
+            <input asp-for="CardNumber" class="form-control" placeholder="XXXX XXXX XXXX XXXX" />
+            <span class="text-danger" asp-validation-for="CardNumber"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nombre del titular</label>
+            <input asp-for="CardHolder" class="form-control" />
+            <span class="text-danger" asp-validation-for="CardHolder"></span>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Expiración (MM/YY)</label>
+                <input asp-for="Expiration" class="form-control" />
+                <span class="text-danger" asp-validation-for="Expiration"></span>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">CVV</label>
+                <input asp-for="CVV" class="form-control" />
+                <span class="text-danger" asp-validation-for="CVV"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Pagar</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

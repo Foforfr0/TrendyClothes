@@ -35,7 +35,7 @@
                             <h5 class="card-title">@auction.Name</h5>
                             <p class="card-text"><strong>Ganaste esta subasta por:</strong> $@auction.LastPrice</p>
                             <p class="card-text">Finalizó el: @auction.DateEnd.ToString("dd/MM/yyyy HH:mm")</p>
-                            <a asp-page="/Auction/Participant/ViewDetails" asp-route-id="@auction.Id" class="btn btn-outline-success w-100 mt-2">Ver detalles</a>
+                            <a asp-page="/Auction/Participant/Payment" asp-route-id="@auction.Id" class="btn btn-outline-success w-100 mt-2">Pagar</a>
                         </div>
                     </div>
                 </div>

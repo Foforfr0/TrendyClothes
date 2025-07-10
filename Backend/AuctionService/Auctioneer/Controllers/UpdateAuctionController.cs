@@ -15,7 +15,7 @@ namespace AuctionAuctioneerService.Controllers {
             _updateAuctionService = updateAuctionService;
         }
 
-        [HttpPatch]
+
         public async Task<IActionResult> UpdateAuction ([FromBody] UpdateStatusDTO updateAuctionDTO) {
             try {
                 if (!ModelState.IsValid)

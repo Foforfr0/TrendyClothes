@@ -1,4 +1,4 @@
-using AuctionParticipantService.Models;
+﻿using AuctionParticipantService.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
@@ -46,9 +46,13 @@ namespace WebPage.Pages.Auctions
                 }
 
                 var username = HttpContext.User.Identity?.Name;
+                _logger.LogInformation(" Username detectado en cookie: {username}", username);
+
                 if (!string.IsNullOrWhiteSpace(username))
                 {
-                    var wonUrl = $"http://apigateway{_services.REST.Auction.Auction.WonWithPhoto}?username={Uri.EscapeDataString(username)}";
+                    var wonUrl = $"http://apigateway/api/Auctions/Auction/WonWithPhoto?username={Uri.EscapeDataString(username)}";
+
+                    _logger.LogInformation("URL ganadas: {url}", wonUrl);
 
                     var wonResponse = await client.GetAsync(wonUrl);
 
@@ -59,7 +63,7 @@ namespace WebPage.Pages.Auctions
                         {
                             PropertyNameCaseInsensitive = true
                         });
-
+ 
                         if (wonResult?.body != null)
                             WonAuctions = wonResult.body;
                     }

@@ -83,5 +83,18 @@ namespace AuctionParticipantService.Services.Implements
 
             return MessageResponse<List<AuctionDTO>>.Success(response.Message, response.DataRetrieved);
         }
+
+        public async Task<MessageResponse<bool>> UpdateAuctionStatusToPaidAsync(int auctionId)
+        {
+            var response = await _auctionDAO.UpdateAuctionStatusToPaidAsync(auctionId);
+
+            if (response.IsError)
+                return MessageResponse<bool>.Failure(response.Message);
+
+            if (!response.DataRetrieved)
+                return MessageResponse<bool>.Success("No se realizó el cambio de estado.", false);
+
+            return MessageResponse<bool>.Success(response.Message, true);
+        }
     }
 }
