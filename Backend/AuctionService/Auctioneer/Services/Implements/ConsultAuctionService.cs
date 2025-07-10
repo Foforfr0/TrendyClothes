@@ -28,9 +28,9 @@ namespace AuctionAuctioneerService.Services.Implements {
                     FirstPrice = prod.FirstPrice ?? 0,
                     DateStart = prod.DateStart,
                     DateEnd = prod.DateEnd,
-                    BidsCount = prod.BidsAuctions?.Count ?? 0, // Protegido
+                    BidsCount = prod.BidsAuctions?.Count ?? 0,
                     LastPrice = prod.LastPrice ?? 0,
-                    Status = prod.Status?.Status ?? "Desconocido", // Protegido
+                    Status = prod.Status?.Status ?? "Desconocido",
                     ImageBase64 = prod.PhotosAuctions?.FirstOrDefault ()?.Photo != null
                         ? Convert.ToBase64String (prod.PhotosAuctions.First ().Photo)
                         : string.Empty,

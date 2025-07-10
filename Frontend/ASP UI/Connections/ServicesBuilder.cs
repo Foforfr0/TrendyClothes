@@ -161,6 +161,31 @@ namespace WebPage.Connections {
         }
 
         // -------- AUCTION --------
+        // ------------- Statistics --------
+        public string StatisticsGetStatisticsAuctionUrl {
+            get {
+                return Combine (_config.REST.Auction.Statistics.BaseUrl, _config.REST.Auction.Statistics.GetStatisticsAuction);
+            }
+        }
+
+        public string StatisticsGetNumberAuctionsUrl {
+            get {
+                return Combine (_config.REST.Auction.Statistics.BaseUrl, _config.REST.Auction.Statistics.GetNumberAuctions);
+            }
+        }
+
+        public string StatisticsGetNumberAuctionsByStatusUrl {
+            get {
+                return Combine (_config.REST.Auction.Statistics.BaseUrl, _config.REST.Auction.Statistics.GetNumberAuctionsByStatus);
+            }
+        }
+
+        public string StatisticsGetGeneralReportUrl {
+            get {
+                return Combine (_config.REST.Auction.Statistics.BaseUrl, _config.REST.Auction.Statistics.GetGeneralReport);
+            }
+        }
+
         // ------------- Auction -----------
         public string AuctionGetStatusesUrl {
             get {

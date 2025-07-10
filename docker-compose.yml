@@ -196,6 +196,24 @@ services:
       - internal
     volumes:
       - dataprotectionkeys:/var/dpkeys
+  
+  auctionstatisticsservice:
+    container_name: auctionstatisticsservice
+    build:
+      context: ./Backend/AuctionService/Statistics
+      dockerfile: Dockerfile
+    ports:
+      - "5009:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      sqlserver:
+        condition: service_started
+    networks:
+      - internal
+    volumes:
+      - dataprotectionkeys:/var/dpkeys
 
   # gRPC SERVICE
   grpcimageservice:

@@ -9,5 +9,8 @@
         public ParticipantConfig Participant {
             get; set;
         }
+        public StatisticsConfig Statistics {
+            get; set;
+        }
     }
 }

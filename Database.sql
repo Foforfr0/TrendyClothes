@@ -146,7 +146,7 @@ CREATE TABLE PhotosAuction (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Photo VARBINARY(MAX) NOT NULL,
     AuctionId INT NOT NULL,
-    Mime VARCHAR(25) NOT NULL
+    Mime VARCHAR(25) NOT NULL,
 
     CONSTRAINT FK_PhotoAuction_Auction FOREIGN KEY (AuctionId) REFERENCES AuctionsProduct(Id) ON DELETE CASCADE
 );
@@ -255,6 +255,139 @@ INSERT INTO StatusesAuction (Status) VALUES
 ('Pausado'),
 ('Cancelado'),
 ('Finalizado');
+
+-- Subasta 1: Activa
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Laptop Lenovo ThinkPad', 8000.00, 8500.00, 8500.00, '2025-07-01 10:00:00', '2025-07-15 18:00:00', 'Laptop usada en buen estado, 16GB RAM, SSD 512GB', 1, 2);
+
+-- Subasta 2: Pausada
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('iPhone 12 Pro', 12000.00, 12000.00, 12000.00, '2025-07-01 09:00:00', '2025-07-10 21:00:00', 'iPhone 12 Pro 256GB, color gris espacial', 2, 2);
+
+-- Subasta 3: Cancelada
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Consola PS5', 14000.00, 14000.00, 14000.00, '2025-06-20 12:00:00', '2025-06-30 20:00:00', 'PS5 Edición Digital con un control extra', 3, 2);
+
+-- Subasta 4: Finalizada
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Cámara Canon EOS M50', 9500.00, 11000.00, 11000.00, '2025-06-01 08:00:00', '2025-06-07 22:00:00', 'Cámara Canon semi-profesional con lente 15-45mm', 4, 2);
+
+-- Subasta 5
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Monitor LG UltraWide 34"', 6500.00, 7000.00, 7000.00, '2025-07-05 09:00:00', '2025-07-12 20:00:00', 'Monitor LG UltraWide, resolución QHD, perfecto para multitarea', 1, 2);
+
+-- Subasta 6
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Tablet Samsung Galaxy Tab S6', 7800.00, 7800.00, 7800.00, '2025-07-01 14:00:00', '2025-07-10 20:00:00', 'Tablet usada en excelentes condiciones, incluye S-Pen', 2, 2);
+
+-- Subasta 7
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Bicicleta de montaña Trek', 10500.00, 11000.00, 11000.00, '2025-06-25 08:00:00', '2025-07-05 18:00:00', 'Bicicleta seminueva, suspensión delantera, frenos de disco', 1, 2);
+
+-- Subasta 8
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Teclado mecánico Logitech G512', 2200.00, 2500.00, 2500.00, '2025-07-03 13:00:00', '2025-07-08 22:00:00', 'Teclado mecánico RGB con switches GX Blue', 1, 2);
+
+-- Subasta 9
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Set de herramientas Bosch', 3000.00, 3000.00, 3000.00, '2025-06-20 09:00:00', '2025-06-30 18:00:00', 'Set completo de herramientas manuales y eléctricas', 3, 2);
+
+-- Subasta 10
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Silla ergonómica oficina', 4500.00, 5000.00, 5000.00, '2025-06-01 10:00:00', '2025-06-10 18:00:00', 'Silla con soporte lumbar y reclinable, ideal para home office', 4, 2);
+
+-- Subasta 11
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Proyector Epson HD', 7800.00, 8100.00, 8100.00, '2025-07-06 16:00:00', '2025-07-14 21:00:00', 'Proyector Epson de alta definición, compatible con HDMI', 1, 2);
+
+-- Subasta 12
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Cafetera Nespresso Vertuo', 3500.00, 3700.00, 3700.00, '2025-07-07 08:00:00', '2025-07-13 22:00:00', 'Cafetera automática para cápsulas VertuoLine', 1, 2);
+
+-- Subasta 13
+INSERT INTO AuctionsProduct (Name, FirstPrice, Bid, LastPrice, DateStart, DateEnd, Description, StatusId, SellerId)
+VALUES ('Audífonos Sony WH-1000XM4', 6200.00, 6700.00, 6700.00, '2025-07-01 15:00:00', '2025-07-09 21:00:00', 'Audífonos inalámbricos con cancelación activa de ruido', 1, 2);
+
+
+INSERT INTO PhotosAuction (Photo, AuctionId, Mime) VALUES 
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 1.jpg', SINGLE_BLOB) AS Photo), 1, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 2.jpg', SINGLE_BLOB) AS Photo), 2, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Tenis 3.jpg', SINGLE_BLOB) AS Photo), 3, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Pantalones 1.jpg', SINGLE_BLOB) AS Photo), 4, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Pantalones 2.jpg', SINGLE_BLOB) AS Photo), 5, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Pantalones 3.jpg', SINGLE_BLOB) AS Photo), 6, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Accesorio 1.jpg', SINGLE_BLOB) AS Photo), 7, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Playera 1.jpg', SINGLE_BLOB) AS Photo), 8, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Playera 2.jpg', SINGLE_BLOB) AS Photo), 9, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Playera 3.jpg', SINGLE_BLOB) AS Photo), 10, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 1.jpg', SINGLE_BLOB) AS Photo), 11, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 2.jpg', SINGLE_BLOB) AS Photo), 12, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK '/var/opt/mssql/data/Ropa interior 3.jpg', SINGLE_BLOB) AS Photo), 13, 'image/jpg');
+/*
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 1.jpg', SINGLE_BLOB) AS Photo), 1, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 2.jpg', SINGLE_BLOB) AS Photo), 2, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Tenis 3.jpg', SINGLE_BLOB) AS Photo), 3, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Pantalones 1.jpg', SINGLE_BLOB) AS Photo), 4, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Pantalones 2.jpg', SINGLE_BLOB) AS Photo), 5, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Pantalones 3.jpg', SINGLE_BLOB) AS Photo), 6, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Accesorio 1.jpg', SINGLE_BLOB) AS Photo), 7, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Playera 1.jpg', SINGLE_BLOB) AS Photo), 8, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Playera 2.jpg', SINGLE_BLOB) AS Photo), 9, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Playera 3.jpg', SINGLE_BLOB) AS Photo), 10, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 1.jpg', SINGLE_BLOB) AS Photo), 11, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 2.jpg', SINGLE_BLOB) AS Photo), 12, 'image/jpg'),
+((SELECT BulkColumn FROM OPENROWSET(BULK 'C:\Archivos\Example Files\TrendyClothes\Ropa interior 3.jpg', SINGLE_BLOB) AS Photo), 13, 'image/jpg');
+*/
+
+-- Laptop (Id 1)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES 
+(1, 1),
+(3, 1),
+(4, 1);
+
+-- iPhone (Id 2)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES 
+(3, 2);
+
+-- Cámara (Id 4)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES 
+(1, 4),
+(3, 4);
+
+-- Subasta 5 (Monitor)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES
+(1, 5), (3, 5), (4, 5);
+
+-- Subasta 6 (Tablet)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES
+(1, 6);
+
+-- Subasta 7 (Bici)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES
+(3, 7), (4, 7);
+
+-- Subasta 8 (Teclado)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES
+(1, 8), (3, 8);
+
+-- Subasta 9 (Herramientas) — Cancelada, sin bids
+
+-- Subasta 10 (Silla) — Finalizada
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES
+(4, 10);
+
+-- Subasta 11 (Proyector)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES
+(1, 11), (3, 11), (4, 11);
+
+-- Subasta 12 (Cafetera)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES
+(3, 12), (4, 12);
+
+-- Subasta 13 (Audífonos)
+INSERT INTO BidsAuction (BuyerId, AuctionId) VALUES
+(1, 13), (3, 13);
+
 
 
 SELECT * FROM Users;

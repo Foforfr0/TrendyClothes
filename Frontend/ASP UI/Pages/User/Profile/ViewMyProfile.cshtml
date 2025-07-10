@@ -70,12 +70,10 @@
            asp-page="/Auction/Auctioneer/ConsultMyAuctions">
             Mis subastas creadas
         </a>
-        <!--
         <a class="col btn btn-secondary btn-lg p-1" style="max-width: 180px;"
-           asp-page="/Auction/Participant/AuctionsParticipated">
-            Subastas participadas
+           asp-page="/Auction/Auctioneer/Statistics/Index">
+            Reportes de subastas
         </a>
-        -->
     </div>
 </div>
 
@@ -83,7 +81,7 @@
     <script>
         window.config = {
             GetPersonalDataUrl: '@UrlBuilder.UserGetPersonalDataUrl',
-            GetAddressesUrl: '@UrlBuilder.UserGetAddressesUrl',
+            GetAddressesUrl: '@UrlBuilder.UserGetAddressesUrl'
         };
     </script>
     <script type="module" src="~/js/User/ViewMyProfile.js"></script>

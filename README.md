@@ -23,8 +23,8 @@ Este proyecto forma parte de un sistema web para la tienda *TrendyClothes*, util
 |04 |Buscar productos                       |	✔️	|	✔️	|	✔️	|	✔️	|
 |05 |Editar publicación                     |	✔️	|	✔️	|	✔️	|	✔️	|
 |06 |Eliminar publicación                   |	✔️	|	✔️	|	✔️	|	✔️	|
-|07 |Realizar subasta                       |	✔️	|	❌	|	❌	|	❌	|
-|08 |Eliminar subasta                       |	❌	|	❌	|	❌	|	❌	|
+|07 |Realizar subasta                       |	✔️	|	✔️	|	✔️	|	✔️	|
+|08 |Eliminar subasta                       |	✔️	|	✔️	|	✔️	|	✔️	|
 
 ## 🐳 Docker
 ### 🔧 Inicialización de contenedores

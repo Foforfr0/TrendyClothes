@@ -1,0 +1,51 @@
+﻿@model WebPage.DTO.Auction.StatisticsAuctionDTO
+@{
+    
+}
+
+<div class="container w-75 my-1 border border-1 border-light-subtle auction-card" style="max-height: 100px;"
+     data-name="@Model.Name"
+     data-status="@Model.Status">
+    <div class="row mb-1 h-100 p-1">
+        <div class="col-4 h-100 object-fit-contain">
+            @if (Model.ImageBase64 == null || Model.ImageBase64.Length <= 0) {
+                <img src="https://placehold.co/600x400/FFFFFF/000000/png?text=Subasta" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Subasta" />
+            } else {
+                <img src="data:@Model.MimeImage;base64,@Model.ImageBase64" class="h-100 object-fit-contain" style="max-width: 100%;" alt="Subasta" />
+            }
+        </div>
+        <div class="col-8 h-100">
+            <div class="row">
+                <div class="col text-start">
+                    <h5 class="card-title">Subasta #@Model.IdAuction</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-start">
+                    <p class="card-text mb-0">Pujas: <strong>@Model.NumberBids</strong></p>
+                </div>
+                <div class="col text-start">
+                    <p class="card-text mb-0">Inicial: <strong>$@Model.FirstPrice.ToString("F2")</strong></p>
+                </div>
+                <div class="col text-start">
+                    <p class="card-text mb-0">Final: <strong>$@Model.LastPrice.ToString("F2")</strong></p>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col text-start" style="color: #00A650;">
+                    <p class="card-text mb-0">Ganancia: <strong>@Model.PercentageGain.ToString("F2")%</strong></p>
+                </div>
+                <div class="col text-start">
+                    <p class="card-text mb-0">Estado: <strong>@Model.Status</strong></p>
+                </div>
+                <div class="col-auto ms-auto">
+                    <a class="btn btn-primary" style="width: 81px; height: 38px;"
+                       asp-page="/Auction/Auctioneer/ViewDetails"
+                       asp-route-id="@Model.IdAuction">
+                        Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

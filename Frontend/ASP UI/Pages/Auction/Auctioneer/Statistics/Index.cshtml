@@ -1,0 +1,87 @@
+﻿@page
+@inject WebPage.Connections.ServicesBuilder UrlBuilder
+@using WebPage.DTO.Auction
+@model WebPage.Pages.Auction.Auctioneer.Statistics.IndexModel
+@{
+    ViewData["Title"] = "Estadísticas y reportes";
+}
+
+<h1 class="text-center mb-3">Estadísticas y reportes</h1>
+<p>Seleccione un rango de fecha o limpie para visuzalizar el histórico</p>
+
+<div class="row border border-dark-subtle p-2">
+    <div class="col-4">
+        <input id="InputDateStart" class="form-control text-start w-100" type="datetime-local" autocomplete="off" style="max-width: 150px;"/>
+    </div>
+    <div class="col-4">
+        <input id="InputDateEnd" class="form-control text-start w-100" type="datetime-local" autocomplete="off" style="max-width: 150px;" />
+    </div>
+    <button id="retrieveDataBtn" type="button" class="col-2 btn btn-primary text-end me-2 w-100" style="max-width: 80px;">Buscar</button>
+    <button id="cleanFieldsBtn" type="button" class="col-2 btn btn-secondary text-end w-100" style="max-width: 80px;">Limpiar</button>
+</div>
+
+<div class="row">
+    <div class="row container text-center mt-3">
+        <div class="col-5 text-start">
+            <h3 class="text-center">Reporte general</h3>
+            <p>Número de subastas creadas: <strong id="total-auctions">No obtenido</strong></p>
+            <p>Promedio de pujas por subasta: <strong id="avg-bids-per-auction">No obtenido</strong></p>
+            <p>Total de pujas: <strong id="total-bids">No obtenido</strong></p>
+            <p>Mayor cantidad de pujas: <strong id="max-bids">No obtenido</strong></p>
+            <p>Menor cantidad de pujas: <strong id="min-bids">No obtenido</strong></p>
+            <p>Puja más alta: <strong id="highest-bid">No obtenido</strong></p>
+            <p>Puja más baja: <strong id="lowest-bid">No obtenido</strong></p>
+            <p>Promedio de duración de subastas: <strong id="avg-duration">No obtenido</strong></p>
+            <p>Subasta más larga: <strong id="longest-auction">No obtenido</strong></p>
+            <p>Subasta más corta: <strong id="shortest-auction">No obtenido</strong></p>
+            <p>Subasta más reciente: <strong id="most-recent-auction">No obtenido</strong></p>
+            <p>Subasta más antigua: <strong id="oldest-auction">No obtenido</strong></p>
+            <p>Ganancia más alta de subasta: <strong id="highest-gain">No obtenido</strong></p>
+            <p>Ganancia más baja de subasta: <strong id="lowest-gain">No obtenido</strong></p>
+        </div>
+        <div class="col-5 text-end">
+            <h3 class="text-center">Estados de tus subastas</h3>
+            <p>Seleccione un rango de fechas.</p>
+            <canvas id="chartStatusesAuctions" width="300" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre...">
+    </div>
+    <div class="col-md-4">
+        <select id="statusFilter" class="form-select">
+            <option value="">Todos los estados</option>
+            <option value="Activo">Activo</option>
+            <option value="Pausado">Pausado</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Finalizado">Finalizado</option>
+        </select>
+    </div>
+</div>
+
+@if (Model.StatisticsAuctions?.Count > 0) {
+    <div class="row" id="auctionsContainer">
+        @foreach (StatisticsAuctionDTO auction in Model.StatisticsAuctions) {
+            @await Html.PartialAsync("StatisticsAuctionPartial", auction).ConfigureAwait(false);
+        }
+    </div>
+}
+else {
+    <p>No se encontraron subastas.</p>
+}
+
+@section Scripts {
+    <script>
+        window.config = {
+            GetStatisticsAuctionUrl: '@UrlBuilder.StatisticsGetStatisticsAuctionUrl',
+            GetNumberAuctionsUrl: '@UrlBuilder.StatisticsGetNumberAuctionsUrl',
+            GetNumberAuctionsByStatusUrl: '@UrlBuilder.StatisticsGetNumberAuctionsByStatusUrl',
+            GetGeneralReportUrl: '@UrlBuilder.StatisticsGetGeneralReportUrl'
+        };
+    </script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="~/js/Auction/Statistics.js"></script>
+}

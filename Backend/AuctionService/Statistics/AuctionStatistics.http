@@ -1,0 +1,18 @@
+### ApiGateway
+@baseUrl = http://localhost:5000
+
+### GET Estadísticas de una subasta
+GET {{baseUrl}}/api/Auction/Statistics?idAuction=1
+Accept: application/json
+
+### GET Número total de subastas en un rango de tiempo de un usuario
+GET {{baseUrl}}/api/Auction/Statistics/NumberAuctions?dateStart=2023-01-01&dateEnd=2023-12-31
+Accept: application/json
+
+### GET Número total de subastas por status en un rago de tiempo de un usuario
+GET {{baseUrl}}/api/Auction/Statistics/NumberAuctionsByStatus?dateStart=2023-01-01&dateEnd=2023-12-31
+Accept: application/json
+
+### GET Reporte general
+GET {{baseUrl}}/api/Auction/Statistics/GeneralReport
+Accept: application/json
