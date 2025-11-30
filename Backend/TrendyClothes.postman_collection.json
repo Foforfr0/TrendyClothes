@@ -1,0 +1,1119 @@
+{
+	"info": {
+		"_postman_id": "1479d648-cece-4302-95c0-79fe88a0f2eb",
+		"name": "TrendyClothes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45004494"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"item": [
+								{
+									"name": "Login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Login exitoso\", () => {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Devuelve token JWT\", () => {\r",
+													"    pm.expect(json.token).to.be.a(\"string\");\r",
+													"});\r",
+													"\r",
+													"// Guardamos el token en el entorno\r",
+													"pm.environment.set(\"authToken\", json.token);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"foforfr\",\r\n    \"password\": \"123456\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:5000/api/User/Login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"api",
+												"User",
+												"Login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "ValidateEmailUser",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/api/User/Login/ValidateEmailUser?username=foforfr&email=foforfr007@gmail.com",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"User",
+												"Login",
+												"ValidateEmailUser"
+											],
+											"query": [
+												{
+													"key": "username",
+													"value": "foforfr"
+												},
+												{
+													"key": "email",
+													"value": "foforfr007@gmail.com"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "CreateTwoFactorCode",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"foforfr\",\r\n    \"email\": \"foforfr007@gmail.com\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/User/Login/CreateTwoFactorCode",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"User",
+												"Login",
+												"CreateTwoFactorCode"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "ValidateTwoFactorCode",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"foforfr\",\r\n    \"twoFactorCode\": \"123456\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/User/Login/ValidateTwoFactorCode",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"User",
+												"Login",
+												"ValidateTwoFactorCode"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DeleteTwoFactorCode",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/User/Login/DeleteTwoFactorCode?username=foforfr",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"User",
+												"Login",
+												"DeleteTwoFactorCode"
+											],
+											"query": [
+												{
+													"key": "username",
+													"value": "foforfr"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Logout",
+							"item": [
+								{
+									"name": "Logout",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/api/User/Logout",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"User",
+												"Logout"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "GetPersonalData",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/User/ViewProfile/GetPersonalData",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"User",
+										"ViewProfile",
+										"GetPersonalData"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAddresses",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/User/ViewProfile/GetAddresses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"User",
+										"ViewProfile",
+										"GetAddresses"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Registration",
+					"item": [
+						{
+							"name": "AddUser",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Rodolfodos\",\r\n    \"middleName\": \"Fernandezdos\",\r\n    \"lastName\": \"Rodriguezdos\",\r\n    \"username\": \"foforfrdos\",\r\n    \"email\": \"foforfr007dos@gmail.com\",\r\n    \"areaCode\": \"+52\",\r\n    \"phoneNumber\": \"2281856846\",\r\n    \"password\": \"MmA1asd@iuyhgsb\",\r\n    \"roleId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/User/Registration",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"User",
+										"Registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteUser",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/User/DeleteAccount?username=foforfrdos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"User",
+										"DeleteAccount"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "foforfrdos"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ValidateUserData",
+					"item": [
+						{
+							"name": "VerifyExistenceUsername",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/User/ValidateUserData/VerifyExistenceUsername?username=foforfr",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"User",
+										"ValidateUserData",
+										"VerifyExistenceUsername"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "foforfr"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "VerifyExistenceEmail",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/User/ValidateUserData/VerifyExistenceEmail?email=foforfr007@gmail.com",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"User",
+										"ValidateUserData",
+										"VerifyExistenceEmail"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "foforfr007@gmail.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "VerifyExistencePhoneNumber",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/User/ValidateUserData/VerifyExistencePhoneNumber?areaCode=%2B52&phoneNumber=2281856845",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"User",
+										"ValidateUserData",
+										"VerifyExistencePhoneNumber"
+									],
+									"query": [
+										{
+											"key": "areaCode",
+											"value": "%2B52"
+										},
+										{
+											"key": "phoneNumber",
+											"value": "2281856845"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Seller",
+					"item": [
+						{
+							"name": "MyProducts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/MyProducts/Search?username=foforfr",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"MyProducts",
+										"Search"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "foforfr"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ViewMyProductDetails",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Product/ConsultMyProducts/ViewMyProductDetails?id=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Product",
+										"ConsultMyProducts",
+										"ViewMyProductDetails"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"stringstri\",\r\n  \"price\": 1000.99,\r\n  \"discount\": 99,\r\n  \"description\": \"stringstringstringst\",\r\n  \"stockAvailable\": 100,\r\n  \"categoryId\": 11,\r\n  \"typeId\": 2,\r\n  \"statusId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/MyProduct/Edit",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"MyProduct",
+										"Edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Nombre ejemplo\", \r\n    \"price\": 200,\r\n    \"discount\": 10, \r\n    \"description\": \"Ejemplo de description\", \r\n    \"stockAvailable\": 10, \r\n    \"categoryId\": 1, \r\n    \"typeId\": 1, \r\n    \"statusId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/MyProduct",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"MyProduct"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Buyer",
+					"item": [
+						{
+							"name": "Search",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/api/Product/Search?query=",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"Product",
+										"Search"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ViewDetails",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Product/ConsultProducts/ViewDetails?id=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Product",
+										"ConsultProducts",
+										"ViewDetails"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tags",
+					"item": [
+						{
+							"name": "Categories",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Product/Tags/Categories",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Product",
+										"Tags",
+										"Categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Types",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Product/Tags/Types",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Product",
+										"Tags",
+										"Types"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Statusses",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Product/Tags/Statusses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Product",
+										"Tags",
+										"Statusses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/api/Product/Image?productId=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"Product",
+										"Image"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auction",
+			"item": [
+				{
+					"name": "Auctioneer",
+					"item": [
+						{
+							"name": "MyAuctions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Auctioneer/ConsultMyAuctions/MyAuctions?username=foforfr",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Auctioneer",
+										"ConsultMyAuctions",
+										"MyAuctions"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "foforfr"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ViewMyAuctionDetails",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Auctioneer/ConsultMyAuction/ViewMyAuctionDetails?id=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Auctioneer",
+										"ConsultMyAuction",
+										"ViewMyAuctionDetails"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateAuction",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Ejemplo de nombre de subasta\",\r\n  \"firstPrice\": 0.1,\r\n  \"bid\": 10,\r\n  \"dateStart\": \"2025-06-01T01:48:40.279Z\",\r\n  \"dateEnd\": \"2025-06-01T01:48:40.279Z\",\r\n  \"description\": \"Ejemplo de descripción de subasta\",\r\n  \"statusId\": 1,\r\n  \"imageBase64\": \"\",\r\n  \"mimeImage\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Auctioneer/CreateAuction",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Auctioneer",
+										"CreateAuction"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Example",
+											"disabled": true
+										},
+										{
+											"key": "firstPrice",
+											"value": "0.1",
+											"disabled": true
+										},
+										{
+											"key": "minBid",
+											"value": "0.1",
+											"disabled": true
+										},
+										{
+											"key": "dateStart",
+											"value": "2025-06-01T01:48:40.279Z",
+											"disabled": true
+										},
+										{
+											"key": "dateEnd",
+											"value": "2025-08-01T01:48:40.279Z",
+											"disabled": true
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "numberProducts",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "sellerId",
+											"value": "3",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateAuction",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n  \"statusId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Auctioneer/UpdateAuction",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Auctioneer",
+										"UpdateAuction"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Participant",
+					"item": [
+						{
+							"name": "Bid",
+							"item": []
+						},
+						{
+							"name": "Search",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Participant/ConsultAuctions/Search?query=",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Participant",
+										"ConsultAuctions",
+										"Search"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ViewDetails",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Participant/ConsultAuction/ViewDetails?id=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Participant",
+										"ConsultAuction",
+										"ViewDetails"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateBid",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"bid\": 0.01,\r\n  \"dateBid\": \"2025-06-01T01:48:40.281Z\",\r\n  \"buyerId\": 2,\r\n  \"auctionId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Participan/CreateBid",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Participan",
+										"CreateBid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AuctionsAuction",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Auctions/Auction",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Auctions",
+										"Auction"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Statistics",
+					"item": [
+						{
+							"name": "Statistics",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Statistics?idAuction=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Statistics"
+									],
+									"query": [
+										{
+											"key": "idAuction",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NumberAuctions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Statistics/NumberAuctions?dateStart=2025-06-01T01:48:40.279Z&dateEnd=2026-06-01T01:48:40.279Z",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Statistics",
+										"NumberAuctions"
+									],
+									"query": [
+										{
+											"key": "dateStart",
+											"value": "2025-06-01T01:48:40.279Z"
+										},
+										{
+											"key": "dateEnd",
+											"value": "2026-06-01T01:48:40.279Z"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NumberAuctionsByStatus",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Statistics/NumberAuctionsByStatus?dateStart=2025-06-01&dateEnd=2026-08-01",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Statistics",
+										"NumberAuctionsByStatus"
+									],
+									"query": [
+										{
+											"key": "dateStart",
+											"value": "2025-06-01"
+										},
+										{
+											"key": "dateEnd",
+											"value": "2026-08-01"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GeneralReport",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/Auction/Statistics/GeneralReport?dateStart=2025-06-01&dateEnd=2026-08-01",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"Auction",
+										"Statistics",
+										"GeneralReport"
+									],
+									"query": [
+										{
+											"key": "dateStart",
+											"value": "2025-06-01"
+										},
+										{
+											"key": "dateEnd",
+											"value": "2026-08-01"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5001",
+			"type": "string"
+		}
+	]
+}
